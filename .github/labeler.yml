@@ -1,4 +1,4 @@
 root: '*'
-shared: 'shared//*'
-backend: 'backend//*'
-frontend: 'frontend//*'
+shared: 'shared/**/*'
+backend: 'backend/**/*'
+frontend: 'frontend/**/*'
