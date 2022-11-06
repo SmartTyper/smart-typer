@@ -1,4 +1,4 @@
-name: smart-typer CI
+name: Smart Typer CI
 
 on:
   pull_request:

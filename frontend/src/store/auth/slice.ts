@@ -3,7 +3,7 @@ import { ReducerName } from 'common/enums/app/reducer-name.enum';
 import { ActionType } from './common';
 
 type State = {
-  user: any | null;
+  user: null;
 };
 
 const initialState: State = {
@@ -14,7 +14,7 @@ const { reducer, actions } = createSlice({
   name: ReducerName.AUTH,
   initialState,
   reducers: {
-    [ActionType.SetUser]: (state, action: PayloadAction<any>) => {
+    [ActionType.SetUser]: (state, action: PayloadAction<null>) => {
       state.user = action.payload;
     },
   },

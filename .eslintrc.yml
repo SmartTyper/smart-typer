@@ -45,3 +45,5 @@ rules:
   '@typescript-eslint/no-empty-interface':
     - error
     - allowSingleExtends: true
+  '@typescript-eslint/no-explicit-any':
+    - error
