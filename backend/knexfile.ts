@@ -20,7 +20,7 @@ const DEFAULT_ENV_CONFIG: Knex.Config<ConfigPropType> = {
   ...knexSnakeCaseMappers({ underscoreBetweenUppercaseLetters: true }),
 };
 
-const knexConfig: Record<any, Knex.Config<ConfigPropType>> = {
+const knexConfig: Record<AppEnvironment, Knex.Config<ConfigPropType>> = {
   [AppEnvironment.DEVELOPMENT]: DEFAULT_ENV_CONFIG,
   [AppEnvironment.PRODUCTION]: DEFAULT_ENV_CONFIG,
 };

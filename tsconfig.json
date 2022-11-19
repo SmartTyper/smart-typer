@@ -9,6 +9,7 @@
     "strictFunctionTypes": true,
     "strictPropertyInitialization": true,
     "noImplicitAny": true,
-    "noImplicitThis": true
+    "noImplicitThis": true,
+    "skipLibCheck": true
   }
 }

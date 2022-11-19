@@ -1,15 +1,20 @@
-import { FastifyPluginAsync, FastifyRequest } from 'fastify';
+import { FastifyPluginAsync } from 'fastify';
+import { auth } from '~/services/services';
 
-const initAuthApi: FastifyPluginAsync<{ type: string }> = async (
-  fastify,
-  opts,
-) => {
+type Options = {
+  services: {
+    auth: typeof auth;
+  };
+};
+
+const initAuthApi: FastifyPluginAsync<Options> = async (fastify, opts) => {
   fastify.route({
     method: 'GET',
     url: '/',
-    async handler(_req: FastifyRequest<{ Body: { type: string } }>, rep) {
+    async handler(_req, rep) {
+      //eslint-disable-next-line
       console.log(opts);
-      return rep.status(201).send('yes');
+      return rep.status(201).send({ yes: 'yes' });
     },
   });
 };
