@@ -1,0 +1,7 @@
+root: '*'
+
+shared: 'shared/**/*'
+
+backend: 'backend/**/*'
+
+frontend: 'frontend/**/*'
