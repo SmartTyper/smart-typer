@@ -3,7 +3,12 @@ import { Knex } from 'knex';
 async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable('statistics', (table) => {
     table.increments('id').primary();
-    table.integer('user_id').references('id').inTable('users');
+    table
+      .integer('user_id')
+      .references('id')
+      .inTable('users')
+      .unique()
+      .notNullable();
     table.integer('total_time').notNullable().defaultTo(0);
     table.integer('today_time').notNullable().defaultTo(0);
     table.integer('total_lessons').notNullable().defaultTo(0);

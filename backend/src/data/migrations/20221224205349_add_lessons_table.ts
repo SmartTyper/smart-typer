@@ -6,8 +6,8 @@ async function up(knex: Knex): Promise<void> {
     table.string('name').notNullable();
     table.string('content_type').notNullable();
     table.string('creator_type').notNullable();
-    table.boolean('has_voice_acting').notNullable().defaultTo(true);
-    table.string('music_acting_url').notNullable();
+    table.boolean('has_voice_acting').notNullable();
+    table.string('music_acting_url');
     table.text('content').notNullable();
     table.dateTime('created_at').notNullable().defaultTo(knex.fn.now());
     table.dateTime('updated_at').notNullable().defaultTo(knex.fn.now());
