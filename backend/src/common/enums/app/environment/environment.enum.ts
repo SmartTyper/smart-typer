@@ -1,6 +1,6 @@
-enum AppEnvironment {
+enum Environment {
   DEVELOPMENT = 'development',
   PRODUCTION = 'production',
 }
 
-export { AppEnvironment };
+export { Environment };

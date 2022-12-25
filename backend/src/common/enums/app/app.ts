@@ -1,2 +1,2 @@
-export { AppEnvironment } from './app-environment.enum';
-export { ENV } from './env.enum';
+export * from './environment/environment.enum';
+export * from './env/env.enum';
