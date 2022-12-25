@@ -15,8 +15,8 @@ async function up(knex: Knex): Promise<void> {
     table.integer('today_lessons').notNullable().defaultTo(0);
     table.integer('top_speed').notNullable().defaultTo(0);
     table.integer('today_top_speed').notNullable().defaultTo(0);
-    table.integer('avarage_speed').notNullable().defaultTo(0);
-    table.integer('today_avarage_speed').notNullable().defaultTo(0);
+    table.integer('average_speed').notNullable().defaultTo(0);
+    table.integer('today_average_speed').notNullable().defaultTo(0);
     table.dateTime('created_at').notNullable().defaultTo(knex.fn.now());
     table.dateTime('updated_at').notNullable().defaultTo(knex.fn.now());
   });
