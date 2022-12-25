@@ -2,7 +2,7 @@ import { Model, RelationMappings } from 'objection';
 
 import {
   CommonKey,
-  DbTableName,
+  TableName,
   RoomKey,
   UserToRoomKey,
 } from '~/common/enums/enums';
@@ -25,27 +25,27 @@ class Room extends Base implements IRoomRecord {
         relation: Model.HasManyRelation,
         modelClass: User,
         join: {
-          from: `${DbTableName.ROOMS}.${CommonKey.ID}`,
+          from: `${TableName.ROOMS}.${CommonKey.ID}`,
           through: {
-            from: `${DbTableName.USERS_TO_ROOMS}.${UserToRoomKey.ROOM_ID}`,
-            to: `${DbTableName.USERS_TO_ROOMS}.${UserToRoomKey.USER_ID}`,
+            from: `${TableName.USERS_TO_ROOMS}.${UserToRoomKey.ROOM_ID}`,
+            to: `${TableName.USERS_TO_ROOMS}.${UserToRoomKey.USER_ID}`,
           },
-          to: `${DbTableName.USERS}.${CommonKey.ID}`,
+          to: `${TableName.USERS}.${CommonKey.ID}`,
         },
       },
       lesson: {
         relation: Model.BelongsToOneRelation,
         modelClass: Lesson,
         join: {
-          from: `${DbTableName.ROOMS}.${RoomKey.LESSON_ID}`,
-          to: `${DbTableName.LESSONS}.${CommonKey.ID}`,
+          from: `${TableName.ROOMS}.${RoomKey.LESSON_ID}`,
+          to: `${TableName.LESSONS}.${CommonKey.ID}`,
         },
       },
     };
   }
 
   public static override get tableName(): string {
-    return DbTableName.ROOMS;
+    return TableName.ROOMS;
   }
 }
 

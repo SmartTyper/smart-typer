@@ -1,4 +1,4 @@
-import { DbTableName, UserToStudyPlanLessonKey } from '~/common/enums/enums';
+import { TableName, UserToStudyPlanLessonKey } from '~/common/enums/enums';
 import { IUserToStudyPlanLessonRecord } from '~/common/interfaces/interfaces';
 
 import { Base } from '../base/base.model';
@@ -14,7 +14,7 @@ class UserToStudyPlanLesson
   public [UserToStudyPlanLessonKey.PRIORITY]!: IUserToStudyPlanLessonRecord[UserToStudyPlanLessonKey.PRIORITY];
 
   public static override get tableName(): string {
-    return DbTableName.USERS_TO_STUDY_PLAN_LESSONS;
+    return TableName.USERS_TO_STUDY_PLAN_LESSONS;
   }
 }
 

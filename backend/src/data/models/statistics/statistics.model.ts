@@ -1,4 +1,4 @@
-import { DbTableName, StatisticsKey } from '~/common/enums/enums';
+import { TableName, StatisticsKey } from '~/common/enums/enums';
 import { IStatisticsRecord } from '~/common/interfaces/interfaces';
 
 import { Base } from '../base/base.model';
@@ -23,7 +23,7 @@ class Statistics extends Base implements IStatisticsRecord {
   public [StatisticsKey.TODAY_AVERAGE_SPEED]!: IStatisticsRecord[StatisticsKey.TODAY_AVERAGE_SPEED];
 
   public static override get tableName(): string {
-    return DbTableName.STATISTICS;
+    return TableName.STATISTICS;
   }
 }
 

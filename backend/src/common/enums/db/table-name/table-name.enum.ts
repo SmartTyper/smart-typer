@@ -1,4 +1,4 @@
-enum DbTableName {
+enum TableName {
   USERS = 'users',
   REFRESH_TOKENS = 'refresh_tokens',
   SETTINGS = 'settings',
@@ -13,4 +13,4 @@ enum DbTableName {
   USERS_TO_SKILLS = 'users_to_skills',
 }
 
-export { DbTableName };
+export { TableName };

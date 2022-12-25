@@ -1,4 +1,4 @@
-import { DbTableName, UserToRoomKey } from '~/common/enums/enums';
+import { TableName, UserToRoomKey } from '~/common/enums/enums';
 import { IUserToRoomRecord } from '~/common/interfaces/interfaces';
 
 import { Base } from '../base/base.model';
@@ -9,7 +9,7 @@ class RoomToUser extends Base implements IUserToRoomRecord {
   public [UserToRoomKey.USER_ID]!: IUserToRoomRecord[UserToRoomKey.USER_ID];
 
   public static override get tableName(): string {
-    return DbTableName.USERS_TO_ROOMS;
+    return TableName.USERS_TO_ROOMS;
   }
 }
 

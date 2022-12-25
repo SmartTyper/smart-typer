@@ -1,4 +1,4 @@
-import { DbTableName, UserToSkillKey } from '~/common/enums/enums';
+import { TableName, UserToSkillKey } from '~/common/enums/enums';
 import { IUserToSkillRecord } from '~/common/interfaces/interfaces';
 
 import { Base } from '../base/base.model';
@@ -11,7 +11,7 @@ class UserToSkill extends Base implements IUserToSkillRecord {
   public [UserToSkillKey.LEVEL]!: IUserToSkillRecord[UserToSkillKey.LEVEL];
 
   public static override get tableName(): string {
-    return DbTableName.USERS_TO_SKILLS;
+    return TableName.USERS_TO_SKILLS;
   }
 }
 

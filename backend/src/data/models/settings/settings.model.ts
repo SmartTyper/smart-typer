@@ -1,4 +1,4 @@
-import { DbTableName, SettingsKey } from '~/common/enums/enums';
+import { TableName, SettingsKey } from '~/common/enums/enums';
 import { ISettingsRecord } from '~/common/interfaces/interfaces';
 
 import { Base } from '../base/base.model';
@@ -19,7 +19,7 @@ class Settings extends Base implements ISettingsRecord {
   public [SettingsKey.HAS_LESSON_VOICE]!: ISettingsRecord[SettingsKey.HAS_LESSON_VOICE];
 
   public static override get tableName(): string {
-    return DbTableName.SETTINGS;
+    return TableName.SETTINGS;
   }
 }
 

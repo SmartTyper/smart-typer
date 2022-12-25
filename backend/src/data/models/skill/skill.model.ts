@@ -2,7 +2,7 @@ import { Model, RelationMappings } from 'objection';
 
 import {
   CommonKey,
-  DbTableName,
+  TableName,
   LessonToSkillKey,
   SkillKey,
 } from '~/common/enums/enums';
@@ -20,19 +20,19 @@ class Skill extends Base implements ISkillRecord {
         relation: Model.ManyToManyRelation,
         modelClass: Lesson,
         join: {
-          from: `${DbTableName.SKILLS}.${CommonKey.ID}`,
+          from: `${TableName.SKILLS}.${CommonKey.ID}`,
           through: {
-            from: `${DbTableName.LESSONS_TO_SKILLS}.${LessonToSkillKey.SKILL_ID}`,
-            to: `${DbTableName.LESSONS_TO_SKILLS}.${LessonToSkillKey.LESSON_ID}`,
+            from: `${TableName.LESSONS_TO_SKILLS}.${LessonToSkillKey.SKILL_ID}`,
+            to: `${TableName.LESSONS_TO_SKILLS}.${LessonToSkillKey.LESSON_ID}`,
           },
-          to: `${DbTableName.LESSONS}.${CommonKey.ID}`,
+          to: `${TableName.LESSONS}.${CommonKey.ID}`,
         },
       },
     };
   }
 
   public static override get tableName(): string {
-    return DbTableName.SKILLS;
+    return TableName.SKILLS;
   }
 }
 

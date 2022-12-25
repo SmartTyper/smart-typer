@@ -1,7 +1,7 @@
 import { Model, RelationMappings } from 'objection';
 
 import {
-  DbTableName,
+  TableName,
   UserKey,
   CommonKey,
   RefreshTokenKey,
@@ -38,79 +38,79 @@ class User extends Base implements IUserRecord {
         relation: Model.HasOneRelation,
         modelClass: RefreshToken,
         join: {
-          from: `${DbTableName.USERS}.${CommonKey.ID}`,
-          to: `${DbTableName.REFRESH_TOKENS}.${RefreshTokenKey.USER_ID}`,
+          from: `${TableName.USERS}.${CommonKey.ID}`,
+          to: `${TableName.REFRESH_TOKENS}.${RefreshTokenKey.USER_ID}`,
         },
       },
       settings: {
         relation: Model.HasOneRelation,
         modelClass: Settings,
         join: {
-          from: `${DbTableName.USERS}.${CommonKey.ID}`,
-          to: `${DbTableName.SETTINGS}.${SettingsKey.USER_ID}`,
+          from: `${TableName.USERS}.${CommonKey.ID}`,
+          to: `${TableName.SETTINGS}.${SettingsKey.USER_ID}`,
         },
       },
       statistics: {
         relation: Model.HasOneRelation,
         modelClass: Statistics,
         join: {
-          from: `${DbTableName.USERS}.${CommonKey.ID}`,
-          to: `${DbTableName.STATISTICS}.${StatisticsKey.USER_ID}`,
+          from: `${TableName.USERS}.${CommonKey.ID}`,
+          to: `${TableName.STATISTICS}.${StatisticsKey.USER_ID}`,
         },
       },
       userToStudyPlanLessons: {
         relation: Model.ManyToManyRelation,
         modelClass: UserToStudyPlanLesson,
         join: {
-          from: `${DbTableName.USERS}.${CommonKey.ID}`,
+          from: `${TableName.USERS}.${CommonKey.ID}`,
           through: {
-            from: `${DbTableName.USERS_TO_STUDY_PLAN_LESSONS}.${UserToStudyPlanLessonKey.USER_ID}`,
-            to: `${DbTableName.USERS_TO_STUDY_PLAN_LESSONS}.${UserToStudyPlanLessonKey.LESSON_ID}`,
+            from: `${TableName.USERS_TO_STUDY_PLAN_LESSONS}.${UserToStudyPlanLessonKey.USER_ID}`,
+            to: `${TableName.USERS_TO_STUDY_PLAN_LESSONS}.${UserToStudyPlanLessonKey.LESSON_ID}`,
           },
-          to: `${DbTableName.LESSONS}.${CommonKey.ID}`,
+          to: `${TableName.LESSONS}.${CommonKey.ID}`,
         },
       },
       userToFinishedLessons: {
         relation: Model.ManyToManyRelation,
         modelClass: UserToFinishedLesson,
         join: {
-          from: `${DbTableName.USERS}.${CommonKey.ID}`,
+          from: `${TableName.USERS}.${CommonKey.ID}`,
           through: {
-            from: `${DbTableName.USERS_TO_FINISHED_LESSONS}.${UserToFinishedLessonKey.USER_ID}`,
-            to: `${DbTableName.USERS_TO_FINISHED_LESSONS}.${UserToFinishedLessonKey.LESSON_ID}`,
+            from: `${TableName.USERS_TO_FINISHED_LESSONS}.${UserToFinishedLessonKey.USER_ID}`,
+            to: `${TableName.USERS_TO_FINISHED_LESSONS}.${UserToFinishedLessonKey.LESSON_ID}`,
           },
-          to: `${DbTableName.LESSONS}.${CommonKey.ID}`,
+          to: `${TableName.LESSONS}.${CommonKey.ID}`,
         },
       },
       room: {
         relation: Model.BelongsToOneRelation,
         modelClass: Room,
         join: {
-          from: `${DbTableName.USERS}.${CommonKey.ID}`,
+          from: `${TableName.USERS}.${CommonKey.ID}`,
           through: {
-            from: `${DbTableName.USERS_TO_ROOMS}.${UserToRoomKey.USER_ID}`,
-            to: `${DbTableName.USERS_TO_ROOMS}.${UserToRoomKey.ROOM_ID}`,
+            from: `${TableName.USERS_TO_ROOMS}.${UserToRoomKey.USER_ID}`,
+            to: `${TableName.USERS_TO_ROOMS}.${UserToRoomKey.ROOM_ID}`,
           },
-          to: `${DbTableName.ROOMS}.${CommonKey.ID}`,
+          to: `${TableName.ROOMS}.${CommonKey.ID}`,
         },
       },
       skills: {
         relation: Model.ManyToManyRelation,
         modelClass: Skill,
         join: {
-          from: `${DbTableName.USERS}.${CommonKey.ID}`,
+          from: `${TableName.USERS}.${CommonKey.ID}`,
           through: {
-            from: `${DbTableName.USERS_TO_SKILLS}.${UserToSkillKey.USER_ID}`,
-            to: `${DbTableName.USERS_TO_SKILLS}.${UserToSkillKey.SKILL_ID}`,
+            from: `${TableName.USERS_TO_SKILLS}.${UserToSkillKey.USER_ID}`,
+            to: `${TableName.USERS_TO_SKILLS}.${UserToSkillKey.SKILL_ID}`,
           },
-          to: `${DbTableName.SKILLS}.${CommonKey.ID}`,
+          to: `${TableName.SKILLS}.${CommonKey.ID}`,
         },
       },
     };
   }
 
   public static override get tableName(): string {
-    return DbTableName.USERS;
+    return TableName.USERS;
   }
 }
 
