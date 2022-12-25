@@ -1,7 +1,7 @@
 import { StatisticsKey } from '~/common/enums/enums';
+import { ICommonRecord } from '~/common/interfaces/records/common-record.interface';
 
-interface IStatisticsRecord {
-  [StatisticsKey.ID]: number;
+interface IStatisticsRecord extends ICommonRecord {
   [StatisticsKey.USER_ID]: number;
   [StatisticsKey.TOTAL_TIME]: number;
   [StatisticsKey.TODAY_TIME]: number;
@@ -11,8 +11,6 @@ interface IStatisticsRecord {
   [StatisticsKey.TODAY_TOP_SPEED]: number;
   [StatisticsKey.AVERAGE_SPEED]: number;
   [StatisticsKey.TODAY_AVERAGE_SPEED]: number;
-  [StatisticsKey.CREATED_AT]: string;
-  [StatisticsKey.UPDATED_AT]: string;
 }
 
 export type { IStatisticsRecord };

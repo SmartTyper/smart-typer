@@ -1,11 +1,9 @@
 import { RefreshTokenKey } from '~/common/enums/enums';
+import { ICommonRecord } from '~/common/interfaces/records/common-record.interface';
 
-interface IRefreshTokenRecord {
-  [RefreshTokenKey.ID]: number;
+interface IRefreshTokenRecord extends ICommonRecord {
   [RefreshTokenKey.USER_ID]: number;
   [RefreshTokenKey.TOKEN]: string;
-  [RefreshTokenKey.CREATED_AT]: string;
-  [RefreshTokenKey.UPDATED_AT]: string;
 }
 
 export type { IRefreshTokenRecord };

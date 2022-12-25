@@ -1,0 +1,16 @@
+import { DbTableName, LessonToSkillKey } from '~/common/enums/enums';
+import { ILessonToSkillRecord } from '~/common/interfaces/interfaces';
+
+import { Base } from '../base/base.model';
+
+class LessonToSkill extends Base implements ILessonToSkillRecord {
+  public [LessonToSkillKey.SKILL_ID]!: ILessonToSkillRecord[LessonToSkillKey.SKILL_ID];
+
+  public [LessonToSkillKey.LESSON_ID]!: ILessonToSkillRecord[LessonToSkillKey.LESSON_ID];
+
+  public static override get tableName(): string {
+    return DbTableName.LESSONS_TO_SKILLS;
+  }
+}
+
+export { LessonToSkill };

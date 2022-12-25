@@ -1,10 +1,8 @@
 import { SkillKey } from '~/common/enums/enums';
+import { ICommonRecord } from '~/common/interfaces/records/common-record.interface';
 
-interface ISkillRecord {
-  [SkillKey.ID]: number;
+interface ISkillRecord extends ICommonRecord {
   [SkillKey.NAME]: string;
-  [SkillKey.CREATED_AT]: string;
-  [SkillKey.UPDATED_AT]: string;
 }
 
 export type { ISkillRecord };

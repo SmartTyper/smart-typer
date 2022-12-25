@@ -1,12 +1,10 @@
 import { RoomKey } from '~/common/enums/enums';
+import { ICommonRecord } from '~/common/interfaces/records/common-record.interface';
 
-interface IRoomRecord {
-  [RoomKey.ID]: number;
+interface IRoomRecord extends ICommonRecord {
   [RoomKey.LESSON_ID]: number;
   [RoomKey.NAME]: string;
   [RoomKey.IS_PRIVATE]: boolean;
-  [RoomKey.CREATED_AT]: string;
-  [RoomKey.UPDATED_AT]: string;
 }
 
 export type { IRoomRecord };

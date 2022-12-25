@@ -1,1 +1,1 @@
-export { CommonDbKey } from './common-db-key.enum';
+export * from './db-table-name.enum';

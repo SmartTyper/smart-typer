@@ -1,11 +1,9 @@
 import { LessonToSkillKey } from '~/common/enums/enums';
+import { ICommonRecord } from '~/common/interfaces/records/common-record.interface';
 
-interface ILessonToSkillRecord {
-  [LessonToSkillKey.ID]: number;
+interface ILessonToSkillRecord extends ICommonRecord {
   [LessonToSkillKey.SKILL_ID]: number;
   [LessonToSkillKey.LESSON_ID]: number;
-  [LessonToSkillKey.CREATED_AT]: string;
-  [LessonToSkillKey.UPDATED_AT]: string;
 }
 
 export type { ILessonToSkillRecord };

@@ -1,12 +1,10 @@
 import { UserToSkillKey } from '~/common/enums/enums';
+import { ICommonRecord } from '~/common/interfaces/records/common-record.interface';
 
-interface IUserToSkillRecord {
-  [UserToSkillKey.ID]: number;
+interface IUserToSkillRecord extends ICommonRecord {
   [UserToSkillKey.SKILL_ID]: number;
   [UserToSkillKey.USER_ID]: number;
   [UserToSkillKey.LEVEL]: number;
-  [UserToSkillKey.CREATED_AT]: string;
-  [UserToSkillKey.UPDATED_AT]: string;
 }
 
 export type { IUserToSkillRecord };

@@ -1,7 +1,7 @@
 import { SettingsKey } from '~/common/enums/enums';
+import { ICommonRecord } from '~/common/interfaces/records/common-record.interface';
 
-interface ISettingsRecord {
-  [SettingsKey.ID]: number;
+interface ISettingsRecord extends ICommonRecord {
   [SettingsKey.USER_ID]: number;
   [SettingsKey.COUNTDOWN_BEFORE_GAME]: number;
   [SettingsKey.GAME_TIME]: number;
@@ -9,8 +9,6 @@ interface ISettingsRecord {
   [SettingsKey.HAS_GAME_VOICE]: boolean;
   [SettingsKey.HAS_EMAIL_NOTIFICATIONS]: boolean;
   [SettingsKey.HAS_LESSON_VOICE]: boolean;
-  [SettingsKey.CREATED_AT]: string;
-  [SettingsKey.UPDATED_AT]: string;
 }
 
 export type { ISettingsRecord };

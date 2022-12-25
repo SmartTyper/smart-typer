@@ -1,13 +1,11 @@
 import { UserKey } from '~/common/enums/enums';
+import { ICommonRecord } from '~/common/interfaces/records/common-record.interface';
 
-interface IUserRecord {
-  [UserKey.ID]: number;
+interface IUserRecord extends ICommonRecord {
   [UserKey.NICK_NAME]: string;
   [UserKey.EMAIL]: string;
   [UserKey.PASSWORD]: string;
   [UserKey.PHOTO_URL]: string | null;
-  [UserKey.CREATED_AT]: string;
-  [UserKey.UPDATED_AT]: string;
 }
 
 export type { IUserRecord };
