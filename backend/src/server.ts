@@ -5,7 +5,7 @@ import * as path from 'node:path';
 import { Model } from 'objection';
 
 import { initApi } from '~/api/api';
-import { AppEnvironment, ENV } from '~/common/enums/enums';
+import { Environment, ENV } from '~/common/enums/enums';
 import knexConfig from '../knexfile';
 
 const app = Fastify({
@@ -16,7 +16,7 @@ const app = Fastify({
   },
 });
 
-Model.knex(Knex(knexConfig[ENV.APP.NODE_ENV as AppEnvironment]));
+Model.knex(Knex(knexConfig[ENV.APP.NODE_ENV as Environment]));
 
 app.register(initApi, {
   prefix: ENV.APP.API_PREFIX,
