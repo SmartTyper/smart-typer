@@ -1,5 +1,5 @@
 import { LessonKey } from '~/common/enums/enums';
-import { ICommonRecord } from '~/common/interfaces/records/common-record.interface';
+import { ICommonRecord } from '~/common/interfaces/records/common-records/common-record.interface';
 
 interface ILessonRecord extends ICommonRecord {
   [LessonKey.NAME]: string;
