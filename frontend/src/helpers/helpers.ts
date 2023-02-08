@@ -1,1 +1,1 @@
-export { clsx } from './dom/dom';
+export { clsx } from './ui/ui';
