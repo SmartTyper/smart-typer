@@ -1,7 +1,7 @@
 import { FC } from 'common/types/types';
 
-const Home: FC = () => {
+const Lessons: FC = () => {
   return <div></div>;
 };
 
-export { Home };
+export { Lessons };

@@ -11,4 +11,4 @@ const Link: React.FC<Props> = ({ children, to }) => (
   <AppLink to={to}>{children}</AppLink>
 );
 
-export default Link;
+export { Link };
