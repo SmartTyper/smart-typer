@@ -7,8 +7,8 @@
     "npm": ">=8 <9"
   },
   "scripts": {
-    "lint:js": "npx eslint \"src/**/*.ts\"",
-    "lint": "npm run lint:js",
+    "lint:ts": "npx eslint \"src/**/*.ts\"",
+    "lint": "npm run lint:ts",
     "build:ts": "tsc && tscpaths -p tsconfig.json --src src --out build",
     "build": "npm run build:ts && cp package.json package-lock.json build"
   },

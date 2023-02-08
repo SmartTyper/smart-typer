@@ -3,11 +3,18 @@
   "include": ["src"],
   "exclude": ["node_modules"],
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "src",
     "paths": {
-      "~/*": ["./src/*"]
+      "api/*": ["api/*"],
+      "common/*": ["common/*"],
+      "data/*": ["data/*"],
+      "exceptions/*": ["exceptions/*"],
+      "services/*": ["services/*"],
+      "validation-schemas/*": ["validation-schemas/*"]
     },
     "outDir": "build",
-    "module": "commonjs"
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "pretty": true
   }
 }

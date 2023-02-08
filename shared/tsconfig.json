@@ -3,12 +3,14 @@
   "include": ["src"],
   "exclude": ["node_modules"],
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "src",
     "paths": {
-      "~/*": ["src/*"]
+      "common/*": ["common/*"],
+      "exceptions/*": ["exceptions/*"],
+      "helpers/*": ["helpers/*"]
     },
     "outDir": "build",
-    "declaration": true,
-    "module": "commonjs"
+    "module": "CommonJS",
+    "declaration": true
   }
 }

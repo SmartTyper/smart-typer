@@ -4,8 +4,8 @@ import Knex from 'knex';
 import * as path from 'node:path';
 import { Model } from 'objection';
 
-import { initApi } from '~/api/api';
-import { Environment, ENV } from '~/common/enums/enums';
+import { initApi } from 'api/api';
+import { Environment, ENV } from 'common/enums/enums';
 import knexConfig from '../knexfile';
 
 const app = Fastify({
