@@ -5,8 +5,8 @@ import {
   TableName,
   LessonToSkillKey,
   SkillKey,
-} from '~/common/enums/enums';
-import { ISkillRecord } from '~/common/interfaces/interfaces';
+} from 'common/enums/enums';
+import { ISkillRecord } from 'common/interfaces/interfaces';
 
 import { Base } from '../base/base.model';
 import { Lesson } from '../lesson/lesson.model';

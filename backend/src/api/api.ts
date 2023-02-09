@@ -1,7 +1,7 @@
 import { FastifyPluginAsync } from 'fastify';
 
-import { ValidationSchema } from '~/common/types/types';
-import { auth } from '~/services/services';
+import { ValidationSchema } from 'common/types/types';
+import { auth } from 'services/services';
 
 import { initAuthApi } from './auth/auth.api';
 

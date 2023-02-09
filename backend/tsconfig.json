@@ -4,16 +4,8 @@
   "exclude": ["node_modules"],
   "compilerOptions": {
     "baseUrl": "src",
-    "paths": {
-      "api/*": ["api/*"],
-      "common/*": ["common/*"],
-      "data/*": ["data/*"],
-      "exceptions/*": ["exceptions/*"],
-      "services/*": ["services/*"],
-      "validation-schemas/*": ["validation-schemas/*"]
-    },
     "outDir": "build",
-    "module": "ESNext",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "pretty": true
   }

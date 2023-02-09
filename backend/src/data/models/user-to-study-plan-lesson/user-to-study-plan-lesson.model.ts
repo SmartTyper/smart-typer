@@ -1,5 +1,5 @@
-import { TableName, UserToStudyPlanLessonKey } from '~/common/enums/enums';
-import { IUserToStudyPlanLessonRecord } from '~/common/interfaces/interfaces';
+import { TableName, UserToStudyPlanLessonKey } from 'common/enums/enums';
+import { IUserToStudyPlanLessonRecord } from 'common/interfaces/interfaces';
 
 import { Base } from '../base/base.model';
 

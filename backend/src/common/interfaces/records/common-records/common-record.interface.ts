@@ -1,4 +1,4 @@
-import { CommonKey } from '~/common/enums/enums';
+import { CommonKey } from 'common/enums/enums';
 
 interface ICommonRecord {
   [CommonKey.ID]: number;

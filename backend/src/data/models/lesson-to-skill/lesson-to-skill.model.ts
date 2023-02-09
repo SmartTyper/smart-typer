@@ -1,5 +1,5 @@
-import { TableName, LessonToSkillKey } from '~/common/enums/enums';
-import { ILessonToSkillRecord } from '~/common/interfaces/interfaces';
+import { TableName, LessonToSkillKey } from 'common/enums/enums';
+import { ILessonToSkillRecord } from 'common/interfaces/interfaces';
 
 import { Base } from '../base/base.model';
 

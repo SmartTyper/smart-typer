@@ -1,5 +1,5 @@
-import { TableName, UserToRoomKey } from '~/common/enums/enums';
-import { IUserToRoomRecord } from '~/common/interfaces/interfaces';
+import { TableName, UserToRoomKey } from 'common/enums/enums';
+import { IUserToRoomRecord } from 'common/interfaces/interfaces';
 
 import { Base } from '../base/base.model';
 
