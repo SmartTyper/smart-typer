@@ -3,12 +3,10 @@
   "include": ["src"],
   "exclude": ["node_modules"],
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "~/*": ["src/*"]
-    },
+    "baseUrl": "src",
     "outDir": "build",
-    "declaration": true,
-    "module": "commonjs"
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "declaration": true
   }
 }

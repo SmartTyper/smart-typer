@@ -1,12 +1,15 @@
-extends:
-  - ../.eslintrc.yml
-
 env:
   node: true
 
+extends:
+  - ../.eslintrc.yml
+
+parserOptions:
+  project: ./tsconfig.json
+
 overrides:
   - files:
-    - knexfile.ts
+      - knexfile.ts
     rules:
       'import/no-default-export':
         - off

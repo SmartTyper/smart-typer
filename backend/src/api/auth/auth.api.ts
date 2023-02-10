@@ -1,5 +1,5 @@
 import { FastifyPluginAsync } from 'fastify';
-import { auth } from '~/services/services';
+import { auth } from 'services/services';
 
 type Options = {
   services: {

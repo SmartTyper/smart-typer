@@ -5,8 +5,8 @@ import {
   TableName,
   RoomKey,
   UserToRoomKey,
-} from '~/common/enums/enums';
-import { IRoomRecord } from '~/common/interfaces/interfaces';
+} from 'common/enums/enums';
+import { IRoomRecord } from 'common/interfaces/interfaces';
 
 import { Base } from '../base/base.model';
 import { Lesson } from '../lesson/lesson.model';

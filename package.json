@@ -9,14 +9,13 @@
     "move:deploy": "mv backend/build . && mv backend/node_modules build && mv frontend/build/* build/public",
     "lint:editorconfig": "editorconfig-checker",
     "lint:fs": "ls-lint",
-    "lint:shared:js": "cd shared && npm run lint:js",
+    "lint:shared:ts": "cd shared && npm run lint:ts",
     "lint:shared": "cd shared && npm run lint",
     "lint:backend": "cd backend && npm run lint",
+    "lint:backend:ts": "cd backend && npm run lint:ts",
     "lint:frontend:css": "cd frontend && npm run lint:css",
-    "lint:frontend:js": "cd frontend && npm run lint:js",
+    "lint:frontend:ts": "cd frontend && npm run lint:ts",
     "lint:frontend": "cd frontend && npm run lint",
-    "lint:js": "npm run lint:shared:js && npm run lint:backend && npm run lint:frontend:js",
-    "lint:css": "npm run lint:frontend:css",
     "lint": "npm run lint:editorconfig && npm run lint:fs && npm run lint:shared && npm run lint:backend && npm run lint:frontend",
     "install:shared": "cd shared && npm install --production=false",
     "install:frontend": "cd frontend && npm install --production=false",
@@ -29,8 +28,7 @@
     "start:frontend": "cd frontend && npm run start",
     "start:backend": "cd backend && npm run start:dev",
     "start:dev": "concurrently -k -p \"{name}\" -n \"FRONTEND,BACKEND\" -c \"green,blue\" \"npm:start:frontend\" \"npm:start:backend\"",
-    "start": "cd build && npm run start",
-    "prepare": "husky install"
+    "start": "cd build && npm run start"
   },
   "devDependencies": {
     "@ls-lint/ls-lint": "1.9.2",
@@ -39,18 +37,14 @@
     "concurrently": "6.2.0",
     "editorconfig-checker": "4.0.2",
     "eslint": "7.30.0",
-    "husky": "7.0.1",
     "lint-staged": "11.1.0",
+    "prettier": "2.8.4",
+    "simple-git-hooks": "2.8.1",
     "stylelint": "13.13.1",
     "stylelint-config-recommended": "5.0.0",
     "typescript": "4.3.5"
   },
-  "dependencies": {},
-  "lint-staged": {
-    "*": "npm run lint:editorconfig && npm run lint:fs",
-    "backend/**/*.{ts,tsx}": "npm run lint:backend",
-    "frontend/**/*.{ts,tsx}": "npm run lint:frontend:js",
-    "frontend/**/*.scss": "npm run lint:css",
-    "shared/**/*.{ts,tsx}": "npm run lint:shared"
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
   }
 }

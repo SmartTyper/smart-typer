@@ -1,6 +1,6 @@
 import { Model } from 'objection';
-import { CommonKey } from '~/common/enums/enums';
-import { ICommonRecord } from '~/common/interfaces/interfaces';
+import { CommonKey } from 'common/enums/enums';
+import { ICommonRecord } from 'common/interfaces/interfaces';
 
 class Base extends Model {
   public [CommonKey.ID]!: ICommonRecord[CommonKey.ID];

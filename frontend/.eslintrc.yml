@@ -5,20 +5,17 @@ extends:
   - ../.eslintrc.yml
   - plugin:react/recommended
 
-plugins:
-  - react
+parserOptions:
+  project: ./tsconfig.json
 
 settings:
   react:
     version: '17'
 
 rules:
-  '@typescript-eslint/explicit-module-boundary-types':
-    - off
-  jsx-quotes:
-    - error
-    - prefer-double
   react/prop-types:
     - off
   react/react-in-jsx-scope:
+    - off
+  react/require-default-props:
     - off

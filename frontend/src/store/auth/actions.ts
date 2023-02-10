@@ -4,7 +4,7 @@ import { ActionType } from './common';
 
 const login = createAsyncThunk(
   ActionType.SetUser,
-  async (loginPayload: string, { dispatch }) => {
+  async (_loginPayload: string, { dispatch }) => {
     dispatch(actions.setUser(null));
   },
 );
