@@ -4,13 +4,9 @@
   "exclude": ["node_modules"],
   "compilerOptions": {
     "baseUrl": "src",
-    "paths": {
-      "common/*": ["common/*"],
-      "exceptions/*": ["exceptions/*"],
-      "helpers/*": ["helpers/*"]
-    },
     "outDir": "build",
     "module": "CommonJS",
+    "moduleResolution": "node",
     "declaration": true
   }
 }
