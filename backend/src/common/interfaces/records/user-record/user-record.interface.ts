@@ -1,5 +1,5 @@
-import { UserKey } from '~/common/enums/enums';
-import { ICommonRecord } from '~/common/interfaces/records/common-records/common-record.interface';
+import { UserKey } from 'common/enums/enums';
+import { ICommonRecord } from 'common/interfaces/records/common-records/common-record.interface';
 
 interface IUserRecord extends ICommonRecord {
   [UserKey.NICK_NAME]: string;

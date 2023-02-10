@@ -1,5 +1,5 @@
-import { TableName, StatisticsKey } from '~/common/enums/enums';
-import { IStatisticsRecord } from '~/common/interfaces/interfaces';
+import { TableName, StatisticsKey } from 'common/enums/enums';
+import { IStatisticsRecord } from 'common/interfaces/interfaces';
 
 import { Base } from '../base/base.model';
 

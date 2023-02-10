@@ -1,5 +1,5 @@
-import { UserToFinishedLessonKey, TableName } from '~/common/enums/enums';
-import { IUserToFinishedLessonRecord } from '~/common/interfaces/interfaces';
+import { UserToFinishedLessonKey, TableName } from 'common/enums/enums';
+import { IUserToFinishedLessonRecord } from 'common/interfaces/interfaces';
 
 import { Base } from '../base/base.model';
 

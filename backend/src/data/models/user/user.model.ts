@@ -11,8 +11,8 @@ import {
   UserToFinishedLessonKey,
   UserToRoomKey,
   UserToSkillKey,
-} from '~/common/enums/enums';
-import { IUserRecord } from '~/common/interfaces/interfaces';
+} from 'common/enums/enums';
+import { IUserRecord } from 'common/interfaces/interfaces';
 
 import { Base } from '../base/base.model';
 import { RefreshToken } from '../refresh-token/refresh-token.model';

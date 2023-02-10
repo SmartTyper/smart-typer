@@ -1,5 +1,5 @@
-import { TableName, SettingsKey } from '~/common/enums/enums';
-import { ISettingsRecord } from '~/common/interfaces/interfaces';
+import { TableName, SettingsKey } from 'common/enums/enums';
+import { ISettingsRecord } from 'common/interfaces/interfaces';
 
 import { Base } from '../base/base.model';
 

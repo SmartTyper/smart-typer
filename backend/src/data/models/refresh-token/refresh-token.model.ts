@@ -1,5 +1,5 @@
-import { TableName, RefreshTokenKey } from '~/common/enums/enums';
-import { IRefreshTokenRecord } from '~/common/interfaces/interfaces';
+import { TableName, RefreshTokenKey } from 'common/enums/enums';
+import { IRefreshTokenRecord } from 'common/interfaces/interfaces';
 
 import { Base } from '../base/base.model';
 
