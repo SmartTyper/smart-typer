@@ -8,6 +8,8 @@ class LessonToSkill extends Base implements ILessonToSkillRecord {
 
   public [LessonToSkillKey.LESSON_ID]!: ILessonToSkillRecord[LessonToSkillKey.LESSON_ID];
 
+  public [LessonToSkillKey.COUNT]!: ILessonToSkillRecord[LessonToSkillKey.COUNT];
+
   public static override get tableName(): string {
     return TableName.LESSONS_TO_SKILLS;
   }
