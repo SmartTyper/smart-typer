@@ -9,6 +9,8 @@ import { StudyPlan } from 'components/study-plan/study-plan';
 import { Racing } from 'components/racing/racing';
 import { SignIn } from 'components/sign-in/sign-in';
 import { SignUp } from 'components/sign-up/sign-up';
+import { Settings } from 'components/settings/settings';
+import { Profile } from 'components/profile/profile';
 
 const App: FC = () => {
   return (
@@ -50,6 +52,22 @@ const App: FC = () => {
         element={
           <WithHeader>
             <Racing />
+          </WithHeader>
+        }
+      />
+      <Route
+        path={AppRoute.PROFILE}
+        element={
+          <WithHeader>
+            <Profile />
+          </WithHeader>
+        }
+      />
+      <Route
+        path={AppRoute.SETTINGS}
+        element={
+          <WithHeader>
+            <Settings />
           </WithHeader>
         }
       />

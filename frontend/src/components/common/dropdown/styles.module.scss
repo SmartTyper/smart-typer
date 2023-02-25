@@ -1,0 +1,36 @@
+@import 'src/assets/css/variables';
+
+.dropdown {
+  & > a.dropdownToggle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    color: $white;
+
+    &[aria-expanded='true']::after {
+      color: $dark-blue;
+    }
+  }
+
+  div.dropdownMenu {
+    font-size: 1.5rem;
+    width: 100%;
+    margin-top: 1rem;
+
+    .dropdownItem {
+      display: block;
+      padding: 0.5rem 1.5rem;
+      text-decoration: none;
+      font-weight: 600;
+      color: $dark-blue;
+
+      &:active {
+        background-color: $light-grey;
+      }
+    }
+
+    i::before {
+      font-size: 2rem;
+    }
+  }
+}

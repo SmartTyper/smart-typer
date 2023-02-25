@@ -8,7 +8,6 @@ enum AppRoute {
   RACING = '/racing',
   PROFILE = '/profile',
   SETTINGS = '/settings',
-  SIGN_OUT = '/sign_out',
 }
 
 export { AppRoute };
