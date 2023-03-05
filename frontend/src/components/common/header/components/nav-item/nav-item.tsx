@@ -1,5 +1,5 @@
-import { NavLink } from 'react-router-dom';
 import { FC } from 'common/types/types';
+import { RRDNavLink } from 'components/external/external';
 import { AppRoute } from 'common/enums/enums';
 import { clsx } from 'helpers/helpers';
 
@@ -13,7 +13,7 @@ type Props = {
 
 const NavItem: FC<Props> = ({ route, iconName, label }) => {
   return (
-    <NavLink to={route}>
+    <RRDNavLink to={route}>
       {({ isActive }): JSX.Element => (
         <div
           className={clsx(styles.contentContainer, isActive && styles.active)}
@@ -22,7 +22,7 @@ const NavItem: FC<Props> = ({ route, iconName, label }) => {
           <span className={styles.label}>{label}</span>
         </div>
       )}
-    </NavLink>
+    </RRDNavLink>
   );
 };
 

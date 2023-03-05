@@ -22,8 +22,10 @@ const IconLink: FC<Props> = ({
   ...props
 }) => (
   <Link className={className} to={to} {...props}>
-    {iconName && <i className={clsx(iconName, iconClassName)}></i>}
-    {label && <span className={labelClassName}>{label}</span>}
+    <>
+      {iconName && <i className={clsx(iconName, iconClassName)}></i>}
+      {label && <span className={labelClassName}>{label}</span>}
+    </>
   </Link>
 );
 

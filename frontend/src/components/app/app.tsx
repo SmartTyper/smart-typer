@@ -1,6 +1,6 @@
 import { AppRoute } from 'common/enums/enums';
 import { FC } from 'common/types/types';
-import { Route, Routes } from 'components/common/common';
+import { RRDRoute, RRDRoutes } from 'components/external/external';
 import { WithHeader } from 'components/common/hocs/hocs';
 import { Home } from 'components/home/home';
 import { Theory } from 'components/theory/theory';
@@ -14,8 +14,8 @@ import { Profile } from 'components/profile/profile';
 
 const App: FC = () => {
   return (
-    <Routes>
-      <Route
+    <RRDRoutes>
+      <RRDRoute
         path={AppRoute.ROOT}
         element={
           <WithHeader>
@@ -23,7 +23,7 @@ const App: FC = () => {
           </WithHeader>
         }
       />
-      <Route
+      <RRDRoute
         path={AppRoute.THEORY}
         element={
           <WithHeader>
@@ -31,7 +31,7 @@ const App: FC = () => {
           </WithHeader>
         }
       />
-      <Route
+      <RRDRoute
         path={AppRoute.LESSONS}
         element={
           <WithHeader>
@@ -39,7 +39,7 @@ const App: FC = () => {
           </WithHeader>
         }
       />
-      <Route
+      <RRDRoute
         path={AppRoute.STUDY_PLAN}
         element={
           <WithHeader>
@@ -47,7 +47,7 @@ const App: FC = () => {
           </WithHeader>
         }
       />
-      <Route
+      <RRDRoute
         path={AppRoute.RACING}
         element={
           <WithHeader>
@@ -55,7 +55,7 @@ const App: FC = () => {
           </WithHeader>
         }
       />
-      <Route
+      <RRDRoute
         path={AppRoute.PROFILE}
         element={
           <WithHeader>
@@ -63,7 +63,7 @@ const App: FC = () => {
           </WithHeader>
         }
       />
-      <Route
+      <RRDRoute
         path={AppRoute.SETTINGS}
         element={
           <WithHeader>
@@ -71,9 +71,9 @@ const App: FC = () => {
           </WithHeader>
         }
       />
-      <Route path={AppRoute.SIGN_IN} element={<SignIn />} />
-      <Route path={AppRoute.SIGN_UP} element={<SignUp />} />
-    </Routes>
+      <RRDRoute path={AppRoute.SIGN_IN} element={<SignIn />} />
+      <RRDRoute path={AppRoute.SIGN_UP} element={<SignUp />} />
+    </RRDRoutes>
   );
 };
 

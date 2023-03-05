@@ -1,21 +1,21 @@
 import { FC } from 'common/types/types';
-import { AvatarSize } from 'common/enums/enums';
-import { Avatar } from 'components/common/common';
+import { AvatarSize, UserLabelColor } from 'common/enums/enums';
 import { clsx } from 'helpers/helpers';
+import { Avatar } from 'components/common/avatar/avatar';
 
 import styles from './styles.module.scss';
 
 type Props = {
   username: string;
   avatarSize: AvatarSize;
-  textColor?: 'white' | 'black';
+  textColor?: UserLabelColor;
   avatarSrc?: string;
 };
 
 const UserLabel: FC<Props> = ({
   username,
   avatarSrc,
-  textColor = 'black',
+  textColor = UserLabelColor.BLACK,
   avatarSize,
 }) => (
   <div className={styles.avatarContainer}>
@@ -23,9 +23,8 @@ const UserLabel: FC<Props> = ({
       size={avatarSize}
       name={username}
       src={avatarSrc}
-      round={true}
+      round
       className={styles.avatar}
-      showTooltip={false}
     />
     <span className={clsx(styles.username, styles[textColor])}>{username}</span>
   </div>

@@ -1,7 +1,7 @@
-import { FC } from 'react';
-import { Spinner as BootstrapSpinner } from 'react-bootstrap';
+import { FC } from 'common/types/types';
+import { RBSpinner } from 'components/external/external';
 import { SpinnerSize } from 'common/enums/enums';
-import { sizeToRem } from './common/maps/maps';
+import { sizeToRem } from './maps/maps';
 
 import styles from './styles.module.scss';
 
@@ -14,7 +14,7 @@ const Spinner: FC<Props> = ({ size }) => {
 
   return (
     <div className={styles.spinner}>
-      <BootstrapSpinner
+      <RBSpinner
         animation="border"
         variant="secondary"
         role="status"

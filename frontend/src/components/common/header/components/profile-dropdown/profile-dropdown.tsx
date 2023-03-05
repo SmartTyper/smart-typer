@@ -1,6 +1,6 @@
 import { FC } from 'common/types/types';
 import { Dropdown } from 'components/common/dropdown/dropdown';
-import { AvatarSize } from 'common/enums/enums';
+import { AvatarSize, UserLabelColor } from 'common/enums/enums';
 import {
   IButton,
   ILink,
@@ -25,7 +25,7 @@ const ProfileDropdown: FC<Props> = ({
       <UserLabel
         username={userName}
         avatarSize={AvatarSize.SMALL}
-        textColor="white"
+        textColor={UserLabelColor.WHITE}
         avatarSrc={avatarSrc}
       />
     </Dropdown>

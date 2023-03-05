@@ -1,5 +1,5 @@
 import { FC } from 'common/types/types';
-import { Navbar } from 'react-bootstrap';
+import { RBNavbar } from 'components/external/external';
 import { AppRoute } from 'common/enums/enums';
 import { NavItem, ProfileDropdown } from './components/components';
 
@@ -30,7 +30,7 @@ const Header: FC = () => {
   return (
     <header className={styles.header}>
       <div className={styles.tabs}>
-        <Navbar>
+        <RBNavbar>
           <NavItem
             iconName="bi bi-book"
             label="Theory"
@@ -51,10 +51,10 @@ const Header: FC = () => {
             label="Racing"
             route={AppRoute.RACING}
           />
-        </Navbar>
+        </RBNavbar>
       </div>
       <div className={styles.profileMenu}>
-        <Navbar>
+        <RBNavbar>
           <ProfileDropdown
             links={profileDropdownLinks}
             buttons={profileDropdownButtons}
@@ -62,7 +62,7 @@ const Header: FC = () => {
             avatarSrc=""
           />
           <NavItem iconName="bi bi-house-fill" label="" route={AppRoute.ROOT} />
-        </Navbar>
+        </RBNavbar>
       </div>
     </header>
   );

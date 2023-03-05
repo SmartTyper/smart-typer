@@ -1,7 +1,7 @@
-import ReactAvatar from 'react-avatar';
 import { FC } from 'common/types/types';
-import { sizeToPx } from './common/maps/maps';
+import { ReactAvatar } from 'components/external/external';
 import { AvatarSize } from 'common/enums/enums';
+import { sizeToPx } from './maps/maps';
 
 type Props = {
   size: AvatarSize;
@@ -9,11 +9,9 @@ type Props = {
   src?: string;
   round: boolean;
   className?: string;
-  style?: React.CSSProperties;
-  showTooltip?: boolean;
 };
 
-const Avatar: FC<Props> = ({ size, name, src, round, className, style }) => {
+const Avatar: FC<Props> = ({ size, name, src, round, className }) => {
   const sizeInPx = sizeToPx[size];
 
   return (
@@ -24,7 +22,6 @@ const Avatar: FC<Props> = ({ size, name, src, round, className, style }) => {
       src={src}
       round={round}
       className={className}
-      style={style}
     />
   );
 };
