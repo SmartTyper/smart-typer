@@ -1,0 +1,18 @@
+@import 'src/assets/css/variables';
+
+.button {
+  font-size: inherit;
+  font-weight: inherit;
+  border: none;
+  outline: none;
+  display: flex;
+  align-items: center;
+  font-style: inherit;
+  color: inherit;
+  background-color: inherit;
+
+  i {
+    font-size: inherit;
+    margin-right: 0.5rem;
+  }
+}

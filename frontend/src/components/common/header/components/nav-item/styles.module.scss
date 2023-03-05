@@ -1,0 +1,22 @@
+@import 'src/assets/css/variables';
+
+.contentContainer {
+  font-weight: bolder;
+  color: $white;
+  background-color: inherit;
+  border: none;
+  outline: none;
+  display: flex;
+  align-items: center;
+  margin: 0 1rem;
+  font-style: italic;
+
+  i {
+    font-size: 2.5rem;
+    margin-right: 0.5rem;
+  }
+
+  &.active {
+    color: $dark-blue;
+  }
+}

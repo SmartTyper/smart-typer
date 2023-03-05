@@ -1,1 +1,1 @@
-export { getAllowedClasses } from './dom/dom';
+export { clsx } from './ui/ui';

@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import { store } from 'store/store';
 import { BrowserRouter } from 'react-router-dom';
 
+import './assets/css/styles.scss';
+
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(

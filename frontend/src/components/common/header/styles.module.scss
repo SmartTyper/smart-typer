@@ -1,0 +1,31 @@
+@import 'src/assets/css/variables';
+
+.header {
+  height: 60px;
+  width: 100%;
+  background-color: $main-green;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-style: italic;
+  font-size: 2rem;
+
+  .tabs {
+    display: flex;
+    flex-direction: row;
+    margin-left: 1rem;
+  }
+
+  .profileMenu {
+    display: flex;
+    flex-direction: row;
+
+    i {
+      margin-right: 1rem;
+    }
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
