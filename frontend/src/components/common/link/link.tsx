@@ -9,8 +9,8 @@ type Props = {
   className?: string;
 };
 
-const Link: FC<Props> = ({ children, to, className }) => (
-  <AppLink to={to} className={className}>
+const Link: FC<Props> = ({ children, to, className, ...props }) => (
+  <AppLink to={to} className={className} {...props}>
     {children}
   </AppLink>
 );

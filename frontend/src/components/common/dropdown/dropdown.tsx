@@ -1,8 +1,8 @@
 import { Dropdown as ReactDropdown, NavItem, NavLink } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import { FC } from 'common/types/types';
 import { ILink, IButton } from './common/interfaces/interfaces';
 import { IconButton } from 'components/common/icon-button/icon-button';
+import { IconLink } from 'components/common/icon-link/icon-link';
 
 import styles from './styles.module.scss';
 
@@ -22,15 +22,12 @@ const Dropdown: FC<Props> = ({ children, links, buttons }) => {
           return (
             <ReactDropdown.Item
               to={link}
-              as={Link}
+              as={IconLink}
               key={label}
               className={styles.dropdownItem}
-            >
-              <div>
-                <i className={iconName}></i>
-                <span>{label}</span>
-              </div>
-            </ReactDropdown.Item>
+              iconName={iconName}
+              label={label}
+            />
           );
         })}
         <ReactDropdown.Divider />
