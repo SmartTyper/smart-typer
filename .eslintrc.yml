@@ -35,6 +35,11 @@ rules:
     - error
     - 2
     - SwitchCase: 1
+      ignoredNodes:
+        - PropertyDefinition[decorators]
+        - TSUnionType
+        - TSTypeParameterInstantiation
+        - TSIntersectionType
   '@typescript-eslint/semi':
     - error
     - always

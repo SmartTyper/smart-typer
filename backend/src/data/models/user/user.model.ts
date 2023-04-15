@@ -24,7 +24,7 @@ import { Room } from '../room/room.model';
 import { Skill } from '../skill/skill.model';
 
 class User extends Base implements IUserRecord {
-  public [UserKey.NICK_NAME]!: IUserRecord[UserKey.NICK_NAME];
+  public [UserKey.NICKNAME]!: IUserRecord[UserKey.NICKNAME];
 
   public [UserKey.EMAIL]!: IUserRecord[UserKey.EMAIL];
 

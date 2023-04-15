@@ -1,1 +1,2 @@
-export * from './records/records';
+export * from './record/record';
+export * from './user/user';
