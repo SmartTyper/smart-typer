@@ -27,7 +27,7 @@ class Room extends Base implements IRoomRecord {
         join: {
           from: `${TableName.ROOMS}.${CommonKey.ID}`,
           through: {
-            from: `${TableName.USERS_TO_ROOMS}.${UserToRoomKey.ROOM_ID}`,
+            from: `${TableName.USERS_TO_ROOMS}.${UserToRoomKey.CURRENT_ROOM_ID}`,
             to: `${TableName.USERS_TO_ROOMS}.${UserToRoomKey.USER_ID}`,
           },
           to: `${TableName.USERS}.${CommonKey.ID}`,

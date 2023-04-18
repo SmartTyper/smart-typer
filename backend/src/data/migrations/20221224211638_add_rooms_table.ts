@@ -3,11 +3,7 @@ import { Knex } from 'knex';
 async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable('rooms', (table) => {
     table.increments('id').primary();
-    table
-      .integer('lesson_id')
-      .references('id')
-      .inTable('lessons')
-      .notNullable();
+    table.integer('lesson_id').references('id').inTable('lessons');
     table.string('name').notNullable();
     table.boolean('is_private').notNullable();
     table.dateTime('created_at').notNullable().defaultTo(knex.fn.now());

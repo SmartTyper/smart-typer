@@ -82,14 +82,14 @@ class User extends Base implements IUserRecord {
           to: `${TableName.LESSONS}.${CommonKey.ID}`,
         },
       },
-      room: {
+      personalRoom: {
         relation: Model.BelongsToOneRelation,
         modelClass: Room,
         join: {
           from: `${TableName.USERS}.${CommonKey.ID}`,
           through: {
             from: `${TableName.USERS_TO_ROOMS}.${UserToRoomKey.USER_ID}`,
-            to: `${TableName.USERS_TO_ROOMS}.${UserToRoomKey.ROOM_ID}`,
+            to: `${TableName.USERS_TO_ROOMS}.${UserToRoomKey.PERSONAL_ROOM_ID}`,
           },
           to: `${TableName.ROOMS}.${CommonKey.ID}`,
         },
