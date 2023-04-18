@@ -9,7 +9,12 @@ async function up(knex: Knex): Promise<void> {
       .inTable('users')
       .unique()
       .notNullable();
-    table.integer('room_id').references('id').inTable('rooms').notNullable();
+    table.integer('current_room_id').references('id').inTable('rooms');
+    table
+      .integer('personal_room_id')
+      .references('id')
+      .inTable('rooms')
+      .notNullable();
     table.dateTime('created_at').notNullable().defaultTo(knex.fn.now());
     table.dateTime('updated_at').notNullable().defaultTo(knex.fn.now());
   });

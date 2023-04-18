@@ -1,6 +1,7 @@
 enum UserToRoomKey {
   USER_ID = 'userId',
-  ROOM_ID = 'roomId',
+  CURRENT_ROOM_ID = 'currentRoomId',
+  PERSONAL_ROOM_ID = 'personalRoomId',
 }
 
 export { UserToRoomKey };
