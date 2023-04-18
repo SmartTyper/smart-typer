@@ -4,7 +4,7 @@ import { ICommonRecord } from 'common/interfaces/record/common-record/common-rec
 interface IUserRecord extends ICommonRecord {
   [UserKey.NICKNAME]: string;
   [UserKey.EMAIL]: string;
-  [UserKey.PASSWORD]: string;
+  [UserKey.PASSWORD]: string | null;
   [UserKey.PHOTO_URL]: string | null;
 }
 
