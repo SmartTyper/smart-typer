@@ -1,7 +1,8 @@
 import { Knex } from 'knex';
 import { knexSnakeCaseMappers } from 'objection';
 
-import { Environment, ENV } from './src/common/enums/enums';
+import { Environment } from './src/common/enums/enums';
+import { ENV } from './src/common/constants/constants';
 
 type ConfigPropType = Record<string, unknown>;
 

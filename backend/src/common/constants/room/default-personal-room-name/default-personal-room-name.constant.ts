@@ -1,0 +1,3 @@
+const DEFAULT_PERSONAL_ROOM_NAME = 'Personal';
+
+export { DEFAULT_PERSONAL_ROOM_NAME };

@@ -11,6 +11,7 @@ import {
   UserToFinishedLessonKey,
   UserToRoomKey,
   UserToSkillKey,
+  UserRelationMappings,
 } from 'common/enums/enums';
 import { IUserRecord } from 'common/interfaces/interfaces';
 
@@ -34,7 +35,7 @@ class User extends Base implements IUserRecord {
 
   public static override get relationMappings(): RelationMappings {
     return {
-      refreshToken: {
+      [UserRelationMappings.REFRESH_TOKEN]: {
         relation: Model.HasOneRelation,
         modelClass: RefreshToken,
         join: {
@@ -42,7 +43,7 @@ class User extends Base implements IUserRecord {
           to: `${TableName.REFRESH_TOKENS}.${RefreshTokenKey.USER_ID}`,
         },
       },
-      settings: {
+      [UserRelationMappings.SETTINGS]: {
         relation: Model.HasOneRelation,
         modelClass: Settings,
         join: {
@@ -50,7 +51,7 @@ class User extends Base implements IUserRecord {
           to: `${TableName.SETTINGS}.${SettingsKey.USER_ID}`,
         },
       },
-      statistics: {
+      [UserRelationMappings.STATISTICS]: {
         relation: Model.HasOneRelation,
         modelClass: Statistics,
         join: {
@@ -58,7 +59,7 @@ class User extends Base implements IUserRecord {
           to: `${TableName.STATISTICS}.${StatisticsKey.USER_ID}`,
         },
       },
-      userToStudyPlanLessons: {
+      [UserRelationMappings.USER_TO_STUDY_PLAN_lESSONS]: {
         relation: Model.ManyToManyRelation,
         modelClass: UserToStudyPlanLesson,
         join: {
@@ -70,7 +71,7 @@ class User extends Base implements IUserRecord {
           to: `${TableName.LESSONS}.${CommonKey.ID}`,
         },
       },
-      userToFinishedLessons: {
+      [UserRelationMappings.USER_TO_FINISHED_LESSONS]: {
         relation: Model.ManyToManyRelation,
         modelClass: UserToFinishedLesson,
         join: {
@@ -82,7 +83,7 @@ class User extends Base implements IUserRecord {
           to: `${TableName.LESSONS}.${CommonKey.ID}`,
         },
       },
-      personalRoom: {
+      [UserRelationMappings.PERSONAL_ROOM]: {
         relation: Model.BelongsToOneRelation,
         modelClass: Room,
         join: {
@@ -94,7 +95,7 @@ class User extends Base implements IUserRecord {
           to: `${TableName.ROOMS}.${CommonKey.ID}`,
         },
       },
-      skills: {
+      [UserRelationMappings.SKILLS]: {
         relation: Model.ManyToManyRelation,
         modelClass: Skill,
         join: {

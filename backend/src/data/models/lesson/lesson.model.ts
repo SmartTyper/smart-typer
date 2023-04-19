@@ -5,6 +5,7 @@ import {
   TableName,
   LessonKey,
   LessonToSkillKey,
+  LessonRelationMappings,
 } from 'common/enums/enums';
 import { ILessonRecord } from 'common/interfaces/interfaces';
 
@@ -26,7 +27,7 @@ class Lesson extends Base implements ILessonRecord {
 
   public static override get relationMappings(): RelationMappings {
     return {
-      skills: {
+      [LessonRelationMappings.SKILLS]: {
         relation: Model.ManyToManyRelation,
         modelClass: Skill,
         join: {

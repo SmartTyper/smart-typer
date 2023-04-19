@@ -3,7 +3,7 @@ import { IUserToRoomRecord } from 'common/interfaces/interfaces';
 
 import { Base } from '../base/base.model';
 
-class RoomToUser extends Base implements IUserToRoomRecord {
+class UserToRoom extends Base implements IUserToRoomRecord {
   public [UserToRoomKey.PERSONAL_ROOM_ID]!: IUserToRoomRecord[UserToRoomKey.PERSONAL_ROOM_ID];
 
   public [UserToRoomKey.CURRENT_ROOM_ID]!: IUserToRoomRecord[UserToRoomKey.CURRENT_ROOM_ID];
@@ -15,4 +15,4 @@ class RoomToUser extends Base implements IUserToRoomRecord {
   }
 }
 
-export { RoomToUser };
+export { UserToRoom };

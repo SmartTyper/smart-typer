@@ -1,6 +1,6 @@
 import { IUser } from '../user/user.interface';
 
-interface IUserWithTokens extends IUser {
+interface IUserWithTokens extends Omit<IUser, 'password'> {
   accessToken: string;
   refreshToken: string;
 }

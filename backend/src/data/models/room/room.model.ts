@@ -5,6 +5,7 @@ import {
   TableName,
   RoomKey,
   UserToRoomKey,
+  RoomRelationMappings,
 } from 'common/enums/enums';
 import { IRoomRecord } from 'common/interfaces/interfaces';
 
@@ -21,7 +22,7 @@ class Room extends Base implements IRoomRecord {
 
   public static override get relationMappings(): RelationMappings {
     return {
-      users: {
+      [RoomRelationMappings.USERS]: {
         relation: Model.HasManyRelation,
         modelClass: User,
         join: {
@@ -33,7 +34,7 @@ class Room extends Base implements IRoomRecord {
           to: `${TableName.USERS}.${CommonKey.ID}`,
         },
       },
-      lesson: {
+      [RoomRelationMappings.LESSON]: {
         relation: Model.BelongsToOneRelation,
         modelClass: Lesson,
         join: {
