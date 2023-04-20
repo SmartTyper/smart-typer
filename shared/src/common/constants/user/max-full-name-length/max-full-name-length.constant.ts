@@ -1,0 +1,3 @@
+const MAX_FULL_NAME_LENGTH = 30;
+
+export { MAX_FULL_NAME_LENGTH };

@@ -1,1 +1,4 @@
-export { HttpErrorMessage } from 'smart-typer-shared/common/enums/enums';
+export {
+  HttpErrorMessage,
+  ValidationErrorMessage,
+} from 'smart-typer-shared/common/enums/enums';
