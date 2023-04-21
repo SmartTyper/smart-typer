@@ -1,23 +1,24 @@
-import { FastifyPluginAsync } from 'fastify';
+import { Router } from 'express';
+import {
+  getValidationMiddleware,
+  getAuthMiddleware,
+  getErrorHandlerMiddleware,
+} from 'api/middlewares/middlewares';
+import { getRoutes } from 'api/routes/routes';
+import { auth as authService, token as tokenService } from 'services/services';
+import { Logger } from 'common/types/types';
 
-import { ValidationSchema } from 'common/types/types';
-import { auth } from 'services/services';
+const initApi = (logger: Logger): Router => {
+  const router: Router = Router();
 
-import { initAuthApi } from './auth/auth.api';
+  router.use(
+    '/api',
+    getAuthMiddleware({ tokenService }),
+    getRoutes({ getValidationMiddleware, authService, tokenService }),
+  );
 
-const initApi: FastifyPluginAsync = async (fastify) => {
-  fastify.setValidatorCompiler<ValidationSchema>(({ schema }) => {
-    return <T>(data: T): ReturnType<ValidationSchema['validate']> => {
-      return schema.validate(data);
-    };
-  });
-
-  fastify.register(initAuthApi, {
-    services: {
-      auth,
-    },
-    prefix: '/auth',
-  });
+  router.use('/*', getErrorHandlerMiddleware({ logger }));
+  return router;
 };
 
 export { initApi };

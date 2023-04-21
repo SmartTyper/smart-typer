@@ -3,7 +3,7 @@ import { AnySchema } from 'yup';
 import { HttpCode } from 'common/enums/enums';
 import { ValidationError } from 'exceptions/exceptions';
 
-export const validationMiddleware = <T extends AnySchema>(
+export const getValidationMiddleware = <T extends AnySchema>(
   schema: {
     body?: T;
     query?: T;

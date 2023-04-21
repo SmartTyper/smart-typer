@@ -2,8 +2,8 @@ import { Auth } from './auth/auth.service';
 import { Token } from './token/token.service';
 import { User } from './user/user.service';
 import { S3 } from './s3/s3.service';
-import { Settings } from './settings/settings.service';
-import { Statistics } from './statistics/statistics.service';
+// import { Settings } from './settings/settings.service';
+// import { Statistics } from './statistics/statistics.service';
 import { Hash } from './hash/hash.service';
 import { Oauth2 } from './oauth2/oauth2.service';
 import { Mailer } from './mailer/mailer.service';
@@ -11,8 +11,8 @@ import { Mailer } from './mailer/mailer.service';
 import {
   user as userRepository,
   refreshToken as refreshTokenRepository,
-  settings as settingsRepository,
-  statistics as statisticsRepository,
+  // settings as settingsRepository,
+  // statistics as statisticsRepository,
 } from 'data/repositories/repositories';
 
 import { ENV } from 'common/constants/constants';
@@ -21,9 +21,9 @@ const s3 = new S3();
 
 const hash = new Hash();
 
-const settings = new Settings({ settingsRepository });
+// const settings = new Settings({ settingsRepository });
 
-const statistics = new Statistics({ statisticsRepository });
+// const statistics = new Statistics({ statisticsRepository });
 
 const token = new Token({
   refreshTokenRepository,
@@ -60,4 +60,4 @@ const auth = new Auth({
   appUrl: ENV.APP.URL,
 });
 
-export { auth, token, user, s3, settings, statistics, hash, oauth2, mailer };
+export { auth, token, user, s3, hash, oauth2, mailer };

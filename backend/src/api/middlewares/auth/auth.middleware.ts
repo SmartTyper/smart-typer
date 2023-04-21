@@ -7,7 +7,7 @@ type Options = {
   tokenService: typeof tokenService;
 };
 
-export const getAuthMiddleware = (opts: Options): RequestHandler => {
+const getAuthMiddleware = (opts: Options): RequestHandler => {
   return (req: Request, res: Response, next: NextFunction): void => {
     const { tokenService } = opts;
     if (WHITE_LIST_ROUTES.includes(req.path)) {
@@ -31,3 +31,5 @@ export const getAuthMiddleware = (opts: Options): RequestHandler => {
     }
   };
 };
+
+export { getAuthMiddleware };

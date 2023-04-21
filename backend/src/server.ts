@@ -1,43 +1,50 @@
-import Fastify from 'fastify';
-import fastifyStatic from '@fastify/static';
+import cors from 'cors';
 import Knex from 'knex';
-import * as path from 'node:path';
+import path from 'path';
+import express, { Express } from 'express';
+import { createServer } from 'http';
 import { Model } from 'objection';
+import pino from 'pino';
 
 import { initApi } from 'api/api';
-import { Environment } from 'common/enums/enums';
 import { ENV } from 'common/constants/constants';
+import { Environment } from 'common/enums/enums';
 import knexConfig from '../knexfile';
 
-const app = Fastify({
-  logger: {
-    transport: {
-      target: 'pino-pretty',
-    },
-  },
+const app: Express = express();
+const httpServer = createServer(app);
+
+const knex = Knex(knexConfig[ENV.APP.NODE_ENV as Environment]);
+Model.knex();
+
+const logger = pino({
+  prettyPrint: true,
 });
 
-Model.knex(Knex(knexConfig[ENV.APP.NODE_ENV as Environment]));
+app.use(
+  cors({
+    origin: ENV.APP.URL,
+  }),
+);
 
-app.register(initApi, {
-  prefix: ENV.APP.API_PREFIX,
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(initApi(logger));
+
+app.use(express.static(path.join(__dirname, '../public')));
+app.use('/*', (_req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-const staticPath = path.join(__dirname, '../public');
-
-app.register(fastifyStatic, {
-  root: staticPath,
-  prefix: '/',
+httpServer.listen(ENV.APP.SERVER_PORT, async () => {
+  logger.info(
+    `Server is running at ${ENV.APP.SERVER_PORT}. Environment: ${ENV.APP.NODE_ENV}.`,
+  );
 });
 
-app.setNotFoundHandler((_req, res) => {
-  res.sendFile('index.html', staticPath);
+app.on('close', async () => {
+  await knex.destroy();
 });
 
-app.listen({ port: ENV.APP.SERVER_PORT }, (err, address) => {
-  if (err) {
-    app.log.error(err);
-  }
-
-  app.log.info(`Listening on: ${address}; Environment: ${ENV.APP.NODE_ENV}`);
-});
+export default app;

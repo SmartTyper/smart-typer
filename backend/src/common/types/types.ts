@@ -1,3 +1,4 @@
+export * from './app/app';
 export * from './db/db';
 export * from './user/user';
 export * from './validation/validation';
