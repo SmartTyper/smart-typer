@@ -1,2 +1,2 @@
-export type { AppDispatch } from './app-dispatch.type';
-export type { RootState } from './root-state.type';
+export * from './app-dispatch/app-dispatch.type';
+export * from './root-state/root-state.type';

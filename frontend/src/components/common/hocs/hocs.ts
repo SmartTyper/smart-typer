@@ -1,1 +1,1 @@
-export { WithHeader } from './with-header/with-header';
+export * from './with-header/with-header';

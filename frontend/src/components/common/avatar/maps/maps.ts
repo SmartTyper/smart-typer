@@ -1,1 +1,1 @@
-export { sizeToPx } from './size-to-px/size-to-px.map';
+export * from './size-to-px/size-to-px.map';

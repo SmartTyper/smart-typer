@@ -1,3 +1,3 @@
-export { AppRoute } from './app-route.enum';
-export { ENV } from './env.enum';
-export { ReducerName } from './reducer-name.enum';
+export * from './app-route/app-route.enum';
+export * from './env/env.enum';
+export * from './reducer-name/reducer-name.enum';

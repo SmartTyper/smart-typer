@@ -1,1 +1,1 @@
-export type { FC } from './fc.type';
+export * from './fc/fc.type';

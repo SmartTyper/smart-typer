@@ -1,1 +1,1 @@
-export type { VoidAction } from './void-action.type';
+export * from './void-action/void-action.type';

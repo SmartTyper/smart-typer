@@ -1,6 +1,6 @@
-export { Link } from './link/link';
-export { Header } from './header/header';
-export { Avatar } from './avatar/avatar';
-export { Spinner } from './spinner/spinner';
-export { IconButton } from './icon-button/icon-button';
-export { IconLink } from './icon-link/icon-link';
+export * from './link/link';
+export * from './header/header';
+export * from './avatar/avatar';
+export * from './spinner/spinner';
+export * from './icon-button/icon-button';
+export * from './icon-link/icon-link';
