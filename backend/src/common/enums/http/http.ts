@@ -1,5 +1,1 @@
-export {
-  HttpCode,
-  HttpMethod,
-  HttpHeader,
-} from 'smart-typer-shared/common/enums/enums';
+export { HttpCode } from 'smart-typer-shared/common/enums/enums';
