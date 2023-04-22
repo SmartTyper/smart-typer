@@ -2,10 +2,8 @@ import {
   createAsyncThunk as reduxCreateAsyncThunk,
   AsyncThunk,
 } from '@reduxjs/toolkit';
-import { ActionType as AuthActionType } from './auth/common';
 import { AsyncThunkCallback, AsyncThunkOptions } from 'common/types/types';
-
-type ActionType = AuthActionType;
+import { ActionType } from './common';
 
 const createAsyncThunk = <T, K>(
   actionType: ActionType,
