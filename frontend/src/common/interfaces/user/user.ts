@@ -1,1 +1,4 @@
-export type { IUserWithTokens } from 'smart-typer-shared/common/interfaces/interfaces';
+export type {
+  IUser,
+  IUserWithTokens,
+} from 'smart-typer-shared/common/interfaces/interfaces';

@@ -1,5 +1,9 @@
 import { HttpCode, HttpErrorMessage } from 'common/enums/enums';
-import { IUser, IUserWithTokens } from 'common/interfaces/interfaces';
+import {
+  IUser,
+  IUserWithPassword,
+  IUserWithTokens,
+} from 'common/interfaces/interfaces';
 import { CreateUserRequestDto } from 'common/types/types';
 import { user as userRepository } from 'data/repositories/repositories';
 import { HttpError } from 'exceptions/exceptions';
@@ -41,7 +45,7 @@ class User {
     };
   }
 
-  public async getByEmail(email: string): Promise<IUser> {
+  public async getByEmail(email: string): Promise<IUserWithPassword> {
     const user = await this._userRepository.getByEmail(email);
     if (!user) {
       throw new HttpError({
@@ -65,7 +69,10 @@ class User {
     return this.getFullInfoByEmail(newUser.email);
   }
 
-  public async patchById(userId: number, data: Partial<IUser>): Promise<IUser> {
+  public async patchById(
+    userId: number,
+    data: Partial<IUserWithPassword>,
+  ): Promise<IUser> {
     return this._userRepository.patchById(userId, data);
   }
 }
