@@ -12,6 +12,7 @@ const store = configureStore({
         extraArgument: { service },
       },
     });
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     const errorMiddleware: Middleware = () => (next) => (action) => {
       const message = action.error?.message;
       if (message) {
