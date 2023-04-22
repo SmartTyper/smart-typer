@@ -1,4 +1,5 @@
-import { reducer as authReducer } from './reducer';
+import { reducer as auth } from './reducer';
 import { authActions } from './actions';
+import { AuthActionType } from './common';
 
-export { authReducer, authActions };
+export { auth, authActions, AuthActionType };

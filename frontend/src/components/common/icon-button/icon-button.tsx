@@ -1,7 +1,9 @@
 import { FC, VoidAction } from 'common/types/types';
 import { clsx } from 'helpers/helpers';
+import { Spinner } from '../spinner/spinner';
 
 import styles from './styles.module.scss';
+import { SpinnerSize } from 'common/enums/enums';
 
 type Props = {
   label?: string;
@@ -9,6 +11,7 @@ type Props = {
   className?: string;
   iconClassName?: string;
   onClick: VoidAction;
+  isLoading?: boolean;
 };
 
 const IconButton: FC<Props> = ({
@@ -17,10 +20,17 @@ const IconButton: FC<Props> = ({
   className,
   iconClassName,
   onClick,
+  isLoading = false,
 }) => (
   <button className={clsx(styles.button, className)} onClick={onClick}>
-    {iconName && <i className={clsx(iconName, iconClassName)}></i>}
-    {label && <span>{label}</span>}
+    {isLoading ? (
+      <Spinner size={SpinnerSize.SMALL} />
+    ) : (
+      <>
+        {iconName && <i className={clsx(iconName, iconClassName)}></i>}
+        {label && <span>{label}</span>}
+      </>
+    )}
   </button>
 );
 

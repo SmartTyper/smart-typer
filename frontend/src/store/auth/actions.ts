@@ -6,10 +6,10 @@ import {
   RegisterUserRequestDto,
   GoogleLoginCodeRequestDto,
 } from 'common/types/types';
-import { ActionType } from './common';
+import { AuthActionType } from './common';
 
 const login = createAsyncThunk(
-  ActionType.LOGIN,
+  AuthActionType.LOGIN,
   async (loginPayload: LoginUserRequestDto, { extra }): Promise<IUser> => {
     const { authApi, localStorage } = extra;
     const userInfo = await authApi.loginUser(loginPayload);
@@ -21,7 +21,7 @@ const login = createAsyncThunk(
 );
 
 const register = createAsyncThunk(
-  ActionType.REGISTER,
+  AuthActionType.REGISTER,
   async (
     registerPayload: RegisterUserRequestDto,
     { extra },
@@ -36,7 +36,7 @@ const register = createAsyncThunk(
 );
 
 const logout = createAsyncThunk(
-  ActionType.LOGOUT,
+  AuthActionType.LOGOUT,
   async (_: undefined, { extra }): Promise<void> => {
     const { authApi, localStorage } = extra;
     const refreshToken = localStorage.getItem(StorageKey.REFRESH_TOKEN);
@@ -49,7 +49,7 @@ const logout = createAsyncThunk(
 );
 
 const loginGoogle = createAsyncThunk(
-  ActionType.LOGIN_GOOGLE,
+  AuthActionType.LOGIN_GOOGLE,
   async (code: GoogleLoginCodeRequestDto, { extra }): Promise<IUser> => {
     const { authApi, localStorage } = extra;
     const userInfo = await authApi.loginGoogle(code);
@@ -61,7 +61,7 @@ const loginGoogle = createAsyncThunk(
 );
 
 const loadUser = createAsyncThunk(
-  ActionType.LOAD_USER,
+  AuthActionType.LOAD_USER,
   async (_: undefined): Promise<null> => {
     return null;
   },

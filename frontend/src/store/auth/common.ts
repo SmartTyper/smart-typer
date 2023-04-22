@@ -1,4 +1,4 @@
-enum ActionType {
+enum AuthActionType {
   LOGIN = 'auth/login',
   REGISTER = 'auth/register',
   LOGOUT = 'auth/logout',
@@ -6,4 +6,4 @@ enum ActionType {
   LOAD_USER = 'auth/loadUser',
 }
 
-export { ActionType };
+export { AuthActionType };
