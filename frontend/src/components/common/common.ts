@@ -4,3 +4,5 @@ export * from './avatar/avatar';
 export * from './spinner/spinner';
 export * from './icon-button/icon-button';
 export * from './icon-link/icon-link';
+export * from './protected-route/protected-route';
+export * from './hocs/hocs';

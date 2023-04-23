@@ -3,11 +3,11 @@ import { getValidationMiddleware } from 'api/middlewares/middlewares';
 import { auth as authService, token as tokenService } from 'services/services';
 import {
   signUpSchema,
-  loginSchema,
+  logInSchema,
   resetPasswordSchema,
   setPasswordSchema,
   refreshTokenSchema,
-  loginGoogleSchema,
+  logInGoogleSchema,
 } from 'validation-schemas/validation-schemas';
 import { Abstract } from '../abstract/abstract.route';
 
@@ -39,9 +39,9 @@ class Auth extends Abstract {
     );
 
     router.post(
-      '/login',
-      this._getValidationMiddleware({ body: loginSchema }),
-      this._run((req) => this._authService.login(req.body)),
+      '/logIn',
+      this._getValidationMiddleware({ body: logInSchema }),
+      this._run((req) => this._authService.logIn(req.body)),
     );
 
     router.post(
@@ -69,14 +69,14 @@ class Auth extends Abstract {
     );
 
     router.post(
-      '/login/google',
-      this._getValidationMiddleware({ body: loginGoogleSchema }),
-      this._run((req) => this._authService.loginGoogle(req.body)),
+      '/logIn/google',
+      this._getValidationMiddleware({ body: logInGoogleSchema }),
+      this._run((req) => this._authService.logInGoogle(req.body)),
     );
 
     router.get(
-      '/login/google',
-      this._run(() => this._authService.getLoginGoogleUrl()),
+      '/logIn/google',
+      this._run(() => this._authService.getLogInGoogleUrl()),
     );
 
     return router;

@@ -1,6 +1,6 @@
 enum AppRoute {
   ROOT = '/',
-  SIGN_IN = '/sign-in',
+  LOG_IN = '/log-in',
   SIGN_UP = '/sign-up',
   THEORY = '/theory',
   LESSONS = '/lessons',

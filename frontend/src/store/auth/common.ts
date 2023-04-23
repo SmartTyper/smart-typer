@@ -1,8 +1,8 @@
 enum AuthActionType {
-  LOGIN = 'auth/login',
+  LOG_IN = 'auth/logIn',
   REGISTER = 'auth/register',
   LOGOUT = 'auth/logout',
-  LOGIN_GOOGLE = 'auth/loginGoogle',
+  LOG_IN_GOOGLE = 'auth/logInGoogle',
   LOAD_USER = 'auth/loadUser',
 }
 

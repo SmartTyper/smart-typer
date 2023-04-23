@@ -5,7 +5,11 @@ import {
   getErrorHandlerMiddleware,
 } from 'api/middlewares/middlewares';
 import { getRoutes } from 'api/routes/routes';
-import { auth as authService, token as tokenService } from 'services/services';
+import {
+  auth as authService,
+  token as tokenService,
+  user as userService,
+} from 'services/services';
 import { Logger } from 'common/types/types';
 
 const initApi = (logger: Logger): Router => {
@@ -14,7 +18,12 @@ const initApi = (logger: Logger): Router => {
   router.use(
     '/api',
     getAuthMiddleware({ tokenService }),
-    getRoutes({ getValidationMiddleware, authService, tokenService }),
+    getRoutes({
+      getValidationMiddleware,
+      authService,
+      tokenService,
+      userService,
+    }),
   );
 
   router.use('/*', getErrorHandlerMiddleware({ logger }));

@@ -1,77 +1,96 @@
-import { AppRoute } from 'common/enums/enums';
+import { AppRoute, StorageKey } from 'common/enums/enums';
 import { FC } from 'common/types/types';
 import { RRDRoute, RRDRoutes } from 'components/external/external';
-import { WithHeader } from 'components/common/hocs/hocs';
+import { WithHeader, ProtectedRoute } from 'components/common/common';
 import { Home } from 'components/home/home';
 import { Theory } from 'components/theory/theory';
 import { Lessons } from 'components/lessons/lessons';
 import { StudyPlan } from 'components/study-plan/study-plan';
 import { Racing } from 'components/racing/racing';
-import { SignIn } from 'components/sign-in/sign-in';
+import { LogIn } from 'components/log-in/log-in';
 import { SignUp } from 'components/sign-up/sign-up';
 import { Settings } from 'components/settings/settings';
 import { Profile } from 'components/profile/profile';
+import { useSelector, useDispatch, useEffect, useLocation } from 'hooks/hooks';
+import { localStorage as localStorageService } from 'services/services';
+import { authActions } from 'store/actions';
 
 const App: FC = () => {
+  const dispatch = useDispatch();
+  const { pathname } = useLocation();
+  const { user } = useSelector((state) => state.auth);
+  const token = localStorageService.getItem(StorageKey.ACCESS_TOKEN);
+
+  const authRoutes = [AppRoute.LOG_IN, AppRoute.SIGN_UP] as string[];
+  const isAuth = authRoutes.includes(pathname);
+
+  useEffect(() => {
+    if (token && !user && !isAuth) {
+      dispatch(authActions.loadUser());
+    }
+  }, []);
+
   return (
     <RRDRoutes>
-      <RRDRoute
-        path={AppRoute.ROOT}
-        element={
-          <WithHeader>
-            <Home />
-          </WithHeader>
-        }
-      />
-      <RRDRoute
-        path={AppRoute.THEORY}
-        element={
-          <WithHeader>
-            <Theory />
-          </WithHeader>
-        }
-      />
-      <RRDRoute
-        path={AppRoute.LESSONS}
-        element={
-          <WithHeader>
-            <Lessons />
-          </WithHeader>
-        }
-      />
-      <RRDRoute
-        path={AppRoute.STUDY_PLAN}
-        element={
-          <WithHeader>
-            <StudyPlan />
-          </WithHeader>
-        }
-      />
-      <RRDRoute
-        path={AppRoute.RACING}
-        element={
-          <WithHeader>
-            <Racing />
-          </WithHeader>
-        }
-      />
-      <RRDRoute
-        path={AppRoute.PROFILE}
-        element={
-          <WithHeader>
-            <Profile />
-          </WithHeader>
-        }
-      />
-      <RRDRoute
-        path={AppRoute.SETTINGS}
-        element={
-          <WithHeader>
-            <Settings />
-          </WithHeader>
-        }
-      />
-      <RRDRoute path={AppRoute.SIGN_IN} element={<SignIn />} />
+      <RRDRoute element={<ProtectedRoute user={user} />}>
+        <RRDRoute
+          path={AppRoute.ROOT}
+          element={
+            <WithHeader>
+              <Home />
+            </WithHeader>
+          }
+        />
+        <RRDRoute
+          path={AppRoute.THEORY}
+          element={
+            <WithHeader>
+              <Theory />
+            </WithHeader>
+          }
+        />
+        <RRDRoute
+          path={AppRoute.LESSONS}
+          element={
+            <WithHeader>
+              <Lessons />
+            </WithHeader>
+          }
+        />
+        <RRDRoute
+          path={AppRoute.STUDY_PLAN}
+          element={
+            <WithHeader>
+              <StudyPlan />
+            </WithHeader>
+          }
+        />
+        <RRDRoute
+          path={AppRoute.RACING}
+          element={
+            <WithHeader>
+              <Racing />
+            </WithHeader>
+          }
+        />
+        <RRDRoute
+          path={AppRoute.PROFILE}
+          element={
+            <WithHeader>
+              <Profile />
+            </WithHeader>
+          }
+        />
+        <RRDRoute
+          path={AppRoute.SETTINGS}
+          element={
+            <WithHeader>
+              <Settings />
+            </WithHeader>
+          }
+        />
+      </RRDRoute>
+      <RRDRoute path={AppRoute.LOG_IN} element={<LogIn />} />
       <RRDRoute path={AppRoute.SIGN_UP} element={<SignUp />} />
     </RRDRoutes>
   );

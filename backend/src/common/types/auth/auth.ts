@@ -1,8 +1,8 @@
 export type {
   RegisterUserRequestDto,
-  LoginUserRequestDto,
+  LogInUserRequestDto,
   ResetPasswordRequestDto,
   SetPasswordRequestDto,
-  GoogleLoginUrlResponseDto,
-  GoogleLoginCodeRequestDto,
+  GoogleLogInUrlResponseDto,
+  GoogleLogInCodeRequestDto,
 } from 'smart-typer-shared/common/types/types';

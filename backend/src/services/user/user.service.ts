@@ -26,14 +26,7 @@ class User {
     this._s3Service = params.s3Service;
   }
 
-  public async getFullInfoByEmail(email: string): Promise<IUserWithTokens> {
-    const user = await this._userRepository.getByEmail(email);
-    if (!user) {
-      throw new HttpError({
-        status: HttpCode.BAD_REQUEST,
-        message: HttpErrorMessage.INVALID_LOGIN_DATA,
-      });
-    }
+  private async _getFullInfo(user: IUser): Promise<IUserWithTokens> {
     const photoUrl = user.photoUrl
       ? await this._s3Service.getSignedUrl(user.photoUrl)
       : user.photoUrl;
@@ -45,12 +38,28 @@ class User {
     };
   }
 
+  public async getFullInfoByEmail(email: string): Promise<IUserWithTokens> {
+    const user = await this.getByEmail(email);
+    return this._getFullInfo(user);
+  }
+
+  public async getFullInfoById(userId: number): Promise<IUserWithTokens> {
+    const user = await this._userRepository.getById(userId);
+    if (!user) {
+      throw new HttpError({
+        status: HttpCode.BAD_REQUEST,
+        message: HttpErrorMessage.INVALID_LOG_IN_DATA,
+      });
+    }
+    return this._getFullInfo(user);
+  }
+
   public async getByEmail(email: string): Promise<IUserWithPassword> {
     const user = await this._userRepository.getByEmail(email);
     if (!user) {
       throw new HttpError({
         status: HttpCode.BAD_REQUEST,
-        message: HttpErrorMessage.INVALID_LOGIN_DATA,
+        message: HttpErrorMessage.INVALID_LOG_IN_DATA,
       });
     }
     return user;

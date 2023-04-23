@@ -1,13 +1,13 @@
 import { HttpCode, HttpErrorMessage } from 'common/enums/enums';
 import { IGoogleUser, IUserWithTokens } from 'common/interfaces/interfaces';
 import {
-  LoginUserRequestDto,
+  LogInUserRequestDto,
   RegisterUserRequestDto,
   RefreshTokenRequestDto,
   ResetPasswordRequestDto,
   SetPasswordRequestDto,
-  GoogleLoginUrlResponseDto,
-  GoogleLoginCodeRequestDto,
+  GoogleLogInUrlResponseDto,
+  GoogleLogInCodeRequestDto,
 } from 'common/types/types';
 import { HttpError } from 'exceptions/exceptions';
 import {
@@ -66,12 +66,12 @@ class Auth {
     });
   }
 
-  public async login(body: LoginUserRequestDto): Promise<IUserWithTokens> {
+  public async logIn(body: LogInUserRequestDto): Promise<IUserWithTokens> {
     const user = await this._userService.getByEmail(body.email);
     if (!user || !user.password) {
       throw new HttpError({
         status: HttpCode.BAD_REQUEST,
-        message: HttpErrorMessage.INVALID_LOGIN_DATA,
+        message: HttpErrorMessage.INVALID_LOG_IN_DATA,
       });
     }
 
@@ -82,7 +82,7 @@ class Auth {
     if (!isPasswordCorrect) {
       throw new HttpError({
         status: HttpCode.BAD_REQUEST,
-        message: HttpErrorMessage.INVALID_LOGIN_DATA,
+        message: HttpErrorMessage.INVALID_LOG_IN_DATA,
       });
     }
 
@@ -129,14 +129,14 @@ class Auth {
     await this._tokenService.removeRefreshToken(refreshToken);
   }
 
-  public async getLoginGoogleUrl(): Promise<GoogleLoginUrlResponseDto> {
+  public async getLogInGoogleUrl(): Promise<GoogleLogInUrlResponseDto> {
     const url = this._oauth2Service.generateAuthUrl();
     return { url };
   }
 
-  public async loginGoogle({
+  public async logInGoogle({
     code,
-  }: GoogleLoginCodeRequestDto): Promise<IUserWithTokens> {
+  }: GoogleLogInCodeRequestDto): Promise<IUserWithTokens> {
     const idToken = await this._oauth2Service.getIdToken(code);
     if (!idToken) {
       throw new HttpError({

@@ -1,11 +1,10 @@
 import * as yup from 'yup';
 import { ValidationErrorMessage } from 'common/enums/enums';
 
-const loginGoogleSchema = yup
+export const logInSchema = yup
   .object()
   .shape({
-    code: yup.string().required(),
+    email: yup.string().email().required(),
+    password: yup.string().required(),
   })
   .noUnknown(true, ValidationErrorMessage.INVALID_KEYS_RECEIVED);
-
-export { loginGoogleSchema };

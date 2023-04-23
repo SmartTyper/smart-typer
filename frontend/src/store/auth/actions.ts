@@ -2,20 +2,20 @@ import { createAsyncThunk } from 'store/create-async-thunk';
 import { IUser } from 'common/interfaces/interfaces';
 import { StorageKey } from 'common/enums/enums';
 import {
-  LoginUserRequestDto,
+  LogInUserRequestDto,
   RegisterUserRequestDto,
-  GoogleLoginCodeRequestDto,
+  GoogleLogInCodeRequestDto,
 } from 'common/types/types';
 import { AuthActionType } from './common';
 
-const login = createAsyncThunk(
-  AuthActionType.LOGIN,
-  async (loginPayload: LoginUserRequestDto, { extra }): Promise<IUser> => {
-    const { authApi, localStorage } = extra;
-    const userInfo = await authApi.loginUser(loginPayload);
+const logIn = createAsyncThunk(
+  AuthActionType.LOG_IN,
+  async (logInPayload: LogInUserRequestDto, { extra }): Promise<IUser> => {
+    const { authApiService, localStorageService } = extra;
+    const userInfo = await authApiService.logInUser(logInPayload);
     const { accessToken, refreshToken, ...user } = userInfo;
-    localStorage.setItem(StorageKey.ACCESS_TOKEN, accessToken);
-    localStorage.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
+    localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
+    localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
     return user;
   },
 );
@@ -26,11 +26,11 @@ const register = createAsyncThunk(
     registerPayload: RegisterUserRequestDto,
     { extra },
   ): Promise<IUser> => {
-    const { authApi, localStorage } = extra;
-    const userInfo = await authApi.registerUser(registerPayload);
+    const { authApiService, localStorageService } = extra;
+    const userInfo = await authApiService.registerUser(registerPayload);
     const { accessToken, refreshToken, ...user } = userInfo;
-    localStorage.setItem(StorageKey.ACCESS_TOKEN, accessToken);
-    localStorage.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
+    localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
+    localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
     return user;
   },
 );
@@ -38,40 +38,45 @@ const register = createAsyncThunk(
 const logout = createAsyncThunk(
   AuthActionType.LOGOUT,
   async (_: undefined, { extra }): Promise<void> => {
-    const { authApi, localStorage } = extra;
-    const refreshToken = localStorage.getItem(StorageKey.REFRESH_TOKEN);
-    localStorage.removeItem(StorageKey.ACCESS_TOKEN);
-    localStorage.removeItem(StorageKey.REFRESH_TOKEN);
+    const { authApiService, localStorageService } = extra;
+    const refreshToken = localStorageService.getItem(StorageKey.REFRESH_TOKEN);
+    localStorageService.removeItem(StorageKey.ACCESS_TOKEN);
+    localStorageService.removeItem(StorageKey.REFRESH_TOKEN);
     if (refreshToken) {
-      await authApi.logout({ refreshToken });
+      await authApiService.logout({ refreshToken });
     }
   },
 );
 
-const loginGoogle = createAsyncThunk(
-  AuthActionType.LOGIN_GOOGLE,
-  async (code: GoogleLoginCodeRequestDto, { extra }): Promise<IUser> => {
-    const { authApi, localStorage } = extra;
-    const userInfo = await authApi.loginGoogle(code);
+const logInGoogle = createAsyncThunk(
+  AuthActionType.LOG_IN_GOOGLE,
+  async (code: GoogleLogInCodeRequestDto, { extra }): Promise<IUser> => {
+    const { authApiService, localStorageService } = extra;
+    const userInfo = await authApiService.logInGoogle(code);
     const { accessToken, refreshToken, ...user } = userInfo;
-    localStorage.setItem(StorageKey.ACCESS_TOKEN, accessToken);
-    localStorage.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
+    localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
+    localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
     return user;
   },
 );
 
 const loadUser = createAsyncThunk(
   AuthActionType.LOAD_USER,
-  async (_: undefined): Promise<null> => {
-    return null;
+  async (_: undefined, { extra }): Promise<IUser | void> => {
+    const { userApiService, localStorageService } = extra;
+    const accessToken = localStorageService.getItem(StorageKey.ACCESS_TOKEN);
+    if (accessToken) {
+      const user = await userApiService.getFullInfo();
+      return user;
+    }
   },
 );
 
 const authActions = {
-  login,
+  logIn,
   register,
   logout,
-  loginGoogle,
+  logInGoogle,
   loadUser,
 };
 

@@ -12,5 +12,7 @@ export {
   Routes as RRDRoutes,
   Route as RRDRoute,
   Link as RRDLink,
+  Navigate as RRDNavigate,
+  Outlet as RRDOutlet,
 } from 'react-router-dom';
 export { ReactAvatar };

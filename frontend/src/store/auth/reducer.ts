@@ -16,13 +16,13 @@ const { reducer } = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    const { login, register, loginGoogle, logout } = authActions;
+    const { logIn, register, logInGoogle, logout } = authActions;
     builder
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
       })
       .addMatcher(
-        isAnyOf(login.fulfilled, register.fulfilled, loginGoogle.fulfilled),
+        isAnyOf(logIn.fulfilled, register.fulfilled, logInGoogle.fulfilled),
         (state, action) => {
           state.user = action.payload;
         },

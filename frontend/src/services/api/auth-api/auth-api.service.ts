@@ -3,10 +3,10 @@ import {
   ResetPasswordRequestDto,
   SetPasswordRequestDto,
   RefreshTokenRequestDto,
-  LoginUserRequestDto,
+  LogInUserRequestDto,
   RegisterUserRequestDto,
-  GoogleLoginUrlResponseDto,
-  GoogleLoginCodeRequestDto,
+  GoogleLogInUrlResponseDto,
+  GoogleLogInCodeRequestDto,
 } from 'common/types/types';
 import { IUserWithTokens } from 'common/interfaces/interfaces';
 import { http as httpService } from 'services/services';
@@ -23,19 +23,19 @@ class AuthApi {
     this._httpService = params.httpService;
   }
 
-  public async loginUser(
-    loginPayload: LoginUserRequestDto,
+  public async logInUser(
+    logInPayload: LogInUserRequestDto,
   ): Promise<IUserWithTokens> {
-    const loginResponse: IUserWithTokens = await this._httpService.load(
-      `${this._baseUrl}/login`,
+    const logInResponse: IUserWithTokens = await this._httpService.load(
+      `${this._baseUrl}/logIn`,
       {
         method: HttpMethod.POST,
-        payload: JSON.stringify(loginPayload),
+        payload: JSON.stringify(logInPayload),
         contentType: ContentType.JSON,
       },
     );
 
-    return loginResponse;
+    return logInResponse;
   }
 
   public async registerUser(
@@ -77,14 +77,14 @@ class AuthApi {
     });
   }
 
-  public async getLoginGoogleUrl(): Promise<GoogleLoginUrlResponseDto> {
-    return this._httpService.load(`${this._baseUrl}/login/google`);
+  public async getLogInGoogleUrl(): Promise<GoogleLogInUrlResponseDto> {
+    return this._httpService.load(`${this._baseUrl}/logIn/google`);
   }
 
-  public async loginGoogle(
-    payload: GoogleLoginCodeRequestDto,
+  public async logInGoogle(
+    payload: GoogleLogInCodeRequestDto,
   ): Promise<IUserWithTokens> {
-    return this._httpService.load(`${this._baseUrl}/login/google`, {
+    return this._httpService.load(`${this._baseUrl}/logIn/google`, {
       method: HttpMethod.POST,
       payload: JSON.stringify(payload),
       contentType: ContentType.JSON,
