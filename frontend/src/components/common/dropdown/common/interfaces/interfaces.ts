@@ -1,2 +1,2 @@
-export type { ILink } from './link/link.interface';
-export type { IButton } from './button/button.interface';
+export * from './link/link.interface';
+export * from './button/button.interface';

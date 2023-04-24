@@ -5,3 +5,4 @@ export * from './http/http';
 export * from './react/react';
 export * from './token/token';
 export * from './user/user';
+export * from './validation/validation';

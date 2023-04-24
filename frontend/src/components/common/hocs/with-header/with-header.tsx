@@ -11,7 +11,7 @@ const WithHeader: FC = ({ children }) => {
 
   return (
     <div className={styles.withHeader}>
-      {!user ? (
+      {user ? (
         <Spinner size={SpinnerSize.LARGE} />
       ) : (
         <>

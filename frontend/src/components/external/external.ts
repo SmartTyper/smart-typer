@@ -1,4 +1,5 @@
 import ReactAvatar from 'react-avatar';
+import ReactGoogleButton from 'react-google-button';
 
 export {
   Dropdown as RBDropdown,
@@ -6,7 +7,10 @@ export {
   NavItem as RBNavItem,
   NavLink as RBNavLink,
   Navbar as RBNavbar,
+  Alert as RBAlert,
+  Form as RBForm,
 } from 'react-bootstrap';
+
 export {
   NavLink as RRDNavLink,
   Routes as RRDRoutes,
@@ -15,4 +19,5 @@ export {
   Navigate as RRDNavigate,
   Outlet as RRDOutlet,
 } from 'react-router-dom';
-export { ReactAvatar };
+
+export { ReactAvatar, ReactGoogleButton };

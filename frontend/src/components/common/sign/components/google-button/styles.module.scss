@@ -1,0 +1,17 @@
+@import 'src/assets/css/variables';
+
+.googleButton {
+  font-size: 1.6rem !important;
+  margin: 1rem 0 !important;
+  box-shadow: none !important;
+  transition: $button-transition !important;
+  border: $button-border !important;
+
+  &:hover {
+    box-shadow: $button-shadow !important;
+  }
+
+  div {
+    height: 95% !important;
+  }
+}

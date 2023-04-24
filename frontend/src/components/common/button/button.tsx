@@ -12,17 +12,29 @@ type Props = {
   iconClassName?: string;
   onClick: VoidAction;
   isLoading?: boolean;
+  isDisabled?: boolean;
+  hasShadowOnHover?: boolean;
 };
 
-const IconButton: FC<Props> = ({
+const Button: FC<Props> = ({
   label,
   iconName,
   className,
   iconClassName,
   onClick,
   isLoading = false,
+  isDisabled = false,
+  hasShadowOnHover = true,
 }) => (
-  <button className={clsx(styles.button, className)} onClick={onClick}>
+  <button
+    className={clsx(
+      styles.button,
+      className,
+      hasShadowOnHover && styles.hasShadowOnHover,
+    )}
+    disabled={isDisabled || isLoading}
+    onClick={isDisabled ? undefined : onClick}
+  >
     {isLoading ? (
       <Spinner size={SpinnerSize.SMALL} />
     ) : (
@@ -34,4 +46,4 @@ const IconButton: FC<Props> = ({
   </button>
 );
 
-export { IconButton };
+export { Button };

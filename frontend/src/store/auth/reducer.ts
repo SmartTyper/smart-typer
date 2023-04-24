@@ -5,10 +5,12 @@ import { IUser } from 'common/interfaces/interfaces';
 
 type State = {
   user: IUser | null;
+  userNotExistsError: string | null;
 };
 
 const initialState: State = {
   user: null,
+  userNotExistsError: null,
 };
 
 const { reducer } = createSlice({
@@ -16,15 +18,21 @@ const { reducer } = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    const { logIn, register, logInGoogle, logout } = authActions;
+    const { logIn, register, logInGoogle, logout, setUserNotExistsError } =
+      authActions;
     builder
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
       })
+      .addCase(setUserNotExistsError, (state, action) => {
+        state.userNotExistsError = action.payload;
+      })
       .addMatcher(
         isAnyOf(logIn.fulfilled, register.fulfilled, logInGoogle.fulfilled),
         (state, action) => {
-          state.user = action.payload;
+          if (action.payload) {
+            state.user = action.payload;
+          }
         },
       );
   },

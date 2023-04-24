@@ -1,7 +1,7 @@
 import { FC } from 'common/types/types';
 import { RBDropdown, RBNavItem, RBNavLink } from 'components/external/external';
 import { ILink, IButton } from './common/interfaces/interfaces';
-import { IconButton } from 'components/common/icon-button/icon-button';
+import { Button } from 'components/common/button/button';
 import { IconLink } from 'components/common/icon-link/icon-link';
 
 import styles from './styles.module.scss';
@@ -34,12 +34,13 @@ const Dropdown: FC<Props> = ({ children, links, buttons }) => {
         {buttons.map(({ label, iconName, onClick }) => {
           return (
             <RBDropdown.Item
-              as={IconButton}
+              as={Button}
               onClick={onClick}
               key={label}
               label={label}
               iconName={iconName}
               className={styles.dropdownItem}
+              hasShadowOnHover={false}
             />
           );
         })}

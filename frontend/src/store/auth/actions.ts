@@ -1,23 +1,47 @@
+import { createAction } from '@reduxjs/toolkit';
 import { createAsyncThunk } from 'store/create-async-thunk';
 import { IUser } from 'common/interfaces/interfaces';
-import { StorageKey } from 'common/enums/enums';
+import { HttpErrorMessage, StorageKey } from 'common/enums/enums';
 import {
   LogInUserRequestDto,
   RegisterUserRequestDto,
   GoogleLogInCodeRequestDto,
 } from 'common/types/types';
 import { AuthActionType } from './common';
+import { HttpError } from 'exceptions/exceptions';
 
 const logIn = createAsyncThunk(
   AuthActionType.LOG_IN,
-  async (logInPayload: LogInUserRequestDto, { extra }): Promise<IUser> => {
-    const { authApiService, localStorageService } = extra;
-    const userInfo = await authApiService.logInUser(logInPayload);
-    const { accessToken, refreshToken, ...user } = userInfo;
-    localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
-    localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
-    return user;
+  async (
+    logInPayload: LogInUserRequestDto,
+    { dispatch, extra },
+  ): Promise<IUser | void> => {
+    try {
+      const { authApiService, localStorageService } = extra;
+      const userInfo = await authApiService.logInUser(logInPayload);
+      const { accessToken, refreshToken, ...user } = userInfo;
+      localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
+      localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
+      return user;
+    } catch (error) {
+      const isHttpError = error instanceof HttpError;
+      if (
+        isHttpError &&
+        error.message === HttpErrorMessage.INVALID_LOG_IN_DATA
+      ) {
+        dispatch(setUserNotExistsError(error.message));
+      } else {
+        throw error;
+      }
+    }
   },
+);
+
+const setUserNotExistsError = createAction(
+  AuthActionType.SET_USER_NOT_EXISTS_ERROR,
+  (userNotExistsError: string) => ({
+    payload: userNotExistsError,
+  }),
 );
 
 const register = createAsyncThunk(
@@ -74,6 +98,7 @@ const loadUser = createAsyncThunk(
 
 const authActions = {
   logIn,
+  setUserNotExistsError,
   register,
   logout,
   logInGoogle,

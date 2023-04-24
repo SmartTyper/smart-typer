@@ -8,7 +8,7 @@ type Props = {
 };
 
 const ProtectedRoute: FC<Props> = ({ user }) => {
-  if (!user) {
+  if (user) {
     return <RRDNavigate to={AppRoute.LOG_IN} replace />;
   }
   return <RRDOutlet />;

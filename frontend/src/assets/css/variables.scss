@@ -3,7 +3,15 @@ $black: #000000;
 $dark-blue: #293042;
 $light-grey: #e9ecef;
 $main-green: #4bba73;
+$dark-green: #0b673c;
+$light-green: #f2f6ee;
 $avatar-shadow: rgba(0, 0, 0, 0.15) 0px 0px 10px inset;
+$white-sheet-shadow: 0 1px 3px rgba(0, 0, 0, 0.12),
+  0 1px 2px rgba(0, 0, 0, 0.24);
+$button-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.4);
+$button-border: 1px solid $dark-green;
+$button-transition: background-color 0.218s ease 0s, border-color 0.218s ease 0s,
+  box-shadow 0.218s ease 0s;
 
 $width-mobile: 425px;
 $width-tablet: 768px;
