@@ -39,7 +39,7 @@ class Auth extends Abstract {
     );
 
     router.post(
-      '/logIn',
+      '/log-in',
       this._getValidationMiddleware({ body: logInSchema }),
       this._run((req) => this._authService.logIn(req.body)),
     );

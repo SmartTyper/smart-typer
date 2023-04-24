@@ -2,10 +2,13 @@
 
 .googleButton {
   font-size: 1.6rem !important;
-  margin: 1rem 0 !important;
+  margin: 0.5rem 0 !important;
   box-shadow: none !important;
   transition: $button-transition !important;
   border: none !important;
+  height: 4rem !important;
+  width: 20rem !important;
+  line-height: 37.5px !important;
 
   &:hover {
     box-shadow: $button-shadow !important;
@@ -13,5 +16,16 @@
 
   div {
     height: 95% !important;
+    width: 42.5px !important;
+
+    svg {
+      height: 42.5px !important;
+      width: 42.5px !important;
+      margin-top: 0 !important;
+    }
+  }
+
+  span {
+    line-height: 42.5px !important;
   }
 }

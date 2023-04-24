@@ -27,7 +27,7 @@ class AuthApi {
     logInPayload: LogInUserRequestDto,
   ): Promise<IUserWithTokens> {
     const logInResponse: IUserWithTokens = await this._httpService.load(
-      `${this._baseUrl}/logIn`,
+      `${this._baseUrl}/log-in`,
       {
         method: HttpMethod.POST,
         payload: JSON.stringify(logInPayload),

@@ -25,25 +25,32 @@ const Button: FC<Props> = ({
   isLoading = false,
   isDisabled = false,
   hasShadowOnHover = true,
-}) => (
-  <button
-    className={clsx(
-      styles.button,
-      className,
-      hasShadowOnHover && styles.hasShadowOnHover,
-    )}
-    disabled={isDisabled || isLoading}
-    onClick={isDisabled ? undefined : onClick}
-  >
-    {isLoading ? (
-      <Spinner size={SpinnerSize.SMALL} />
-    ) : (
-      <>
-        {iconName && <i className={clsx(iconName, iconClassName)}></i>}
-        {label && <span>{label}</span>}
-      </>
-    )}
-  </button>
-);
+}) => {
+  const handleClick: VoidCallback<React.SyntheticEvent> = (e) => {
+    e.preventDefault();
+    onClick(e);
+  };
+
+  return (
+    <button
+      className={clsx(
+        styles.button,
+        className,
+        hasShadowOnHover && styles.hasShadowOnHover,
+      )}
+      disabled={isDisabled || isLoading}
+      onClick={isDisabled ? undefined : handleClick}
+    >
+      {isLoading ? (
+        <Spinner size={SpinnerSize.SMALL} />
+      ) : (
+        <>
+          {iconName && <i className={clsx(iconName, iconClassName)}></i>}
+          {label && <span>{label}</span>}
+        </>
+      )}
+    </button>
+  );
+};
 
 export { Button };

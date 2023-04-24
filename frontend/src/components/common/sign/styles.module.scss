@@ -9,13 +9,21 @@
   align-items: center;
   background-color: $light-grey;
   color: $dark-blue;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   text-align: center;
   padding: 3rem;
 
+  a {
+    color: $dark-green;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
   .logo {
-    height: 15%;
-    margin-bottom: 2%;
+    height: 12.5%;
+    margin: 2% 0;
   }
 
   .line {
@@ -33,6 +41,7 @@
 
     .formFields {
       text-align: start;
+      width: 75%;
     }
 
     .orSeparator {

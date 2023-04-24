@@ -21,7 +21,7 @@ type Props = {
   header: string;
   description: string;
   submitText: string;
-  children: JSX.Element;
+  children: JSX.Element | JSX.Element[];
   onSubmit: (e: React.SyntheticEvent) => void;
   isSubmitDisabled?: boolean;
   alternativeRoute?: AlternativeRouteProp;
@@ -41,7 +41,7 @@ const Sign: FC<Props> = ({
   return (
     <div className={styles.container}>
       <img src={logo} alt="logo" className={styles.logo}></img>
-      <h2>{header}</h2>
+      <h3>{header}</h3>
       <span>{description}</span>
 
       <WhiteSheet size={WhiteSheetSize.MEDIUM}>

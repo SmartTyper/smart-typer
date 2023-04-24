@@ -24,6 +24,7 @@ const GoogleButton: FC<Props> = ({ showError, getGoogleUrl }) => {
       onClick={googleSignIn}
       type="light"
       className={styles.googleButton}
+      label="Log in with Google"
     />
   );
 };

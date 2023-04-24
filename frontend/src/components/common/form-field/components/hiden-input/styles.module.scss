@@ -1,0 +1,13 @@
+@import 'src/assets/css/variables';
+
+.hideValueButton {
+  background-color: $white;
+  border: 1px solid #ced4da;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .hideValueIcon {
+    font-size: 1.8rem;
+  }
+}

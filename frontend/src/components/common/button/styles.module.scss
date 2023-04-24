@@ -19,6 +19,8 @@
 
   i {
     font-size: inherit;
-    margin-right: 0.5rem;
+    :not(:last-child) {
+      margin-right: 0.5rem;
+    }
   }
 }

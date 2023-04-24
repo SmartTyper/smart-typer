@@ -1,6 +1,6 @@
-import { AppRoute } from 'common/enums/enums';
+import { AppRoute, FormFieldLabel, FormFieldType } from 'common/enums/enums';
 import { FC, LogInUserRequestDto } from 'common/types/types';
-import { Sign } from 'components/common/common';
+import { FormField, Link, Sign } from 'components/common/common';
 import {
   useDispatch,
   useSelector,
@@ -16,20 +16,20 @@ const LogIn: FC = () => {
   const navigate = useNavigate();
   const { userNotExistsError, user } = useSelector((state) => state.auth);
   const {
-    // register,
+    register,
     handleSubmit,
-    // formState: { errors },
+    formState: { errors },
   } = useForm<LogInUserRequestDto>(logInSchema);
-
-  const handleSubmitForm = (data: LogInUserRequestDto): void => {
-    dispatch(authActions.logIn(data));
-  };
 
   useEffect(() => {
     if (!userNotExistsError && user?.id) {
       navigate(AppRoute.ROOT);
     }
   }, [userNotExistsError, user?.id]);
+
+  const handleSubmitForm = (data: LogInUserRequestDto): void => {
+    dispatch(authActions.logIn(data));
+  };
 
   return (
     <Sign
@@ -45,7 +45,25 @@ const LogIn: FC = () => {
         path: AppRoute.SIGN_UP,
       }}
     >
-      <></>
+      <FormField
+        label={FormFieldLabel.EMAIL}
+        type={FormFieldType.EMAIL}
+        placeholder="Enter your email"
+        register={register('email')}
+        error={errors.email}
+      />
+      <FormField
+        label={FormFieldLabel.PASSWORD}
+        type={FormFieldType.PASSWORD}
+        register={register('password')}
+        placeholder="Enter your password"
+        error={errors.password}
+        note={
+          <Link to={AppRoute.RESET_PASSWORD}>
+            <span>Forgot password?</span>
+          </Link>
+        }
+      />
     </Sign>
   );
 };

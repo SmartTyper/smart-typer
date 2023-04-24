@@ -1,0 +1,35 @@
+@import 'src/assets/css/variables';
+
+.formField {
+  font-size: 1.35rem;
+  color: $dark-blue;
+
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+
+  .label {
+    margin-bottom: 0.25rem;
+  }
+
+  .note {
+    font-size: 1.25rem;
+  }
+
+  .input {
+    height: 3.5rem;
+    width: 100%;
+    display: flex;
+    align-items: baseline;
+    font-size: inherit;
+    color: $dark-blue;
+    background-color: $white;
+
+    &:focus {
+      color: $dark-blue !important;
+      border-color: $main-green !important;
+      box-shadow: $input-shadow;
+      background-color: $white !important;
+    }
+  }
+}

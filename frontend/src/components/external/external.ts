@@ -9,6 +9,7 @@ export {
   Navbar as RBNavbar,
   Alert as RBAlert,
   Form as RBForm,
+  InputGroup as RBInputGroup,
 } from 'react-bootstrap';
 
 export {
