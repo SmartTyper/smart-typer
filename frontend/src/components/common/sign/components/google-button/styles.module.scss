@@ -5,7 +5,7 @@
   margin: 1rem 0 !important;
   box-shadow: none !important;
   transition: $button-transition !important;
-  border: $button-border !important;
+  border: none !important;
 
   &:hover {
     box-shadow: $button-shadow !important;
