@@ -1,4 +1,4 @@
-import { FC, VoidAction } from 'common/types/types';
+import { FC, VoidCallback } from 'common/types/types';
 import { clsx } from 'helpers/helpers';
 import { Spinner } from '../spinner/spinner';
 
@@ -10,7 +10,7 @@ type Props = {
   iconName?: string;
   className?: string;
   iconClassName?: string;
-  onClick: VoidAction;
+  onClick: VoidCallback<React.SyntheticEvent>;
   isLoading?: boolean;
   isDisabled?: boolean;
   hasShadowOnHover?: boolean;
