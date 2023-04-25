@@ -11,7 +11,7 @@ import { userNameRegex, passwordRegex } from '../../regex/regex';
 export const signUpSchema = yup
   .object()
   .shape({
-    fullName: yup
+    nickname: yup
       .string()
       .trim()
       .min(MIN_FULL_NAME_LENGTH, ValidationErrorMessage.FULL_MIN_LENGTH)
