@@ -4,13 +4,13 @@ import {
   authApi as authApiService,
   notification as notificationService,
 } from 'services/services';
-import { WhiteSheetSize } from 'common/enums/enums';
+import { HttpErrorMessage, WhiteSheetSize } from 'common/enums/enums';
 import { WhiteSheet } from '../white-sheet/white-sheet';
 import {
   AlternativeRoute,
   GoogleButton,
   SubmitButton,
-  UserNotExistsError,
+  AuthError,
 } from './components/components';
 import { AlternativeRoute as AlternativeRouteProp } from './common/common';
 
@@ -25,7 +25,7 @@ type Props = {
   onSubmit: (e: React.SyntheticEvent) => void;
   isSubmitDisabled?: boolean;
   alternativeRoute?: AlternativeRouteProp;
-  userNotExistsError: string | null;
+  authError?: HttpErrorMessage | null;
 };
 
 const Sign: FC<Props> = ({
@@ -36,7 +36,7 @@ const Sign: FC<Props> = ({
   onSubmit,
   isSubmitDisabled = false,
   alternativeRoute,
-  userNotExistsError,
+  authError,
 }) => {
   return (
     <div className={styles.container}>
@@ -47,9 +47,7 @@ const Sign: FC<Props> = ({
       <WhiteSheet size={WhiteSheetSize.MEDIUM}>
         <RBForm className={styles.form}>
           <>
-            {!!userNotExistsError && (
-              <UserNotExistsError error={userNotExistsError} />
-            )}
+            {!!authError && <AuthError error={authError} />}
             <div className={styles.formFields}>{children}</div>
             <SubmitButton
               isDisabled={isSubmitDisabled}

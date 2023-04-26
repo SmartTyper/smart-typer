@@ -1,29 +1,29 @@
 import { authActions } from 'store/actions';
 import { AuthActionType } from 'store/common';
 
-const { logIn, register, logInGoogle, logout } = authActions;
+const { logIn, register, logInGoogle, logOut } = authActions;
 
 const STARTED_ACTIONS = [
   logIn.pending,
   register.pending,
   logInGoogle.pending,
-  logout.pending,
+  logOut.pending,
 ];
 const FINISHED_ACTIONS = [
   logIn.fulfilled,
   register.fulfilled,
   logInGoogle.fulfilled,
-  logout.fulfilled,
+  logOut.fulfilled,
   logIn.rejected,
   register.rejected,
   logInGoogle.rejected,
-  logout.rejected,
+  logOut.rejected,
 ];
 
 const REQUEST_ACTIONS_TYPES = [
   AuthActionType.LOG_IN,
   AuthActionType.REGISTER,
-  AuthActionType.LOGOUT,
+  AuthActionType.LOG_OUT,
   AuthActionType.LOG_IN_GOOGLE,
 ];
 

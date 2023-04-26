@@ -14,7 +14,13 @@ import { signUpSchema } from 'validation-schemas/validation-schemas';
 const SignUp: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { userNotExistsError, user } = useSelector((state) => state.auth);
+  const { authError, user, isSignUpLoading } = useSelector(
+    ({ auth, request }) => ({
+      authError: auth.error,
+      user: auth.user,
+      isSignUpLoading: request.authRegister,
+    }),
+  );
   const {
     register,
     handleSubmit,
@@ -22,10 +28,10 @@ const SignUp: FC = () => {
   } = useForm<RegisterUserRequestDto>(signUpSchema);
 
   useEffect(() => {
-    if (!userNotExistsError && user?.id) {
+    if (!authError && user?.id) {
       navigate(AppRoute.ROOT);
     }
-  }, [userNotExistsError, user?.id]);
+  }, [authError, user?.id]);
 
   const handleSubmitForm = (data: RegisterUserRequestDto): void => {
     dispatch(authActions.register(data));
@@ -33,11 +39,12 @@ const SignUp: FC = () => {
 
   return (
     <Sign
-      userNotExistsError={userNotExistsError}
+      authError={authError}
       header="Get Started"
       description="Create new account to continue"
       submitText="Sign up"
       onSubmit={handleSubmit(handleSubmitForm)}
+      isSubmitDisabled={isSignUpLoading}
       alternativeRoute={{
         // prettier-ignore
         label: 'Already have an account?',

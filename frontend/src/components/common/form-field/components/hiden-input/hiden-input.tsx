@@ -1,9 +1,8 @@
-import { useState } from 'react';
-
 import { FormFieldType } from 'common/enums/enums';
-import { FieldError, UseFormRegisterReturn } from 'common/types/types';
+import { FC, FieldError, UseFormRegisterReturn } from 'common/types/types';
 import { RBForm, RBInputGroup } from 'components/external/external';
 import { Button } from '../../../button/button';
+import { useState } from 'hooks/hooks';
 
 import styles from './styles.module.scss';
 
@@ -15,7 +14,7 @@ type Props = {
   className?: string;
 };
 
-const HiddenInput: React.FC<Props> = ({
+const HiddenInput: FC<Props> = ({
   placeholder,
   value,
   register,

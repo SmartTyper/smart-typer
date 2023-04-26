@@ -5,8 +5,8 @@ type Props = {
   error: string;
 };
 
-const UserNotExistsError: FC<Props> = ({ error }) => {
+const AuthError: FC<Props> = ({ error }) => {
   return <RBAlert variant="danger">{error}</RBAlert>;
 };
 
-export { UserNotExistsError };
+export { AuthError };

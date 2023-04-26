@@ -14,6 +14,7 @@ import { Profile } from 'components/profile/profile';
 import { useSelector, useDispatch, useEffect, useLocation } from 'hooks/hooks';
 import { localStorage as localStorageService } from 'services/services';
 import { authActions } from 'store/actions';
+import { LogInGoogle } from 'components/log-in-google/log-in-google';
 
 const App: FC = () => {
   const dispatch = useDispatch();
@@ -92,6 +93,9 @@ const App: FC = () => {
       </RRDRoute>
       <RRDRoute path={AppRoute.LOG_IN} element={<LogIn />} />
       <RRDRoute path={AppRoute.SIGN_UP} element={<SignUp />} />
+      <RRDRoute path={AppRoute.LOG_IN_GOOGLE} element={<LogInGoogle />} />
+      <RRDRoute path={AppRoute.SIGN_UP} element={<SignUp />} />
+      <RRDRoute path={AppRoute.LOG_IN} element={<LogIn />} />
     </RRDRoutes>
   );
 };

@@ -1,24 +1,29 @@
-import { createAction } from '@reduxjs/toolkit';
-import { createAsyncThunk } from 'store/create-async-thunk';
+import { createAction, createAsyncThunk } from 'store/external';
 import { IUser } from 'common/interfaces/interfaces';
-import { HttpErrorMessage, StorageKey } from 'common/enums/enums';
+import {
+  HttpErrorMessage,
+  StorageKey,
+  NotificationMessage,
+} from 'common/enums/enums';
 import {
   LogInUserRequestDto,
   RegisterUserRequestDto,
   GoogleLogInCodeRequestDto,
+  SetPasswordRequestDto,
+  ResetPasswordRequestDto,
 } from 'common/types/types';
-import { AuthActionType } from './common';
 import { HttpError } from 'exceptions/exceptions';
+import { AuthActionType } from './common';
 
 const logIn = createAsyncThunk(
   AuthActionType.LOG_IN,
   async (
-    logInPayload: LogInUserRequestDto,
+    payload: LogInUserRequestDto,
     { dispatch, extra },
   ): Promise<IUser | void> => {
     try {
       const { authApiService, localStorageService } = extra;
-      const userInfo = await authApiService.logInUser(logInPayload);
+      const userInfo = await authApiService.logInUser(payload);
       const { accessToken, refreshToken, ...user } = userInfo;
       localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
       localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
@@ -29,7 +34,7 @@ const logIn = createAsyncThunk(
         isHttpError &&
         error.message === HttpErrorMessage.INVALID_LOG_IN_DATA
       ) {
-        dispatch(setUserNotExistsError(error.message));
+        dispatch(setError(error.message));
       } else {
         throw error;
       }
@@ -37,21 +42,18 @@ const logIn = createAsyncThunk(
   },
 );
 
-const setUserNotExistsError = createAction(
-  AuthActionType.SET_USER_NOT_EXISTS_ERROR,
-  (userNotExistsError: string) => ({
-    payload: userNotExistsError,
+const setError = createAction(
+  AuthActionType.SET_ERROR,
+  (authError: HttpErrorMessage) => ({
+    payload: authError,
   }),
 );
 
 const register = createAsyncThunk(
   AuthActionType.REGISTER,
-  async (
-    registerPayload: RegisterUserRequestDto,
-    { extra },
-  ): Promise<IUser> => {
+  async (payload: RegisterUserRequestDto, { extra }): Promise<IUser> => {
     const { authApiService, localStorageService } = extra;
-    const userInfo = await authApiService.registerUser(registerPayload);
+    const userInfo = await authApiService.registerUser(payload);
     const { accessToken, refreshToken, ...user } = userInfo;
     localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
     localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
@@ -59,24 +61,24 @@ const register = createAsyncThunk(
   },
 );
 
-const logout = createAsyncThunk(
-  AuthActionType.LOGOUT,
+const logOut = createAsyncThunk(
+  AuthActionType.LOG_OUT,
   async (_: undefined, { extra }): Promise<void> => {
     const { authApiService, localStorageService } = extra;
     const refreshToken = localStorageService.getItem(StorageKey.REFRESH_TOKEN);
     localStorageService.removeItem(StorageKey.ACCESS_TOKEN);
     localStorageService.removeItem(StorageKey.REFRESH_TOKEN);
     if (refreshToken) {
-      await authApiService.logout({ refreshToken });
+      await authApiService.logOut({ refreshToken });
     }
   },
 );
 
 const logInGoogle = createAsyncThunk(
   AuthActionType.LOG_IN_GOOGLE,
-  async (code: GoogleLogInCodeRequestDto, { extra }): Promise<IUser> => {
+  async (payload: GoogleLogInCodeRequestDto, { extra }): Promise<IUser> => {
     const { authApiService, localStorageService } = extra;
-    const userInfo = await authApiService.logInGoogle(code);
+    const userInfo = await authApiService.logInGoogle(payload);
     const { accessToken, refreshToken, ...user } = userInfo;
     localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
     localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
@@ -96,13 +98,50 @@ const loadUser = createAsyncThunk(
   },
 );
 
+const resetPassword = createAsyncThunk(
+  AuthActionType.RESET_PASSWORD,
+  async (
+    payload: ResetPasswordRequestDto,
+    { dispatch, extra },
+  ): Promise<void> => {
+    try {
+      const { notificationService, authApiService } = extra;
+      await authApiService.resetPassword(payload);
+      notificationService.info(NotificationMessage.RESET_PASSWORD_SENT);
+    } catch (error) {
+      const isHttpError = error instanceof HttpError;
+      if (isHttpError && error.message === HttpErrorMessage.NO_SUCH_EMAIL) {
+        dispatch(setError(error.message));
+      } else {
+        throw error;
+      }
+    }
+  },
+);
+
+const setPassword = createAsyncThunk(
+  AuthActionType.SET_PASSWORD,
+  async (payload: SetPasswordRequestDto, { extra }): Promise<IUser> => {
+    const { notificationService, authApiService, localStorageService } = extra;
+    const userInfo = await authApiService.setPassword(payload);
+    const { accessToken, refreshToken, ...user } = userInfo;
+    localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
+    localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
+    notificationService.info(NotificationMessage.RESET_PASSWORD_SENT);
+    notificationService.success(NotificationMessage.NEW_PASSWORD_SAVED);
+    return user;
+  },
+);
+
 const authActions = {
   logIn,
-  setUserNotExistsError,
+  setError,
   register,
-  logout,
+  logOut,
   logInGoogle,
   loadUser,
+  setPassword,
+  resetPassword,
 };
 
 export { authActions };

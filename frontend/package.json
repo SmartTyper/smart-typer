@@ -29,7 +29,8 @@
     "react-router-dom": "6.4.3",
     "react-scripts": "5.0.1",
     "react-toastify": "8.1.0",
-    "smart-typer-shared": "file:../shared/build"
+    "smart-typer-shared": "file:../shared/build",
+    "yup": "0.32.11"
   },
   "devDependencies": {
     "@types/node": "18.0.5",

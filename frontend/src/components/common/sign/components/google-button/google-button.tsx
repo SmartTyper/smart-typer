@@ -1,12 +1,13 @@
 import { FC, GoogleLogInUrlResponseDto } from 'common/types/types';
 import { ReactGoogleButton } from 'components/external/external';
 import { handleError } from 'helpers/helpers';
+import { HttpErrorMessage } from 'common/enums/enums';
 
 import styles from './styles.module.scss';
 
 type Props = {
   getGoogleUrl: () => Promise<GoogleLogInUrlResponseDto>;
-  showError: (message: string) => void;
+  showError: (message: HttpErrorMessage) => void;
 };
 
 const GoogleButton: FC<Props> = ({ showError, getGoogleUrl }) => {

@@ -1,4 +1,4 @@
-import { FieldError, UseFormRegisterReturn } from 'common/types/types';
+import { FC, FieldError, UseFormRegisterReturn } from 'common/types/types';
 import { FormFieldType } from 'common/enums/enums';
 import { HiddenInput, Input } from './components/components';
 import { RBForm } from 'components/external/external';
@@ -15,7 +15,7 @@ type Props = {
   value?: string;
 };
 
-const FormField: React.FC<Props> = ({
+const FormField: FC<Props> = ({
   label,
   type,
   placeholder,

@@ -107,7 +107,9 @@ class Auth {
     });
   }
 
-  public async setPassword(body: SetPasswordRequestDto): Promise<void> {
+  public async setPassword(
+    body: SetPasswordRequestDto,
+  ): Promise<IUserWithTokens> {
     const { token, password } = body;
     if (!token) {
       throw new HttpError({
@@ -119,12 +121,13 @@ class Auth {
     const decoded = this._tokenService.verifyToken(token);
 
     const hashedPassword = await this._hashService.hash(password);
-    await this._userService.patchById(decoded.userId, {
+    const user = await this._userService.patchById(decoded.userId, {
       password: hashedPassword,
     });
+    return this._userService.getFullInfoByEmail(user.email);
   }
 
-  public async logout(body: RefreshTokenRequestDto): Promise<void> {
+  public async logOut(body: RefreshTokenRequestDto): Promise<void> {
     const { refreshToken } = body;
     await this._tokenService.removeRefreshToken(refreshToken);
   }

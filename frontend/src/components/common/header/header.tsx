@@ -2,10 +2,27 @@ import { FC } from 'common/types/types';
 import { RBNavbar } from 'components/external/external';
 import { AppRoute } from 'common/enums/enums';
 import { NavItem, ProfileDropdown } from './components/components';
+import { useDispatch, useEffect, useNavigate, useSelector } from 'hooks/hooks';
+import { authActions } from 'store/actions';
 
 import styles from './styles.module.scss';
 
 const Header: FC = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isLogOutLoading, user } = useSelector(({ auth, request }) => ({
+    user: auth.user,
+    isLogOutLoading: request.authLogOut,
+  }));
+
+  const handleLogout = (): void => {
+    dispatch(authActions.logOut());
+  };
+
+  useEffect(() => {
+    if (!isLogOutLoading && user) navigate(AppRoute.LOG_IN);
+  }, [isLogOutLoading, user]);
+
   const profileDropdownLinks = [
     {
       link: AppRoute.PROFILE,
@@ -22,7 +39,7 @@ const Header: FC = () => {
   const profileDropdownButtons = [
     {
       label: 'Sign out',
-      onClick: (): void => console.log(),
+      onClick: handleLogout,
       iconName: 'bi bi-box-arrow-right',
     },
   ];

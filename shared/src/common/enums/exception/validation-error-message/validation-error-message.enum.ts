@@ -8,6 +8,7 @@ enum ValidationErrorMessage {
   FULL_MAX_LENGTH = 'full name must be at most 30 characters',
   PASSWORD_MIN_LENGTH = 'password must be at least 6 characters',
   PASSWORD_MAX_LENGTH = 'password must be at most 12 characters',
+  PASSWORDS_MUST_MATCH = 'passwords must match',
 }
 
 export { ValidationErrorMessage };

@@ -1,6 +1,6 @@
-import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { ReducerName } from 'common/enums/enums';
 import { ActionType } from 'store/common';
+import { createSlice, isAnyOf } from 'store/external';
 import {
   STARTED_ACTIONS,
   FINISHED_ACTIONS,

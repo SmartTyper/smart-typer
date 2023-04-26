@@ -1,19 +1,20 @@
 import { toast } from 'react-toastify';
+import { HttpErrorMessage, NotificationMessage } from 'common/enums/enums';
 
 class Notification {
-  public error(message: string): void {
+  public error(message: HttpErrorMessage): void {
     toast.error(message);
   }
 
-  public success(message: string): void {
+  public success(message: NotificationMessage): void {
     toast.success(message);
   }
 
-  public warning(message: string): void {
+  public warning(message: NotificationMessage): void {
     toast.warn(message);
   }
 
-  public info(message: string): void {
+  public info(message: NotificationMessage): void {
     toast.info(message);
   }
 }

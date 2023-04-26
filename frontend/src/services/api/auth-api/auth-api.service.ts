@@ -61,7 +61,9 @@ class AuthApi {
     });
   }
 
-  public async setPassword(payload: SetPasswordRequestDto): Promise<void> {
+  public async setPassword(
+    payload: SetPasswordRequestDto,
+  ): Promise<IUserWithTokens> {
     return this._httpService.load(`${this._baseUrl}/set-password`, {
       method: HttpMethod.POST,
       payload: JSON.stringify(payload),
@@ -69,8 +71,8 @@ class AuthApi {
     });
   }
 
-  public async logout(payload: RefreshTokenRequestDto): Promise<void> {
-    return this._httpService.load(`${this._baseUrl}/logout`, {
+  public async logOut(payload: RefreshTokenRequestDto): Promise<void> {
+    return this._httpService.load(`${this._baseUrl}/log-out`, {
       method: HttpMethod.POST,
       payload: JSON.stringify(payload),
       contentType: ContentType.JSON,

@@ -1,6 +1,6 @@
-import { FieldError, UseFormRegisterReturn } from 'react-hook-form';
 import { FormFieldType } from 'common/enums/enums';
 import { RBForm } from 'components/external/external';
+import { FC, UseFormRegisterReturn, FieldError } from 'common/types/types';
 
 type Props = {
   placeholder: string;
@@ -11,7 +11,7 @@ type Props = {
   className?: string;
 };
 
-const Input: React.FC<Props> = ({
+const Input: FC<Props> = ({
   placeholder,
   type,
   value,

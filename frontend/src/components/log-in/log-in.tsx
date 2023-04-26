@@ -14,7 +14,13 @@ import { logInSchema } from 'validation-schemas/validation-schemas';
 const LogIn: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { userNotExistsError, user } = useSelector((state) => state.auth);
+  const { authError, user, isLogInLoading } = useSelector(
+    ({ auth, request }) => ({
+      authError: auth.error,
+      user: auth.user,
+      isLogInLoading: request.authLogIn,
+    }),
+  );
   const {
     register,
     handleSubmit,
@@ -22,10 +28,10 @@ const LogIn: FC = () => {
   } = useForm<LogInUserRequestDto>(logInSchema);
 
   useEffect(() => {
-    if (!userNotExistsError && user?.id) {
+    if (!authError && user?.id) {
       navigate(AppRoute.ROOT);
     }
-  }, [userNotExistsError, user?.id]);
+  }, [authError, user?.id]);
 
   const handleSubmitForm = (data: LogInUserRequestDto): void => {
     dispatch(authActions.logIn(data));
@@ -33,11 +39,12 @@ const LogIn: FC = () => {
 
   return (
     <Sign
-      userNotExistsError={userNotExistsError}
+      authError={authError}
       header="Welcome back"
       description="Log in to your account to continue"
       submitText="Log in"
       onSubmit={handleSubmit(handleSubmitForm)}
+      isSubmitDisabled={isLogInLoading}
       alternativeRoute={{
         // prettier-ignore
         label: 'Don\'t have an account?',

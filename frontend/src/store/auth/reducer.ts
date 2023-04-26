@@ -1,16 +1,16 @@
-import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { ReducerName } from 'common/enums/app/reducer-name/reducer-name.enum';
-import { authActions } from './actions';
+import { HttpErrorMessage, ReducerName } from 'common/enums/enums';
 import { IUser } from 'common/interfaces/interfaces';
+import { createSlice, isAnyOf } from 'store/external';
+import { authActions } from './actions';
 
 type State = {
   user: IUser | null;
-  userNotExistsError: string | null;
+  error: HttpErrorMessage | null;
 };
 
 const initialState: State = {
   user: null,
-  userNotExistsError: null,
+  error: null,
 };
 
 const { reducer } = createSlice({
@@ -18,14 +18,13 @@ const { reducer } = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    const { logIn, register, logInGoogle, logout, setUserNotExistsError } =
-      authActions;
+    const { logIn, register, logInGoogle, logOut, setError } = authActions;
     builder
-      .addCase(logout.fulfilled, (state) => {
-        state.user = null;
+      .addCase(logOut.fulfilled, (state) => {
+        Object.assign(state, initialState);
       })
-      .addCase(setUserNotExistsError, (state, action) => {
-        state.userNotExistsError = action.payload;
+      .addCase(setError, (state, action) => {
+        state.error = action.payload;
       })
       .addMatcher(
         isAnyOf(logIn.fulfilled, register.fulfilled, logInGoogle.fulfilled),
