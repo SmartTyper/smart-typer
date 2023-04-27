@@ -6,3 +6,6 @@ export * from './react/react';
 export * from './token/token';
 export * from './user/user';
 export * from './validation/validation';
+export * from './statistics/statistics';
+export * from './rating/rating';
+export * from './settings/settings';

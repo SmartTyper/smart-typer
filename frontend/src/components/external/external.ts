@@ -1,5 +1,7 @@
 import ReactAvatar from 'react-avatar';
 import ReactGoogleButton from 'react-google-button';
+import ReactCrop from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
 
 export {
   Dropdown as RBDropdown,
@@ -21,4 +23,4 @@ export {
   Outlet as RRDOutlet,
 } from 'react-router-dom';
 
-export { ReactAvatar, ReactGoogleButton };
+export { ReactAvatar, ReactGoogleButton, ReactCrop };

@@ -1,5 +1,8 @@
 import { HttpCode, HttpErrorMessage } from 'common/enums/enums';
-import { IGoogleUser, IUserWithTokens } from 'common/interfaces/interfaces';
+import {
+  GoogleUser,
+  UserWithTokensAndSettingsResponseDto,
+} from 'common/types/types';
 import {
   LogInUserRequestDto,
   RegisterUserRequestDto,
@@ -46,7 +49,7 @@ class Auth {
 
   public async register(
     userInfo: RegisterUserRequestDto,
-  ): Promise<IUserWithTokens> {
+  ): Promise<UserWithTokensAndSettingsResponseDto> {
     const existingUser = await this._userService.getByEmail(userInfo.email);
 
     if (existingUser) {
@@ -66,7 +69,9 @@ class Auth {
     });
   }
 
-  public async logIn(body: LogInUserRequestDto): Promise<IUserWithTokens> {
+  public async logIn(
+    body: LogInUserRequestDto,
+  ): Promise<UserWithTokensAndSettingsResponseDto> {
     const user = await this._userService.getByEmail(body.email);
     if (!user || !user.password) {
       throw new HttpError({
@@ -86,7 +91,7 @@ class Auth {
       });
     }
 
-    return this._userService.getFullInfoByEmail(user.email);
+    return this._userService.getWithTokensAndSettingsByEmail(user.email);
   }
 
   public async resetPassword(body: ResetPasswordRequestDto): Promise<void> {
@@ -109,7 +114,7 @@ class Auth {
 
   public async setPassword(
     body: SetPasswordRequestDto,
-  ): Promise<IUserWithTokens> {
+  ): Promise<UserWithTokensAndSettingsResponseDto> {
     const { token, password } = body;
     if (!token) {
       throw new HttpError({
@@ -124,7 +129,7 @@ class Auth {
     const user = await this._userService.patchById(decoded.userId, {
       password: hashedPassword,
     });
-    return this._userService.getFullInfoByEmail(user.email);
+    return this._userService.getWithTokensAndSettingsByEmail(user.email);
   }
 
   public async logOut(body: RefreshTokenRequestDto): Promise<void> {
@@ -139,7 +144,7 @@ class Auth {
 
   public async logInGoogle({
     code,
-  }: GoogleLogInCodeRequestDto): Promise<IUserWithTokens> {
+  }: GoogleLogInCodeRequestDto): Promise<UserWithTokensAndSettingsResponseDto> {
     const idToken = await this._oauth2Service.getIdToken(code);
     if (!idToken) {
       throw new HttpError({
@@ -148,8 +153,8 @@ class Auth {
       });
     }
     const decodedToken = this._tokenService.decodeToken(idToken);
-    const { email, name, picture } = decodedToken as unknown as IGoogleUser;
-    const user = await this._userService.getFullInfoByEmail(email);
+    const { email, name, picture } = decodedToken as unknown as GoogleUser;
+    const user = await this._userService.getWithTokensAndSettingsByEmail(email);
     if (user) {
       return user;
     }

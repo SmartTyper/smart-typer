@@ -1,10 +1,10 @@
 import { AppRoute } from 'common/enums/enums';
 import { RRDNavigate, RRDOutlet } from 'components/external/external';
 import { FC } from 'common/types/types';
-import { IUser } from 'common/interfaces/interfaces';
+import { User } from 'common/types/types';
 
 type Props = {
-  user: IUser | null;
+  user: User | null;
 };
 
 const ProtectedRoute: FC<Props> = ({ user }) => {

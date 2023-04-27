@@ -1,14 +1,14 @@
 import { FC } from 'common/types/types';
 import { RBDropdown, RBNavItem, RBNavLink } from 'components/external/external';
-import { ILink, IButton } from './common/interfaces/interfaces';
-import { Button } from 'components/common/button/button';
+import { Link, Button } from './common/types/types';
+import { Button as ButtonItem } from 'components/common/button/button';
 import { IconLink } from 'components/common/icon-link/icon-link';
 
 import styles from './styles.module.scss';
 
 type Props = {
-  links: ILink[];
-  buttons: IButton[];
+  links: Link[];
+  buttons: Button[];
 };
 
 const Dropdown: FC<Props> = ({ children, links, buttons }) => {
@@ -34,7 +34,7 @@ const Dropdown: FC<Props> = ({ children, links, buttons }) => {
         {buttons.map(({ label, iconName, onClick }) => {
           return (
             <RBDropdown.Item
-              as={Button}
+              as={ButtonItem}
               onClick={onClick}
               key={label}
               label={label}

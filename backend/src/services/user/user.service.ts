@@ -1,10 +1,11 @@
 import { HttpCode, HttpErrorMessage } from 'common/enums/enums';
 import {
-  IUser,
-  IUserWithPassword,
-  IUserWithTokens,
-} from 'common/interfaces/interfaces';
-import { CreateUserRequestDto } from 'common/types/types';
+  User as UserBase,
+  UserWithPassword,
+  CreateUserRequestDto,
+  UserWithTokensAndSettingsResponseDto,
+  UserWithStatisticsAndRatingResponseDto,
+} from 'common/types/types';
 import { user as userRepository } from 'data/repositories/repositories';
 import { HttpError } from 'exceptions/exceptions';
 import { token as tokenService, s3 as s3Service } from 'services/services';
@@ -26,24 +27,39 @@ class User {
     this._s3Service = params.s3Service;
   }
 
-  private async _getFullInfo(user: IUser): Promise<IUserWithTokens> {
+  private async _getWithTokensAndSettings(
+    user: UserBase,
+  ): Promise<UserWithTokensAndSettingsResponseDto> {
     const photoUrl = user.photoUrl
       ? await this._s3Service.getSignedUrl(user.photoUrl)
       : user.photoUrl;
     const tokens = await this._tokenService.getTokens(user.id);
+    const settings = {
+      countdownBeforeGame: 10,
+      gameTime: 60,
+      isShownInRating: true,
+      hasGameVoice: true,
+      hasEmailNotifications: true,
+      hasLessonVoice: true,
+    };
     return {
       ...user,
       ...tokens,
       photoUrl,
+      settings,
     };
   }
 
-  public async getFullInfoByEmail(email: string): Promise<IUserWithTokens> {
+  public async getWithTokensAndSettingsByEmail(
+    email: string,
+  ): Promise<UserWithTokensAndSettingsResponseDto> {
     const user = await this.getByEmail(email);
-    return this._getFullInfo(user);
+    return this._getWithTokensAndSettings(user);
   }
 
-  public async getFullInfoById(userId: number): Promise<IUserWithTokens> {
+  public async getWithTokensAndSettingsById(
+    userId: number,
+  ): Promise<UserWithTokensAndSettingsResponseDto> {
     const user = await this._userRepository.getById(userId);
     if (!user) {
       throw new HttpError({
@@ -51,10 +67,10 @@ class User {
         message: HttpErrorMessage.INVALID_LOG_IN_DATA,
       });
     }
-    return this._getFullInfo(user);
+    return this._getWithTokensAndSettings(user);
   }
 
-  public async getByEmail(email: string): Promise<IUserWithPassword> {
+  public async getByEmail(email: string): Promise<UserWithPassword> {
     const user = await this._userRepository.getByEmail(email);
     if (!user) {
       throw new HttpError({
@@ -65,7 +81,9 @@ class User {
     return user;
   }
 
-  public async create(data: CreateUserRequestDto): Promise<IUserWithTokens> {
+  public async create(
+    data: CreateUserRequestDto,
+  ): Promise<UserWithTokensAndSettingsResponseDto> {
     const { nickname, email, photoUrl, password } = data;
     const userData = {
       email,
@@ -75,14 +93,50 @@ class User {
     };
     const newUser = await this._userRepository.create(userData);
 
-    return this.getFullInfoByEmail(newUser.email);
+    return this.getWithTokensAndSettingsByEmail(newUser.email);
   }
 
   public async patchById(
     userId: number,
-    data: Partial<IUserWithPassword>,
-  ): Promise<IUser> {
+    data: Partial<UserWithPassword>,
+  ): Promise<UserBase> {
     return this._userRepository.patchById(userId, data);
+  }
+
+  public async getWithStatisticsAndRatingById(
+    userId: number,
+  ): Promise<UserWithStatisticsAndRatingResponseDto> {
+    console.log(userId);
+    return {
+      id: 2,
+      nickname: 'nickname2',
+      email: 'email2',
+      photoUrl: null,
+      statistics: {
+        totalTime: 10,
+        todayTime: 10,
+        totalLessons: 10,
+        todayLessons: 10,
+        topSpeed: 10,
+        todayTopSpeed: 10,
+        averageSpeed: 10,
+        todayAverageSpeed: 10,
+      },
+      rating: [
+        {
+          nickname: 'nickname3',
+          photoUrl: null,
+          id: 3,
+          averageSpeed: 20,
+        },
+        {
+          nickname: 'nickname4',
+          photoUrl: null,
+          id: 4,
+          averageSpeed: 30,
+        },
+      ],
+    };
   }
 }
 

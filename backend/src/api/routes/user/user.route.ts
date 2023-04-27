@@ -19,12 +19,19 @@ class User extends Abstract {
     const router: Router = Router();
 
     router.get(
-      '/',
-      this._run((req: IRequestWithUser) => {
-        const queryUserId = req.query.userId;
-        const userId = queryUserId ? Number(queryUserId) : req.userId;
-        return this._userService.getFullInfoById(userId);
-      }),
+      '/current',
+      this._run((req: IRequestWithUser) =>
+        this._userService.getWithTokensAndSettingsById(req.userId),
+      ),
+    );
+
+    router.get(
+      '/:userId',
+      this._run((req: IRequestWithUser) =>
+        this._userService.getWithStatisticsAndRatingById(
+          Number(req.params.userId),
+        ),
+      ),
     );
 
     return router;

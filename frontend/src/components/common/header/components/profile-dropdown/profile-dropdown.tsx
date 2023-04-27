@@ -4,7 +4,7 @@ import { AvatarSize, UserLabelColor } from 'common/enums/enums';
 import {
   IButton,
   ILink,
-} from 'components/common/dropdown/common/interfaces/interfaces';
+} from 'components/common/dropdown/common/interfaces/types';
 import { UserLabel } from 'components/common/user-label/user-label';
 
 type Props = {

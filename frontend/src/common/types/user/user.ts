@@ -1,1 +1,7 @@
-export type { UserIdResponseDto } from 'smart-typer-shared/common/types/types';
+export type {
+  User,
+  UserWithTokensAndSettingsResponseDto,
+  UserWithStatisticsAndRatingResponseDto,
+  UserIdDto,
+  UserWithSettings,
+} from 'smart-typer-shared/common/types/types';

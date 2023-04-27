@@ -1,5 +1,8 @@
-import { HttpMethod } from 'common/enums/enums';
-import { IUserWithTokens } from 'common/interfaces/interfaces';
+import {
+  UserIdDto,
+  UserWithStatisticsAndRatingResponseDto,
+  UserWithTokensAndSettingsResponseDto,
+} from 'common/types/types';
 import { http as httpService } from 'services/services';
 
 type Constructor = {
@@ -14,11 +17,14 @@ class UserApi {
     this._httpService = params.httpService;
   }
 
-  public async getFullInfo(userId?: number): Promise<IUserWithTokens> {
-    return this._httpService.load(this._baseUrl, {
-      method: HttpMethod.GET,
-      queryParams: { userId },
-    });
+  public async getWithTokensAndSettings(): Promise<UserWithTokensAndSettingsResponseDto> {
+    return this._httpService.load(`${this._baseUrl}/current`);
+  }
+
+  public async getWithStatisticsAndRating(
+    userId: UserIdDto,
+  ): Promise<UserWithStatisticsAndRatingResponseDto> {
+    return this._httpService.load(`${this._baseUrl}/${userId}`);
   }
 }
 

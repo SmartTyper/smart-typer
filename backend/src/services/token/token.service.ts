@@ -8,7 +8,7 @@ import {
 import {
   RefreshTokenRequestDto,
   TokensResponseDto,
-  UserIdResponseDto,
+  UserIdDto,
 } from 'common/types/types';
 import { HttpError } from 'exceptions/exceptions';
 
@@ -36,8 +36,8 @@ class Token {
     return this._jwt.sign({ userId }, this._secretKey, { expiresIn });
   }
 
-  public verifyToken(token: string): UserIdResponseDto {
-    return jwt.verify(token, this._secretKey) as UserIdResponseDto;
+  public verifyToken(token: string): UserIdDto {
+    return jwt.verify(token, this._secretKey) as UserIdDto;
   }
 
   public decodeToken(token: string): Record<string, unknown> {

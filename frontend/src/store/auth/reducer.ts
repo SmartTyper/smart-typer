@@ -1,15 +1,17 @@
 import { HttpErrorMessage, ReducerName } from 'common/enums/enums';
-import { IUser } from 'common/interfaces/interfaces';
+import { Settings, User } from 'common/types/types';
 import { createSlice, isAnyOf } from 'store/external';
 import { authActions } from './actions';
 
 type State = {
-  user: IUser | null;
+  user: User | null;
+  settings: Settings | null;
   error: HttpErrorMessage | null;
 };
 
 const initialState: State = {
   user: null,
+  settings: null,
   error: null,
 };
 
@@ -30,7 +32,9 @@ const { reducer } = createSlice({
         isAnyOf(logIn.fulfilled, register.fulfilled, logInGoogle.fulfilled),
         (state, action) => {
           if (action.payload) {
-            state.user = action.payload;
+            const { settings, ...user } = action.payload;
+            state.user = user;
+            state.settings = settings;
           }
         },
       );

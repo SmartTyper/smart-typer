@@ -7,8 +7,8 @@ import {
   RegisterUserRequestDto,
   GoogleLogInUrlResponseDto,
   GoogleLogInCodeRequestDto,
+  UserWithTokensAndSettingsResponseDto,
 } from 'common/types/types';
-import { IUserWithTokens } from 'common/interfaces/interfaces';
 import { http as httpService } from 'services/services';
 
 type Constructor = {
@@ -24,33 +24,23 @@ class AuthApi {
   }
 
   public async logInUser(
-    logInPayload: LogInUserRequestDto,
-  ): Promise<IUserWithTokens> {
-    const logInResponse: IUserWithTokens = await this._httpService.load(
-      `${this._baseUrl}/log-in`,
-      {
-        method: HttpMethod.POST,
-        payload: JSON.stringify(logInPayload),
-        contentType: ContentType.JSON,
-      },
-    );
-
-    return logInResponse;
+    payload: LogInUserRequestDto,
+  ): Promise<UserWithTokensAndSettingsResponseDto> {
+    return this._httpService.load(`${this._baseUrl}/log-in`, {
+      method: HttpMethod.POST,
+      payload: JSON.stringify(payload),
+      contentType: ContentType.JSON,
+    });
   }
 
   public async registerUser(
-    registerPayload: RegisterUserRequestDto,
-  ): Promise<IUserWithTokens> {
-    const registerResponse: IUserWithTokens = await this._httpService.load(
-      `${this._baseUrl}/register`,
-      {
-        method: HttpMethod.POST,
-        payload: JSON.stringify(registerPayload),
-        contentType: ContentType.JSON,
-      },
-    );
-
-    return registerResponse;
+    payload: RegisterUserRequestDto,
+  ): Promise<UserWithTokensAndSettingsResponseDto> {
+    return this._httpService.load(`${this._baseUrl}/register`, {
+      method: HttpMethod.POST,
+      payload: JSON.stringify(payload),
+      contentType: ContentType.JSON,
+    });
   }
 
   public async resetPassword(payload: ResetPasswordRequestDto): Promise<void> {
@@ -63,7 +53,7 @@ class AuthApi {
 
   public async setPassword(
     payload: SetPasswordRequestDto,
-  ): Promise<IUserWithTokens> {
+  ): Promise<UserWithTokensAndSettingsResponseDto> {
     return this._httpService.load(`${this._baseUrl}/set-password`, {
       method: HttpMethod.POST,
       payload: JSON.stringify(payload),
@@ -85,7 +75,7 @@ class AuthApi {
 
   public async logInGoogle(
     payload: GoogleLogInCodeRequestDto,
-  ): Promise<IUserWithTokens> {
+  ): Promise<UserWithTokensAndSettingsResponseDto> {
     return this._httpService.load(`${this._baseUrl}/logIn/google`, {
       method: HttpMethod.POST,
       payload: JSON.stringify(payload),
