@@ -38,7 +38,7 @@ const Profile: FC = () => {
   const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
   
-  const [userData, setUserData] = useState<User | null>(null);
+  const [unsavedUser, setUnsavedUser] = useState<User | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isCropModalVisible, setIsCropModalVisible] = useState(false);
 
@@ -53,7 +53,7 @@ const Profile: FC = () => {
 
   useEffect(() => {
     if (user) {
-      setUserData(user);
+      setUnsavedUser(user);
     }
   }, [user]);
 
@@ -65,7 +65,7 @@ const Profile: FC = () => {
   });
 
   const handleRemove = (): void => {
-    setUserData((prev) => ({photoUrl: null, ...prev}));
+    setUnsavedUser((prev) => ({photoUrl: null, ...prev} as User));
     setSelectedFile(null);
   };
 
@@ -80,11 +80,13 @@ const Profile: FC = () => {
     if (selectedFile) {
       dispatch(profileActions.updateAvatar(selectedFile));
     } 
-    if(user.photoUrl && !userData?.photoUrl) {
+    if(user.photoUrl && !unsavedUser?.photoUrl) {
       dispatch(profileActions.deleteAvatar());
     }
-    if(_.isEqual(_.omit(user, UNCHANGEABLE_BY_UPDATE_INFO_METHOD_FIELDS), _.omit(userData, UNCHANGEABLE_BY_UPDATE_INFO_METHOD_FIELDS))) {
-      dispatch(profileActions.updateInfo(selectedFile));
+    const userInfo = _.omit(user, UNCHANGEABLE_BY_UPDATE_INFO_METHOD_FIELDS);
+    const unsavedUserInfo = _.omit(unsavedUser, UNCHANGEABLE_BY_UPDATE_INFO_METHOD_FIELDS)
+    if(_.isEqual(userInfo, unsavedUserInfo)) {
+      dispatch(profileActions.updateInfo(unsavedUserInfo));
     }
   };
 
@@ -132,7 +134,7 @@ const Profile: FC = () => {
           <label className={getAllowedClasses(styles.cardInputLabel, 'fs-5')}>
             Avatar
           </label>
-          {!userData.photoUrl ? (
+          {!unsavedUser.photoUrl ? (
             <div className={styles.photoUrlImgContainer}>
               <i
                 className={getAllowedClasses(
@@ -145,14 +147,14 @@ const Profile: FC = () => {
             <UserAvatar
               className={`${getAllowedClasses(styles.cardImage)} mb-3`}
               name={user?.nickname}
-              src={userData.photoUrl}
+              src={unsavedUser.photoUrl}
               round={true}
               size="12.8rem"
               showTooltip={false}
             />
           )}
 
-          {userData.photoUrl && (
+          {unsavedUser.photoUrl && (
             <Button
               variant="danger"
               className={getAllowedClasses(
@@ -213,7 +215,7 @@ const Profile: FC = () => {
                 Full name
               </Form.Label>
               <Form.Control
-                value={userData.}
+                value={unsavedUser?.nickname}
                 {...register('fullName')}
                 className={getAllowedClasses(styles.cardInput)}
                 type={FieldType.TEXT}
