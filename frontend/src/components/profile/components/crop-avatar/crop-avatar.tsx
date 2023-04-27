@@ -1,22 +1,22 @@
-import { FC } from 'common/types/types';
-import { toast } from 'react-toastify';
-import { Button, Modal } from 'react-bootstrap';
-import { ReactCrop } from 'components/external/external';
-import { HttpError } from 'exceptions/exceptions';
+import { RBModal, ReactCrop } from 'components/external/external';
 import { useState } from 'hooks/hooks';
+import { FC } from 'common/types/types';
+import { Button } from 'components/common/common';
+import { canvasToBlob } from 'helpers/helpers';
+import { CROPPED_IMAGE_TYPE } from 'common/constants/constants';
 import { Crop, CropData } from './common/types/types';
 
 type Props = {
-  isShown: boolean;
-  src: string;
-  handleClose: () => void;
-  updateAvatar: (croppedImageCanvas: HTMLCanvasElement) => void;
+  isVisible: boolean;
+  file: File | null;
+  onClose: () => void;
+  updateAvatar: (croppedFile: File) => void;
 };
 
-const CropAvatar: FC<Props> = ({ isShown, src, handleClose, updateAvatar }) => {
+const CropAvatar: FC<Props> = ({ isVisible, file, onClose, updateAvatar }) => {
   const [crop, setCrop] = useState<Partial<Crop>>({
     unit: '%',
-    height: 128,
+    height: 130,
     aspect: 1,
   });
   const [image, setImage] = useState<HTMLImageElement | null>(null);
@@ -25,23 +25,23 @@ const CropAvatar: FC<Props> = ({ isShown, src, handleClose, updateAvatar }) => {
     setCrop(newCrop);
   };
 
-  const onImageLoaded = (img: HTMLImageElement): void => {
-    setImage(img);
+  const onImageLoaded = (photo: HTMLImageElement): void => {
+    setImage(photo);
   };
 
-  const getCroppedImg = (
-    img: HTMLImageElement,
+  const getCroppedPhoto = (
+    photo: HTMLImageElement,
     cropData: CropData,
   ): HTMLCanvasElement => {
     const canvas = document.createElement('canvas');
-    const scaleX = img.naturalWidth / img.width;
-    const scaleY = img.naturalHeight / img.height;
+    const scaleX = photo.naturalWidth / photo.width;
+    const scaleY = photo.naturalHeight / photo.height;
     canvas.width = cropData.width;
     canvas.height = cropData.height;
     const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 
     ctx.drawImage(
-      img,
+      photo,
       cropData.x * scaleX,
       cropData.y * scaleY,
       cropData.width * scaleX,
@@ -56,33 +56,38 @@ const CropAvatar: FC<Props> = ({ isShown, src, handleClose, updateAvatar }) => {
   };
 
   const onSave = async (): Promise<void> => {
-    try {
-      const croppedImage = getCroppedImg(
-        image as HTMLImageElement,
-        crop as CropData,
-      );
-      updateAvatar(croppedImage);
-    } catch (error) {
-      const httpError = error as HttpError;
-      toast.error(httpError.message);
-    }
+    const croppedPhoto = getCroppedPhoto(
+      image as HTMLImageElement,
+      crop as CropData,
+    );
+    const croppedImageBlob = await canvasToBlob(croppedPhoto);
+    const croppedImageFile = new File([croppedImageBlob], (file as File).name, {
+      type: CROPPED_IMAGE_TYPE,
+    });
+
+    onClose();
+    updateAvatar(croppedImageFile);
   };
 
+  if(!file) {
+    return null;
+  }
+
   return (
-    <Modal
+    <RBModal
       className="d-flex align-items-center"
       dialogClassName="w-25 rounded"
-      show={isShown}
-      onHide={handleClose}
+      show={isVisible}
+      onHide={onClose}
       backdrop="static"
       keyboard={false}
     >
-      <Modal.Header closeButton>
-        <Modal.Title className="fs-6">Crop the avatar</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
+      <RBModal.Header closeButton>
+        <RBModal.Title className="fs-6">Crop the avatar</RBModal.Title>
+      </RBModal.Header>
+      <RBModal.Body>
         <ReactCrop
-          src={src}
+          src={URL.createObjectURL(file)}
           onChange={onCropChange}
           crop={crop}
           keepSelection
@@ -90,16 +95,16 @@ const CropAvatar: FC<Props> = ({ isShown, src, handleClose, updateAvatar }) => {
           minHeight={128}
           onImageLoaded={onImageLoaded}
         />
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
+      </RBModal.Body>
+      <RBModal.Footer>
+        <Button onClick={onClose}>
           Cancel
         </Button>
-        <Button variant="success" onClick={onSave}>
+        <Button onClick={onSave}>
           Save
         </Button>
-      </Modal.Footer>
-    </Modal>
+      </RBModal.Footer>
+    </RBModal>
   );
 };
 

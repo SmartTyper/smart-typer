@@ -2,7 +2,7 @@ import { HttpError } from 'exceptions/exceptions';
 import { HttpErrorMessage } from 'common/enums/enums';
 import { EXTERNAL_SERVER_ERROR_MESSAGE } from 'common/constants/constants';
 
-const handleError = (
+const handleExternalError = (
   error: unknown,
   showError: (message: HttpErrorMessage) => void,
 ): void => {
@@ -11,4 +11,4 @@ const handleError = (
   showError(message as HttpErrorMessage);
 };
 
-export { handleError };
+export { handleExternalError };

@@ -1,4 +1,5 @@
-import { FC } from 'common/types/types';
+import _ from 'lodash';
+import { FC, User } from 'common/types/types';
 import { toast } from 'react-toastify';
 import { Button, Form, Col, Row } from 'react-bootstrap';
 import {
@@ -28,19 +29,20 @@ import { ApplyChangesButton } from '../apply-changes-button';
 import { CropAvatar } from '../crop-avatar';
 
 import styles from './styles.module.scss';
+import { notification as notificationService } from 'services/services';
+import { ValidationErrorMessage } from 'common/enums/enums';
+
+const UNCHANGEABLE_BY_UPDATE_INFO_METHOD_FIELDS = ['id', 'photoUrl']
 
 const Profile: FC = () => {
   const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [userFullName, setUserFullName] = useState('');
-  const [selectedImgURL, setSelectedImgURL] = useState('');
-  const [croppedImgURL, setCroppedImgURL] = useState('');
-  const [selectedFile, setSelectedFile] = useState<File>();
-  const [isCropModalVisible, setCropModalVisible] = useState(false);
-  const { user } = useSelector((state) => state.auth);
+  
+  const [userData, setUserData] = useState<User | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isCropModalVisible, setIsCropModalVisible] = useState(false);
 
+  const { user } = useSelector((state) => state.auth);
   const { userId } = useParams();
 
   useEffect(() => {
@@ -51,30 +53,20 @@ const Profile: FC = () => {
 
   useEffect(() => {
     if (user) {
-      setUserFullName(user.fullName);
+      setUserData(user);
     }
   }, [user]);
 
   const {
     register,
     formState: { errors },
-  } = useForm<IUser>({
+  } = useForm<User>({
     resolver: yupResolver(profileInfoSchema),
   });
 
   const handleRemove = (): void => {
-    if (user) {
-      setIsDeleting(true);
-
-      userApi
-        .deleteAvatar()
-        .then(() => dispatch(authActions.updateUser({ photoUrl: null })))
-        .finally(() => {
-          setIsDeleting(false);
-          setSelectedImgURL('');
-          setCroppedImgURL('');
-        });
-    }
+    setUserData((prev) => ({photoUrl: null, ...prev}));
+    setSelectedFile(null);
   };
 
   const handleUpload = (): void => {
@@ -82,97 +74,54 @@ const Profile: FC = () => {
   };
 
   const handleSaveChanges = async (): Promise<void> => {
-    if (user) {
-      setIsUploading(true);
-      try {
-        const updatedUser = await userApi.update({
-          ...user,
-          fullName: userFullName,
-        });
-        toast.success(ToastMessage.SETTINGS_UPDATED);
-        dispatch(
-          authActions.setUser({ ...updatedUser, photoUrl: user.photoUrl }),
-        );
-        setUserFullName(updatedUser.fullName);
-      } catch (err) {
-        const httpError = err as HttpError;
-        toast.error(httpError.message);
-      }
+    if(!user) {
+      return;
     }
-
     if (selectedFile) {
-      setIsUploading(true);
-      try {
-        const updatedUser = await userApi.uploadAvatar(
-          selectedFile,
-          selectedFile.name,
-        );
-        dispatch(authActions.setUser(updatedUser));
-        setSelectedFile(undefined);
-      } catch (err) {
-        const httpError = err as HttpError;
-        toast.error(httpError.message);
-      }
+      dispatch(profileActions.updateAvatar(selectedFile));
+    } 
+    if(user.photoUrl && !userData?.photoUrl) {
+      dispatch(profileActions.deleteAvatar(selectedFile));
     }
-
-    setIsUploading(false);
-  };
-
-  const handleFileSelected = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    if (e.target.files && e.target.files[0]) {
-      if (bytesToMegabytes(e.target.files[0].size) > MAX_FILE_SIZE) {
-        toast.error(`File must be less than ${MAX_FILE_SIZE} Mb.`);
-      } else if (!ALLOWED_FILE_TYPES.includes(e.target.files[0].type)) {
-        toast.error(
-          'Forbidden file type. Please choose image with type .png, .jpg or .jpeg',
-        );
-      } else {
-        const reader = new FileReader();
-
-        reader.onload = (e): void => {
-          if (e.target && e.target.result) {
-            setSelectedImgURL(e.target.result.toString());
-          }
-        };
-
-        const selectedFile = e.target.files[0];
-
-        reader.readAsDataURL(selectedFile);
-
-        setSelectedFile(selectedFile);
-        setCropModalVisible(true);
-      }
+    if(_.isEqual(_.omit(user, UNCHANGEABLE_BY_UPDATE_INFO_METHOD_FIELDS), _.omit(userData, UNCHANGEABLE_BY_UPDATE_INFO_METHOD_FIELDS))) {
+      dispatch(profileActions.updateInfo(selectedFile));
     }
   };
+
+  const handleFileSelected = (fileSelectedEvent: React.ChangeEvent<HTMLInputElement>): void => {
+    const [file] = fileSelectedEvent.target.files ?? [];
+    if (file) {
+      const {size, type} = file;
+      const sizeInMegabytes = bytesToMegabytes(size);
+      if (sizeInMegabytes > MAX_FILE_SIZE) {
+        notificationService.error(ValidationErrorMessage.INVALID_FILE_SIZE);
+        return;
+      } 
+      if (!ALLOWED_FILE_TYPES.includes(type)) {
+        notificationService.error(ValidationErrorMessage.FORBIDDEN_FILE_TYPE);
+        return;
+      } 
+
+      setSelectedFile(file);
+      setIsCropModalVisible(true);
+    };
+  }
 
   const handleCropModalClose = (): void => {
     if (inputRef.current) {
       inputRef.current.value = '';
     }
 
-    setCropModalVisible(false);
+    setIsCropModalVisible(false);
   };
 
   const updateAvatar = async (
-    croppedImageCanvas: HTMLCanvasElement,
+    croppedFile: File,
   ): Promise<void> => {
-    const croppedImageBlob = await canvasToBlob(croppedImageCanvas);
-    const newImageName = 'cropped_' + selectedFile?.name;
-    const croppedImageFile = new File([croppedImageBlob], newImageName, {
-      type: 'image/jpeg',
-    });
-
-    const croppedImageDataURL = canvasToDataURL(croppedImageCanvas);
-
-    setCroppedImgURL(croppedImageDataURL);
-    setSelectedFile(croppedImageFile);
-
-    if (inputRef.current) {
-      inputRef.current.value = '';
-    }
-
-    setCropModalVisible(false);
+    setSelectedFile(croppedFile);
+    setIsCropModalVisible(false);
   };
+
   return (
     <>
       <Row className="m-0">
@@ -183,7 +132,7 @@ const Profile: FC = () => {
           <label className={getAllowedClasses(styles.cardInputLabel, 'fs-5')}>
             Avatar
           </label>
-          {!croppedImgURL && !user?.photoUrl ? (
+          {!userData.photoUrl ? (
             <div className={styles.photoUrlImgContainer}>
               <i
                 className={getAllowedClasses(
@@ -195,15 +144,15 @@ const Profile: FC = () => {
           ) : (
             <UserAvatar
               className={`${getAllowedClasses(styles.cardImage)} mb-3`}
-              name={user?.fullName}
-              src={croppedImgURL ? croppedImgURL : user?.photoUrl ?? ''}
+              name={user?.nickname}
+              src={userData.photoUrl}
               round={true}
               size="12.8rem"
               showTooltip={false}
             />
           )}
 
-          {user?.photoUrl && (
+          {userData.photoUrl && (
             <Button
               variant="danger"
               className={getAllowedClasses(
@@ -211,7 +160,7 @@ const Profile: FC = () => {
                 'mb-3',
               )}
               onClick={handleRemove}
-              disabled={isDeleting}
+              disabled={isPhotoUpdating}
             >
               Remove
             </Button>
@@ -232,6 +181,7 @@ const Profile: FC = () => {
               'mb-3',
             )}
             onClick={handleUpload}
+            disabled={isPhotoUpdating}
           >
             <i
               className={`bi bi-cloud-arrow-up-fill text-white ${getAllowedClasses(
@@ -263,7 +213,7 @@ const Profile: FC = () => {
                 Full name
               </Form.Label>
               <Form.Control
-                value={userFullName}
+                value={userData.}
                 {...register('fullName')}
                 className={getAllowedClasses(styles.cardInput)}
                 type={FieldType.TEXT}
@@ -280,9 +230,9 @@ const Profile: FC = () => {
           </Form>
         </Col>
       </Row>
-      <ApplyChangesButton
+      <Button
         onSubmit={handleSaveChanges}
-        isUploading={isUploading}
+        disabled={!user || isPhotoUpdating}
       />
       <CropAvatar
         isShown={isCropModalVisible}

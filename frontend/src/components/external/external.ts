@@ -12,6 +12,7 @@ export {
   Alert as RBAlert,
   Form as RBForm,
   InputGroup as RBInputGroup,
+  Modal as RBModal,
 } from 'react-bootstrap';
 
 export {

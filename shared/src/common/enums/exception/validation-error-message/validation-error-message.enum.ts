@@ -9,6 +9,8 @@ enum ValidationErrorMessage {
   PASSWORD_MIN_LENGTH = 'password must be at least 6 characters',
   PASSWORD_MAX_LENGTH = 'password must be at most 12 characters',
   PASSWORDS_MUST_MATCH = 'passwords must match',
+  INVALID_FILE_SIZE = 'File must be less than 5 Mb.',
+  FORBIDDEN_FILE_TYPE = 'Forbidden file type. Please choose image with type .png, .jpg or .jpeg',
 }
 
 export { ValidationErrorMessage };

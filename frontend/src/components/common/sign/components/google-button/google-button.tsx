@@ -1,6 +1,6 @@
 import { FC, GoogleLogInUrlResponseDto } from 'common/types/types';
 import { ReactGoogleButton } from 'components/external/external';
-import { handleError } from 'helpers/helpers';
+import { handleExternalError } from 'helpers/helpers';
 import { HttpErrorMessage } from 'common/enums/enums';
 
 import styles from './styles.module.scss';
@@ -16,7 +16,7 @@ const GoogleButton: FC<Props> = ({ showError, getGoogleUrl }) => {
       const { url } = await getGoogleUrl();
       window.location.assign(url);
     } catch (error) {
-      handleError(error, showError);
+      handleExternalError(error, showError);
     }
   };
 

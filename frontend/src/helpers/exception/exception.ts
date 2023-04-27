@@ -1,1 +1,1 @@
-export * from './handle-error/handle-error';
+export * from './handle-external-error/handle-external-error';
