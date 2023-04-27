@@ -34,14 +34,23 @@ class User extends Abstract {
       ),
     );
 
-    // router.put(
-    //   '/:userId',
-    //   this._run((req: User) =>
-    //     this._userService.getWithStatisticsAndRatingById(
-    //       Number(req.params.userId),
-    //     ),
-    //   ),
-    // );
+    router.put(
+      '/current',
+      this._run((req: IRequestWithUser) => this._userService.updateById(req.userId, req.body),
+      ),
+    );
+
+    router.put(
+      '/current/avatar',
+      this._run((req: IRequestWithUser) => this._userService.updateAvatar(req.userId, req.file),
+      ),
+    );
+
+    router.delete(
+      '/current/avatar',
+      this._run((req: IRequestWithUser) => this._userService.deleteAvatar(req.userId),
+      ),
+    );
 
     return router;
   }

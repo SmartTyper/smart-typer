@@ -2,8 +2,8 @@ export type {
   ResetPasswordRequestDto,
   SetPasswordRequestDto,
   RefreshTokenRequestDto,
-  LogInUserRequestDto,
-  RegisterUserRequestDto,
+  LogInRequestDto,
+  RegisterRequestDto,
   GoogleLogInUrlResponseDto,
   GoogleLogInCodeRequestDto,
 } from 'smart-typer-shared/common/types/types';

@@ -1,4 +1,4 @@
-type Settings = {
+type SettingsDto = {
   countdownBeforeGame: number;
   gameTime: number;
   isShownInRating: boolean;
@@ -7,4 +7,4 @@ type Settings = {
   hasLessonVoice: boolean;
 };
 
-export type { Settings };
+export type { SettingsDto };

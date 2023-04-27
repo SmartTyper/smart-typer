@@ -1,7 +1,7 @@
-type RegisterUserRequestDto = {
+type RegisterRequestDto = {
   nickname: string;
   email: string;
   password: string;
 };
 
-export type { RegisterUserRequestDto };
+export type { RegisterRequestDto };

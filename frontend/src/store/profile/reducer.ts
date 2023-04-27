@@ -1,10 +1,10 @@
 import { ReducerName } from 'common/enums/enums';
-import { Rating, Statistics, User } from 'common/types/types';
+import { Rating, Statistics, UserDto } from 'common/types/types';
 import { createSlice } from 'store/external';
 import { profile as profileActions } from './actions';
 
 type State = {
-  user: User | null;
+  user: UserDto | null;
   statistics: Statistics | null;
   rating: Rating | null;
 };

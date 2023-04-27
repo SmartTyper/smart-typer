@@ -1,6 +1,6 @@
 export type {
-  RegisterUserRequestDto,
-  LogInUserRequestDto,
+  RegisterRequestDto,
+  LogInRequestDto,
   ResetPasswordRequestDto,
   SetPasswordRequestDto,
   GoogleLogInUrlResponseDto,

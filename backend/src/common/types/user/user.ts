@@ -1,5 +1,5 @@
 export type {
-  User,
+  UserDto,
   CreateUserRequestDto,
   UserIdDto,
   UserWithTokensAndSettingsResponseDto,

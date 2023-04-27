@@ -5,9 +5,9 @@ import {
   NotificationMessage,
 } from 'common/enums/enums';
 import {
-  User,
-  LogInUserRequestDto,
-  RegisterUserRequestDto,
+  UserDto,
+  LogInRequestDto,
+  RegisterRequestDto,
   GoogleLogInCodeRequestDto,
   SetPasswordRequestDto,
   ResetPasswordRequestDto,
@@ -18,13 +18,13 @@ import { AuthActionType } from './common';
 const logIn = createAsyncThunk(
   AuthActionType.LOG_IN,
   async (
-    payload: LogInUserRequestDto,
+    payload: LogInRequestDto,
     { dispatch, extra: { service, action } },
-  ): Promise<User | void> => {
+  ): Promise<UserDto | void> => {
     try {
       const { authApiService, localStorageService } = service;
       const { settingsActions } = action;
-      const userData = await authApiService.logInUser(payload);
+      const userData = await authApiService.logIn(payload);
       const { accessToken, refreshToken, settings, ...user } = userData;
       localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
       localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
@@ -54,12 +54,12 @@ const setError = createAction(
 const register = createAsyncThunk(
   AuthActionType.REGISTER,
   async (
-    payload: RegisterUserRequestDto,
+    payload: RegisterRequestDto,
     { dispatch, extra: { service, action } },
-  ): Promise<User> => {
+  ): Promise<UserDto> => {
     const { authApiService, localStorageService } = service;
     const { settingsActions } = action;
-    const userData = await authApiService.registerUser(payload);
+    const userData = await authApiService.register(payload);
     const { accessToken, refreshToken, settings, ...user } = userData;
     localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
     localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
@@ -86,7 +86,7 @@ const logInGoogle = createAsyncThunk(
   async (
     payload: GoogleLogInCodeRequestDto,
     { dispatch, extra: { service, action } },
-  ): Promise<User> => {
+  ): Promise<UserDto> => {
     const { authApiService, localStorageService } = service;
     const { settingsActions } = action;
     const userData = await authApiService.logInGoogle(payload);
@@ -103,7 +103,7 @@ const loadUser = createAsyncThunk(
   async (
     _: undefined,
     { dispatch, extra: { service, action } },
-  ): Promise<User | void> => {
+  ): Promise<UserDto | void> => {
     const { userApiService, localStorageService } = service;
     const { settingsActions } = action;
     const accessToken = localStorageService.getItem(StorageKey.ACCESS_TOKEN);
@@ -118,7 +118,7 @@ const loadUser = createAsyncThunk(
 
 const updateUser = createAction(
   AuthActionType.UPDATE_USER,
-  (payload: Partial<User>) => ({ payload }),
+  (payload: Partial<UserDto>) => ({ payload }),
 );
 
 const resetPassword = createAsyncThunk(
@@ -147,7 +147,7 @@ const setPassword = createAsyncThunk(
   async (
     payload: SetPasswordRequestDto,
     { extra: { service } },
-  ): Promise<User> => {
+  ): Promise<UserDto> => {
     const { notificationService, authApiService, localStorageService } =
       service;
     const userData = await authApiService.setPassword(payload);

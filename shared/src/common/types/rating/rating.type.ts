@@ -1,7 +1,7 @@
 import { Statistics } from '../statistics/statistics.type';
-import { User } from '../user/user/user.type';
+import { UserDto } from '../user/user-dto/user-dto.type';
 
-type Rating = (Pick<User, 'nickname' | 'photoUrl' | 'id'> &
+type Rating = (Pick<UserDto, 'nickname' | 'photoUrl' | 'id'> &
   Pick<Statistics, 'averageSpeed'>)[];
 
 export type { Rating };

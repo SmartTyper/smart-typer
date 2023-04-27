@@ -1,10 +1,10 @@
 import { HttpErrorMessage, ReducerName } from 'common/enums/enums';
-import { User } from 'common/types/types';
+import { UserDto } from 'common/types/types';
 import { createSlice, isAnyOf } from 'store/external';
 import { auth as authActions } from './actions';
 
 type State = {
-  user: User | null;
+  user: UserDto | null;
   error: HttpErrorMessage | null;
 };
 

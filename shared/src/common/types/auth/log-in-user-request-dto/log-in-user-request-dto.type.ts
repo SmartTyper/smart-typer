@@ -1,6 +1,6 @@
-interface LogInUserRequestDto {
+interface LogInRequestDto {
   email: string;
   password: string;
 }
 
-export type { LogInUserRequestDto };
+export type { LogInRequestDto };

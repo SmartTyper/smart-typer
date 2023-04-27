@@ -1,9 +1,9 @@
 import { createAction, createAsyncThunk } from 'store/external';
 import {
-  User,
+  UserDto,
   UserIdDto,
   UserWithStatisticsAndRatingResponseDto,
-  updateAvatarResponseDto,
+  UpdateAvatarResponseDto,
 } from 'common/types/types';
 import { ProfileActionType } from './common';
 
@@ -25,7 +25,7 @@ const updateAvatar = createAsyncThunk(
   async (
     payload: File,
     { extra: { service } },
-  ): Promise<updateAvatarResponseDto> => {
+  ): Promise<UpdateAvatarResponseDto> => {
     const { userApiService } = service;
     return userApiService.updateAvatar(payload);
   },
@@ -34,9 +34,9 @@ const updateAvatar = createAsyncThunk(
 const updateInfo = createAsyncThunk(
   ProfileActionType.UPDATE_INFO,
   async (
-    payload: Partial<User>,
+    payload: Partial<UserDto>,
     { dispatch, extra: { service, action } },
-  ): Promise<Partial<User>> => {
+  ): Promise<Partial<UserDto>> => {
     const { userApiService } = service;
     await userApiService.updateInfo(payload);
     dispatch(action.authActions.updateUser(payload));

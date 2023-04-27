@@ -1,6 +1,6 @@
 import { HttpCode, HttpErrorMessage } from 'common/enums/enums';
 import {
-  User as UserBase,
+  UserDto,
   UserWithPassword,
   CreateUserRequestDto,
   UserWithTokensAndSettingsResponseDto,
@@ -9,6 +9,7 @@ import {
 import { user as userRepository } from 'data/repositories/repositories';
 import { HttpError } from 'exceptions/exceptions';
 import { token as tokenService, s3 as s3Service } from 'services/services';
+import { UpdateAvatarResponseDto } from 'smart-typer-shared/common/types/types';
 
 type Constructor = {
   userRepository: typeof userRepository;
@@ -28,7 +29,7 @@ class User {
   }
 
   private async _getWithTokensAndSettings(
-    user: UserBase,
+    user: UserDto,
   ): Promise<UserWithTokensAndSettingsResponseDto> {
     const photoUrl = user.photoUrl
       ? await this._s3Service.getSignedUrl(user.photoUrl)
@@ -96,10 +97,10 @@ class User {
     return this.getWithTokensAndSettingsByEmail(newUser.email);
   }
 
-  public async patchById(
+  public async updateById(
     userId: number,
     data: Partial<UserWithPassword>,
-  ): Promise<UserBase> {
+  ): Promise<UserDto> {
     return this._userRepository.patchById(userId, data);
   }
 
@@ -137,6 +138,20 @@ class User {
         },
       ],
     };
+  }
+
+  public async updateAvatar(
+    userId: number,
+    file?: Express.Multer.File,
+  ): Promise<UpdateAvatarResponseDto> {
+    console.log(userId, file);
+    return { photoUrl: 'newPhotoUrl' };
+  }
+
+  public async deleteAvatar(
+    userId: number,
+  ): Promise<void> {
+    console.log(userId);
   }
 }
 

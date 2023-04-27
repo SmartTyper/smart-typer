@@ -4,8 +4,8 @@ import {
   UserWithTokensAndSettingsResponseDto,
 } from 'common/types/types';
 import {
-  LogInUserRequestDto,
-  RegisterUserRequestDto,
+  LogInRequestDto,
+  RegisterRequestDto,
   RefreshTokenRequestDto,
   ResetPasswordRequestDto,
   SetPasswordRequestDto,
@@ -48,9 +48,9 @@ class Auth {
   }
 
   public async register(
-    userInfo: RegisterUserRequestDto,
+    payload: RegisterRequestDto,
   ): Promise<UserWithTokensAndSettingsResponseDto> {
-    const existingUser = await this._userService.getByEmail(userInfo.email);
+    const existingUser = await this._userService.getByEmail(payload.email);
 
     if (existingUser) {
       throw new HttpError({
@@ -59,20 +59,20 @@ class Auth {
       });
     }
 
-    const hashedPassword = await this._hashService.hash(userInfo.password);
-    const email = userInfo.email;
+    const hashedPassword = await this._hashService.hash(payload.password);
+    const email = payload.email;
 
     return this._userService.create({
-      ...userInfo,
+      ...payload,
       email,
       password: hashedPassword,
     });
   }
 
   public async logIn(
-    body: LogInUserRequestDto,
+    payload: LogInRequestDto,
   ): Promise<UserWithTokensAndSettingsResponseDto> {
-    const user = await this._userService.getByEmail(body.email);
+    const user = await this._userService.getByEmail(payload.email);
     if (!user || !user.password) {
       throw new HttpError({
         status: HttpCode.BAD_REQUEST,
@@ -81,7 +81,7 @@ class Auth {
     }
 
     const isPasswordCorrect = await this._hashService.verify(
-      body.password,
+      payload.password,
       user.password,
     );
     if (!isPasswordCorrect) {
@@ -94,8 +94,8 @@ class Auth {
     return this._userService.getWithTokensAndSettingsByEmail(user.email);
   }
 
-  public async resetPassword(body: ResetPasswordRequestDto): Promise<void> {
-    const user = await this._userService.getByEmail(body.email);
+  public async resetPassword(payload: ResetPasswordRequestDto): Promise<void> {
+    const user = await this._userService.getByEmail(payload.email);
     if (!user) {
       throw new HttpError({
         status: HttpCode.BAD_REQUEST,
@@ -113,9 +113,9 @@ class Auth {
   }
 
   public async setPassword(
-    body: SetPasswordRequestDto,
+    payload: SetPasswordRequestDto,
   ): Promise<UserWithTokensAndSettingsResponseDto> {
-    const { token, password } = body;
+    const { token, password } = payload;
     if (!token) {
       throw new HttpError({
         status: HttpCode.BAD_REQUEST,
@@ -126,7 +126,7 @@ class Auth {
     const decoded = this._tokenService.verifyToken(token);
 
     const hashedPassword = await this._hashService.hash(password);
-    const user = await this._userService.patchById(decoded.userId, {
+    const user = await this._userService.updateById(decoded.userId, {
       password: hashedPassword,
     });
     return this._userService.getWithTokensAndSettingsByEmail(user.email);

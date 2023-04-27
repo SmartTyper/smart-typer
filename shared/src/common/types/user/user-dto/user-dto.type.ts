@@ -1,8 +1,8 @@
-type User = {
+type UserDto = {
   id: number;
   nickname: string;
   email: string;
   photoUrl: string | null;
 };
 
-export type { User };
+export type { UserDto };

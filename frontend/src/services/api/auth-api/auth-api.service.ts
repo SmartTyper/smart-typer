@@ -3,8 +3,8 @@ import {
   ResetPasswordRequestDto,
   SetPasswordRequestDto,
   RefreshTokenRequestDto,
-  LogInUserRequestDto,
-  RegisterUserRequestDto,
+  LogInRequestDto,
+  RegisterRequestDto,
   GoogleLogInUrlResponseDto,
   GoogleLogInCodeRequestDto,
   UserWithTokensAndSettingsResponseDto,
@@ -23,8 +23,8 @@ class AuthApi {
     this._httpService = params.httpService;
   }
 
-  public async logInUser(
-    payload: LogInUserRequestDto,
+  public async logIn(
+    payload: LogInRequestDto,
   ): Promise<UserWithTokensAndSettingsResponseDto> {
     return this._httpService.load(`${this._baseUrl}/log-in`, {
       method: HttpMethod.POST,
@@ -33,8 +33,8 @@ class AuthApi {
     });
   }
 
-  public async registerUser(
-    payload: RegisterUserRequestDto,
+  public async register(
+    payload: RegisterRequestDto,
   ): Promise<UserWithTokensAndSettingsResponseDto> {
     return this._httpService.load(`${this._baseUrl}/register`, {
       method: HttpMethod.POST,

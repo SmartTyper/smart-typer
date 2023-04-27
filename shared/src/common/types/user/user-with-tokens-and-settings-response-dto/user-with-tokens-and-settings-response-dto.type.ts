@@ -1,8 +1,9 @@
-import { UserWithSettings } from '../user-with-settings/user-with-settings.type';
+import { TokensResponseDto } from 'common/types/token/token';
+import { SettingsDto } from 'common/types/settings/settings';
+import { UserDto } from '../user-dto/user-dto.type';
 
-type UserWithTokensAndSettingsResponseDto = UserWithSettings & {
-  accessToken: string;
-  refreshToken: string;
+type UserWithTokensAndSettingsResponseDto = UserDto & TokensResponseDto & {
+  settings: SettingsDto;
 };
 
 export type { UserWithTokensAndSettingsResponseDto };

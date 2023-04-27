@@ -1,5 +1,5 @@
 import { AppRoute, FormFieldLabel, FormFieldType } from 'common/enums/enums';
-import { FC, LogInUserRequestDto } from 'common/types/types';
+import { FC, LogInRequestDto } from 'common/types/types';
 import { FormField, Link, Sign } from 'components/common/common';
 import {
   useDispatch,
@@ -25,7 +25,7 @@ const LogIn: FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LogInUserRequestDto>(logInSchema);
+  } = useForm<LogInRequestDto>(logInSchema);
 
   useEffect(() => {
     if (!authError && user?.id) {
@@ -33,7 +33,7 @@ const LogIn: FC = () => {
     }
   }, [authError, user?.id]);
 
-  const handleSubmitForm = (data: LogInUserRequestDto): void => {
+  const handleSubmitForm = (data: LogInRequestDto): void => {
     dispatch(authActions.logIn(data));
   };
 

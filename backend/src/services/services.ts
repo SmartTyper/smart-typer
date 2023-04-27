@@ -2,7 +2,7 @@ import { Auth } from './auth/auth.service';
 import { Token } from './token/token.service';
 import { User } from './user/user.service';
 import { S3 } from './s3/s3.service';
-// import { Settings } from './settings/settings.service';
+import { Settings } from './settings/settings.service';
 // import { Statistics } from './statistics/statistics.service';
 import { Hash } from './hash/hash.service';
 import { Oauth2 } from './oauth2/oauth2.service';
@@ -21,7 +21,7 @@ const s3 = new S3();
 
 const hash = new Hash();
 
-// const settings = new Settings({ settingsRepository });
+const settings = new Settings();
 
 // const statistics = new Statistics({ statisticsRepository });
 
@@ -60,4 +60,4 @@ const auth = new Auth({
   appUrl: ENV.APP.URL,
 });
 
-export { auth, token, user, s3, hash, oauth2, mailer };
+export { auth, token, user, s3, hash, oauth2, mailer, settings };

@@ -1,5 +1,5 @@
-import { User } from 'common/types/user/user';
+import { UserDto } from 'common/types/user/user';
 
-type updateAvatarResponseDto = Pick<User, 'photoUrl'>;
+type UpdateAvatarResponseDto = Pick<UserDto, 'photoUrl'>;
 
-export type { updateAvatarResponseDto };
+export type { UpdateAvatarResponseDto };

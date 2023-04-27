@@ -1,5 +1,5 @@
 import { AppRoute, FormFieldLabel, FormFieldType } from 'common/enums/enums';
-import { FC, RegisterUserRequestDto } from 'common/types/types';
+import { FC, RegisterRequestDto } from 'common/types/types';
 import { FormField, Link, Sign } from 'components/common/common';
 import {
   useDispatch,
@@ -25,7 +25,7 @@ const SignUp: FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterUserRequestDto>(signUpSchema);
+  } = useForm<RegisterRequestDto>(signUpSchema);
 
   useEffect(() => {
     if (!authError && user?.id) {
@@ -33,7 +33,7 @@ const SignUp: FC = () => {
     }
   }, [authError, user?.id]);
 
-  const handleSubmitForm = (data: RegisterUserRequestDto): void => {
+  const handleSubmitForm = (data: RegisterRequestDto): void => {
     dispatch(authActions.register(data));
   };
 

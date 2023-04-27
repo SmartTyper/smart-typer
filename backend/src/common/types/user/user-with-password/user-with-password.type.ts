@@ -1,6 +1,6 @@
-import { User } from 'smart-typer-shared/common/types/types';
+import { UserDto } from 'smart-typer-shared/common/types/types';
 
-type UserWithPassword = User & {
+type UserWithPassword = UserDto & {
   password: string | null;
 };
 
