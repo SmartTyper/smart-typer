@@ -81,7 +81,7 @@ const Profile: FC = () => {
       dispatch(profileActions.updateAvatar(selectedFile));
     } 
     if(user.photoUrl && !userData?.photoUrl) {
-      dispatch(profileActions.deleteAvatar(selectedFile));
+      dispatch(profileActions.deleteAvatar());
     }
     if(_.isEqual(_.omit(user, UNCHANGEABLE_BY_UPDATE_INFO_METHOD_FIELDS), _.omit(userData, UNCHANGEABLE_BY_UPDATE_INFO_METHOD_FIELDS))) {
       dispatch(profileActions.updateInfo(selectedFile));
