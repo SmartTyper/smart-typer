@@ -11,7 +11,6 @@ import {
   GoogleLogInCodeRequestDto,
   SetPasswordRequestDto,
   ResetPasswordRequestDto,
-  UserWithSettings,
 } from 'common/types/types';
 import { HttpError } from 'exceptions/exceptions';
 import { AuthActionType } from './common';
@@ -20,14 +19,16 @@ const logIn = createAsyncThunk(
   AuthActionType.LOG_IN,
   async (
     payload: LogInUserRequestDto,
-    { dispatch, extra },
-  ): Promise<UserWithSettings | void> => {
+    { dispatch, extra: { service, action } },
+  ): Promise<User | void> => {
     try {
-      const { authApiService, localStorageService } = extra;
-      const userInfo = await authApiService.logInUser(payload);
-      const { accessToken, refreshToken, ...user } = userInfo;
+      const { authApiService, localStorageService } = service;
+      const { settingsActions } = action;
+      const userData = await authApiService.logInUser(payload);
+      const { accessToken, refreshToken, settings, ...user } = userData;
       localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
       localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
+      dispatch(settingsActions.setAll(settings));
       return user;
     } catch (error) {
       const isHttpError = error instanceof HttpError;
@@ -54,21 +55,23 @@ const register = createAsyncThunk(
   AuthActionType.REGISTER,
   async (
     payload: RegisterUserRequestDto,
-    { extra },
-  ): Promise<UserWithSettings> => {
-    const { authApiService, localStorageService } = extra;
-    const userInfo = await authApiService.registerUser(payload);
-    const { accessToken, refreshToken, ...user } = userInfo;
+    { dispatch, extra: { service, action } },
+  ): Promise<User> => {
+    const { authApiService, localStorageService } = service;
+    const { settingsActions } = action;
+    const userData = await authApiService.registerUser(payload);
+    const { accessToken, refreshToken, settings, ...user } = userData;
     localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
     localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
+    dispatch(settingsActions.setAll(settings));
     return user;
   },
 );
 
 const logOut = createAsyncThunk(
   AuthActionType.LOG_OUT,
-  async (_: undefined, { extra }): Promise<void> => {
-    const { authApiService, localStorageService } = extra;
+  async (_: undefined, { extra: { service } }): Promise<void> => {
+    const { authApiService, localStorageService } = service;
     const refreshToken = localStorageService.getItem(StorageKey.REFRESH_TOKEN);
     localStorageService.removeItem(StorageKey.ACCESS_TOKEN);
     localStorageService.removeItem(StorageKey.REFRESH_TOKEN);
@@ -82,37 +85,50 @@ const logInGoogle = createAsyncThunk(
   AuthActionType.LOG_IN_GOOGLE,
   async (
     payload: GoogleLogInCodeRequestDto,
-    { extra },
-  ): Promise<UserWithSettings> => {
-    const { authApiService, localStorageService } = extra;
-    const userInfo = await authApiService.logInGoogle(payload);
-    const { accessToken, refreshToken, ...user } = userInfo;
+    { dispatch, extra: { service, action } },
+  ): Promise<User> => {
+    const { authApiService, localStorageService } = service;
+    const { settingsActions } = action;
+    const userData = await authApiService.logInGoogle(payload);
+    const { accessToken, refreshToken, settings, ...user } = userData;
     localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
     localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
+    dispatch(settingsActions.setAll(settings));
     return user;
   },
 );
 
 const loadUser = createAsyncThunk(
   AuthActionType.LOAD_USER,
-  async (_: undefined, { extra }): Promise<UserWithSettings | void> => {
-    const { userApiService, localStorageService } = extra;
+  async (
+    _: undefined,
+    { dispatch, extra: { service, action } },
+  ): Promise<User | void> => {
+    const { userApiService, localStorageService } = service;
+    const { settingsActions } = action;
     const accessToken = localStorageService.getItem(StorageKey.ACCESS_TOKEN);
     if (accessToken) {
-      const user = await userApiService.getWithTokensAndSettings();
+      const { settings, ...user } =
+        await userApiService.getWithTokensAndSettings();
+      dispatch(settingsActions.setAll(settings));
       return user;
     }
   },
+);
+
+const updateUser = createAction(
+  AuthActionType.UPDATE_USER,
+  (payload: Partial<User>) => ({ payload }),
 );
 
 const resetPassword = createAsyncThunk(
   AuthActionType.RESET_PASSWORD,
   async (
     payload: ResetPasswordRequestDto,
-    { dispatch, extra },
+    { dispatch, extra: { service } },
   ): Promise<void> => {
     try {
-      const { notificationService, authApiService } = extra;
+      const { notificationService, authApiService } = service;
       await authApiService.resetPassword(payload);
       notificationService.info(NotificationMessage.RESET_PASSWORD_SENT);
     } catch (error) {
@@ -128,10 +144,14 @@ const resetPassword = createAsyncThunk(
 
 const setPassword = createAsyncThunk(
   AuthActionType.SET_PASSWORD,
-  async (payload: SetPasswordRequestDto, { extra }): Promise<User> => {
-    const { notificationService, authApiService, localStorageService } = extra;
-    const userInfo = await authApiService.setPassword(payload);
-    const { accessToken, refreshToken, ...user } = userInfo;
+  async (
+    payload: SetPasswordRequestDto,
+    { extra: { service } },
+  ): Promise<User> => {
+    const { notificationService, authApiService, localStorageService } =
+      service;
+    const userData = await authApiService.setPassword(payload);
+    const { accessToken, refreshToken, ...user } = userData;
     localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
     localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
     notificationService.info(NotificationMessage.RESET_PASSWORD_SENT);
@@ -140,15 +160,16 @@ const setPassword = createAsyncThunk(
   },
 );
 
-const authActions = {
+const auth = {
   logIn,
   setError,
   register,
   logOut,
   logInGoogle,
   loadUser,
+  updateUser,
   setPassword,
   resetPassword,
 };
 
-export { authActions };
+export { auth };

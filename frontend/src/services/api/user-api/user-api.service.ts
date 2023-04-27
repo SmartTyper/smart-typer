@@ -1,7 +1,10 @@
+import { HttpMethod } from 'common/enums/enums';
 import {
+  User,
   UserIdDto,
   UserWithStatisticsAndRatingResponseDto,
   UserWithTokensAndSettingsResponseDto,
+  updateAvatarResponseDto,
 } from 'common/types/types';
 import { http as httpService } from 'services/services';
 
@@ -25,6 +28,29 @@ class UserApi {
     userId: UserIdDto,
   ): Promise<UserWithStatisticsAndRatingResponseDto> {
     return this._httpService.load(`${this._baseUrl}/${userId}`);
+  }
+
+  public async updateInfo(payload: Partial<User>): Promise<void> {
+    return this._httpService.load(`${this._baseUrl}/current`, {
+      method: HttpMethod.PUT,
+      payload: JSON.stringify(payload),
+    });
+  }
+
+  public async updateAvatar(file: File): Promise<updateAvatarResponseDto> {
+    const fd = new FormData();
+    fd.append('image', file, file.name);
+
+    return this._httpService.load(`${this._baseUrl}/current/avatar`, {
+      method: HttpMethod.PUT,
+      payload: fd,
+    });
+  }
+
+  public async deleteAvatar(): Promise<void> {
+    return this._httpService.load(`${this._baseUrl}/current/avatar`, {
+      method: HttpMethod.DELETE,
+    });
   }
 }
 

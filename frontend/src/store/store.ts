@@ -6,7 +6,9 @@ import {
   authApi as authApiService,
   notification as notificationService,
   userApi as userApiService,
+  settingsApi as settingsApiService,
 } from 'services/services';
+import * as action from './actions';
 
 const service = {
   localStorageService,
@@ -14,6 +16,7 @@ const service = {
   authApiService,
   notificationService,
   userApiService,
+  settingsApiService,
 };
 
 const store = configureStore({
@@ -30,7 +33,7 @@ const store = configureStore({
 
     const middlewares = getDefaultMiddleware({
       thunk: {
-        extraArgument: service,
+        extraArgument: { service, action },
       },
     }).concat([errorMiddleware]);
 
@@ -38,4 +41,4 @@ const store = configureStore({
   },
 });
 
-export { store, service };
+export { store, service, action };

@@ -9,3 +9,4 @@ export * from './validation/validation';
 export * from './statistics/statistics';
 export * from './rating/rating';
 export * from './settings/settings';
+export * from './profile/profile';

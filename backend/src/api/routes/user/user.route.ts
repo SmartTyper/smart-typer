@@ -34,6 +34,15 @@ class User extends Abstract {
       ),
     );
 
+    // router.put(
+    //   '/:userId',
+    //   this._run((req: User) =>
+    //     this._userService.getWithStatisticsAndRatingById(
+    //       Number(req.params.userId),
+    //     ),
+    //   ),
+    // );
+
     return router;
   }
 }

@@ -1,17 +1,15 @@
 import { HttpErrorMessage, ReducerName } from 'common/enums/enums';
-import { Settings, User } from 'common/types/types';
+import { User } from 'common/types/types';
 import { createSlice, isAnyOf } from 'store/external';
-import { authActions } from './actions';
+import { auth as authActions } from './actions';
 
 type State = {
   user: User | null;
-  settings: Settings | null;
   error: HttpErrorMessage | null;
 };
 
 const initialState: State = {
   user: null,
-  settings: null,
   error: null,
 };
 
@@ -20,7 +18,8 @@ const { reducer } = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    const { logIn, register, logInGoogle, logOut, setError } = authActions;
+    const { logIn, register, logInGoogle, logOut, setError, updateUser } =
+      authActions;
     builder
       .addCase(logOut.fulfilled, (state) => {
         Object.assign(state, initialState);
@@ -28,13 +27,16 @@ const { reducer } = createSlice({
       .addCase(setError, (state, action) => {
         state.error = action.payload;
       })
+      .addCase(updateUser, (state, action) => {
+        if (state.user) {
+          state.user = { ...state.user, ...action.payload };
+        }
+      })
       .addMatcher(
         isAnyOf(logIn.fulfilled, register.fulfilled, logInGoogle.fulfilled),
         (state, action) => {
           if (action.payload) {
-            const { settings, ...user } = action.payload;
-            state.user = user;
-            state.settings = settings;
+            state.user = action.payload;
           }
         },
       );

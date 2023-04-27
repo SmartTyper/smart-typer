@@ -69,7 +69,7 @@ const CropAvatar: FC<Props> = ({ isVisible, file, onClose, updateAvatar }) => {
     updateAvatar(croppedImageFile);
   };
 
-  if(!file) {
+  if (!file) {
     return null;
   }
 
@@ -97,12 +97,8 @@ const CropAvatar: FC<Props> = ({ isVisible, file, onClose, updateAvatar }) => {
         />
       </RBModal.Body>
       <RBModal.Footer>
-        <Button onClick={onClose}>
-          Cancel
-        </Button>
-        <Button onClick={onSave}>
-          Save
-        </Button>
+        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onSave}>Save</Button>
       </RBModal.Footer>
     </RBModal>
   );

@@ -5,3 +5,4 @@ export * from './validation/validation';
 export * from './statistics/statistics.type';
 export * from './settings/settings.type';
 export * from './rating/rating.type';
+export * from './profile/profile';

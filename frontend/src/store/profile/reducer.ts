@@ -1,20 +1,18 @@
-import { HttpErrorMessage, ReducerName } from 'common/enums/enums';
+import { ReducerName } from 'common/enums/enums';
 import { Rating, Statistics, User } from 'common/types/types';
 import { createSlice } from 'store/external';
-import { profileActions } from './actions';
+import { profile as profileActions } from './actions';
 
 type State = {
   user: User | null;
   statistics: Statistics | null;
   rating: Rating | null;
-  error: HttpErrorMessage | null;
 };
 
 const initialState: State = {
   user: null,
   statistics: null,
   rating: null,
-  error: null,
 };
 
 const { reducer } = createSlice({
@@ -22,13 +20,28 @@ const { reducer } = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    const { loadUser } = profileActions;
-    builder.addCase(loadUser.fulfilled, (state, action) => {
-      const { statistics, rating, ...user } = action.payload;
-      state.user = user;
-      state.statistics = statistics;
-      state.rating = rating;
-    });
+    const { loadUser, resetAllToDefault, deleteAvatar, updateInfo } =
+      profileActions;
+    builder
+      .addCase(loadUser.fulfilled, (state, action) => {
+        const { statistics, rating, ...user } = action.payload;
+        state.user = user;
+        state.statistics = statistics;
+        state.rating = rating;
+      })
+      .addCase(resetAllToDefault, (state) => {
+        Object.assign(state, initialState);
+      })
+      .addCase(deleteAvatar.fulfilled, (state) => {
+        if (state.user) {
+          state.user.photoUrl = null;
+        }
+      })
+      .addCase(updateInfo.fulfilled, (state, action) => {
+        if (state.user) {
+          state.user = { ...state.user, ...action.payload };
+        }
+      });
   },
 });
 
