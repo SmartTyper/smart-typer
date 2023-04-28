@@ -1,1 +1,1 @@
-export type { Settings } from 'smart-typer-shared/common/types/types';
+export type { SettingsDto } from 'smart-typer-shared/common/types/types';

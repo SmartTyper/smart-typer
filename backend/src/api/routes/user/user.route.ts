@@ -21,34 +21,35 @@ class User extends Abstract {
     router.get(
       '/current',
       this._run((req: IRequestWithUser) =>
-        this._userService.getWithTokensAndSettingsById(req.userId),
+        this._userService.getAuthInfoById(req.userId),
       ),
     );
 
     router.get(
       '/:userId',
       this._run((req: IRequestWithUser) =>
-        this._userService.getWithStatisticsAndRatingById(
-          Number(req.params.userId),
-        ),
+        this._userService.getProfileInfoById(Number(req.params.userId)),
       ),
     );
 
     router.put(
       '/current',
-      this._run((req: IRequestWithUser) => this._userService.updateById(req.userId, req.body),
+      this._run((req: IRequestWithUser) =>
+        this._userService.updateById(req.userId, req.body),
       ),
     );
 
     router.put(
       '/current/avatar',
-      this._run((req: IRequestWithUser) => this._userService.updateAvatar(req.userId, req.file),
+      this._run((req: IRequestWithUser) =>
+        this._userService.updateAvatar(req.userId, req.file),
       ),
     );
 
     router.delete(
       '/current/avatar',
-      this._run((req: IRequestWithUser) => this._userService.deleteAvatar(req.userId),
+      this._run((req: IRequestWithUser) =>
+        this._userService.deleteAvatar(req.userId),
       ),
     );
 

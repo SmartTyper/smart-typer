@@ -3,8 +3,8 @@ import {
   UpdateAvatarResponseDto,
   UserDto,
   UserIdDto,
-  UserWithStatisticsAndRatingResponseDto,
-  UserWithTokensAndSettingsResponseDto,
+  UserProfileInfoResponseDto,
+  UserAuthInfoResponseDto,
 } from 'common/types/types';
 import { http as httpService } from 'services/services';
 
@@ -20,13 +20,13 @@ class UserApi {
     this._httpService = params.httpService;
   }
 
-  public async getWithTokensAndSettings(): Promise<UserWithTokensAndSettingsResponseDto> {
+  public async getAuthInfo(): Promise<UserAuthInfoResponseDto> {
     return this._httpService.load(`${this._baseUrl}/current`);
   }
 
-  public async getWithStatisticsAndRating(
+  public async getProfileInfo(
     userId: UserIdDto,
-  ): Promise<UserWithStatisticsAndRatingResponseDto> {
+  ): Promise<UserProfileInfoResponseDto> {
     return this._httpService.load(`${this._baseUrl}/${userId}`);
   }
 

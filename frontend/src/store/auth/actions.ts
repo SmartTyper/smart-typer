@@ -70,7 +70,10 @@ const register = createAsyncThunk(
 
 const logOut = createAsyncThunk(
   AuthActionType.LOG_OUT,
-  async (_: undefined, { dispatch, extra: { service, action } }): Promise<void> => {
+  async (
+    _: undefined,
+    { dispatch, extra: { service, action } },
+  ): Promise<void> => {
     const { authApiService, localStorageService } = service;
     const { settingsActions } = action;
     const refreshToken = localStorageService.getItem(StorageKey.REFRESH_TOKEN);
@@ -110,8 +113,7 @@ const loadUser = createAsyncThunk(
     const { settingsActions } = action;
     const accessToken = localStorageService.getItem(StorageKey.ACCESS_TOKEN);
     if (accessToken) {
-      const { settings, ...user } =
-        await userApiService.getWithTokensAndSettings();
+      const { settings, ...user } = await userApiService.getAuthInfo();
       dispatch(settingsActions.setAll(settings));
       return user;
     }

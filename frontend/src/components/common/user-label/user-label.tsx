@@ -6,14 +6,14 @@ import { Avatar } from 'components/common/avatar/avatar';
 import styles from './styles.module.scss';
 
 type Props = {
-  username: string;
+  userName: string;
   avatarSize: AvatarSize;
   textColor?: UserLabelColor;
   avatarSrc?: string;
 };
 
 const UserLabel: FC<Props> = ({
-  username,
+  userName,
   avatarSrc,
   textColor = UserLabelColor.BLACK,
   avatarSize,
@@ -21,12 +21,12 @@ const UserLabel: FC<Props> = ({
   <div className={styles.avatarContainer}>
     <Avatar
       size={avatarSize}
-      name={username}
+      name={userName}
       src={avatarSrc}
       round
       className={styles.avatar}
     />
-    <span className={clsx(styles.username, styles[textColor])}>{username}</span>
+    <span className={clsx(styles.username, styles[textColor])}>{userName}</span>
   </div>
 );
 

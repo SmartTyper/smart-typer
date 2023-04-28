@@ -1,4 +1,4 @@
-import { FC } from 'common/types/types';
+import { FC, SyntheticEvent } from 'common/types/types';
 import { RBForm } from 'components/external/external';
 import {
   authApi as authApiService,
@@ -22,7 +22,7 @@ type Props = {
   description: string;
   submitText: string;
   children: JSX.Element | JSX.Element[];
-  onSubmit: (e: React.SyntheticEvent) => void;
+  onSubmit: (e: SyntheticEvent) => void;
   isSubmitDisabled?: boolean;
   alternativeRoute?: AlternativeRouteProp;
   authError?: HttpErrorMessage | null;

@@ -1,11 +1,11 @@
-import { FC } from 'common/types/types';
+import { FC, SyntheticEvent } from 'common/types/types';
 import { Button } from '../../../button/button';
 
 import styles from './styles.module.scss';
 
 type Props = {
   isDisabled: boolean;
-  onSubmit: (e: React.SyntheticEvent) => void;
+  onSubmit: (e: SyntheticEvent) => void;
   label: string;
 };
 

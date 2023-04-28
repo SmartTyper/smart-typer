@@ -3,8 +3,8 @@ import {
   UserDto,
   UserWithPassword,
   CreateUserRequestDto,
-  UserWithTokensAndSettingsResponseDto,
-  UserWithStatisticsAndRatingResponseDto,
+  UserAuthInfoResponseDto,
+  UserProfileInfoResponseDto,
 } from 'common/types/types';
 import { user as userRepository } from 'data/repositories/repositories';
 import { HttpError } from 'exceptions/exceptions';
@@ -28,9 +28,7 @@ class User {
     this._s3Service = params.s3Service;
   }
 
-  private async _getWithTokensAndSettings(
-    user: UserDto,
-  ): Promise<UserWithTokensAndSettingsResponseDto> {
+  private async _getAuthInfo(user: UserDto): Promise<UserAuthInfoResponseDto> {
     const photoUrl = user.photoUrl
       ? await this._s3Service.getSignedUrl(user.photoUrl)
       : user.photoUrl;
@@ -51,16 +49,16 @@ class User {
     };
   }
 
-  public async getWithTokensAndSettingsByEmail(
+  public async getAuthInfoByEmail(
     email: string,
-  ): Promise<UserWithTokensAndSettingsResponseDto> {
+  ): Promise<UserAuthInfoResponseDto> {
     const user = await this.getByEmail(email);
-    return this._getWithTokensAndSettings(user);
+    return this._getAuthInfo(user);
   }
 
-  public async getWithTokensAndSettingsById(
+  public async getAuthInfoById(
     userId: number,
-  ): Promise<UserWithTokensAndSettingsResponseDto> {
+  ): Promise<UserAuthInfoResponseDto> {
     const user = await this._userRepository.getById(userId);
     if (!user) {
       throw new HttpError({
@@ -68,7 +66,7 @@ class User {
         message: HttpErrorMessage.INVALID_LOG_IN_DATA,
       });
     }
-    return this._getWithTokensAndSettings(user);
+    return this._getAuthInfo(user);
   }
 
   public async getByEmail(email: string): Promise<UserWithPassword> {
@@ -84,7 +82,7 @@ class User {
 
   public async create(
     data: CreateUserRequestDto,
-  ): Promise<UserWithTokensAndSettingsResponseDto> {
+  ): Promise<UserAuthInfoResponseDto> {
     const { nickname, email, photoUrl, password } = data;
     const userData = {
       email,
@@ -94,7 +92,7 @@ class User {
     };
     const newUser = await this._userRepository.create(userData);
 
-    return this.getWithTokensAndSettingsByEmail(newUser.email);
+    return this.getAuthInfoByEmail(newUser.email);
   }
 
   public async updateById(
@@ -104,9 +102,9 @@ class User {
     return this._userRepository.patchById(userId, data);
   }
 
-  public async getWithStatisticsAndRatingById(
+  public async getProfileInfoById(
     userId: number,
-  ): Promise<UserWithStatisticsAndRatingResponseDto> {
+  ): Promise<UserProfileInfoResponseDto> {
     console.log(userId);
     return {
       id: 2,
@@ -148,9 +146,7 @@ class User {
     return { photoUrl: 'newPhotoUrl' };
   }
 
-  public async deleteAvatar(
-    userId: number,
-  ): Promise<void> {
+  public async deleteAvatar(userId: number): Promise<void> {
     console.log(userId);
   }
 }

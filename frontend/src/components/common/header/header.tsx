@@ -1,9 +1,10 @@
-import { FC } from 'common/types/types';
+import { FC, UserDto } from 'common/types/types';
 import { RBNavbar } from 'components/external/external';
 import { AppRoute } from 'common/enums/enums';
 import { NavItem, ProfileDropdown } from './components/components';
 import { useDispatch, useEffect, useNavigate, useSelector } from 'hooks/hooks';
 import { authActions } from 'store/actions';
+import { replaceRouteIdParam } from 'helpers/helpers';
 
 import styles from './styles.module.scss';
 
@@ -14,6 +15,7 @@ const Header: FC = () => {
     user: auth.user,
     isLogOutLoading: request.authLogOut,
   }));
+  const userId = (user as UserDto).id;
 
   const handleLogout = (): void => {
     dispatch(authActions.logOut());
@@ -25,7 +27,7 @@ const Header: FC = () => {
 
   const profileDropdownLinks = [
     {
-      link: AppRoute.PROFILE,
+      link: replaceRouteIdParam(AppRoute.PROFILE_$ID, userId),
       label: 'Profile',
       iconName: 'bi bi-person',
     },

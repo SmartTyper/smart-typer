@@ -7,7 +7,7 @@ import {
   RegisterRequestDto,
   GoogleLogInUrlResponseDto,
   GoogleLogInCodeRequestDto,
-  UserWithTokensAndSettingsResponseDto,
+  UserAuthInfoResponseDto,
 } from 'common/types/types';
 import { http as httpService } from 'services/services';
 
@@ -25,7 +25,7 @@ class AuthApi {
 
   public async logIn(
     payload: LogInRequestDto,
-  ): Promise<UserWithTokensAndSettingsResponseDto> {
+  ): Promise<UserAuthInfoResponseDto> {
     return this._httpService.load(`${this._baseUrl}/log-in`, {
       method: HttpMethod.POST,
       payload: JSON.stringify(payload),
@@ -35,7 +35,7 @@ class AuthApi {
 
   public async register(
     payload: RegisterRequestDto,
-  ): Promise<UserWithTokensAndSettingsResponseDto> {
+  ): Promise<UserAuthInfoResponseDto> {
     return this._httpService.load(`${this._baseUrl}/register`, {
       method: HttpMethod.POST,
       payload: JSON.stringify(payload),
@@ -53,7 +53,7 @@ class AuthApi {
 
   public async setPassword(
     payload: SetPasswordRequestDto,
-  ): Promise<UserWithTokensAndSettingsResponseDto> {
+  ): Promise<UserAuthInfoResponseDto> {
     return this._httpService.load(`${this._baseUrl}/set-password`, {
       method: HttpMethod.POST,
       payload: JSON.stringify(payload),
@@ -75,7 +75,7 @@ class AuthApi {
 
   public async logInGoogle(
     payload: GoogleLogInCodeRequestDto,
-  ): Promise<UserWithTokensAndSettingsResponseDto> {
+  ): Promise<UserAuthInfoResponseDto> {
     return this._httpService.load(`${this._baseUrl}/logIn/google`, {
       method: HttpMethod.POST,
       payload: JSON.stringify(payload),

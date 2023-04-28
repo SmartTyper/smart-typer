@@ -7,8 +7,8 @@ import { IconLink } from 'components/common/icon-link/icon-link';
 import styles from './styles.module.scss';
 
 type Props = {
-  links: Link[];
-  buttons: Button[];
+  links?: Link[];
+  buttons?: Button[];
 };
 
 const Dropdown: FC<Props> = ({ children, links, buttons }) => {
@@ -18,7 +18,7 @@ const Dropdown: FC<Props> = ({ children, links, buttons }) => {
         {children}
       </RBDropdown.Toggle>
       <RBDropdown.Menu className={styles.dropdownMenu}>
-        {links.map(({ link, label, iconName }) => {
+        {links?.map(({ link, label, iconName }) => {
           return (
             <RBDropdown.Item
               to={link}
@@ -31,7 +31,7 @@ const Dropdown: FC<Props> = ({ children, links, buttons }) => {
           );
         })}
         <RBDropdown.Divider />
-        {buttons.map(({ label, iconName, onClick }) => {
+        {buttons?.map(({ label, iconName, onClick }) => {
           return (
             <RBDropdown.Item
               as={ButtonItem}

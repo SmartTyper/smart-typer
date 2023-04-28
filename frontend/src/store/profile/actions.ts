@@ -2,7 +2,7 @@ import { createAction, createAsyncThunk } from 'store/external';
 import {
   UserDto,
   UserIdDto,
-  UserWithStatisticsAndRatingResponseDto,
+  UserProfileInfoResponseDto,
   UpdateAvatarResponseDto,
 } from 'common/types/types';
 import { ProfileActionType } from './common';
@@ -12,9 +12,9 @@ const loadUser = createAsyncThunk(
   async (
     payload: UserIdDto,
     { extra: { service } },
-  ): Promise<UserWithStatisticsAndRatingResponseDto> => {
+  ): Promise<UserProfileInfoResponseDto> => {
     const { userApiService } = service;
-    return userApiService.getWithStatisticsAndRating(payload);
+    return userApiService.getProfileInfo(payload);
   },
 );
 

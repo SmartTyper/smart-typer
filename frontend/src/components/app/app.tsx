@@ -6,7 +6,6 @@ import { Home } from 'components/home/home';
 import { Theory } from 'components/theory/theory';
 import { Lessons } from 'components/lessons/lessons';
 import { StudyPlan } from 'components/study-plan/study-plan';
-import { Racing } from 'components/racing/racing';
 import { LogIn } from 'components/log-in/log-in';
 import { SignUp } from 'components/sign-up/sign-up';
 import { Settings } from 'components/settings/settings';
@@ -15,6 +14,7 @@ import { useSelector, useDispatch, useEffect, useLocation } from 'hooks/hooks';
 import { localStorage as localStorageService } from 'services/services';
 import { authActions } from 'store/actions';
 import { LogInGoogle } from 'components/log-in-google/log-in-google';
+import { Racing } from 'components/racing/racing';
 
 const App: FC = () => {
   const dispatch = useDispatch();
@@ -75,7 +75,7 @@ const App: FC = () => {
           }
         />
         <RRDRoute
-          path={AppRoute.PROFILE}
+          path={AppRoute.PROFILE_$ID}
           element={
             <WithHeader>
               <Profile />

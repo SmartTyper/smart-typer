@@ -1,8 +1,5 @@
 import { HttpCode, HttpErrorMessage } from 'common/enums/enums';
-import {
-  GoogleUser,
-  UserWithTokensAndSettingsResponseDto,
-} from 'common/types/types';
+import { GoogleUser, UserAuthInfoResponseDto } from 'common/types/types';
 import {
   LogInRequestDto,
   RegisterRequestDto,
@@ -49,7 +46,7 @@ class Auth {
 
   public async register(
     payload: RegisterRequestDto,
-  ): Promise<UserWithTokensAndSettingsResponseDto> {
+  ): Promise<UserAuthInfoResponseDto> {
     const existingUser = await this._userService.getByEmail(payload.email);
 
     if (existingUser) {
@@ -71,7 +68,7 @@ class Auth {
 
   public async logIn(
     payload: LogInRequestDto,
-  ): Promise<UserWithTokensAndSettingsResponseDto> {
+  ): Promise<UserAuthInfoResponseDto> {
     const user = await this._userService.getByEmail(payload.email);
     if (!user || !user.password) {
       throw new HttpError({
@@ -91,7 +88,7 @@ class Auth {
       });
     }
 
-    return this._userService.getWithTokensAndSettingsByEmail(user.email);
+    return this._userService.getAuthInfoByEmail(user.email);
   }
 
   public async resetPassword(payload: ResetPasswordRequestDto): Promise<void> {
@@ -114,7 +111,7 @@ class Auth {
 
   public async setPassword(
     payload: SetPasswordRequestDto,
-  ): Promise<UserWithTokensAndSettingsResponseDto> {
+  ): Promise<UserAuthInfoResponseDto> {
     const { token, password } = payload;
     if (!token) {
       throw new HttpError({
@@ -129,7 +126,7 @@ class Auth {
     const user = await this._userService.updateById(decoded.userId, {
       password: hashedPassword,
     });
-    return this._userService.getWithTokensAndSettingsByEmail(user.email);
+    return this._userService.getAuthInfoByEmail(user.email);
   }
 
   public async logOut(body: RefreshTokenRequestDto): Promise<void> {
@@ -144,7 +141,7 @@ class Auth {
 
   public async logInGoogle({
     code,
-  }: GoogleLogInCodeRequestDto): Promise<UserWithTokensAndSettingsResponseDto> {
+  }: GoogleLogInCodeRequestDto): Promise<UserAuthInfoResponseDto> {
     const idToken = await this._oauth2Service.getIdToken(code);
     if (!idToken) {
       throw new HttpError({
@@ -154,7 +151,7 @@ class Auth {
     }
     const decodedToken = this._tokenService.decodeToken(idToken);
     const { email, name, picture } = decodedToken as unknown as GoogleUser;
-    const user = await this._userService.getWithTokensAndSettingsByEmail(email);
+    const user = await this._userService.getAuthInfoByEmail(email);
     if (user) {
       return user;
     }

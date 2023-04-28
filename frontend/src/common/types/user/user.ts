@@ -1,6 +1,6 @@
 export type {
   UserDto,
-  UserWithTokensAndSettingsResponseDto,
-  UserWithStatisticsAndRatingResponseDto,
+  UserAuthInfoResponseDto,
+  UserProfileInfoResponseDto,
   UserIdDto,
 } from 'smart-typer-shared/common/types/types';
