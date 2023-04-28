@@ -70,11 +70,13 @@ const register = createAsyncThunk(
 
 const logOut = createAsyncThunk(
   AuthActionType.LOG_OUT,
-  async (_: undefined, { extra: { service } }): Promise<void> => {
+  async (_: undefined, { dispatch, extra: { service, action } }): Promise<void> => {
     const { authApiService, localStorageService } = service;
+    const { settingsActions } = action;
     const refreshToken = localStorageService.getItem(StorageKey.REFRESH_TOKEN);
     localStorageService.removeItem(StorageKey.ACCESS_TOKEN);
     localStorageService.removeItem(StorageKey.REFRESH_TOKEN);
+    dispatch(settingsActions.resetAllToDefault());
     if (refreshToken) {
       await authApiService.logOut({ refreshToken });
     }
