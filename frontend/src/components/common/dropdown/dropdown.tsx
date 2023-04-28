@@ -1,14 +1,14 @@
 import { FC } from 'common/types/types';
 import { RBDropdown, RBNavItem, RBNavLink } from 'components/external/external';
-import { Link, Button } from './common/types/types';
+import { DropdownLink, DropdownButton } from 'common/types/types';
 import { Button as ButtonItem } from 'components/common/button/button';
 import { IconLink } from 'components/common/icon-link/icon-link';
 
 import styles from './styles.module.scss';
 
 type Props = {
-  links?: Link[];
-  buttons?: Button[];
+  links?: DropdownLink[];
+  buttons?: DropdownButton[];
 };
 
 const Dropdown: FC<Props> = ({ children, links, buttons }) => {

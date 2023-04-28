@@ -1,4 +1,4 @@
-import { FC, UserDto } from 'common/types/types';
+import { DropdownButton, DropdownLink, FC, UserDto } from 'common/types/types';
 import { RBNavbar } from 'components/external/external';
 import { AppRoute } from 'common/enums/enums';
 import { NavItem, ProfileDropdown } from './components/components';
@@ -25,7 +25,7 @@ const Header: FC = () => {
     if (!isLogOutLoading && user) navigate(AppRoute.LOG_IN);
   }, [isLogOutLoading, user]);
 
-  const profileDropdownLinks = [
+  const profileDropdownLinks: DropdownLink[] = [
     {
       link: replaceRouteIdParam(AppRoute.PROFILE_$ID, userId),
       label: 'Profile',
@@ -38,7 +38,7 @@ const Header: FC = () => {
     },
   ];
 
-  const profileDropdownButtons = [
+  const profileDropdownButtons: DropdownButton[] = [
     {
       label: 'Sign out',
       onClick: handleLogout,
