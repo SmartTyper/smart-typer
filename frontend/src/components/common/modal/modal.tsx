@@ -8,6 +8,7 @@ type Props = {
   submitButton?: ModalButton;
   cancelButton?: ModalButton;
   title?: string;
+  size
 };
 
 const Modal: React.FC<Props> = ({ children, isVisible, submitButton,  cancelButton, title }) => {
