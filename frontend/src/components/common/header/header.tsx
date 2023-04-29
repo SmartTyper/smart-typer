@@ -2,7 +2,7 @@ import { DropdownButton, DropdownLink, FC, UserDto } from 'common/types/types';
 import { RBNavbar } from 'components/external/external';
 import { AppRoute } from 'common/enums/enums';
 import { NavItem, ProfileDropdown } from './components/components';
-import { useDispatch, useEffect, useNavigate, useSelector } from 'hooks/hooks';
+import { useDispatch, useSelector } from 'hooks/hooks';
 import { authActions } from 'store/actions';
 import { replaceRouteIdParam } from 'helpers/helpers';
 
@@ -10,24 +10,16 @@ import styles from './styles.module.scss';
 
 const Header: FC = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { isLogOutLoading, user } = useSelector(({ auth, request }) => ({
-    user: auth.user,
-    isLogOutLoading: request.authLogOut,
-  }));
-  const userId = (user as UserDto).id;
+  const user = useSelector((state) => state.auth.user as UserDto);
+  const userId = user.id;
 
   const handleLogout = (): void => {
     dispatch(authActions.logOut());
   };
 
-  useEffect(() => {
-    if (!isLogOutLoading && user) navigate(AppRoute.LOG_IN);
-  }, [isLogOutLoading, user]);
-
   const profileDropdownLinks: DropdownLink[] = [
     {
-      link: replaceRouteIdParam(AppRoute.PROFILE_$ID, userId),
+      link: replaceRouteIdParam(AppRoute.USERS_$ID_PROFILE, userId),
       label: 'Profile',
       iconName: 'bi bi-person',
     },

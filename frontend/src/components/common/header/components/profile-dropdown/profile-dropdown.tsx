@@ -1,14 +1,14 @@
 import { FC } from 'common/types/types';
 import { Dropdown } from 'components/common/dropdown/dropdown';
 import { AvatarSize, UserLabelColor } from 'common/enums/enums';
-import { Button, Link } from 'components/common/dropdown/common/types/types';
+import { DropdownButton, DropdownLink } from 'common/types/types';
 import { UserLabel } from 'components/common/user-label/user-label';
 
 type Props = {
   userName: string;
   avatarSrc?: string;
-  links: Link[];
-  buttons: Button[];
+  links: DropdownLink[];
+  buttons: DropdownButton[];
 };
 
 const ProfileDropdown: FC<Props> = ({

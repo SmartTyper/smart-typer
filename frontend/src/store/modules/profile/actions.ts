@@ -1,0 +1,64 @@
+import { createAction, createAsyncThunk } from 'store/external/external';
+import {
+  UserDto,
+  UserIdDto,
+  UserProfileInfoResponseDto,
+  UpdateAvatarResponseDto,
+} from 'common/types/types';
+import { ProfileActionType } from './common';
+
+const loadUser = createAsyncThunk(
+  ProfileActionType.LOAD_USER,
+  async (
+    payload: UserIdDto,
+    { extra: { service } },
+  ): Promise<UserProfileInfoResponseDto> => {
+    const { userApiService } = service;
+    return userApiService.getProfileInfo(payload);
+  },
+);
+
+const resetAllToDefault = createAction(ProfileActionType.RESET_ALL_TO_DEFAULT);
+
+const updateAvatar = createAsyncThunk(
+  ProfileActionType.UPDATE_AVATAR,
+  async (
+    payload: File,
+    { extra: { service } },
+  ): Promise<UpdateAvatarResponseDto['photoUrl']> => {
+    const { userApiService } = service;
+    const { photoUrl } = await userApiService.updateAvatar(payload);
+    return photoUrl;
+  },
+);
+
+const updateInfo = createAsyncThunk(
+  ProfileActionType.UPDATE_INFO,
+  async (
+    payload: Partial<UserDto>,
+    { dispatch, extra: { service, action } },
+  ): Promise<Partial<UserDto>> => {
+    const { userApiService } = service;
+    await userApiService.updateInfo(payload);
+    dispatch(action.authActions.updateUser(payload));
+    return payload;
+  },
+);
+
+const deleteAvatar = createAsyncThunk(
+  ProfileActionType.DELETE_AVATAR,
+  async (_: undefined, { extra: { service } }): Promise<void> => {
+    const { userApiService } = service;
+    await userApiService.deleteAvatar();
+  },
+);
+
+const profile = {
+  loadUser,
+  resetAllToDefault,
+  updateAvatar,
+  updateInfo,
+  deleteAvatar,
+};
+
+export { profile };

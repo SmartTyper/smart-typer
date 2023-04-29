@@ -1,0 +1,22 @@
+.title {
+  font-size: 1.52rem;
+  line-height: 1.625;
+}
+
+.emailContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30rem;
+
+  .sendButton {
+    width: 10rem;
+    margin-top: 1rem;
+  }
+
+  .emailsInput {
+    height: 10rem;
+    width: 100%;
+    font-size: 1.2rem;
+  }
+}

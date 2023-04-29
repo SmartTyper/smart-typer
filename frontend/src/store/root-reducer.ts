@@ -1,8 +1,4 @@
-import { request } from './request/request';
-import { auth } from './auth/auth';
-import { profile } from './profile/profile';
-import { racing } from './racing/racing';
-import { settings } from './settings/settings';
+import { request, auth, profile, racing, settings } from './modules/reducers';
 
 const rootReducer = {
   auth,

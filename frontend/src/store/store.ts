@@ -1,15 +1,27 @@
-import { configureStore, Middleware } from '@reduxjs/toolkit';
-import { rootReducer } from './root-reducer';
 import {
-  localStorage as localStorageService,
-  http as httpService,
   authApi as authApiService,
+  http as httpService,
+  localStorage as localStorageService,
   notification as notificationService,
-  userApi as userApiService,
-  settingsApi as settingsApiService,
   racingApi as racingApiService,
+  settingsApi as settingsApiService,
+  userApi as userApiService,
 } from 'services/services';
-import * as action from './actions';
+import {
+  auth as authActions,
+  profile as profileActions,
+  racing as racingActions,
+  settings as settingsActions,
+} from './modules/actions';
+import { rootReducer } from './root-reducer';
+import { Middleware, configureStore } from './external/external';
+
+const action = {
+  authActions,
+  profileActions,
+  settingsActions,
+  racingActions,
+};
 
 const service = {
   localStorageService,

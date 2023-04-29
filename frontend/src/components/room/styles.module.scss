@@ -1,0 +1,73 @@
+.container {
+  background: url('../../assets/img/text.png');
+  background-repeat: repeat-y;
+  width: 100%;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  .info {
+    position: relative;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    height: 100%;
+  }
+
+  .field {
+    height: 100%;
+    background: #fff;
+    padding: 1.3rem;
+  }
+
+  .commentator {
+    height: 100%;
+
+    .speechBubble {
+      position: relative;
+      margin: 0.5em auto;
+      margin-left: 2rem;
+      margin-top: 2rem;
+      padding: 1em;
+      width: 26rem;
+      height: 41rem;
+      border-radius: 0.3rem;
+      transform: rotate(-4deg) rotateY(15deg);
+      background: #8ecea6;
+      text-align: center;
+    }
+    .speechBubble:before,
+    .speechBubble:after {
+      position: absolute;
+      z-index: -1;
+      content: '';
+    }
+    .speechBubble:after {
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      border-radius: inherit;
+      transform: rotate(2deg) translate(0.35em, -0.15em) scale(1.02);
+      background: #f4fbfe;
+    }
+    .speechBubble:before {
+      border: solid 0 transparent;
+      border-right: solid 3.5em #f4fbfe;
+      border-bottom: solid 0.25em #8ecea6;
+      bottom: 0.25em;
+      left: 1.25em;
+      width: 0;
+      height: 1em;
+      transform: rotate(45deg) skewX(75deg);
+    }
+
+    img {
+      width: 200px;
+      height: 280px;
+    }
+  }
+}

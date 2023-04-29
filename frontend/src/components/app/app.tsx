@@ -1,5 +1,5 @@
 import { AppRoute, StorageKey } from 'common/enums/enums';
-import { FC } from 'common/types/types';
+import { FC, UserDto } from 'common/types/types';
 import { RRDRoute, RRDRoutes } from 'components/external/external';
 import { WithHeader, ProtectedRoute } from 'components/common/common';
 import { Home } from 'components/home/home';
@@ -15,6 +15,7 @@ import { localStorage as localStorageService } from 'services/services';
 import { authActions } from 'store/actions';
 import { LogInGoogle } from 'components/log-in-google/log-in-google';
 import { Racing } from 'components/racing/racing';
+import { replaceRouteIdParam } from 'helpers/helpers';
 
 const App: FC = () => {
   const dispatch = useDispatch();
@@ -75,7 +76,10 @@ const App: FC = () => {
           }
         />
         <RRDRoute
-          path={AppRoute.PROFILE_$ID}
+          path={replaceRouteIdParam(
+            AppRoute.USERS_$ID_PROFILE,
+            (user as UserDto).id,
+          )}
           element={
             <WithHeader>
               <Profile />
