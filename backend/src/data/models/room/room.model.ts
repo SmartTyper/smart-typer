@@ -8,10 +8,9 @@ import {
   RoomRelationMappings,
 } from 'common/enums/enums';
 import { IRoomRecord } from 'common/interfaces/interfaces';
+import { Lesson, User } from 'data/models/models';
 
 import { Base } from '../base/base.model';
-import { Lesson } from '../lesson/lesson.model';
-import { User } from '../user/user.model';
 
 class Room extends Base implements IRoomRecord {
   public [RoomKey.NAME]!: IRoomRecord[RoomKey.NAME];

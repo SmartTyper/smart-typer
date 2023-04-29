@@ -1,5 +1,5 @@
 import { useDispatch, useNavigate, useEffect } from 'hooks/hooks';
-import { authActions } from 'store/actions';
+import { auth as authActions } from 'store/modules/actions';
 import { AppRoute } from 'common/enums/enums';
 import { FC } from 'common/types/types';
 

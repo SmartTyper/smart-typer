@@ -1,37 +1,8 @@
-import {
-  authApi as authApiService,
-  http as httpService,
-  localStorage as localStorageService,
-  notification as notificationService,
-  racingApi as racingApiService,
-  settingsApi as settingsApiService,
-  userApi as userApiService,
-} from 'services/services';
-import {
-  auth as authActions,
-  profile as profileActions,
-  racing as racingActions,
-  settings as settingsActions,
-} from './modules/actions';
-import { rootReducer } from './root-reducer';
-import { Middleware, configureStore } from './external/external';
-
-const action = {
-  authActions,
-  profileActions,
-  settingsActions,
-  racingActions,
-};
-
-const service = {
-  localStorageService,
-  httpService,
-  authApiService,
-  notificationService,
-  userApiService,
-  settingsApiService,
-  racingApiService,
-};
+import { Middleware } from 'common/types/types';
+import { configureStore } from 'store/external/external';
+import * as services from 'services/services';
+import * as actions from 'store/modules/actions';
+import * as rootReducer from 'store/modules/reducers';
 
 const store = configureStore({
   reducer: rootReducer,
@@ -40,14 +11,14 @@ const store = configureStore({
     const errorMiddleware: Middleware = () => (next) => (action) => {
       const message = action.error?.message;
       if (message) {
-        service.notificationService.error(message);
+        services.notification.error(message);
       }
       return next(action);
     };
 
     const middlewares = getDefaultMiddleware({
       thunk: {
-        extraArgument: { service, action },
+        extraArgument: { services, actions },
       },
     }).concat([errorMiddleware]);
 
@@ -55,4 +26,4 @@ const store = configureStore({
   },
 });
 
-export { store, service, action };
+export { store, services, actions };

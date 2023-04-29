@@ -3,7 +3,7 @@ import { RBNavbar } from 'components/external/external';
 import { AppRoute } from 'common/enums/enums';
 import { NavItem, ProfileDropdown } from './components/components';
 import { useDispatch, useSelector } from 'hooks/hooks';
-import { authActions } from 'store/actions';
+import { auth as authActions } from 'store/modules/actions';
 import { replaceRouteIdParam } from 'helpers/helpers';
 
 import styles from './styles.module.scss';

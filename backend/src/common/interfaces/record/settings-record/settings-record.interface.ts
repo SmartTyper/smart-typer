@@ -1,5 +1,5 @@
 import { SettingsKey } from 'common/enums/enums';
-import { ICommonRecord } from 'common/interfaces/record/common-record/common-record.interface';
+import { ICommonRecord } from 'common/interfaces/interfaces';
 
 interface ISettingsRecord extends ICommonRecord {
   [SettingsKey.USER_ID]: number;

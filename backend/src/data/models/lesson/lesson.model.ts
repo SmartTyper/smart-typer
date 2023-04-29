@@ -8,9 +8,9 @@ import {
   LessonRelationMappings,
 } from 'common/enums/enums';
 import { ILessonRecord } from 'common/interfaces/interfaces';
+import { Skill } from 'data/models/models';
 
 import { Base } from '../base/base.model';
-import { Skill } from '../skill/skill.model';
 
 class Lesson extends Base implements ILessonRecord {
   public [LessonKey.NAME]!: ILessonRecord[LessonKey.NAME];

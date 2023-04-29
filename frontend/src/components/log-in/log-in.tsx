@@ -8,7 +8,7 @@ import {
   useEffect,
   useForm,
 } from 'hooks/hooks';
-import { authActions } from 'store/actions';
+import { auth as authActions } from 'store/modules/actions';
 import { logInSchema } from 'validation-schemas/validation-schemas';
 
 const LogIn: FC = () => {

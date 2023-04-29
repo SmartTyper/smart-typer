@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { Abstract } from '../abstract/abstract.route';
 import { settings as settingsService } from 'services/services';
 import { IRequestWithUser } from 'common/interfaces/interfaces';
+import { Abstract } from '../abstract/abstract.route';
 
 type Constructor = {
   settingsService: typeof settingsService;

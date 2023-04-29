@@ -1,6 +1,4 @@
-import { Statistics } from 'common/types/statistics/statistics.type';
-import { Rating } from 'common/types/rating/rating.type';
-import { UserDto } from '../user-dto/user-dto.type';
+import { Statistics, Rating, UserDto } from 'common/types/types';
 
 type UserProfileInfoResponseDto = UserDto & {
   statistics: Statistics;

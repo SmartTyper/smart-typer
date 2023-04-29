@@ -1,5 +1,5 @@
 import { UserToRoomKey } from 'common/enums/enums';
-import { ICommonRecord } from 'common/interfaces/record/common-record/common-record.interface';
+import { ICommonRecord } from 'common/interfaces/interfaces';
 
 interface IUserToRoomRecord extends ICommonRecord {
   [UserToRoomKey.USER_ID]: number;

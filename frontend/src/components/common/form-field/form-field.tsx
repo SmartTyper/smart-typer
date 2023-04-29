@@ -1,7 +1,7 @@
 import { FC, FieldError, UseFormRegisterReturn } from 'common/types/types';
 import { FormFieldType } from 'common/enums/enums';
-import { HiddenInput, Input } from './components/components';
 import { RBForm } from 'components/external/external';
+import { HiddenInput, Input } from './components/components';
 
 import styles from './styles.module.scss';
 

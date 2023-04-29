@@ -12,7 +12,7 @@ import { Settings } from 'components/settings/settings';
 import { Profile } from 'components/profile/profile';
 import { useSelector, useDispatch, useEffect, useLocation } from 'hooks/hooks';
 import { localStorage as localStorageService } from 'services/services';
-import { authActions } from 'store/actions';
+import { auth as authActions } from 'store/modules/actions';
 import { LogInGoogle } from 'components/log-in-google/log-in-google';
 import { Racing } from 'components/racing/racing';
 import { replaceRouteIdParam } from 'helpers/helpers';

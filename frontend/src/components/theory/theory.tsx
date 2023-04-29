@@ -1,6 +1,6 @@
 import { WhiteSheetSize } from 'common/enums/enums';
 import { FC } from 'common/types/types';
-import { WhiteSheet } from 'components/common/white-sheet/white-sheet';
+import { WhiteSheet } from 'components/common/common';
 
 const Theory: FC = () => {
   return (

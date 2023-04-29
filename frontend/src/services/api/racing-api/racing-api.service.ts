@@ -1,12 +1,12 @@
-import { http as httpService } from 'services/services';
 import { RoomDto, RoomIdDto } from 'smart-typer-shared/common/types/types';
+import { Http as HttpService } from '../../http/http.service';
 
 type Constructor = {
-  httpService: typeof httpService;
+  httpService: HttpService;
 };
 
 class RacingApi {
-  private _httpService = httpService;
+  private _httpService: HttpService;
   private _baseUrl = '/api/racing';
 
   public constructor(params: Constructor) {

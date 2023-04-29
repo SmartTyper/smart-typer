@@ -1,10 +1,9 @@
 import { Sign, FormField } from 'components/common/common';
 import { resetPasswordSchema } from 'validation-schemas/validation-schemas';
-import { useForm } from 'hooks/hooks';
 import { FormFieldLabel, FormFieldType } from 'common/enums/enums';
 import { FC, ResetPasswordRequestDto } from 'common/types/types';
-import { useDispatch, useSelector } from 'hooks/hooks';
-import { authActions } from 'store/actions';
+import { useForm, useDispatch, useSelector } from 'hooks/hooks';
+import { auth as authActions } from 'store/modules/actions';
 
 const ResetPassword: FC = () => {
   const dispatch = useDispatch();

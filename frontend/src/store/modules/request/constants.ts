@@ -9,7 +9,7 @@ import {
   ProfileActionType,
   RacingActionType,
   SettingsActionType,
-} from 'store/modules/common';
+} from 'store/modules/action-type';
 
 const { logIn, register, logInGoogle, logOut } = authActions;
 const { deleteAvatar, updateInfo, updateAvatar } = profileActions;

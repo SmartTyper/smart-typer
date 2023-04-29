@@ -1,7 +1,6 @@
 import { AppRoute } from 'common/enums/enums';
 import { RRDNavigate, RRDOutlet } from 'components/external/external';
-import { FC } from 'common/types/types';
-import { UserDto } from 'common/types/types';
+import { FC, UserDto } from 'common/types/types';
 
 type Props = {
   user: UserDto | null;

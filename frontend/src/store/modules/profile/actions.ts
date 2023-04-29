@@ -5,55 +5,56 @@ import {
   UserProfileInfoResponseDto,
   UpdateAvatarResponseDto,
 } from 'common/types/types';
-import { ProfileActionType } from './common';
+import { ActionType } from './action-type';
 
 const loadUser = createAsyncThunk(
-  ProfileActionType.LOAD_USER,
+  ActionType.LOAD_USER,
   async (
     payload: UserIdDto,
-    { extra: { service } },
+    { extra: { services } },
   ): Promise<UserProfileInfoResponseDto> => {
-    const { userApiService } = service;
+    const { userApi: userApiService } = services;
     return userApiService.getProfileInfo(payload);
   },
 );
 
-const resetAllToDefault = createAction(ProfileActionType.RESET_ALL_TO_DEFAULT);
+const resetAllToDefault = createAction(ActionType.RESET_ALL_TO_DEFAULT);
 
 const updateAvatar = createAsyncThunk(
-  ProfileActionType.UPDATE_AVATAR,
+  ActionType.UPDATE_AVATAR,
   async (
     payload: File,
-    { extra: { service } },
+    { extra: { services } },
   ): Promise<UpdateAvatarResponseDto['photoUrl']> => {
-    const { userApiService } = service;
+    const { userApi: userApiService } = services;
     const { photoUrl } = await userApiService.updateAvatar(payload);
     return photoUrl;
   },
 );
 
 const updateInfo = createAsyncThunk(
-  ProfileActionType.UPDATE_INFO,
+  ActionType.UPDATE_INFO,
   async (
     payload: Partial<UserDto>,
-    { dispatch, extra: { service, action } },
+    { dispatch, extra: { services, actions } },
   ): Promise<Partial<UserDto>> => {
-    const { userApiService } = service;
+    const { userApi: userApiService } = services;
+    const { auth: authActions } = actions;
     await userApiService.updateInfo(payload);
-    dispatch(action.authActions.updateUser(payload));
+    dispatch(authActions.updateUser(payload));
     return payload;
   },
 );
 
 const deleteAvatar = createAsyncThunk(
-  ProfileActionType.DELETE_AVATAR,
-  async (_: undefined, { extra: { service } }): Promise<void> => {
-    const { userApiService } = service;
+  ActionType.DELETE_AVATAR,
+  async (_: undefined, { extra: { services } }): Promise<void> => {
+    const { userApi: userApiService } = services;
     await userApiService.deleteAvatar();
   },
 );
 
-const profile = {
+const actions = {
   loadUser,
   resetAllToDefault,
   updateAvatar,
@@ -61,4 +62,4 @@ const profile = {
   deleteAvatar,
 };
 
-export { profile };
+export { actions };

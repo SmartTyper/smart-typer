@@ -1,5 +1,5 @@
 import { UserToSkillKey } from 'common/enums/enums';
-import { ICommonRecord } from 'common/interfaces/record/common-record/common-record.interface';
+import { ICommonRecord } from 'common/interfaces/interfaces';
 
 interface IUserToSkillRecord extends ICommonRecord {
   [UserToSkillKey.SKILL_ID]: number;

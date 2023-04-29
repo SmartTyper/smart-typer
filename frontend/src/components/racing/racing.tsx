@@ -1,6 +1,5 @@
 import { FC, RoomDto } from 'common/types/types';
-import { Modal } from 'components/common/modal/modal';
-import { Link } from 'components/common/link/link';
+import { Modal, Link } from 'components/common/common';
 import { AppRoute } from 'common/enums/enums';
 import { replaceRouteIdParam } from 'helpers/helpers';
 import { useSelector } from 'hooks/hooks';

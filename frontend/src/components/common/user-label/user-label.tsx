@@ -1,7 +1,7 @@
 import { FC } from 'common/types/types';
 import { AvatarSize, UserLabelColor } from 'common/enums/enums';
 import { clsx } from 'helpers/helpers';
-import { Avatar } from 'components/common/avatar/avatar';
+import { Avatar } from 'components/common/common';
 
 import styles from './styles.module.scss';
 

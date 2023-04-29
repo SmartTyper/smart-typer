@@ -1,8 +1,7 @@
 import { FC } from 'common/types/types';
 import { useEffect, useNavigate, useSelector } from 'hooks/hooks';
 import { AppRoute, SpinnerSize } from 'common/enums/enums';
-import { Spinner } from '../../spinner/spinner';
-import { Header } from '../../header/header';
+import { Spinner, Header } from 'components/common/common';
 
 import styles from './styles.module.scss';
 

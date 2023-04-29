@@ -5,7 +5,8 @@ import {
   notification as notificationService,
 } from 'services/services';
 import { HttpErrorMessage, WhiteSheetSize } from 'common/enums/enums';
-import { WhiteSheet } from '../white-sheet/white-sheet';
+import { WhiteSheet } from 'components/common/common';
+
 import {
   AlternativeRoute,
   GoogleButton,

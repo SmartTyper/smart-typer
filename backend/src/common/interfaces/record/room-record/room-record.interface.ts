@@ -1,5 +1,5 @@
 import { RoomKey } from 'common/enums/enums';
-import { ICommonRecord } from 'common/interfaces/record/common-record/common-record.interface';
+import { ICommonRecord } from 'common/interfaces/interfaces';
 
 interface IRoomRecord extends ICommonRecord {
   [RoomKey.LESSON_ID]: number | null;

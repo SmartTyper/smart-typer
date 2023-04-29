@@ -1,5 +1,5 @@
 import { RoomDto } from 'smart-typer-shared/common/types/types';
-import { Participant } from '../participant/participant.type';
+import { Participant } from 'common/types/types';
 
 type GameRoom = RoomDto & {
   participants: Participant[];

@@ -19,7 +19,6 @@ const racingApi = new RacingApi({ httpService: http });
 
 export {
   localStorage,
-  http,
   notification,
   authApi,
   userApi,

@@ -1,5 +1,5 @@
 import { UserToFinishedLessonKey } from 'common/enums/enums';
-import { ICommonRecord } from 'common/interfaces/record/common-record/common-record.interface';
+import { ICommonRecord } from 'common/interfaces/interfaces';
 
 interface IUserToFinishedLessonRecord extends ICommonRecord {
   [UserToFinishedLessonKey.USER_ID]: number;

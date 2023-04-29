@@ -1,4 +1,4 @@
-import { AsyncThunkOptions } from '../async-thunk-options/async-thunk-options.type';
+import { AsyncThunkOptions } from 'common/types/types';
 
 type AsyncThunkCallback<T, K> = (
   payload: K,

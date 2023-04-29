@@ -1,4 +1,4 @@
-enum ProfileActionType {
+enum ActionType {
   LOAD_USER = 'profileLoadUser',
   RESET_ALL_TO_DEFAULT = 'profileResetAllToDefault',
   UPDATE_AVATAR = 'profileUpdateAvatar',
@@ -6,4 +6,4 @@ enum ProfileActionType {
   DELETE_AVATAR = 'profileDeleteAvatar',
 }
 
-export { ProfileActionType };
+export { ActionType };

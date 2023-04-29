@@ -2,7 +2,7 @@ import { DEFAULT_SETTINGS } from 'common/constants/constants';
 import { ReducerName } from 'common/enums/enums';
 import { SettingsDto } from 'common/types/types';
 import { createSlice, isAnyOf } from 'store/external/external';
-import { settings as settingsActions } from './actions';
+import { actions } from './actions';
 
 type State = SettingsDto;
 
@@ -13,7 +13,7 @@ const { reducer } = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    const { update, setAll, resetAllToDefault } = settingsActions;
+    const { update, setAll, resetAllToDefault } = actions;
     builder
       .addCase(resetAllToDefault, (state) => {
         Object.assign(state, initialState);
@@ -24,4 +24,4 @@ const { reducer } = createSlice({
   },
 });
 
-export { reducer as settings };
+export { reducer };

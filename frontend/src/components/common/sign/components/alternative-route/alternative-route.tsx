@@ -1,6 +1,6 @@
 import { FC } from 'common/types/types';
-import { AlternativeRoute as Props } from '../../common/common';
 import { RRDLink } from 'components/external/external';
+import { AlternativeRoute as Props } from '../../common/common';
 
 const AlternativeRoute: FC<Props> = ({ label, path, linkText }) => {
   return (

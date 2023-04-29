@@ -1,7 +1,7 @@
 import { ReducerName } from 'common/enums/enums';
-import { createSlice, isAnyOf } from 'store/external/external';
-import { racing as racingActions } from './actions';
 import { GameRoom, RoomDto } from 'common/types/types';
+import { createSlice, isAnyOf } from 'store/external/external';
+import { actions } from './actions';
 
 type State = {
   personalRoom: RoomDto | null;
@@ -32,7 +32,7 @@ const { reducer } = createSlice({
       loadCurrentRoom,
       setPersonalRoomAsCurrent,
       loadAvailableRooms,
-    } = racingActions;
+    } = actions;
     builder
       .addCase(setPersonalRoom, (state, action) => {
         state.personalRoom = action.payload;
@@ -49,4 +49,4 @@ const { reducer } = createSlice({
   },
 });
 
-export { reducer as racing };
+export { reducer };

@@ -1,5 +1,5 @@
 import { StatisticsKey } from 'common/enums/enums';
-import { ICommonRecord } from 'common/interfaces/record/common-record/common-record.interface';
+import { ICommonRecord } from 'common/interfaces/interfaces';
 
 interface IStatisticsRecord extends ICommonRecord {
   [StatisticsKey.USER_ID]: number;

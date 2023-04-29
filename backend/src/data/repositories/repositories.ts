@@ -1,10 +1,3 @@
-import { User } from './user/user.repository';
-import { RefreshToken } from './refresh-token/refresh-token.repository';
-// import { Settings } from './settings/settings.repository';
-// import { Statistics } from './statistics/statistics.repository';
-import { Skill } from './skill/skill.repository';
-import { Room } from './room/room.repository';
-
 import {
   User as UserModel,
   RefreshToken as RefreshTokenModel,
@@ -13,6 +6,13 @@ import {
   Skill as SkillModel,
   Room as RoomModel,
 } from 'data/models/models';
+
+import { User } from './user/user.repository';
+import { RefreshToken } from './refresh-token/refresh-token.repository';
+// import { Settings } from './settings/settings.repository';
+// import { Statistics } from './statistics/statistics.repository';
+import { Skill } from './skill/skill.repository';
+import { Room } from './room/room.repository';
 
 const refreshToken = new RefreshToken({
   RefreshTokenModel,

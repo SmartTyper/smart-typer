@@ -1,7 +1,7 @@
 import { HttpErrorMessage, ReducerName } from 'common/enums/enums';
 import { UserDto } from 'common/types/types';
 import { createSlice, isAnyOf } from 'store/external/external';
-import { auth as authActions } from './actions';
+import { actions } from './actions';
 
 type State = {
   user: UserDto | null;
@@ -19,7 +19,7 @@ const { reducer } = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     const { logIn, register, logInGoogle, logOut, setError, updateUser } =
-      authActions;
+    actions;
     builder
       .addCase(logOut.fulfilled, (state) => {
         Object.assign(state, initialState);
@@ -43,4 +43,4 @@ const { reducer } = createSlice({
   },
 });
 
-export { reducer as auth };
+export { reducer };

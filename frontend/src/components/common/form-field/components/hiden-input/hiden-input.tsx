@@ -1,7 +1,7 @@
 import { FormFieldType } from 'common/enums/enums';
 import { FC, FieldError, UseFormRegisterReturn } from 'common/types/types';
 import { RBForm, RBInputGroup } from 'components/external/external';
-import { Button } from '../../../button/button';
+import { Button } from 'components/common/common';
 import { useState } from 'hooks/hooks';
 
 import styles from './styles.module.scss';

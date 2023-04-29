@@ -1,7 +1,7 @@
 import { ReducerName } from 'common/enums/enums';
 import { Rating, Statistics, UserDto } from 'common/types/types';
 import { createSlice } from 'store/external/external';
-import { profile as profileActions } from './actions';
+import { actions } from './actions';
 
 type State = {
   user: UserDto | null;
@@ -26,7 +26,7 @@ const { reducer } = createSlice({
       deleteAvatar,
       updateInfo,
       updateAvatar,
-    } = profileActions;
+    } = actions;
     builder
       .addCase(loadUser.fulfilled, (state, action) => {
         const { statistics, rating, ...user } = action.payload;
@@ -55,4 +55,4 @@ const { reducer } = createSlice({
   },
 });
 
-export { reducer as profile };
+export { reducer };

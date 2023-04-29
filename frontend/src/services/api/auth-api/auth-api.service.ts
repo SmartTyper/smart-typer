@@ -9,14 +9,14 @@ import {
   GoogleLogInCodeRequestDto,
   UserAuthInfoResponseDto,
 } from 'common/types/types';
-import { http as httpService } from 'services/services';
+import { Http as HttpService } from '../../http/http.service';
 
 type Constructor = {
-  httpService: typeof httpService;
+  httpService: HttpService;
 };
 
 class AuthApi {
-  private _httpService: typeof httpService;
+  private _httpService: HttpService;
   private _baseUrl = '/api/auth';
 
   public constructor(params: Constructor) {

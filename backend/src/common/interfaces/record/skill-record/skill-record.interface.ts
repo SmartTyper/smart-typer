@@ -1,5 +1,5 @@
 import { SkillKey } from 'common/enums/enums';
-import { ICommonRecord } from 'common/interfaces/record/common-record/common-record.interface';
+import { ICommonRecord } from 'common/interfaces/interfaces';
 
 interface ISkillRecord extends ICommonRecord {
   [SkillKey.NAME]: string;

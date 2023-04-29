@@ -1,5 +1,5 @@
-export { auth } from './auth/reducer';
-export { profile } from './profile/reducer';
-export { settings } from './settings/reducer';
-export { racing } from './racing/reducer';
-export { request } from './request/reducer';
+export { reducer as auth } from './auth/reducer';
+export { reducer as profile } from './profile/reducer';
+export { reducer as settings } from './settings/reducer';
+export { reducer as racing } from './racing/reducer';
+export { reducer as request } from './request/reducer';

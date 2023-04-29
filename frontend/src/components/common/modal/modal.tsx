@@ -1,6 +1,6 @@
 import { RBModal } from 'components/external/external';
 import { ModalButton } from 'common/types/types';
-import { Button } from '../button/button';
+import { Button } from 'components/common/common';
 
 type Props = {
   children: JSX.Element | JSX.Element[];

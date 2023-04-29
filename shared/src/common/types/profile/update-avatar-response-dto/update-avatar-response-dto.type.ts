@@ -1,4 +1,4 @@
-import { UserDto } from 'common/types/user/user';
+import { UserDto } from 'common/types/types';
 
 type UpdateAvatarResponseDto = Pick<UserDto, 'photoUrl'>;
 

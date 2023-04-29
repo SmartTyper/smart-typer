@@ -8,9 +8,9 @@ import {
   SkillRelationMappings,
 } from 'common/enums/enums';
 import { ISkillRecord } from 'common/interfaces/interfaces';
+import { Lesson } from 'data/models/models';
 
 import { Base } from '../base/base.model';
-import { Lesson } from '../lesson/lesson.model';
 
 class Skill extends Base implements ISkillRecord {
   public [SkillKey.NAME]!: ISkillRecord[SkillKey.NAME];

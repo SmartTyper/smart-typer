@@ -6,14 +6,14 @@ import {
   UserProfileInfoResponseDto,
   UserAuthInfoResponseDto,
 } from 'common/types/types';
-import { http as httpService } from 'services/services';
+import { Http as HttpService } from '../../http/http.service';
 
 type Constructor = {
-  httpService: typeof httpService;
+  httpService: HttpService;
 };
 
 class UserApi {
-  private _httpService = httpService;
+  private _httpService: HttpService;
   private _baseUrl = '/api/user';
 
   public constructor(params: Constructor) {

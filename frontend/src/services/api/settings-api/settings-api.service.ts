@@ -1,13 +1,13 @@
 import { HttpMethod } from 'common/enums/enums';
 import { SettingsDto } from 'common/types/types';
-import { http as httpService } from 'services/services';
+import { Http as HttpService } from '../../http/http.service';
 
 type Constructor = {
-  httpService: typeof httpService;
+  httpService: HttpService;
 };
 
 class SettingsApi {
-  private _httpService = httpService;
+  private _httpService: HttpService;
   private _baseUrl = '/api/settings';
 
   public constructor(params: Constructor) {

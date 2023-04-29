@@ -1,5 +1,4 @@
-import { Statistics } from '../statistics/statistics.type';
-import { UserDto } from '../user/user-dto/user-dto.type';
+import { Statistics, UserDto } from 'common/types/types';
 
 type Rating = (Pick<UserDto, 'nickname' | 'photoUrl' | 'id'> &
   Pick<Statistics, 'averageSpeed'>)[];

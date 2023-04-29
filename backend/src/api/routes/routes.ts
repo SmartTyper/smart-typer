@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import { Auth } from './auth/auth.route';
-import { User } from './user/user.route';
 import { getValidationMiddleware } from 'api/middlewares/middlewares';
 import {
   auth as authService,
   token as tokenService,
   user as userService,
 } from 'services/services';
+import { Auth } from './auth/auth.route';
+import { User } from './user/user.route';
 
 type Options = {
   authService: typeof authService;

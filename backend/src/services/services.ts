@@ -1,3 +1,11 @@
+import {
+  user as userRepository,
+  refreshToken as refreshTokenRepository,
+  // settings as settingsRepository,
+  // statistics as statisticsRepository,
+} from 'data/repositories/repositories';
+import { ENV } from 'common/constants/constants';
+
 import { Auth } from './auth/auth.service';
 import { Token } from './token/token.service';
 import { User } from './user/user.service';
@@ -7,15 +15,6 @@ import { Settings } from './settings/settings.service';
 import { Hash } from './hash/hash.service';
 import { Oauth2 } from './oauth2/oauth2.service';
 import { Mailer } from './mailer/mailer.service';
-
-import {
-  user as userRepository,
-  refreshToken as refreshTokenRepository,
-  // settings as settingsRepository,
-  // statistics as statisticsRepository,
-} from 'data/repositories/repositories';
-
-import { ENV } from 'common/constants/constants';
 
 const s3 = new S3();
 

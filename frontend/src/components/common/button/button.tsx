@@ -1,9 +1,9 @@
 import { FC, SyntheticEvent, VoidCallback } from 'common/types/types';
 import { clsx } from 'helpers/helpers';
-import { Spinner } from '../spinner/spinner';
+import { Spinner } from 'components/common/common';
+import { SpinnerSize } from 'common/enums/enums';
 
 import styles from './styles.module.scss';
-import { SpinnerSize } from 'common/enums/enums';
 
 type Props = {
   label?: string;

@@ -1,11 +1,11 @@
 import { ReducerName } from 'common/enums/enums';
-import { ActionType } from 'store/modules/common';
+import { ActionType } from 'store/modules/action-type';
 import { createSlice, isAnyOf } from 'store/external/external';
 import {
   STARTED_ACTIONS,
   FINISHED_ACTIONS,
   REQUEST_ACTIONS_TYPES,
-} from './common';
+} from './constants';
 
 const initialState: Partial<Record<ActionType, boolean>> = {};
 for (const requestActionType of REQUEST_ACTIONS_TYPES) {
@@ -27,4 +27,4 @@ const { reducer } = createSlice({
   },
 });
 
-export { reducer as request };
+export { reducer };

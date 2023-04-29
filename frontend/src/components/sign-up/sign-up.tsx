@@ -8,7 +8,7 @@ import {
   useEffect,
   useForm,
 } from 'hooks/hooks';
-import { authActions } from 'store/actions';
+import { auth as authActions } from 'store/modules/actions';
 import { signUpSchema } from 'validation-schemas/validation-schemas';
 
 const SignUp: FC = () => {

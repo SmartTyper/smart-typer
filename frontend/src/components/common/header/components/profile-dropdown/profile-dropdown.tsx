@@ -1,8 +1,7 @@
 import { FC } from 'common/types/types';
-import { Dropdown } from 'components/common/dropdown/dropdown';
+import { Dropdown, UserLabel } from 'components/common/common';
 import { AvatarSize, UserLabelColor } from 'common/enums/enums';
 import { DropdownButton, DropdownLink } from 'common/types/types';
-import { UserLabel } from 'components/common/user-label/user-label';
 
 type Props = {
   userName: string;

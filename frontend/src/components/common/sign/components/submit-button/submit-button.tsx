@@ -1,5 +1,5 @@
 import { FC, SyntheticEvent } from 'common/types/types';
-import { Button } from '../../../button/button';
+import { Button } from 'components/common/common';
 
 import styles from './styles.module.scss';
 

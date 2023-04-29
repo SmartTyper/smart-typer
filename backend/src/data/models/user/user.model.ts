@@ -14,15 +14,16 @@ import {
   UserRelationMappings,
 } from 'common/enums/enums';
 import { IUserRecord } from 'common/interfaces/interfaces';
+import { RefreshToken, 
+  Settings,
+  Statistics,
+  UserToStudyPlanLesson, 
+  UserToFinishedLesson, 
+  Room, 
+  Skill,
+} from 'data/models/models';
 
 import { Base } from '../base/base.model';
-import { RefreshToken } from '../refresh-token/refresh-token.model';
-import { Settings } from '../settings/settings.model';
-import { Statistics } from '../statistics/statistics.model';
-import { UserToStudyPlanLesson } from '../user-to-study-plan-lesson/user-to-study-plan-lesson.model';
-import { UserToFinishedLesson } from '../user-to-finished-lesson/user-to-finished-lesson.model';
-import { Room } from '../room/room.model';
-import { Skill } from '../skill/skill.model';
 
 class User extends Base implements IUserRecord {
   public [UserKey.NICKNAME]!: IUserRecord[UserKey.NICKNAME];
