@@ -7,6 +7,7 @@ import {
   notification as notificationService,
   userApi as userApiService,
   settingsApi as settingsApiService,
+  racingApi as racingApiService,
 } from 'services/services';
 import * as action from './actions';
 
@@ -17,6 +18,7 @@ const service = {
   notificationService,
   userApiService,
   settingsApiService,
+  racingApiService,
 };
 
 const store = configureStore({

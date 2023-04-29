@@ -1,1 +1,1 @@
-export * from './default-settings/default-settings.constant';
+export { DEFAULT_SETTINGS } from 'smart-typer-shared/common/constants/constants';

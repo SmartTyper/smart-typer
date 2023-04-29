@@ -3,15 +3,21 @@ import { ModalButton } from 'common/types/types';
 import { Button } from '../button/button';
 
 type Props = {
-  children: JSX.Element;
+  children: JSX.Element | JSX.Element[];
   isVisible: boolean;
   submitButton?: ModalButton;
   cancelButton?: ModalButton;
   title?: string;
-  size
+  // size
 };
 
-const Modal: React.FC<Props> = ({ children, isVisible, submitButton,  cancelButton, title }) => {
+const Modal: React.FC<Props> = ({
+  children,
+  isVisible,
+  submitButton,
+  cancelButton,
+  title,
+}) => {
   const hasHeader = Boolean(title);
   const hasFooter = cancelButton || submitButton;
   return (
@@ -23,29 +29,34 @@ const Modal: React.FC<Props> = ({ children, isVisible, submitButton,  cancelButt
       backdrop="static"
       keyboard={false}
     >
-      {hasHeader &&<RBModal.Header closeButton>
-        <RBModal.Title className="fs-6">Create new room:</RBModal.Title>
-      </RBModal.Header>
-      }
-      <RBModal.Body className="mx-0">
-        {children}
-      </RBModal.Body>
-      {hasFooter  && <RBModal.Footer>
-        {cancelButton && <Button
-          onClick={cancelButton.onClick}
-          isDisabled={cancelButton.isDisabled}
-          className="me-2"
-        >
-          {cancelButton.label}
-        </Button>}
-        {submitButton && <Button
-          onClick={submitButton.onClick}
-          isDisabled={submitButton.isDisabled}
-          className="me-2"
-        >
-          {submitButton.label}
-        </Button>}
-      </RBModal.Footer>}
+      {hasHeader && (
+        <RBModal.Header closeButton>
+          <RBModal.Title className="fs-6">Create new room:</RBModal.Title>
+        </RBModal.Header>
+      )}
+      <RBModal.Body className="mx-0">{children}</RBModal.Body>
+      {hasFooter && (
+        <RBModal.Footer>
+          {cancelButton && (
+            <Button
+              onClick={cancelButton.onClick}
+              isDisabled={cancelButton.isDisabled}
+              className="me-2"
+            >
+              {cancelButton.label}
+            </Button>
+          )}
+          {submitButton && (
+            <Button
+              onClick={submitButton.onClick}
+              isDisabled={submitButton.isDisabled}
+              className="me-2"
+            >
+              {submitButton.label}
+            </Button>
+          )}
+        </RBModal.Footer>
+      )}
     </RBModal>
   );
 };

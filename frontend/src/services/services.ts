@@ -1,4 +1,4 @@
-import { AuthApi, UserApi, SettingsApi } from './api/api';
+import { AuthApi, UserApi, SettingsApi, RacingApi } from './api/api';
 import { Http } from './http/http.service';
 import { Storage } from './storage/storage.service';
 import { Notification } from './notification/notification.service';
@@ -15,4 +15,14 @@ const userApi = new UserApi({ httpService: http });
 
 const settingsApi = new SettingsApi({ httpService: http });
 
-export { localStorage, http, notification, authApi, userApi, settingsApi };
+const racingApi = new RacingApi({ httpService: http });
+
+export {
+  localStorage,
+  http,
+  notification,
+  authApi,
+  userApi,
+  settingsApi,
+  racingApi,
+};

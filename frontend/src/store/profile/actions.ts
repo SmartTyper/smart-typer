@@ -25,9 +25,10 @@ const updateAvatar = createAsyncThunk(
   async (
     payload: File,
     { extra: { service } },
-  ): Promise<UpdateAvatarResponseDto> => {
+  ): Promise<UpdateAvatarResponseDto['photoUrl']> => {
     const { userApiService } = service;
-    return userApiService.updateAvatar(payload);
+    const { photoUrl } = await userApiService.updateAvatar(payload);
+    return photoUrl;
   },
 );
 

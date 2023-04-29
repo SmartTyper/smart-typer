@@ -11,3 +11,4 @@ export * from './rating/rating';
 export * from './settings/settings';
 export * from './profile/profile';
 export * from './ui/ui';
+export * from './racing/racing';

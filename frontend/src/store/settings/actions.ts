@@ -1,13 +1,13 @@
 import { createAction, createAsyncThunk } from 'store/external';
-import { Settings } from 'common/types/types';
+import { SettingsDto } from 'common/types/types';
 import { SettingsActionType } from './common';
 
 const update = createAsyncThunk(
   SettingsActionType.UPDATE,
   async (
-    payload: Partial<Settings>,
+    payload: Partial<SettingsDto>,
     { extra: { service } },
-  ): Promise<Partial<Settings>> => {
+  ): Promise<Partial<SettingsDto>> => {
     const { settingsApiService } = service;
     await settingsApiService.update(payload);
     return payload;
@@ -16,7 +16,7 @@ const update = createAsyncThunk(
 
 const setAll = createAction(
   SettingsActionType.SET_ALL,
-  (payload: Settings) => ({ payload }),
+  (payload: SettingsDto) => ({ payload }),
 );
 
 const resetAllToDefault = createAction(SettingsActionType.RESET_ALL_TO_DEFAULT);

@@ -41,11 +41,17 @@ class User {
       hasEmailNotifications: true,
       hasLessonVoice: true,
     };
+    const personalRoom = {
+      id: 1,
+      lessonId: null,
+      name: 'personal',
+    };
     return {
       ...user,
       ...tokens,
       photoUrl,
       settings,
+      personalRoom,
     };
   }
 

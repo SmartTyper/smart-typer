@@ -1,5 +1,5 @@
 import { HttpMethod } from 'common/enums/enums';
-import { Settings } from 'common/types/types';
+import { SettingsDto } from 'common/types/types';
 import { http as httpService } from 'services/services';
 
 type Constructor = {
@@ -14,8 +14,8 @@ class SettingsApi {
     this._httpService = params.httpService;
   }
 
-  public async update(payload: Partial<Settings>): Promise<void> {
-    return this._httpService.load(`${this._baseUrl}`, {
+  public async update(payload: Partial<SettingsDto>): Promise<void> {
+    return this._httpService.load(this._baseUrl, {
       method: HttpMethod.PUT,
       payload: JSON.stringify(payload),
     });

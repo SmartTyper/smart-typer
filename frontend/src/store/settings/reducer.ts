@@ -1,10 +1,10 @@
 import { DEFAULT_SETTINGS } from 'common/constants/constants';
 import { ReducerName } from 'common/enums/enums';
-import { Settings } from 'common/types/types';
+import { SettingsDto } from 'common/types/types';
 import { createSlice, isAnyOf } from 'store/external';
 import { settings as settingsActions } from './actions';
 
-type State = Settings;
+type State = SettingsDto;
 
 const initialState: State = DEFAULT_SETTINGS;
 
