@@ -1,1 +1,1 @@
-export type { AnySchema } from 'smart-typer-shared/common/types/types';
+export type {  AnyObjectSchema } from 'smart-typer-shared/common/types/types';

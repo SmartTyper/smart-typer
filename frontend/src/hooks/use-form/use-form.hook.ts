@@ -4,10 +4,10 @@ import {
   FieldValues,
 } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { AnySchema } from 'common/types/types';
+import { AnyObjectSchema } from 'common/types/types';
 
 const useForm = <TFieldValues extends FieldValues, TContext = unknown>(
-  validationSchema: AnySchema,
+  validationSchema: AnyObjectSchema,
 ): UseFormReturn<TFieldValues, TContext> => {
   return useReactForm<TFieldValues, TContext>({
     resolver: yupResolver(validationSchema),
