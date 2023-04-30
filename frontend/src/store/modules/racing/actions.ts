@@ -35,11 +35,35 @@ const setPersonalRoomAsCurrent = createAction(
   },
 );
 
+const addRoomToAvailableRooms = createAction(
+  ActionType.ADD_ROOM_TO_AVAILABLE_ROOMS,
+  (payload: RoomDto) => ({ payload }),
+);
+
+const removeRoomToAvailableRooms = createAction(
+  ActionType.REMOVE_ROOM_TO_AVAILABLE_ROOMS,
+  (payload: RoomIdDto) => ({ payload }),
+);
+
+const setShareRoomId = createAction(
+  ActionType.SET_SHARE_ROOM_ID,
+  (payload: RoomIdDto) => ({ payload }),
+);
+
+const resetShareRoomId = createAction(
+  ActionType.RESET_SHARE_ROOM_ID,
+  (payload: RoomIdDto) => ({ payload }),
+);
+
 const actions = {
   setPersonalRoom,
   loadCurrentRoom,
   setPersonalRoomAsCurrent,
   loadAvailableRooms,
+  addRoomToAvailableRooms,
+  removeRoomToAvailableRooms,
+  setShareRoomId,
+  resetShareRoomId,
 };
 
 export { actions };

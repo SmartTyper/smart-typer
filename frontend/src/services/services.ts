@@ -2,12 +2,15 @@ import { AuthApi, UserApi, SettingsApi, RacingApi } from './api/api';
 import { Http } from './http/http.service';
 import { Storage } from './storage/storage.service';
 import { Notification } from './notification/notification.service';
+import { Socket } from './socket/socket.service';
 
 const localStorage = new Storage({ storage: window.localStorage });
 
 const http = new Http({ localStorageService: localStorage });
 
 const notification = new Notification();
+
+const socket = new Socket();
 
 const authApi = new AuthApi({ httpService: http });
 
@@ -24,4 +27,5 @@ export {
   userApi,
   settingsApi,
   racingApi,
+  socket,
 };

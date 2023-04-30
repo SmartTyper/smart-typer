@@ -40,23 +40,13 @@ const Rooms: FC = () => {
     useState(false);
   const [isShareRoomModalVisible, setIsShareRoomModalVisible] = useState(false);
 
-  const onCreatingRoom = (room: IRoom): void => {
-    dispatch(roomActions.setCurrentRoom(room));
-  };
-
-  const onDeletingRoom = ({ roomId }: IRoomAction): void => {
-    dispatch(roomActions.removeRoom(roomId));
-  };
-
-  const handleCreate = (): void => setIsCreateRoomModalVisible(true);
-
-  const handleCreationCancel = (): void => {
-    setIsCreateRoomModalVisible(false);
+  const handleToggleCreateRoomModalVisible = (): void => {
+    setIsCreateRoomModalVisible((prev: boolean) => !prev);
   };
 
   const handleShareCancel = (): void => {
     setIsShareRoomModalVisible(false);
-    dispatch(roomActions.setShareRoomId(null));
+    dispatch(roomActions.resetShareRoomId(null));
   };
 
   const handleCreationConfirm = (data: IRoomCreation): void => {
@@ -106,11 +96,14 @@ const Rooms: FC = () => {
         {areRoomsLoading ? (
           <Spinner height={'12rem'} width={'12rem'} />
         ) : (
-          <RoomItemList rooms={rooms} onCreate={handleCreate} />
+          <RoomItemList
+            rooms={rooms}
+            onCreate={handleToggleCreateRoomModalVisible}
+          />
         )}
         <CreateRoomModal
           showModal={isCreateRoomModalVisible}
-          onModalClose={handleCreationCancel}
+          onModalClose={handleToggleCreateRoomModalVisible}
           handleFunction={handleCreationConfirm}
         />
         {shareLink && shareRoomId && (

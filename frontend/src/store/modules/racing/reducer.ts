@@ -17,11 +17,6 @@ const initialState: State = {
   availableRooms: [],
 };
 
-// createRoom
-// deleteRoom
-
-// setCurrentRoom
-
 const { reducer } = createSlice({
   name: ReducerName.PROFILE,
   initialState,
@@ -32,6 +27,10 @@ const { reducer } = createSlice({
       loadCurrentRoom,
       setPersonalRoomAsCurrent,
       loadAvailableRooms,
+      addRoomToAvailableRooms,
+      removeRoomToAvailableRooms,
+      setShareRoomId,
+      resetShareRoomId,
     } = actions;
     builder
       .addCase(setPersonalRoom, (state, action) => {
@@ -39,6 +38,20 @@ const { reducer } = createSlice({
       })
       .addCase(loadAvailableRooms.fulfilled, (state, action) => {
         state.availableRooms = action.payload;
+      })
+      .addCase(addRoomToAvailableRooms, (state, action) => {
+        state.availableRooms = [...state.availableRooms, action.payload];
+      })
+      .addCase(removeRoomToAvailableRooms, (state, action) => {
+        state.availableRooms = state.availableRooms.filter(
+          (room) => room.id !== action.payload.roomId,
+        );
+      })
+      .addCase(setShareRoomId, (state, action) => {
+        state.shareRoomId = action.payload.roomId;
+      })
+      .addCase(resetShareRoomId, (state) => {
+        state.shareRoomId = null;
       })
       .addMatcher(
         isAnyOf(setPersonalRoomAsCurrent, loadCurrentRoom.fulfilled),
