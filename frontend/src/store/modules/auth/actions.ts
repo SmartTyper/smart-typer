@@ -11,9 +11,11 @@ import {
   GoogleLogInCodeRequestDto,
   SetPasswordRequestDto,
   ResetPasswordRequestDto,
+  GoogleLogInUrlResponseDto,
 } from 'common/types/types';
 import { HttpError } from 'exceptions/exceptions';
 import { ActionType } from './action-type';
+import { handleExternalError } from 'helpers/helpers';
 
 const logIn = createAsyncThunk(
   ActionType.LOG_IN,
@@ -22,7 +24,8 @@ const logIn = createAsyncThunk(
     { dispatch, extra: { services, actions } },
   ): Promise<UserDto | void> => {
     try {
-      const { authApi: authApiService, localStorage: localStorageService } = services;
+      const { authApi: authApiService, localStorage: localStorageService } =
+        services;
       const { settings: settingsActions } = actions;
       const userData = await authApiService.logIn(payload);
       const { accessToken, refreshToken, settings, ...user } = userData;
@@ -57,7 +60,8 @@ const register = createAsyncThunk(
     payload: RegisterRequestDto,
     { dispatch, extra: { services, actions } },
   ): Promise<UserDto> => {
-    const { authApi: authApiService, localStorage: localStorageService } = services;
+    const { authApi: authApiService, localStorage: localStorageService } =
+      services;
     const { settings: settingsActions } = actions;
     const userData = await authApiService.register(payload);
     const { accessToken, refreshToken, settings, ...user } = userData;
@@ -74,7 +78,8 @@ const logOut = createAsyncThunk(
     _: undefined,
     { dispatch, extra: { services, actions } },
   ): Promise<void> => {
-    const { authApi: authApiService, localStorage: localStorageService } = services;
+    const { authApi: authApiService, localStorage: localStorageService } =
+      services;
     const { settings: settingsActions } = actions;
     const refreshToken = localStorageService.getItem(StorageKey.REFRESH_TOKEN);
     localStorageService.removeItem(StorageKey.ACCESS_TOKEN);
@@ -92,7 +97,8 @@ const logInGoogle = createAsyncThunk(
     payload: GoogleLogInCodeRequestDto,
     { dispatch, extra: { services, actions } },
   ): Promise<UserDto> => {
-    const { authApi: authApiService, localStorage: localStorageService } = services;
+    const { authApi: authApiService, localStorage: localStorageService } =
+      services;
     const { settings: settingsActions } = actions;
     const userData = await authApiService.logInGoogle(payload);
     const { accessToken, refreshToken, settings, ...user } = userData;
@@ -109,7 +115,8 @@ const loadUser = createAsyncThunk(
     _: undefined,
     { dispatch, extra: { services, actions } },
   ): Promise<UserDto | void> => {
-    const { userApi: userApiService, localStorage: localStorageService } = services;
+    const { userApi: userApiService, localStorage: localStorageService } =
+      services;
     const { settings: settingsActions } = actions;
     const accessToken = localStorageService.getItem(StorageKey.ACCESS_TOKEN);
     if (accessToken) {
@@ -132,7 +139,8 @@ const resetPassword = createAsyncThunk(
     { dispatch, extra: { services } },
   ): Promise<void> => {
     try {
-      const { notification: notificationService, authApi: authApiService } = services;
+      const { notification: notificationService, authApi: authApiService } =
+        services;
       await authApiService.resetPassword(payload);
       notificationService.info(NotificationMessage.RESET_PASSWORD_SENT);
     } catch (error) {
@@ -152,8 +160,11 @@ const setPassword = createAsyncThunk(
     payload: SetPasswordRequestDto,
     { extra: { services } },
   ): Promise<UserDto> => {
-    const { notification: notificationService, authApi: authApiService, localStorage: localStorageService } =
-      services;
+    const {
+      notification: notificationService,
+      authApi: authApiService,
+      localStorage: localStorageService,
+    } = services;
     const userData = await authApiService.setPassword(payload);
     const { accessToken, refreshToken, ...user } = userData;
     localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
@@ -161,6 +172,23 @@ const setPassword = createAsyncThunk(
     notificationService.info(NotificationMessage.RESET_PASSWORD_SENT);
     notificationService.success(NotificationMessage.NEW_PASSWORD_SAVED);
     return user;
+  },
+);
+
+const loadGoogleUrl = createAsyncThunk(
+  ActionType.LOAD_GOOGLE_URL,
+  async (
+    _: undefined,
+    { extra: { services } },
+  ): Promise<GoogleLogInUrlResponseDto['url'] | void> => {
+    const { notification: notificationService, authApi: authApiService } =
+      services;
+    try {
+      const { url } = await authApiService.getLogInGoogleUrl();
+      return url;
+    } catch (error) {
+      handleExternalError(error, notificationService.error);
+    }
   },
 );
 
@@ -174,6 +202,7 @@ const actions = {
   updateUser,
   setPassword,
   resetPassword,
+  loadGoogleUrl,
 };
 
 export { actions };

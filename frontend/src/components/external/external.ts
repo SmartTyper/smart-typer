@@ -13,6 +13,7 @@ export {
   Form as RBForm,
   InputGroup as RBInputGroup,
   Modal as RBModal,
+  Container as RBContainer,
 } from 'react-bootstrap';
 
 export {
@@ -24,4 +25,6 @@ export {
   Outlet as RRDOutlet,
 } from 'react-router-dom';
 
-export { ReactAvatar, ReactGoogleButton, ReactCrop };
+import { ReactMultiEmail } from 'react-multi-email';
+
+export { ReactAvatar, ReactGoogleButton, ReactCrop, ReactMultiEmail };

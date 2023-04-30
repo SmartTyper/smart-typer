@@ -5,8 +5,9 @@ enum ActionType {
   LOAD_AVAILABLE_ROOMS = 'racingLoadAvailableRooms',
   ADD_ROOM_TO_AVAILABLE_ROOMS = 'racingAddRoomToAvailableRooms',
   REMOVE_ROOM_TO_AVAILABLE_ROOMS = 'racingRemoveRoomToAvailableRooms',
-  SET_SHARE_ROOM_ID = 'racingSetShareRoomId',
-  RESET_SHARE_ROOM_ID = 'racingResetShareRoomId',
+  RESET_SHARE_ROOM_URL = 'racingResetShareRoomUrl',
+  CREATE_ROOM = 'racingCreateRoom',
+  SEND_ROOM_URL_TO_EMAILS = 'racingSendRoomUrlToEmails',
 }
 
 export { ActionType };

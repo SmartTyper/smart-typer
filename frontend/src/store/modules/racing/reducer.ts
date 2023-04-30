@@ -1,19 +1,19 @@
 import { ReducerName } from 'common/enums/enums';
-import { GameRoom, RoomDto } from 'common/types/types';
+import { GameRoom, RoomDto, ShareRoomUrlResponseDto } from 'common/types/types';
 import { createSlice, isAnyOf } from 'store/external/external';
 import { actions } from './actions';
 
 type State = {
   personalRoom: RoomDto | null;
   currentRoom: GameRoom | null;
-  shareRoomId: RoomDto['id'] | null;
+  shareRoomUrl: ShareRoomUrlResponseDto['url'] | null;
   availableRooms: RoomDto[];
 };
 
 const initialState: State = {
   personalRoom: null,
   currentRoom: null,
-  shareRoomId: null,
+  shareRoomUrl: null,
   availableRooms: [],
 };
 
@@ -29,8 +29,8 @@ const { reducer } = createSlice({
       loadAvailableRooms,
       addRoomToAvailableRooms,
       removeRoomToAvailableRooms,
-      setShareRoomId,
-      resetShareRoomId,
+      createRoom,
+      resetShareRoomUrl,
     } = actions;
     builder
       .addCase(setPersonalRoom, (state, action) => {
@@ -44,14 +44,14 @@ const { reducer } = createSlice({
       })
       .addCase(removeRoomToAvailableRooms, (state, action) => {
         state.availableRooms = state.availableRooms.filter(
-          (room) => room.id !== action.payload.roomId,
+          (room) => room.id !== action.payload,
         );
       })
-      .addCase(setShareRoomId, (state, action) => {
-        state.shareRoomId = action.payload.roomId;
+      .addCase(createRoom.fulfilled, (state, action) => {
+        state.shareRoomUrl = action.payload;
       })
-      .addCase(resetShareRoomId, (state) => {
-        state.shareRoomId = null;
+      .addCase(resetShareRoomUrl, (state) => {
+        state.shareRoomUrl = null;
       })
       .addMatcher(
         isAnyOf(setPersonalRoomAsCurrent, loadCurrentRoom.fulfilled),

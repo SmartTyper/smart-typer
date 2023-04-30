@@ -6,12 +6,12 @@ import { sizeToPx } from './maps/maps';
 type Props = {
   size: AvatarSize;
   name?: string;
-  src?: string;
-  round: boolean;
+  src?: string | null;
+  round?: boolean;
   className?: string;
 };
 
-const Avatar: FC<Props> = ({ size, name, src, round, className }) => {
+const Avatar: FC<Props> = ({ size, name, src, round = true, className }) => {
   const sizeInPx = sizeToPx[size];
 
   return (
@@ -19,7 +19,7 @@ const Avatar: FC<Props> = ({ size, name, src, round, className }) => {
       size={sizeInPx}
       name={name}
       title=""
-      src={src}
+      src={src ?? undefined}
       round={round}
       className={className}
     />

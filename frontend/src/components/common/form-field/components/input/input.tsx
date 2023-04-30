@@ -3,21 +3,23 @@ import { RBForm } from 'components/external/external';
 import { FC, UseFormRegisterReturn, FieldError } from 'common/types/types';
 
 type Props = {
-  placeholder: string;
+  placeholder?: string;
   type: FormFieldType;
-  value?: string;
-  register: UseFormRegisterReturn;
+  register?: UseFormRegisterReturn;
   error?: FieldError;
   className?: string;
+  value?: string;
+  readOnly: boolean;
 };
 
 const Input: FC<Props> = ({
   placeholder,
   type,
-  value,
   register,
   error,
   className,
+  readOnly,
+  value,
 }) => (
   <RBForm.Control
     {...register}
@@ -25,6 +27,7 @@ const Input: FC<Props> = ({
     placeholder={placeholder}
     isInvalid={!!error}
     className={className}
+    readOnly={readOnly}
     value={value}
   />
 );

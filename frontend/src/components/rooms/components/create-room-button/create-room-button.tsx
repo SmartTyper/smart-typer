@@ -1,12 +1,14 @@
-import { Card, Button } from 'react-bootstrap';
+import { FC } from 'common/types/types';
 import { clsx } from 'helpers/helpers';
+import { Button, Card } from 'react-bootstrap';
+
 import styles from './styles.module.scss';
 
 type Props = {
   onClick(): void;
 };
 
-const CreateRoomButton: React.FC<Props> = ({ onClick }) => (
+const CreateRoomButton: FC<Props> = ({ onClick }) => (
   <Card className="rounded bg-white border-0 p-0">
     <Button
       variant="light"

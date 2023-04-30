@@ -1,5 +1,4 @@
 import { ReducerName } from 'common/enums/enums';
-import { ActionType } from 'store/modules/action-type';
 import { createSlice, isAnyOf } from 'store/external/external';
 import {
   STARTED_ACTIONS,
@@ -7,7 +6,9 @@ import {
   REQUEST_ACTIONS_TYPES,
 } from './constants';
 
-const initialState: Partial<Record<ActionType, boolean>> = {};
+type RequestActionType = (typeof REQUEST_ACTIONS_TYPES)[number];
+
+const initialState = {} as Record<RequestActionType, boolean>;
 for (const requestActionType of REQUEST_ACTIONS_TYPES) {
   initialState[requestActionType] = false;
 }
@@ -19,10 +20,10 @@ const { reducer } = createSlice({
   extraReducers: (builder) => {
     builder
       .addMatcher(isAnyOf.apply(STARTED_ACTIONS), (state, action) => {
-        state[action.type as ActionType] = true;
+        state[action.type as RequestActionType] = true;
       })
       .addMatcher(isAnyOf.apply(FINISHED_ACTIONS), (state, action) => {
-        state[action.type as ActionType] = false;
+        state[action.type as RequestActionType] = false;
       });
   },
 });

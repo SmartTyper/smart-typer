@@ -8,6 +8,7 @@ enum ActionType {
   SET_ERROR = 'authSetError',
   SET_PASSWORD = 'authSetPassword',
   RESET_PASSWORD = 'authResetPassword',
+  LOAD_GOOGLE_URL = 'authLoadGoogleUrl',
 }
 
 export { ActionType };

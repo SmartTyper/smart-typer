@@ -23,7 +23,6 @@ const UserLabel: FC<Props> = ({
       size={avatarSize}
       name={userName}
       src={avatarSrc}
-      round
       className={styles.avatar}
     />
     <span className={clsx(styles.username, styles[textColor])}>{userName}</span>

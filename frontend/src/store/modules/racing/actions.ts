@@ -1,8 +1,15 @@
 import { createAsyncThunk, createAction } from 'store/external/external';
-import { RoomDto, RoomIdDto } from 'common/types/types';
+import {
+  CreateRoomRequestDto,
+  RoomDto,
+  RoomIdDto,
+  ShareRoomUrlResponseDto,
+  SendRoomUrlToEmailsRequestDto,
+} from 'common/types/types';
 import { GameRoom } from 'common/types/types';
 import { mapRoomToGameRoom } from 'helpers/helpers';
 import { ActionType } from './action-type';
+import { NotificationMessage } from 'common/enums/enums';
 
 const setPersonalRoom = createAction(
   ActionType.SET_PERSONAL_ROOM,
@@ -42,18 +49,36 @@ const addRoomToAvailableRooms = createAction(
 
 const removeRoomToAvailableRooms = createAction(
   ActionType.REMOVE_ROOM_TO_AVAILABLE_ROOMS,
-  (payload: RoomIdDto) => ({ payload }),
+  ({ roomId }: RoomIdDto) => ({ payload: roomId }),
 );
 
-const setShareRoomId = createAction(
-  ActionType.SET_SHARE_ROOM_ID,
-  (payload: RoomIdDto) => ({ payload }),
+const createRoom = createAsyncThunk(
+  ActionType.CREATE_ROOM,
+  async (
+    payload: CreateRoomRequestDto,
+    { extra: { services } },
+  ): Promise<ShareRoomUrlResponseDto['url']> => {
+    const { racingApi: racingApiService } = services;
+    const shareRoomId = await racingApiService.createRoom(payload);
+    const { url } = await racingApiService.getShareRoomUrl(shareRoomId);
+    return url;
+  },
 );
 
-const resetShareRoomId = createAction(
-  ActionType.RESET_SHARE_ROOM_ID,
-  (payload: RoomIdDto) => ({ payload }),
+const sendRoomUrlToEmails = createAsyncThunk(
+  ActionType.SEND_ROOM_URL_TO_EMAILS,
+  async (
+    payload: SendRoomUrlToEmailsRequestDto,
+    { extra: { services } },
+  ): Promise<void> => {
+    const { racingApi: racingApiService, notification: notificationService } =
+      services;
+    await racingApiService.sendRoomUrlToEmails(payload);
+    notificationService.info(NotificationMessage.SHARED_LINK_SENT);
+  },
 );
+
+const resetShareRoomUrl = createAction(ActionType.RESET_SHARE_ROOM_URL);
 
 const actions = {
   setPersonalRoom,
@@ -62,8 +87,9 @@ const actions = {
   loadAvailableRooms,
   addRoomToAvailableRooms,
   removeRoomToAvailableRooms,
-  setShareRoomId,
-  resetShareRoomId,
+  createRoom,
+  resetShareRoomUrl,
+  sendRoomUrlToEmails,
 };
 
 export { actions };

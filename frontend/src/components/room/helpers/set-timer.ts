@@ -1,6 +1,7 @@
-import { MILLISECONDS_IN_SECOND } from 'common/constants';
+import { VoidAction } from 'common/types/types';
+import { MILLISECONDS_IN_SECOND } from 'common/constants/constants';
 
-const setTimer = (startValue: number, action: () => void): void => {
+const setTimer = (startValue: number, action: VoidAction): void => {
   let limit = startValue;
   const timerIncreaser = (): void => {
     action();

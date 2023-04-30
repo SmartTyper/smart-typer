@@ -9,7 +9,7 @@ import {
   useSearchParams,
   useSelector,
 } from 'hooks/hooks';
-import { authActions } from 'store/actions';
+import { auth as authActions } from 'store/modules/actions';
 import { setPasswordSchema } from 'validation-schemas/validation-schemas';
 import { NewPassword } from './common/types/types';
 

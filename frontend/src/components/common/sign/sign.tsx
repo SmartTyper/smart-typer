@@ -1,12 +1,7 @@
 import { FC, SyntheticEvent } from 'common/types/types';
 import { RBForm } from 'components/external/external';
-import {
-  authApi as authApiService,
-  notification as notificationService,
-} from 'services/services';
 import { HttpErrorMessage, WhiteSheetSize } from 'common/enums/enums';
 import { WhiteSheet } from 'components/common/common';
-
 import {
   AlternativeRoute,
   GoogleButton,
@@ -67,10 +62,7 @@ const Sign: FC<Props> = ({
               <span>or</span>
               <hr className={styles.line} />
             </div>
-            <GoogleButton
-              showError={notificationService.error}
-              getGoogleUrl={authApiService.getLogInGoogleUrl}
-            />
+            <GoogleButton />
           </>
         </RBForm>
       </WhiteSheet>

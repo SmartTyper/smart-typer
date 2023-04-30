@@ -1,138 +1,138 @@
-import { Button, Form, FormControl, InputGroup, Modal } from 'react-bootstrap';
-import { toast } from 'react-toastify';
-import { ReactMultiEmail, isEmail } from 'react-multi-email';
+import { AppRoute, FormFieldLabel, FormFieldType } from 'common/enums/enums';
+import {
+  FC,
+  SendRoomUrlToEmailsRequestDto,
+  ShareRoomUrlResponseDto,
+  VoidAction,
+  VoidCallback,
+} from 'common/types/types';
+import { clsx, replaceRouteIdParam } from 'helpers/helpers';
+import { useNavigate, useState, useDispatch, useSelector } from 'hooks/hooks';
+import { Button, FormField, Modal } from 'components/common/common';
+import {
+  RBForm,
+  RBInputGroup,
+  ReactMultiEmail,
+} from 'components/external/external';
+import { validateReactMultiEmail } from 'helpers/helpers';
+import { racing as racingActions } from 'store/modules/actions';
 
-import { AppRoute } from 'common/enums/enums';
-import { Link } from 'components/common/common';
-import { useState } from 'hooks/hooks';
-import { roomApi } from 'services/services';
-import { getAllowedClasses } from 'helpers/helpers';
-
-import styles from './styles.module.scss';
 import 'react-multi-email/style.css';
+import styles from './styles.module.scss';
 
 type Props = {
   isVisible: boolean;
-  onClose: () => void;
-  link: AppRoute;
-  shareLink: string;
+  onClose: VoidAction;
+  shareRoomUrl: ShareRoomUrlResponseDto['url'];
 };
 
-const ShareRoomModal: React.FC<Props> = ({
-  isVisible,
-  onClose,
-  link,
-  shareLink,
-}) => {
-  const [isCopied, setIsCopied] = useState(false);
-  const [isSendDisabled, setSendDisabled] = useState(false);
-  const [emails, setEmails] = useState<string[]>([]);
+type Emails = SendRoomUrlToEmailsRequestDto['emails'];
 
-  const shareByEmail = async (): Promise<void> => {
-    setSendDisabled(true);
-    try {
-      await roomApi.sendLinkByEmails({
+const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl }) => {
+  const { racingSendRoomUrlToEmails: isRoomUrlSending } = useSelector(
+    (state) => state.request,
+  );
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [isCopied, setIsCopied] = useState(false);
+  const [emails, setEmails] = useState<Emails>([]);
+
+  const shareRoomId = Number(shareRoomUrl.split('/').pop());
+
+  const handleSend = (): void => {
+    dispatch(
+      racingActions.sendRoomUrlToEmails({
         emails,
-        link: shareLink,
-      });
-      toast.info(ToastMessage.SHARED_LINK_SENT);
-    } catch (err) {
-      const httpError = err as HttpError;
-      toast.error(httpError.message);
-    }
-    setSendDisabled(false);
+        shareRoomUrl,
+      }),
+    );
   };
 
-  const handleEmailsInputChange = (emails: string[]): void => {
+  const handleEmailsInputChange = (emails: Emails): void => {
     setEmails(emails);
   };
 
-  const checkIsEmail = (email: string): boolean => {
-    return isEmail(email);
-  };
-
-  const getLabel = (
-    email: string,
+  const handleGetLabel = (
+    email: Emails[number],
     index: number,
-    removeEmail: (index: number) => void,
+    removeEmail: VoidCallback<number>,
   ): JSX.Element => {
     const onClick = (): void => removeEmail(index);
     return (
       <div data-tag key={index}>
         {email}
         <span data-tag-handle onClick={onClick}>
-          ×
+          x
         </span>
       </div>
     );
   };
 
+  const handleCopy = (): void => {
+    navigator.clipboard.writeText(shareRoomUrl);
+    setIsCopied(true);
+  };
+
+  const handleGoToCreatedRoom = (): void => {
+    const route = replaceRouteIdParam(AppRoute.ROOMS_$ID, shareRoomId);
+    navigate(route);
+  };
+
   return (
     <Modal
       className="d-flex align-items-center"
-      dialogClassName="w-50 rounded"
-      show={isVisible}
-      onHide={onClose}
+      isVisible={isVisible}
+      cancelButton={{
+        label: 'Cancel',
+        isDisabled: isRoomUrlSending,
+        onClick: onClose,
+      }}
+      submitButton={{
+        label: 'Go to room',
+        isDisabled: isRoomUrlSending,
+        onClick: handleGoToCreatedRoom,
+      }}
+      title="Share room"
     >
-      <Modal.Header closeButton>
-        <Modal.Title className={getAllowedClasses('m-0', styles.title)}>
-          Share Room
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <div className="d-flex flex-column align-items-center">
-          <div>
-            <Form.Label>Link</Form.Label>
-            <InputGroup className="mb-3" style={{ width: '30rem' }}>
-              <FormControl
-                value={shareLink}
-                aria-label="Link to share"
-                readOnly
-              />
-              <Button
-                variant="success"
-                onClick={(): void => {
-                  navigator.clipboard.writeText(shareLink);
-                  setIsCopied(true);
-                }}
-              >
-                <i
-                  className={isCopied ? 'bi bi-check2' : 'bi bi-clipboard'}
-                  style={{ color: 'white' }}
-                ></i>
-              </Button>
-            </InputGroup>
-          </div>
-          <div className={getAllowedClasses(styles.emailContainer)}>
-            <Form.Label>Share by email</Form.Label>
-            <div className="d-flex flex-column align-items-center">
-              <ReactMultiEmail
-                placeholder="Enter emails to which you want send link"
-                emails={emails}
-                className={getAllowedClasses(styles.emailsInput)}
-                onChange={handleEmailsInputChange}
-                validateEmail={checkIsEmail}
-                getLabel={getLabel}
-              />
-              <Button
-                variant="success"
-                onClick={shareByEmail}
-                className={getAllowedClasses(styles.sendButton)}
-                disabled={isSendDisabled}
-              >
-                Send
-              </Button>
-            </div>
+      <div className="d-flex flex-column align-items-center">
+        <div>
+          <RBForm.Label>Link</RBForm.Label>
+          <RBInputGroup className="mb-3" style={{ width: '30rem' }}>
+            <FormField
+              value={shareRoomUrl}
+              label={FormFieldLabel.LINK_TO_SHARE}
+              readOnly
+              type={FormFieldType.TEXT}
+            />
+            <Button onClick={handleCopy}>
+              <i
+                className={isCopied ? 'bi bi-check2' : 'bi bi-clipboard'}
+                style={{ color: 'white' }}
+              ></i>
+            </Button>
+          </RBInputGroup>
+        </div>
+        <div className={clsx(styles.emailContainer)}>
+          <RBForm.Label>Share by email</RBForm.Label>
+          <div className="d-flex flex-column align-items-center">
+            <ReactMultiEmail
+              placeholder="Enter emails which you want to send link to"
+              emails={emails}
+              className={styles.emailsInput}
+              onChange={handleEmailsInputChange}
+              validateEmail={validateReactMultiEmail}
+              getLabel={handleGetLabel}
+            />
+            <Button
+              onClick={handleSend}
+              className={styles.sendButton}
+              isDisabled={isRoomUrlSending}
+            >
+              Send
+            </Button>
           </div>
         </div>
-      </Modal.Body>
-      <Modal.Footer>
-        <Link to={link}>
-          <Button variant="success" disabled={isSendDisabled}>
-            Go to room
-          </Button>
-        </Link>
-      </Modal.Footer>
+      </div>
     </Modal>
   );
 };

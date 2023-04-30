@@ -1,28 +1,27 @@
-import { FC, GoogleLogInUrlResponseDto } from 'common/types/types';
+import { FC } from 'common/types/types';
 import { ReactGoogleButton } from 'components/external/external';
-import { handleExternalError } from 'helpers/helpers';
-import { HttpErrorMessage } from 'common/enums/enums';
+import { useSelector, useEffect, useDispatch } from 'hooks/hooks';
+import { auth as authActions } from 'store/modules/actions';
 
 import styles from './styles.module.scss';
 
-type Props = {
-  getGoogleUrl: () => Promise<GoogleLogInUrlResponseDto>;
-  showError: (message: HttpErrorMessage) => void;
-};
+const GoogleButton: FC = () => {
+  const { googleUrl } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
-const GoogleButton: FC<Props> = ({ showError, getGoogleUrl }) => {
-  const googleSignIn = async (): Promise<void> => {
-    try {
-      const { url } = await getGoogleUrl();
-      window.location.assign(url);
-    } catch (error) {
-      handleExternalError(error, showError);
+  useEffect(() => {
+    if (googleUrl) {
+      window.location.assign(googleUrl);
     }
+  }, [googleUrl]);
+
+  const handleGoogleLogIn = (): void => {
+    dispatch(authActions.loadGoogleUrl());
   };
 
   return (
     <ReactGoogleButton
-      onClick={googleSignIn}
+      onClick={handleGoogleLogIn}
       type="light"
       className={styles.googleButton}
       label="Log in with Google"

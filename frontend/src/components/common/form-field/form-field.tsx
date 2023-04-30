@@ -1,18 +1,21 @@
 import { FC, FieldError, UseFormRegisterReturn } from 'common/types/types';
-import { FormFieldType } from 'common/enums/enums';
+import { FormFieldLabel, FormFieldType } from 'common/enums/enums';
 import { RBForm } from 'components/external/external';
-import { HiddenInput, Input } from './components/components';
+import { Checkbox, HiddenInput, Input } from './components/components';
 
 import styles from './styles.module.scss';
+import { clsx } from 'helpers/helpers';
 
 type Props = {
-  label: string;
+  label: FormFieldLabel;
   type: FormFieldType;
-  placeholder: string;
+  register?: UseFormRegisterReturn;
+  placeholder?: string;
   note?: string | JSX.Element;
-  register: UseFormRegisterReturn;
   error?: FieldError;
+  className?: string;
   value?: string;
+  readOnly?: boolean;
 };
 
 const FormField: FC<Props> = ({
@@ -22,29 +25,53 @@ const FormField: FC<Props> = ({
   note,
   register,
   error,
+  className,
   value,
+  readOnly = false,
 }) => {
+  const renderFormField = (type: FormFieldType): JSX.Element => {
+    switch (type) {
+      case FormFieldType.PASSWORD:
+        return (
+          <HiddenInput
+            placeholder={placeholder}
+            register={register}
+            error={error}
+            className={styles.input}
+            readOnly={readOnly}
+            value={value}
+          />
+        );
+      case FormFieldType.CHECKBOX:
+        return (
+          <Checkbox
+            register={register}
+            className={styles.input}
+            readOnly={readOnly}
+            value={value}
+          />
+        );
+      default:
+        return (
+          <Input
+            placeholder={placeholder}
+            type={type}
+            register={register}
+            error={error}
+            className={styles.input}
+            readOnly={readOnly}
+            value={value}
+          />
+        );
+    }
+  };
   return (
-    <RBForm.Group className={styles.formField} controlId={label}>
+    <RBForm.Group
+      className={clsx(styles.formField, className)}
+      controlId={label}
+    >
       <RBForm.Label className={styles.label}>{label}</RBForm.Label>
-      {type === FormFieldType.PASSWORD ? (
-        <HiddenInput
-          placeholder={placeholder}
-          value={value}
-          register={register}
-          error={error}
-          className={styles.input}
-        />
-      ) : (
-        <Input
-          placeholder={placeholder}
-          value={value}
-          type={type}
-          register={register}
-          error={error}
-          className={styles.input}
-        />
-      )}
+      {renderFormField(type)}
       {!!error && (
         <RBForm.Control.Feedback type="invalid">
           {error?.message}

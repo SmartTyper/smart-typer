@@ -7,19 +7,21 @@ import { useState } from 'hooks/hooks';
 import styles from './styles.module.scss';
 
 type Props = {
-  placeholder: string;
-  value?: string;
-  register: UseFormRegisterReturn;
+  placeholder?: string;
+  register?: UseFormRegisterReturn;
   error?: FieldError;
   className?: string;
+  value?: string;
+  readOnly: boolean;
 };
 
 const HiddenInput: FC<Props> = ({
   placeholder,
-  value,
   register,
   error,
   className,
+  readOnly,
+  value,
 }) => {
   const [isValueHidden, setIsValueHidden] = useState(true);
 
@@ -35,6 +37,7 @@ const HiddenInput: FC<Props> = ({
         placeholder={placeholder}
         isInvalid={!!error}
         className={className}
+        readOnly={readOnly}
         value={value}
       />
       <Button

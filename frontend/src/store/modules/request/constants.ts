@@ -11,9 +11,10 @@ import {
   SettingsActionType,
 } from 'store/modules/action-type';
 
-const { logIn, register, logInGoogle, logOut } = authActions;
+const { logIn, register, logInGoogle, logOut, setPassword, resetPassword } =
+  authActions;
 const { deleteAvatar, updateInfo, updateAvatar } = profileActions;
-const { loadAvailableRooms } = racingActions;
+const { loadAvailableRooms, createRoom, sendRoomUrlToEmails } = racingActions;
 const { update } = settingsActions;
 
 const STARTED_ACTIONS = [
@@ -26,6 +27,10 @@ const STARTED_ACTIONS = [
   updateAvatar.pending,
   loadAvailableRooms.pending,
   update.pending,
+  setPassword.pending,
+  resetPassword.pending,
+  createRoom.pending,
+  sendRoomUrlToEmails.pending,
 ];
 
 const FINISHED_ACTIONS = [
@@ -38,6 +43,10 @@ const FINISHED_ACTIONS = [
   updateAvatar.fulfilled,
   loadAvailableRooms.fulfilled,
   update.fulfilled,
+  setPassword.fulfilled,
+  resetPassword.fulfilled,
+  createRoom.fulfilled,
+  sendRoomUrlToEmails.fulfilled,
 
   logIn.rejected,
   register.rejected,
@@ -48,6 +57,10 @@ const FINISHED_ACTIONS = [
   updateAvatar.rejected,
   loadAvailableRooms.rejected,
   update.rejected,
+  setPassword.rejected,
+  resetPassword.rejected,
+  createRoom.rejected,
+  sendRoomUrlToEmails.rejected,
 ];
 
 const REQUEST_ACTIONS_TYPES = [
@@ -55,11 +68,18 @@ const REQUEST_ACTIONS_TYPES = [
   AuthActionType.REGISTER,
   AuthActionType.LOG_OUT,
   AuthActionType.LOG_IN_GOOGLE,
+  AuthActionType.SET_PASSWORD,
+  AuthActionType.RESET_PASSWORD,
+
   ProfileActionType.DELETE_AVATAR,
   ProfileActionType.UPDATE_AVATAR,
   ProfileActionType.UPDATE_INFO,
+
   RacingActionType.LOAD_AVAILABLE_ROOMS,
+  RacingActionType.CREATE_ROOM,
+  RacingActionType.SEND_ROOM_URL_TO_EMAILS,
+
   SettingsActionType.UPDATE,
-];
+] as const;
 
 export { STARTED_ACTIONS, FINISHED_ACTIONS, REQUEST_ACTIONS_TYPES };

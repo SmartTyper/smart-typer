@@ -1,40 +1,27 @@
-import { Container as BootstrapContainer } from 'react-bootstrap';
-import { toast } from 'react-toastify';
-import { SocketContext } from 'socket';
-
-import { HttpError } from 'common/exceptions';
-import { Spinner } from 'components/common';
-import { AppRoute, LocalStorageVariable, SocketEvents } from 'common/enums';
-import { roomActions } from 'store/actions';
-import {
-  useState,
-  useEffect,
-  useAppSelector,
-  useAppDispatch,
-  useContext,
-} from 'hooks';
-import { IRoom, IRoomAction, IRoomCreation } from 'common/interfaces';
-import { getAllowedClasses, replaceIdParam } from 'common/helpers';
-import { gameApi } from 'services/game-api.service';
+import { SpinnerSize } from 'common/enums/enums';
+import { CreateRoomRequestDto, FC } from 'common/types/types';
+import { Spinner } from 'components/common/common';
+import { RBContainer } from 'components/external/external';
+import { clsx } from 'helpers/helpers';
+import { useDispatch, useEffect, useSelector, useState } from 'hooks/hooks';
+import { racing as racingActions } from 'store/modules/actions';
 import {
   CreateRoomModal,
   RoomItemList,
-  ShareModal,
+  ShareRoomModal,
 } from './components/components';
+
 import styles from './styles.module.scss';
-import { useSelector, useDispatch } from 'hooks/hooks';
-import { FC } from 'common/types/types';
 
 const Rooms: FC = () => {
-  const { shareRoomId, rooms, areRoomsLoading } = useSelector(
+  const dispatch = useDispatch();
+  const { shareRoomUrl, rooms, areRoomsLoading } = useSelector(
     ({ racing, request }) => ({
       rooms: racing.availableRooms,
-      shareRoomId: racing.shareRoomId,
+      shareRoomUrl: racing.shareRoomUrl,
       areRoomsLoading: request.racingLoadAvailableRooms,
     }),
   );
-  const dispatch = useDispatch();
-  const socket = useContext(SocketContext);
 
   const [isCreateRoomModalVisible, setIsCreateRoomModalVisible] =
     useState(false);
@@ -44,77 +31,45 @@ const Rooms: FC = () => {
     setIsCreateRoomModalVisible((prev: boolean) => !prev);
   };
 
-  const handleShareCancel = (): void => {
+  const handleShareRoomCancel = (): void => {
     setIsShareRoomModalVisible(false);
-    dispatch(roomActions.resetShareRoomId(null));
+    dispatch(racingActions.resetShareRoomUrl());
   };
 
-  const handleCreationConfirm = (data: IRoomCreation): void => {
-    dispatch(
-      roomActions.createRoom({
-        name: data.name,
-        type: data.type,
-      }),
-    );
+  const handleCreateRoomSubmit = (payload: CreateRoomRequestDto): void => {
+    dispatch(racingActions.createRoom(payload));
     setIsShareRoomModalVisible(true);
   };
 
   useEffect(() => {
-    if (shareRoomId) {
-      gameApi
-        .getShareLink(shareRoomId)
-        .then(({ link }) => {
-          setShareLink(link);
-        })
-        .catch((err) => {
-          const httpError = err as HttpError;
-          toast.error(httpError.message);
-        });
-    }
-  }, [shareRoomId]);
-
-  useEffect(() => {
-    if (localStorage.getItem(LocalStorageVariable.ROOM_ID)) {
-      localStorage.removeItem(LocalStorageVariable.ROOM_ID);
-    }
-    dispatch(roomActions.loadRooms());
-
-    socket.on(SocketEvents.CREATE_ROOM, onCreatingRoom);
-    socket.on(SocketEvents.DELETE_ROOM, onDeletingRoom);
-
-    return (): void => {
-      dispatch(roomActions.setShareRoomId(null));
-      socket.off(SocketEvents.CREATE_ROOM, onCreatingRoom);
-      socket.off(SocketEvents.DELETE_ROOM, onDeletingRoom);
-    };
+    dispatch(racingActions.loadAvailableRooms());
   }, []);
 
   return (
-    <div className={getAllowedClasses(styles.roomsPage, 'bg-light')}>
-      <BootstrapContainer className="h-100 position-relative d-flex flex-column align-items-center pt-5">
+    <div className={clsx(styles.roomsPage, 'bg-light')}>
+      <RBContainer className="h-100 position-relative d-flex flex-column align-items-center pt-5">
         <h1 className="h3 mb-5">Select the room</h1>
         {areRoomsLoading ? (
-          <Spinner height={'12rem'} width={'12rem'} />
+          <Spinner size={SpinnerSize.LARGE} />
         ) : (
           <RoomItemList
             rooms={rooms}
-            onCreate={handleToggleCreateRoomModalVisible}
+            onCreateRoomButtonClick={handleToggleCreateRoomModalVisible}
           />
         )}
         <CreateRoomModal
-          showModal={isCreateRoomModalVisible}
-          onModalClose={handleToggleCreateRoomModalVisible}
-          handleFunction={handleCreationConfirm}
+          isVisible={isCreateRoomModalVisible}
+          onClose={handleToggleCreateRoomModalVisible}
+          onSubmit={handleCreateRoomSubmit}
         />
-        {shareLink && shareRoomId && (
-          <ShareModal
-            showModal={isShareRoomModalVisible}
-            onModalClose={handleShareCancel}
-            link={replaceIdParam(AppRoute.GAME, shareRoomId)}
-            shareLink={shareLink}
+        {!!shareRoomUrl && (
+          <ShareRoomModal
+            isVisible={isShareRoomModalVisible}
+            onClose={handleShareRoomCancel}
+            shareRoomUrl={shareRoomUrl}
           />
         )}
-      </BootstrapContainer>
+      </RBContainer>
     </div>
   );
 };
