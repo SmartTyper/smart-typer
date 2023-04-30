@@ -10,58 +10,7 @@ import {
   RacingActionType,
   SettingsActionType,
 } from 'store/modules/action-type';
-
-const { logIn, register, logInGoogle, logOut, setPassword, resetPassword } =
-  authActions;
-const { deleteAvatar, updateInfo, updateAvatar } = profileActions;
-const { loadAvailableRooms, createRoom, sendRoomUrlToEmails } = racingActions;
-const { update } = settingsActions;
-
-const STARTED_ACTIONS = [
-  logIn.pending,
-  register.pending,
-  logInGoogle.pending,
-  logOut.pending,
-  deleteAvatar.pending,
-  updateInfo.pending,
-  updateAvatar.pending,
-  loadAvailableRooms.pending,
-  update.pending,
-  setPassword.pending,
-  resetPassword.pending,
-  createRoom.pending,
-  sendRoomUrlToEmails.pending,
-];
-
-const FINISHED_ACTIONS = [
-  logIn.fulfilled,
-  register.fulfilled,
-  logInGoogle.fulfilled,
-  logOut.fulfilled,
-  deleteAvatar.fulfilled,
-  updateInfo.fulfilled,
-  updateAvatar.fulfilled,
-  loadAvailableRooms.fulfilled,
-  update.fulfilled,
-  setPassword.fulfilled,
-  resetPassword.fulfilled,
-  createRoom.fulfilled,
-  sendRoomUrlToEmails.fulfilled,
-
-  logIn.rejected,
-  register.rejected,
-  logInGoogle.rejected,
-  logOut.rejected,
-  deleteAvatar.rejected,
-  updateInfo.rejected,
-  updateAvatar.rejected,
-  loadAvailableRooms.rejected,
-  update.rejected,
-  setPassword.rejected,
-  resetPassword.rejected,
-  createRoom.rejected,
-  sendRoomUrlToEmails.rejected,
-];
+import { AsyncThunk, AsyncThunkOptions } from 'common/types/types';
 
 const REQUEST_ACTIONS_TYPES = [
   AuthActionType.LOG_IN,
@@ -81,5 +30,30 @@ const REQUEST_ACTIONS_TYPES = [
 
   SettingsActionType.UPDATE,
 ] as const;
+
+const actions = {
+  ...authActions,
+  ...profileActions,
+  ...racingActions,
+  ...settingsActions,
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type AnyAsyncThunk = AsyncThunk<any, any, AsyncThunkOptions>;
+
+const requestActions = Object.values(actions).filter((action) => {
+  const type = (action as AnyAsyncThunk).typePrefix;
+  const requestActionTypes = REQUEST_ACTIONS_TYPES.map((actionType) =>
+    String(actionType),
+  );
+  return requestActionTypes.includes(type);
+}) as AnyAsyncThunk[];
+
+const STARTED_ACTIONS = requestActions.map((action) => action.pending);
+
+const FINISHED_ACTIONS = [
+  ...requestActions.map((action) => action.fulfilled),
+  ...requestActions.map((action) => action.rejected),
+];
 
 export { STARTED_ACTIONS, FINISHED_ACTIONS, REQUEST_ACTIONS_TYPES };
