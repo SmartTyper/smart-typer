@@ -15,9 +15,10 @@ const getSocketMiddleware = ({ socketService }: Options): Middleware => {
     });
 
     return (next) => (action) => {
-      // if (chatsActions.joinRoom.match(action)) {
-      //   chatSocketInstance.emit(SocketEvent.CHAT_JOIN_ROOM, action.payload);
-      // }
+      if (racingActions.setCurrentRoom.fulfilled.match(action)) {
+        const { id: roomId } = action.payload;
+        socketService.emit(SocketEvent.JOIN_ROOM, { roomId });
+      }
       return next(action);
     };
   };

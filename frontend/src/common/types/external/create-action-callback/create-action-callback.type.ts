@@ -1,8 +1,3 @@
-import { ActionOptions } from 'common/types/types';
-
-type CreateActionCallback<T, K> = (
-  payload: K,
-  opts?: ActionOptions,
-) => { payload: T };
+type CreateActionCallback<T, K> = (payload: K) => { payload: T };
 
 export type { CreateActionCallback };

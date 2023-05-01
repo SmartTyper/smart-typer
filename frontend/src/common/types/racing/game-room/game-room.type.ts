@@ -1,12 +1,12 @@
 import { RoomDto } from 'smart-typer-shared/common/types/types';
 import { Participant } from 'common/types/types';
 
-type GameRoom = RoomDto & {
+type GameRoom = Omit<RoomDto, 'lessonId' | 'participants'> & {
   participants: Participant[];
-  isGameStarted: boolean;
   commentatorText: string;
   countdownBeforeGame: number;
   gameTime: number;
+  lessonContent: string;
 };
 
 export type { GameRoom };

@@ -2,11 +2,9 @@ import {
   DEFAULT_GAME_ROOM,
   DEFAULT_PARTICIPANT,
 } from 'common/constants/constants';
-import { GameRoom, RoomDto } from 'common/types/types';
+import { GameRoom, GameRoomWithOptionalFields } from 'common/types/types';
 
-const mapRoomToGameRoom = (
-  room: RoomDto & Pick<Partial<GameRoom>, 'commentatorText'>,
-): GameRoom => {
+const mapRoomToGameRoom = (room: GameRoomWithOptionalFields): GameRoom => {
   const participants = room.participants.map((participant) => ({
     ...DEFAULT_PARTICIPANT,
     ...participant,

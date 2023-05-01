@@ -7,6 +7,7 @@ const DEFAULT_GAME_ROOM = {
   commentatorText: '',
   countdownBeforeGame,
   gameTime,
+  lessonContent: '',
 };
 
 export { DEFAULT_GAME_ROOM };

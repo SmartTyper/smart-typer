@@ -1,16 +1,20 @@
-import { createAsyncThunk, createAction } from 'store/external/external';
+import { CommentatorEvent, NotificationMessage } from 'common/enums/enums';
 import {
   CreateRoomRequestDto,
+  GameRoom,
+  GameRoomWithOptionalFields,
+  Participant,
+  ParticipantIdDto,
   RoomDto,
   RoomIdDto,
-  ShareRoomUrlResponseDto,
-  SendRoomUrlToEmailsRequestDto,
   RoomIdUserIdDto,
+  SendRoomUrlToEmailsRequestDto,
+  ShareRoomUrlResponseDto,
+  UserDto,
 } from 'common/types/types';
-
-import { mapRoomToGameRoom, getCommentatorText } from 'helpers/helpers';
+import { getCommentatorText, mapRoomToGameRoom } from 'helpers/helpers';
+import { createAction, createAsyncThunk } from 'store/external/external';
 import { ActionType } from './action-type';
-import { CommentatorEvent, NotificationMessage } from 'common/enums/enums';
 
 const setPersonalRoom = createAction(
   ActionType.SET_PERSONAL_ROOM,
@@ -29,23 +33,44 @@ const loadCurrentRoom = createAsyncThunk(
   },
 );
 
-const setPersonalRoomAsCurrent = createAction(
+const resetIsLoadCurrentRoomFailed = createAction(
+  ActionType.RESET_IS_LOAD_CURRENT_ROOM_FAILED,
+);
+
+const setPersonalRoomAsCurrent = createAsyncThunk(
   ActionType.SET_PERSONAL_ROOM_AS_CURRENT,
-  (_: undefined, { state }) => {
-    const currentRoom = mapRoomToGameRoom(state.personalRoom);
-    return { payload: currentRoom };
+  async (_: undefined, { dispatch, getState }): Promise<void> => {
+    const {
+      racing: { personalRoom },
+      settings: { gameTime, countdownBeforeGame },
+    } = getState();
+    if (!personalRoom) {
+      return;
+    }
+    dispatch(
+      setCurrentRoom({ ...personalRoom, gameTime, countdownBeforeGame }),
+    );
   },
 );
 
-const setCurrentRoom = createAction(
+const setCurrentRoom = createAsyncThunk(
   ActionType.SET_CURRENT_ROOM,
-  (payload: RoomDto, { dispatch, state }) => {
+  async (
+    payload: GameRoomWithOptionalFields,
+    { dispatch, getState },
+  ): Promise<GameRoom> => {
+    const { auth } = getState();
+    const user = auth.user as UserDto;
     const commentatorText = getCommentatorText(CommentatorEvent.GREETING);
-    const currentRoom = mapRoomToGameRoom({ ...payload, commentatorText });
+    const currentRoom = mapRoomToGameRoom({
+      ...payload,
+      commentatorText,
+      participants: [...payload.participants, user],
+    });
     const { id: roomId } = payload;
-    const { id: userId } = state.auth.user;
-    dispatch(addParticipant({ roomId, userId }));
-    return { payload: currentRoom };
+    const { id: participantId } = user;
+    dispatch(addParticipant({ roomId, participantId }));
+    return currentRoom;
   },
 );
 
@@ -114,6 +139,22 @@ const addParticipant = createAsyncThunk(
   },
 );
 
+const toggleParticipantIsReady = createAction(
+  ActionType.TOGGLE_PARTICIPANT_IS_READY,
+  ({ participantId }: ParticipantIdDto) => ({ payload: participantId }),
+);
+
+const setSpentSeconds = createAction(
+  ActionType.SET_SPENT_SECONDS,
+  (payload: Pick<Participant, 'id' | 'spentSeconds'>) => ({ payload }),
+);
+
+// state.participants = state.participants.map((participant) =>
+// participant.id === action.payload.id
+//   ? { ...participant, spentSeconds: action.payload.spentSeconds }
+//   : participant,
+// );
+
 // const setCommentatorText = createAction(
 //   ActionType.SET_PERSONAL_ROOM_AS_CURRENT,
 //   (payload: CommentatorEvent, { state }) => {
@@ -136,6 +177,9 @@ const actions = {
   setCurrentRoom,
   loadShareRoomUrl,
   addParticipant,
+  resetIsLoadCurrentRoomFailed,
+  toggleParticipantIsReady,
+  setSpentSeconds,
 };
 
 export { actions };

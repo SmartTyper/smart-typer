@@ -8,6 +8,7 @@ type State = {
   currentRoom: GameRoom | null;
   shareRoomUrl: ShareRoomUrlResponseDto['url'] | null;
   availableRooms: RoomDto[];
+  isLoadCurrentRoomFailed: boolean;
 };
 
 const initialState: State = {
@@ -15,6 +16,7 @@ const initialState: State = {
   currentRoom: null,
   shareRoomUrl: null,
   availableRooms: [],
+  isLoadCurrentRoomFailed: false,
 };
 
 const { reducer } = createSlice({
@@ -31,6 +33,10 @@ const { reducer } = createSlice({
       resetShareRoomUrl,
       // setCommentatorText,
       loadShareRoomUrl,
+      loadCurrentRoom,
+      resetIsLoadCurrentRoomFailed,
+      toggleParticipantIsReady,
+      setSpentSeconds,
     } = actions;
     builder
       .addCase(setPersonalRoom, (state, action) => {
@@ -61,8 +67,46 @@ const { reducer } = createSlice({
       //     };
       //   }
       // })
-      .addCase(setCurrentRoom, (state, action) => {
+      .addCase(setCurrentRoom.fulfilled, (state, action) => {
         state.currentRoom = action.payload;
+      })
+      .addCase(loadCurrentRoom.rejected, (state) => {
+        state.isLoadCurrentRoomFailed = true;
+      })
+      .addCase(resetIsLoadCurrentRoomFailed, (state) => {
+        state.isLoadCurrentRoomFailed = false;
+      })
+      .addCase(toggleParticipantIsReady, (state, action) => {
+        if (state.currentRoom) {
+          const participantId = action.payload;
+          const { participants } = state.currentRoom;
+          const updatedParticipants = participants.map((participant) => {
+            if (participant.id === participantId) {
+              return { ...participant, isReady: !participant.isReady };
+            }
+            return participant;
+          });
+          state.currentRoom = {
+            ...state.currentRoom,
+            participants: updatedParticipants,
+          };
+        }
+      })
+      .addCase(setSpentSeconds, (state, action) => {
+        if (state.currentRoom) {
+          const { id: participantId, spentSeconds } = action.payload;
+          const { participants } = state.currentRoom;
+          const updatedParticipants = participants.map((participant) => {
+            if (participant.id === participantId) {
+              return { ...participant, spentSeconds };
+            }
+            return participant;
+          });
+          state.currentRoom = {
+            ...state.currentRoom,
+            participants: updatedParticipants,
+          };
+        }
       });
   },
 });

@@ -12,6 +12,10 @@ enum ActionType {
   SEND_ROOM_URL_TO_EMAILS = 'racingSendRoomUrlToEmails',
   SET_COMMENTATOR_TEXT = 'racingSetCommentatorText',
   ADD_PARTICIPANT = 'racingAddParticipant',
+  RESET_IS_LOAD_CURRENT_ROOM_FAILED = 'racingResetIsLoadCurrentRoomFailed',
+  TOGGLE_IS_GAME_STARTED = 'racingToggleIsGameStarted',
+  TOGGLE_PARTICIPANT_IS_READY = 'racingToggleParticipantIsReady',
+  SET_SPENT_SECONDS = 'racingSetSpentSeconds',
 }
 
 export { ActionType };

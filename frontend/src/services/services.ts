@@ -1,12 +1,18 @@
-import { AuthApi, UserApi, SettingsApi, RacingApi } from './api/api';
+import { AuthApi, RacingApi, SettingsApi, UserApi } from './api/api';
 import { Http } from './http/http.service';
-import { Storage } from './storage/storage.service';
+import { Navigation } from './navigation/navigation.service';
 import { Notification } from './notification/notification.service';
 import { Socket } from './socket/socket.service';
+import { Storage } from './storage/storage.service';
 
 const localStorage = new Storage({ storage: window.localStorage });
 
-const http = new Http({ localStorageService: localStorage });
+const navigation = new Navigation({ location: window.location });
+
+const http = new Http({
+  localStorageService: localStorage,
+  navigationService: navigation,
+});
 
 const notification = new Notification();
 
@@ -28,4 +34,5 @@ export {
   settingsApi,
   racingApi,
   socket,
+  navigation,
 };

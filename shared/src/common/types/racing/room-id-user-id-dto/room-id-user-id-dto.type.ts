@@ -1,5 +1,5 @@
-import { UserIdDto, RoomIdDto } from 'common/types/types';
+import { RoomIdDto, ParticipantIdDto } from 'common/types/types';
 
-type RoomIdUserIdDto = RoomIdDto & UserIdDto;
+type RoomIdUserIdDto = RoomIdDto & ParticipantIdDto;
 
 export type { RoomIdUserIdDto };

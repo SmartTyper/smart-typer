@@ -2,9 +2,10 @@ import {
   CreateRoomRequestDto,
   RoomDto,
   RoomIdDto,
+  RoomIdUserIdDto,
   SendRoomUrlToEmailsRequestDto,
   ShareRoomUrlResponseDto,
-} from 'smart-typer-shared/common/types/types';
+} from 'common/types/types';
 import { Http as HttpService } from '../../http/http.service';
 import { HttpMethod } from 'common/enums/enums';
 
@@ -50,6 +51,17 @@ class RacingApi {
       method: HttpMethod.POST,
       payload: JSON.stringify(payload),
     });
+  }
+
+  public async addParticipant(payload: RoomIdUserIdDto): Promise<void> {
+    const { roomId } = payload;
+    return this._httpService.load(
+      `${this._baseUrl}/rooms/${roomId}/participants`,
+      {
+        method: HttpMethod.POST,
+        payload: JSON.stringify(payload),
+      },
+    );
   }
 }
 

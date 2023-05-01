@@ -13,8 +13,8 @@ class Socket {
     this._socket.on(event, listener);
   }
 
-  public emit(event: SocketEvent): void {
-    this._socket.emit(event);
+  public emit(event: SocketEvent, args: Record<string, unknown>): void {
+    this._socket.emit(event, args);
   }
 }
 

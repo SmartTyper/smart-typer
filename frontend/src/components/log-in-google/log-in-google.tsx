@@ -1,15 +1,17 @@
-import { useDispatch, useNavigate, useEffect } from 'hooks/hooks';
-import { auth as authActions } from 'store/modules/actions';
 import { AppRoute } from 'common/enums/enums';
 import { FC } from 'common/types/types';
+import { useDispatch, useEffect, useNavigate } from 'hooks/hooks';
+import { auth as authActions } from 'store/modules/actions';
+import { navigation as navigationService } from 'services/services';
 
 import styles from './styles.module.scss';
 
 const LogInGoogle: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const search = new URL(window.location.href).searchParams;
-  const code = search.get('code');
+  const url = navigationService.getUrl();
+  const { searchParams } = new URL(url);
+  const code = searchParams.get('code');
 
   useEffect(() => {
     if (code) {

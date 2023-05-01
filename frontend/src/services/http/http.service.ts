@@ -8,16 +8,22 @@ import {
   StorageKey,
   HttpCode,
   EmitterEvent,
+  AppRoute,
 } from 'common/enums/enums';
 import { HttpOptions, TokensResponseDto } from 'common/types/types';
-import { localStorage as localStorageService } from 'services/services';
+import {
+  localStorage as localStorageService,
+  navigation as navigationService,
+} from 'services/services';
 
 type Constructor = {
   localStorageService: typeof localStorageService;
+  navigationService: typeof navigationService;
 };
 
 class Http {
   private _localStorageService: typeof localStorageService;
+  private _navigationService: typeof navigationService;
   private _areTokensRefreshing: boolean;
   private _emitter: EventEmitter;
 
@@ -25,6 +31,7 @@ class Http {
     this._areTokensRefreshing = false;
     this._emitter = new EventEmitter();
     this._localStorageService = params.localStorageService;
+    this._navigationService = params.navigationService;
   }
 
   public async load<T = unknown>(
@@ -143,7 +150,7 @@ class Http {
         ) {
           this._localStorageService.removeItem(StorageKey.ACCESS_TOKEN);
           this._localStorageService.removeItem(StorageKey.REFRESH_TOKEN);
-          window.location.href = '/';
+          this._navigationService.setPath(AppRoute.ROOT);
         }
         throw refreshTokensError;
       }

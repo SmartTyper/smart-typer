@@ -1,35 +1,23 @@
 import { KeyboardEvent, MutableRefObject } from 'react';
 import { Button } from 'components/common/common';
-import {
-  DEFAULT_SECONDS_FOR_GAME,
-  VOICE_URI,
-} from 'common/constants/constants';
-import {
-  AppRoute,
-  CommentatorEvent,
-  RoomType,
-  SocketEvents,
-} from 'common/enums';
-import { HttpError } from 'common/exceptions';
+import { DEFAULT_SETTINGS, VOICE_URI } from 'common/constants/constants';
+import { AppRoute, CommentatorEvent } from 'common/enums/enums';
 import { clsx } from 'helpers/helpers';
 import { FC } from 'common/types/types';
 import { UserDto } from 'common/types/types';
 import { Spinner } from 'components/common/common';
 import {
-  useContext,
-  useEffect,
   useParams,
   useRef,
   useSound,
+  useDispatch,
+  useNavigate,
+  useSelector,
+  useEffect,
   useState,
 } from 'hooks/hooks';
-import { gameApi, userApi } from 'services';
-import { SocketContext } from 'socket';
-import { gameActions } from 'store/actions';
 import { Participant, ResultModal } from './components';
 import { getCommentatorText, getParticipantsRating, setTimer } from './helpers';
-
-import { useDispatch, useNavigate, useSelector } from 'hooks/hooks';
 import { racing as racingActions } from 'store/modules/actions';
 
 import commentatorImage from 'assets/img/commentator.gif';
@@ -37,29 +25,52 @@ import styles from './styles.module.scss';
 
 const Room: FC = () => {
   const {
-    participants,
-    text,
-    commentatorText,
-    isGameStarted,
-    secondsBeforeGame,
-    secondsForGame,
-  } = useSelector((state) => state.game);
-  const { user } = useSelector((state) => state.auth);
-  const { currentRoom } = useSelector((state) => state.room);
+    user,
+    currentRoom,
+    isLoadCurrentRoomFailed,
+    personalGameTime,
+    countdownBeforePersonalGame,
+  } = useSelector(({ racing, auth, settings }) => ({
+    user: auth.user,
+    currentRoom: racing.currentRoom,
+    isLoadCurrentRoomFailed: racing.isLoadCurrentRoomFailed,
+    personalGameTime: settings.gameTime,
+    countdownBeforePersonalGame: settings.countdownBeforeGame,
+  }));
+
   const {
-    secondsBeforeGame: secondsBeforePersonalGame,
-    secondsForGame: secondsForPersonalGame,
-  } = useSelector((state) => state.settings);
+    commentatorText,
+    gameTime,
+    countdownBeforeGame,
+    id,
+    name,
+    participants,
+    lessonContent,
+  } = currentRoom ?? {};
+
+  const {
+    gameTime: defaultGameTime,
+    countdownBeforeGame: defaultCountdownBeforeGame,
+  } = DEFAULT_SETTINGS;
+
+  const [isGameStarted, setIsGameStarted] = useState(false);
+  const [gameTimerValue, setGameTimerValue] = useState(
+    gameTime ?? defaultGameTime,
+  );
+  const [timerBeforeGameValue, setTimerBeforeGameValue] = useState(
+    countdownBeforeGame ?? defaultCountdownBeforeGame,
+  );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const socket = useContext(SocketContext);
 
   const params = useParams();
   const roomId = Number(params.roomId);
-  const userId = user?.id;
+  const userId = (user as UserDto).id;
+  const currentParticipant = participants?.find(
+    (participant) => participant.id === userId,
+  );
 
-  const [currentParticipant, setCurrentParticipant] = useState<IParticipant>();
   const [isResultsModalVisible, setIsResultsModalVisible] = useState(false);
 
   const [playError] = useSound(`${process.env.PUBLIC_URL}/sounds/error.mp3`, {
@@ -131,12 +142,12 @@ const Room: FC = () => {
     }
   };
 
-  const handleParticipantEndedGame = (userId: number): void => {
-    dispatch(gameActions.toggleIsReady(userId));
+  const handleParticipantEndedGame = (participantId: number): void => {
+    dispatch(racingActions.toggleParticipantIsReady({ participantId }));
     dispatch(
-      gameActions.setSpentSeconds({
+      racingActions.setSpentSeconds({
         id: userId,
-        spentSeconds: DEFAULT_SECONDS_FOR_GAME - secondsForGame,
+        spentSeconds: defaultGameTime - gameTimerValue,
       }),
     );
   };
@@ -170,42 +181,32 @@ const Room: FC = () => {
   useEffect(() => {
     if (
       currentRoom?.type === RoomType.PERSONAL &&
-      secondsForPersonalGame &&
-      secondsBeforePersonalGame &&
+      personalGameTime &&
+      countdownBeforePersonalGame &&
       !text
     ) {
-      dispatch(gameActions.setSecondsForGame(secondsForPersonalGame));
-      dispatch(gameActions.setSecondsBeforeGame(secondsBeforePersonalGame));
+      dispatch(gameActions.setSecondsForGame(personalGameTime));
+      dispatch(gameActions.setSecondsBeforeGame(countdownBeforePersonalGame));
     }
-  }, [
-    currentRoom?.type,
-    secondsBeforePersonalGame,
-    secondsForPersonalGame,
-    text,
-  ]);
+  }, [currentRoom?.type, countdownBeforePersonalGame, personalGameTime, text]);
 
   useEffect(() => {
     if (userId && roomId) {
       dispatch(racingActions.loadCurrentRoom({ roomId }));
-      gameApi
-        .addParticipant({ roomId, userId })
-        .then(() => {
-          dispatch(gameActions.loadParticipants(roomId));
-          socket.emit(SocketEvents.JOIN_ROOM, { roomId });
-        })
-        .catch((err) => {
-          const httpError = err as HttpError;
-          toast.error(httpError.message);
-          history.push(AppRoute.ROOMS);
-        });
     }
   }, [roomId, userId]);
 
   useEffect(() => {
-    const current = participants.find(
-      (participant) => participant.id === userId,
-    );
-    setCurrentParticipant(current);
+    if (isLoadCurrentRoomFailed) {
+      dispatch(racingActions.resetIsLoadCurrentRoomFailed());
+      navigate(AppRoute.ROOMS);
+    }
+  }, [isLoadCurrentRoomFailed]);
+
+  useEffect(() => {
+    if (!participants?.length) {
+      return;
+    }
 
     const allParticipantsAreReady = participants.every(
       (participant) => participant.isReady,
@@ -215,14 +216,16 @@ const Room: FC = () => {
     );
     const needToStartGame = !isGameStarted && allParticipantsAreReady;
     const needToFinishGame = isGameStarted && allParticipantsEndedGame;
-    if (participants.length && (needToStartGame || needToFinishGame)) {
-      dispatch(gameActions.toggleIsGameStarted());
+    if (needToStartGame || needToFinishGame) {
+      setIsGameStarted((prev) => !prev);
     }
 
-    const { length } = text;
-    if (length) {
+    if (lessonContent?.length) {
+      const { length } = lessonContent;
       participants.forEach((participant) => {
-        if (participant.position === length && !participant.spentSeconds) {
+        const participantTypedAllText = participant.position === length;
+        const participantSpentSomeTime = !participant.spentSeconds;
+        if (participantTypedAllText && participantSpentSomeTime) {
           handleParticipantEndedGame(participant.id);
         }
       });
@@ -424,11 +427,13 @@ const Room: FC = () => {
           </div>
         </>
       )}
-      <ResultModal
-        participantsRating={getParticipantsRating(participants)}
-        onModalClose={handleCloseResultsModal}
-        showModal={isResultsModalVisible}
-      />
+      {!!participants && (
+        <ResultModal
+          participantsRating={getParticipantsRating(participants)}
+          onModalClose={handleCloseResultsModal}
+          showModal={isResultsModalVisible}
+        />
+      )}
     </div>
   );
 };
