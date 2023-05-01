@@ -4,7 +4,7 @@ import {
 } from 'common/constants/constants';
 import { GameRoom, RoomDto } from 'common/types/types';
 
-const mapRoomToGameRoom = (room: RoomDto): GameRoom => {
+const mapRoomToGameRoom = (room:  Partial<GameRoom> & RoomDto): GameRoom => {
   const participants = room.participants.map((participant) => ({
     ...DEFAULT_PARTICIPANT,
     ...participant,

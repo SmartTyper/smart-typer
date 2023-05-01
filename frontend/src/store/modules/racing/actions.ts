@@ -18,19 +18,13 @@ const setPersonalRoom = createAction(
 
 const loadCurrentRoom = createAsyncThunk(
   ActionType.LOAD_CURRENT_ROOM,
-  async (payload: RoomIdDto, { extra: { services } }): Promise<GameRoom> => {
+  async (payload: RoomIdDto, { dispatch, extra: { services } }): Promise<GameRoom> => {
     const { racingApi: racingApiService } = services;
     const room = await racingApiService.getRoom(payload);
-    const currentRoom = mapRoomToGameRoom(room);
+   
+    dispatch(_setCurrentRoom({ ...room, commentatorText }))
+    const currentRoom = mapRoomToGameRoom();
     return currentRoom;
-  },
-);
-
-const loadAvailableRooms = createAsyncThunk(
-  ActionType.LOAD_AVAILABLE_ROOMS,
-  async (_: undefined, { extra: { services } }): Promise<RoomDto[]> => {
-    const { racingApi: racingApiService } = services;
-    return racingApiService.getAvailableRooms();
   },
 );
 
@@ -39,6 +33,23 @@ const setPersonalRoomAsCurrent = createAction(
   (_: undefined, { state }) => {
     const currentRoom = mapRoomToGameRoom(state.personalRoom);
     return { payload: currentRoom };
+  },
+);
+
+const _setCurrentRoom = createAction(
+  ActionType.SET_CURRENT_ROOM,
+  (payload: RoomDto) => {
+    const commentatorText = getCommentatorText(CommentatorEvent.GREETING);
+    const currentRoom = mapRoomToGameRoom({...payload, commentatorText });
+    return { payload: currentRoom };
+  },
+);
+
+const loadAvailableRooms = createAsyncThunk(
+  ActionType.LOAD_AVAILABLE_ROOMS,
+  async (_: undefined, { extra: { services } }): Promise<RoomDto[]> => {
+    const { racingApi: racingApiService } = services;
+    return racingApiService.getAvailableRooms();
   },
 );
 
@@ -56,6 +67,18 @@ const createRoom = createAsyncThunk(
   ActionType.CREATE_ROOM,
   async (
     payload: CreateRoomRequestDto,
+    { dispatch, extra: { services } },
+  ): Promise<void> => {
+    const { racingApi: racingApiService } = services;
+    const { roomId } = await racingApiService.createRoom(payload);
+    dispatch(_loadShareRoomUrl({ roomId }));
+  },
+);
+
+const _loadShareRoomUrl = createAsyncThunk(
+  ActionType.CREATE_ROOM,
+  async (
+    payload: RoomIdDto,
     { extra: { services } },
   ): Promise<ShareRoomUrlResponseDto['url']> => {
     const { racingApi: racingApiService } = services;
@@ -80,6 +103,14 @@ const sendRoomUrlToEmails = createAsyncThunk(
 
 const resetShareRoomUrl = createAction(ActionType.RESET_SHARE_ROOM_URL);
 
+const setCommentatorText = createAction(
+  ActionType.SET_PERSONAL_ROOM_AS_CURRENT,
+  (payload: CommentatorEvent, { state }) => {
+    const currentRoom = mapRoomToGameRoom(state.personalRoom);
+    return { payload: currentRoom };
+  },
+);
+
 const actions = {
   setPersonalRoom,
   loadCurrentRoom,
@@ -90,6 +121,7 @@ const actions = {
   createRoom,
   resetShareRoomUrl,
   sendRoomUrlToEmails,
+  setCommentatorText,
 };
 
 export { actions };
