@@ -7,3 +7,4 @@ export * from './profile/profile';
 export * from './racing/racing';
 export * from './statistics/statistics.type';
 export * from './rating/rating.type';
+export * from './lesson/lesson';

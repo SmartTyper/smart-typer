@@ -2,7 +2,7 @@ import { AppRoute, FormFieldLabel, FormFieldType } from 'common/enums/enums';
 import {
   FC,
   SendRoomUrlToEmailsRequestDto,
-  ShareRoomUrlResponseDto,
+  ShareRoomUrlDto,
   VoidAction,
   VoidCallback,
 } from 'common/types/types';
@@ -23,7 +23,7 @@ import styles from './styles.module.scss';
 type Props = {
   isVisible: boolean;
   onClose: VoidAction;
-  shareRoomUrl: ShareRoomUrlResponseDto['url'];
+  shareRoomUrl: ShareRoomUrlDto['url'];
 };
 
 type Emails = SendRoomUrlToEmailsRequestDto['emails'];

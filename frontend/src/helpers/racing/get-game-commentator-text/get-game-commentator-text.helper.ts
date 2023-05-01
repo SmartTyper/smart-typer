@@ -7,7 +7,7 @@ import {
 } from './common/constants/constants';
 import { generateTextWithParticipantsEnumeration } from './helpers/helpers';
 
-const getCommentatorText = (
+const getGameCommentatorText = (
   commentatorEvent: CommentatorEvent,
   participants?: Participant[],
 ): string => {
@@ -45,4 +45,4 @@ const getCommentatorText = (
   }
 };
 
-export { getCommentatorText };
+export { getGameCommentatorText };

@@ -1,12 +1,12 @@
 import { ReducerName } from 'common/enums/enums';
-import { GameRoom, RoomDto, ShareRoomUrlResponseDto } from 'common/types/types';
+import { GameRoom, RoomDto, ShareRoomUrlDto } from 'common/types/types';
 import { createSlice } from 'store/external/external';
 import { actions } from './actions';
 
 type State = {
   personalRoom: RoomDto | null;
   currentRoom: GameRoom | null;
-  shareRoomUrl: ShareRoomUrlResponseDto['url'] | null;
+  shareRoomUrl: ShareRoomUrlDto['url'] | null;
   availableRooms: RoomDto[];
   isLoadCurrentRoomFailed: boolean;
 };
@@ -26,17 +26,22 @@ const { reducer } = createSlice({
   extraReducers: (builder) => {
     const {
       setPersonalRoom,
-      setCurrentRoom,
+      loadCurrentRoom,
       loadAvailableRooms,
       addRoomToAvailableRooms,
       removeRoomToAvailableRooms,
       resetShareRoomUrl,
-      // setCommentatorText,
-      loadShareRoomUrl,
-      loadCurrentRoom,
+      loadCommentatorText,
+      setCurrentRoom,
       resetIsLoadCurrentRoomFailed,
+      loadShareRoomUrl,
+      addParticipant,
+      removeParticipant,
       toggleParticipantIsReady,
       setSpentSeconds,
+      increaseParticipantPosition,
+      resetAll,
+      resetToDefault,
     } = actions;
     builder
       .addCase(setPersonalRoom, (state, action) => {
@@ -59,14 +64,6 @@ const { reducer } = createSlice({
       .addCase(resetShareRoomUrl, (state) => {
         state.shareRoomUrl = null;
       })
-      // .addCase(setCommentatorText, (state, action) => {
-      //   if (state.currentRoom) {
-      //     state.currentRoom = {
-      //       ...state.currentRoom,
-      //       commentatorText: action.payload,
-      //     };
-      //   }
-      // })
       .addCase(setCurrentRoom.fulfilled, (state, action) => {
         state.currentRoom = action.payload;
       })
@@ -76,6 +73,37 @@ const { reducer } = createSlice({
       .addCase(resetIsLoadCurrentRoomFailed, (state) => {
         state.isLoadCurrentRoomFailed = false;
       })
+      .addCase(addParticipant, (state, action) => {
+        if (state.currentRoom) {
+          const { participants } = state.currentRoom;
+          state.currentRoom = {
+            ...state.currentRoom,
+            participants: [...participants, action.payload],
+          };
+        }
+      })
+      .addCase(removeParticipant, (state, action) => {
+        if (state.currentRoom) {
+          const participantId = action.payload;
+          const { participants } = state.currentRoom;
+          const updatedParticipants = participants.filter(
+            (participant) => participant.id === participantId,
+          );
+          state.currentRoom = {
+            ...state.currentRoom,
+            participants: updatedParticipants,
+          };
+        }
+      })
+      .addCase(loadCommentatorText.fulfilled, (state, action) => {
+        const { commentatorText } = action.payload;
+        if (state.currentRoom) {
+          state.currentRoom = {
+            ...state.currentRoom,
+            commentatorText,
+          };
+        }
+      })
       .addCase(toggleParticipantIsReady, (state, action) => {
         if (state.currentRoom) {
           const participantId = action.payload;
@@ -83,6 +111,22 @@ const { reducer } = createSlice({
           const updatedParticipants = participants.map((participant) => {
             if (participant.id === participantId) {
               return { ...participant, isReady: !participant.isReady };
+            }
+            return participant;
+          });
+          state.currentRoom = {
+            ...state.currentRoom,
+            participants: updatedParticipants,
+          };
+        }
+      })
+      .addCase(increaseParticipantPosition, (state, action) => {
+        if (state.currentRoom) {
+          const participantId = action.payload;
+          const { participants } = state.currentRoom;
+          const updatedParticipants = participants.map((participant) => {
+            if (participant.id === participantId) {
+              return { ...participant, position: participant.position + 1 };
             }
             return participant;
           });
@@ -106,6 +150,14 @@ const { reducer } = createSlice({
             ...state.currentRoom,
             participants: updatedParticipants,
           };
+        }
+      })
+      .addCase(resetAll, (state) => {
+        Object.assign(state, initialState);
+      })
+      .addCase(resetToDefault.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.currentRoom = action.payload;
         }
       });
   },

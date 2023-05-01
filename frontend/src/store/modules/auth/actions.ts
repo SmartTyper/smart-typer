@@ -84,7 +84,7 @@ const logOut = createAsyncThunk(
     const refreshToken = localStorageService.getItem(StorageKey.REFRESH_TOKEN);
     localStorageService.removeItem(StorageKey.ACCESS_TOKEN);
     localStorageService.removeItem(StorageKey.REFRESH_TOKEN);
-    dispatch(settingsActions.resetAllToDefault());
+    dispatch(settingsActions.resetAll());
     if (refreshToken) {
       await authApiService.logOut({ refreshToken });
     }

@@ -22,7 +22,7 @@ const { reducer } = createSlice({
   extraReducers: (builder) => {
     const {
       loadUser,
-      resetAllToDefault,
+      resetAll,
       deleteAvatar,
       updateInfo,
       updateAvatar,
@@ -34,7 +34,7 @@ const { reducer } = createSlice({
         state.statistics = statistics;
         state.rating = rating;
       })
-      .addCase(resetAllToDefault, (state) => {
+      .addCase(resetAll, (state) => {
         Object.assign(state, initialState);
       })
       .addCase(deleteAvatar.fulfilled, (state) => {

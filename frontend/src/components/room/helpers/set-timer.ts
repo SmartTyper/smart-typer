@@ -1,12 +1,12 @@
 import { VoidAction } from 'common/types/types';
 import { MILLISECONDS_IN_SECOND } from 'common/constants/constants';
 
-const setTimer = (startValue: number, action: VoidAction): void => {
-  let limit = startValue;
+const setTimer = (upperBound: number, action: VoidAction): void => {
+  let counter = upperBound;
   const timerIncreaser = (): void => {
     action();
-    limit--;
-    if (limit <= 0) {
+    counter--;
+    if (counter <= 0) {
       clearInterval(timer);
     }
   };

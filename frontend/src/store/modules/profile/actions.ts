@@ -18,7 +18,7 @@ const loadUser = createAsyncThunk(
   },
 );
 
-const resetAllToDefault = createAction(ActionType.RESET_ALL_TO_DEFAULT);
+const resetAll = createAction(ActionType.RESET_ALL);
 
 const updateAvatar = createAsyncThunk(
   ActionType.UPDATE_AVATAR,
@@ -56,7 +56,7 @@ const deleteAvatar = createAsyncThunk(
 
 const actions = {
   loadUser,
-  resetAllToDefault,
+  resetAll,
   updateAvatar,
   updateInfo,
   deleteAvatar,

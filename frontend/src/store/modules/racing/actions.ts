@@ -3,16 +3,22 @@ import {
   CreateRoomRequestDto,
   GameRoom,
   GameRoomWithOptionalFields,
+  LessonDto,
   Participant,
   ParticipantIdDto,
   RoomDto,
   RoomIdDto,
-  RoomIdUserIdDto,
+  RoomIdParticipantIdDto,
   SendRoomUrlToEmailsRequestDto,
-  ShareRoomUrlResponseDto,
+  ShareRoomUrlDto,
   UserDto,
 } from 'common/types/types';
-import { getCommentatorText, mapRoomToGameRoom } from 'helpers/helpers';
+import {
+  getGameCommentatorText,
+  mapGameRoomToDefault,
+  mapRoomToGameRoom,
+  mapUserToParticipant,
+} from 'helpers/helpers';
 import { createAction, createAsyncThunk } from 'store/external/external';
 import { ActionType } from './action-type';
 
@@ -57,20 +63,44 @@ const setCurrentRoom = createAsyncThunk(
   ActionType.SET_CURRENT_ROOM,
   async (
     payload: GameRoomWithOptionalFields,
-    { dispatch, getState },
+    { dispatch },
   ): Promise<GameRoom> => {
+    const currentRoom = mapRoomToGameRoom(payload);
+    const { id: roomId } = payload;
+    dispatch(joinRoom({ roomId }));
+    dispatch(loadCommentatorText(CommentatorEvent.GREETING));
+    return currentRoom;
+  },
+);
+
+const joinRoom = createAsyncThunk(
+  ActionType.SET_CURRENT_ROOM,
+  async (
+    payload: RoomIdDto,
+    { dispatch, getState, extra: { services } },
+  ): Promise<RoomIdDto> => {
     const { auth } = getState();
     const user = auth.user as UserDto;
-    const commentatorText = getCommentatorText(CommentatorEvent.GREETING);
-    const currentRoom = mapRoomToGameRoom({
-      ...payload,
-      commentatorText,
-      participants: [...payload.participants, user],
-    });
-    const { id: roomId } = payload;
+    const { racingApi: racingApiService } = services;
+    const { roomId } = payload;
     const { id: participantId } = user;
-    dispatch(addParticipant({ roomId, participantId }));
-    return currentRoom;
+    await racingApiService.addParticipant({ roomId, participantId });
+    dispatch(addParticipant(user));
+    return payload;
+  },
+);
+
+const leaveRoom = createAsyncThunk(
+  ActionType.SET_CURRENT_ROOM,
+  async (
+    payload: RoomIdParticipantIdDto,
+    { dispatch, extra: { services } },
+  ): Promise<RoomIdDto> => {
+    const { racingApi: racingApiService } = services;
+    const { participantId, roomId } = payload;
+    await racingApiService.removeParticipant(payload);
+    dispatch(removeParticipant({ participantId }));
+    return { roomId };
   },
 );
 
@@ -109,7 +139,7 @@ const loadShareRoomUrl = createAsyncThunk(
   async (
     payload: RoomIdDto,
     { extra: { services } },
-  ): Promise<ShareRoomUrlResponseDto['url']> => {
+  ): Promise<ShareRoomUrlDto['url']> => {
     const { racingApi: racingApiService } = services;
     const { url } = await racingApiService.getShareRoomUrl(payload);
     return url;
@@ -131,16 +161,25 @@ const sendRoomUrlToEmails = createAsyncThunk(
 
 const resetShareRoomUrl = createAction(ActionType.RESET_SHARE_ROOM_URL);
 
-const addParticipant = createAsyncThunk(
+const addParticipant = createAction(
   ActionType.ADD_PARTICIPANT,
-  async (payload: RoomIdUserIdDto, { extra: { services } }): Promise<void> => {
-    const { racingApi: racingApiService } = services;
-    await racingApiService.addParticipant(payload);
-  },
+  (payload: Omit<UserDto, 'email'>) => ({
+    payload: mapUserToParticipant(payload),
+  }),
+);
+
+const removeParticipant = createAction(
+  ActionType.REMOVE_PARTICIPANT,
+  ({ participantId }: ParticipantIdDto) => ({ payload: participantId }),
 );
 
 const toggleParticipantIsReady = createAction(
   ActionType.TOGGLE_PARTICIPANT_IS_READY,
+  ({ participantId }: ParticipantIdDto) => ({ payload: participantId }),
+);
+
+const increaseParticipantPosition = createAction(
+  ActionType.REMOVE_PARTICIPANT,
   ({ participantId }: ParticipantIdDto) => ({ payload: participantId }),
 );
 
@@ -149,19 +188,69 @@ const setSpentSeconds = createAction(
   (payload: Pick<Participant, 'id' | 'spentSeconds'>) => ({ payload }),
 );
 
-// state.participants = state.participants.map((participant) =>
-// participant.id === action.payload.id
-//   ? { ...participant, spentSeconds: action.payload.spentSeconds }
-//   : participant,
-// );
+const loadCommentatorText = createAsyncThunk(
+  ActionType.SET_PERSONAL_ROOM_AS_CURRENT,
+  async (
+    payload: CommentatorEvent,
+    { getState, extra: { services } },
+  ): Promise<Pick<GameRoom, 'commentatorText'>> => {
+    const {
+      racing: { currentRoom },
+    } = getState();
+    const { racingApi: racingApiService } = services;
+    if (payload === CommentatorEvent.JOKE) {
+      const { joke } = await racingApiService.getRandomJoke();
+      return { commentatorText: joke };
+    }
+    const commentatorText = getGameCommentatorText(
+      payload,
+      currentRoom?.participants,
+    );
+    return { commentatorText };
+  },
+);
 
-// const setCommentatorText = createAction(
-//   ActionType.SET_PERSONAL_ROOM_AS_CURRENT,
-//   (payload: CommentatorEvent, { state }) => {
-//     const currentRoom = mapRoomToGameRoom(state.personalRoom);
-//     return { payload: currentRoom };
-//   },
-// );s
+const increaseCurrentParticipantPosition = createAction(
+  ActionType.INCREASE_CURRENT_PARTICIPANT_POSITION,
+  (payload: RoomIdParticipantIdDto) => ({ payload }),
+);
+
+const toggleCurrentParticipantIsReady = createAction(
+  ActionType.INCREASE_CURRENT_PARTICIPANT_POSITION,
+  (payload: RoomIdParticipantIdDto) => ({ payload }),
+);
+
+const loadLessonContent = createAsyncThunk(
+  ActionType.LOAD_SHARE_ROOM_URL,
+  async (
+    payload: RoomIdDto,
+    { extra: { services } },
+  ): Promise<Pick<LessonDto, 'content'>> => {
+    const { racingApi: racingApiService } = services;
+    const { content } = await racingApiService.getLessonContent(payload);
+    return { content };
+  },
+);
+
+const deleteLessonContent = createAsyncThunk(
+  ActionType.LOAD_SHARE_ROOM_URL,
+  async (payload: RoomIdDto, { extra: { services } }): Promise<void> => {
+    const { racingApi: racingApiService } = services;
+    await racingApiService.deleteLessonContent(payload);
+  },
+);
+
+const resetAll = createAction(ActionType.RESET_ALL);
+
+const resetToDefault = createAsyncThunk(
+  ActionType.RESET_ALL_TO_DEFAULT,
+  async (_: undefined, { getState }): Promise<void | GameRoom> => {
+    const {
+      racing: { currentRoom },
+    } = getState();
+    return currentRoom ? mapGameRoomToDefault(currentRoom) : undefined;
+  },
+);
 
 const actions = {
   setPersonalRoom,
@@ -173,13 +262,23 @@ const actions = {
   createRoom,
   resetShareRoomUrl,
   sendRoomUrlToEmails,
-  // setCommentatorText,
+  loadCommentatorText,
   setCurrentRoom,
+  resetIsLoadCurrentRoomFailed,
   loadShareRoomUrl,
   addParticipant,
-  resetIsLoadCurrentRoomFailed,
+  removeParticipant,
   toggleParticipantIsReady,
   setSpentSeconds,
+  increaseParticipantPosition,
+  joinRoom,
+  leaveRoom,
+  increaseCurrentParticipantPosition,
+  toggleCurrentParticipantIsReady,
+  loadLessonContent,
+  deleteLessonContent,
+  resetAll,
+  resetToDefault,
 };
 
 export { actions };

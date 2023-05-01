@@ -12,10 +12,15 @@ enum ActionType {
   SEND_ROOM_URL_TO_EMAILS = 'racingSendRoomUrlToEmails',
   SET_COMMENTATOR_TEXT = 'racingSetCommentatorText',
   ADD_PARTICIPANT = 'racingAddParticipant',
+  REMOVE_PARTICIPANT = 'racingRemoveParticipant',
   RESET_IS_LOAD_CURRENT_ROOM_FAILED = 'racingResetIsLoadCurrentRoomFailed',
   TOGGLE_IS_GAME_STARTED = 'racingToggleIsGameStarted',
   TOGGLE_PARTICIPANT_IS_READY = 'racingToggleParticipantIsReady',
   SET_SPENT_SECONDS = 'racingSetSpentSeconds',
+  INCREASE_CURRENT_PARTICIPANT_POSITION = 'increaseCurrentParticipantPosition',
+  TOGGLE_CURRENT_PARTICIPANT_IS_READY = 'toggleCurrentParticipantIsReady',
+  RESET_ALL = 'resetAll',
+  RESET_ALL_TO_DEFAULT = 'resetAllToDefault',
 }
 
 export { ActionType };

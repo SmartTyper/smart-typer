@@ -1,6 +1,6 @@
 enum ActionType {
   LOAD_USER = 'profileLoadUser',
-  RESET_ALL_TO_DEFAULT = 'profileResetAllToDefault',
+  RESET_ALL = 'profileResetAll',
   UPDATE_AVATAR = 'profileUpdateAvatar',
   UPDATE_INFO = 'profileUpdateInfo',
   DELETE_AVATAR = 'profileDeleteAvatar',

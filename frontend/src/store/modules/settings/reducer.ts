@@ -13,9 +13,9 @@ const { reducer } = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    const { update, setAll, resetAllToDefault } = actions;
+    const { update, setAll, resetAll } = actions;
     builder
-      .addCase(resetAllToDefault, (state) => {
+      .addCase(resetAll, (state) => {
         Object.assign(state, initialState);
       })
       .addMatcher(isAnyOf(update.fulfilled, setAll), (state, action) => {

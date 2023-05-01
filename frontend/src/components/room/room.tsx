@@ -1,9 +1,9 @@
 import { KeyboardEvent, MutableRefObject } from 'react';
 import { Button } from 'components/common/common';
 import { DEFAULT_SETTINGS, VOICE_URI } from 'common/constants/constants';
-import { AppRoute, CommentatorEvent } from 'common/enums/enums';
+import { AppRoute, CommentatorEvent, SpinnerSize } from 'common/enums/enums';
 import { clsx } from 'helpers/helpers';
-import { FC } from 'common/types/types';
+import { FC, Participant } from 'common/types/types';
 import { UserDto } from 'common/types/types';
 import { Spinner } from 'components/common/common';
 import {
@@ -16,33 +16,26 @@ import {
   useEffect,
   useState,
 } from 'hooks/hooks';
-import { Participant, ResultModal } from './components';
-import { getCommentatorText, getParticipantsRating, setTimer } from './helpers';
+import { Participant as ParticipantItem, ResultModal } from './components';
+import { getParticipantsRating, setTimer } from './helpers';
 import { racing as racingActions } from 'store/modules/actions';
 
 import commentatorImage from 'assets/img/commentator.gif';
 import styles from './styles.module.scss';
 
 const Room: FC = () => {
-  const {
-    user,
-    currentRoom,
-    isLoadCurrentRoomFailed,
-    personalGameTime,
-    countdownBeforePersonalGame,
-  } = useSelector(({ racing, auth, settings }) => ({
-    user: auth.user,
-    currentRoom: racing.currentRoom,
-    isLoadCurrentRoomFailed: racing.isLoadCurrentRoomFailed,
-    personalGameTime: settings.gameTime,
-    countdownBeforePersonalGame: settings.countdownBeforeGame,
-  }));
+  const { user, currentRoom, isLoadCurrentRoomFailed } = useSelector(
+    ({ racing, auth }) => ({
+      user: auth.user,
+      currentRoom: racing.currentRoom,
+      isLoadCurrentRoomFailed: racing.isLoadCurrentRoomFailed,
+    }),
+  );
 
   const {
     commentatorText,
     gameTime,
     countdownBeforeGame,
-    id,
     name,
     participants,
     lessonContent,
@@ -90,59 +83,49 @@ const Room: FC = () => {
   );
   const pageRef = useRef() as MutableRefObject<HTMLDivElement>;
 
-  const onAddParticipant = (participant: IUser): void => {
-    if (userId !== participant.id) {
-      dispatch(gameActions.addParticipant(participant));
-    }
+  const decreaseTimerBeforeGameValue = (): void => {
+    setGameTimerValue((prev) => prev - 1);
+    playClockTick();
   };
 
-  const onRemoveParticipant = ({ userId }: IUserAction): void => {
-    if (userId !== userId) {
-      dispatch(gameActions.removeParticipant(userId));
-    }
+  const decreaseGameTimerValue = (): void => {
+    setTimerBeforeGameValue((prev) => prev - 1);
+    playClockTick();
   };
 
-  const onToggleParticipantIsReady = ({ userId }: IUserAction): void => {
-    dispatch(gameActions.toggleIsReady(userId));
-  };
-
-  const onIncreaseParticipantPosition = ({ userId }: IUserAction): void => {
-    dispatch(gameActions.increasePosition(userId));
+  const resetTimerValues = (): void => {
+    setTimerBeforeGameValue(countdownBeforeGame ?? defaultCountdownBeforeGame);
+    setGameTimerValue(gameTime ?? defaultGameTime);
   };
 
   const handleLeaveRoom = async (): Promise<void> => {
-    const userId = userId;
-    if (userId && roomId) {
-      try {
-        await gameApi.deleteParticipant({ roomId, userId });
-        socket.emit(SocketEvents.LEAVE_ROOM, { roomId });
-        dispatch(gameActions.reset());
-        history.push(AppRoute.ROOT);
-      } catch (err) {
-        const httpError = err as HttpError;
-        toast.error(httpError.message);
-      }
+    if (roomId) {
+      dispatch(racingActions.leaveRoom({ roomId, participantId: userId }));
+      dispatch(racingActions.resetAll());
+      navigate(AppRoute.ROOT);
     }
   };
 
   const handleKeyDown = ({ key }: KeyboardEvent<HTMLDivElement>): void => {
-    if (!currentParticipant || !user || !roomId || !isGameStarted) {
+    if (!currentParticipant || !isGameStarted) {
       return;
     }
 
-    const nextSymbol = text[currentParticipant?.position];
+    const nextSymbol = (lessonContent as string)[currentParticipant?.position];
     const isRightSymbol = key === nextSymbol;
     if (isRightSymbol) {
-      socket.emit(SocketEvents.INCREASE_ME_POSITION, {
-        userId: user.id,
-        roomId,
-      });
+      dispatch(
+        racingActions.increaseCurrentParticipantPosition({
+          participantId: userId,
+          roomId,
+        }),
+      );
     } else if (key !== 'Shift') {
       playError();
     }
   };
 
-  const handleParticipantEndedGame = (participantId: number): void => {
+  const handleParticipantFinishedGame = (participantId: number): void => {
     dispatch(racingActions.toggleParticipantIsReady({ participantId }));
     dispatch(
       racingActions.setSpentSeconds({
@@ -154,13 +137,15 @@ const Room: FC = () => {
 
   const handleToggleIsReady = (): void => {
     if (currentParticipant) {
-      if (!text) {
-        dispatch(gameActions.loadText(roomId));
+      if (!lessonContent) {
+        dispatch(racingActions.loadLessonContent({ roomId }));
       }
-      socket.emit(SocketEvents.TOGGLE_ME_IS_READY, {
-        userId: currentParticipant.id,
-        roomId,
-      });
+      dispatch(
+        racingActions.toggleCurrentParticipantIsReady({
+          participantId: userId,
+          roomId,
+        }),
+      );
     }
   };
 
@@ -169,32 +154,15 @@ const Room: FC = () => {
       return;
     }
     setIsResultsModalVisible(false);
-    dispatch(gameActions.partialReset());
-    try {
-      await gameApi.deleteText(currentRoom.id);
-    } catch (err) {
-      const httpError = err as HttpError;
-      toast.error(httpError.message);
-    }
+    dispatch(racingActions.resetToDefault());
+    dispatch(racingActions.deleteLessonContent({ roomId }));
   };
 
   useEffect(() => {
-    if (
-      currentRoom?.type === RoomType.PERSONAL &&
-      personalGameTime &&
-      countdownBeforePersonalGame &&
-      !text
-    ) {
-      dispatch(gameActions.setSecondsForGame(personalGameTime));
-      dispatch(gameActions.setSecondsBeforeGame(countdownBeforePersonalGame));
-    }
-  }, [currentRoom?.type, countdownBeforePersonalGame, personalGameTime, text]);
-
-  useEffect(() => {
-    if (userId && roomId) {
+    if (roomId) {
       dispatch(racingActions.loadCurrentRoom({ roomId }));
     }
-  }, [roomId, userId]);
+  }, [roomId]);
 
   useEffect(() => {
     if (isLoadCurrentRoomFailed) {
@@ -226,113 +194,74 @@ const Room: FC = () => {
         const participantTypedAllText = participant.position === length;
         const participantSpentSomeTime = !participant.spentSeconds;
         if (participantTypedAllText && participantSpentSomeTime) {
-          handleParticipantEndedGame(participant.id);
+          handleParticipantFinishedGame(participant.id);
         }
       });
     }
   }, [participants]);
 
   useEffect(() => {
-    if (isGameStarted) {
-      const text = getCommentatorText(
-        CommentatorEvent.GAME_START,
-        participants,
-      );
-      dispatch(gameActions.setCommentatorText(text));
-      const decreaseSecondsBeforeGame = (): void => {
-        dispatch(gameActions.decreaseSecondsBeforeGame());
-      };
+    const { position, spentSeconds } = currentParticipant ?? {};
+    if (isGameStarted && !spentSeconds) {
+      dispatch(racingActions.loadCommentatorText(CommentatorEvent.GAME_START));
       playClockTick();
-      setTimer(secondsBeforeGame, decreaseSecondsBeforeGame);
-    } else if (currentParticipant) {
-      playClockRing();
-      setIsResultsModalVisible(true);
+      setTimer(countdownBeforeGame as number, decreaseTimerBeforeGameValue);
+      return;
     }
-  }, [isGameStarted]);
+    if (!isGameStarted && spentSeconds) {
+      playClockRing();
+      resetTimerValues();
+      setIsResultsModalVisible(true);
+      alert(position);
+      // todo userApi.updateRecord((position as number) / spentSeconds);
+    }
+  }, [isGameStarted, currentParticipant?.spentSeconds]);
 
   useEffect(() => {
-    if (!isGameStarted && currentParticipant?.spentSeconds) {
-      playClockRing();
-      setIsResultsModalVisible(true);
-      const { position, spentSeconds } = currentParticipant;
-      userApi.updateRecord(position / spentSeconds).catch((err) => {
-        const httpError = err as HttpError;
-        toast.error(httpError.message);
-      });
-    }
-  }, [isGameStarted, currentParticipant]);
-
-  useEffect(() => {
-    if (!secondsBeforeGame) {
+    if (!timerBeforeGameValue && isGameStarted) {
       playClockRing();
       pageRef.current.focus();
-      const decreaseSecondsForGame = (): void => {
-        dispatch(gameActions.decreaseSecondsForGame());
-      };
-      setTimer(secondsForGame, decreaseSecondsForGame);
-    } else if (isGameStarted) {
       playClockTick();
+      setTimer(gameTime as number, decreaseGameTimerValue);
     }
-  }, [secondsBeforeGame]);
+  }, [timerBeforeGameValue]);
 
   useEffect(() => {
-    if (!secondsForGame && isGameStarted) {
-      participants.forEach((participant) => {
-        if (!participant.spentSeconds) {
-          handleParticipantEndedGame(participant.id);
+    if (!gameTimerValue && isGameStarted) {
+      (participants as Participant[]).forEach((participant) => {
+        const hadFinishGameBeforeDeadline = participant.spentSeconds;
+        if (!hadFinishGameBeforeDeadline) {
+          handleParticipantFinishedGame(participant.id);
         }
       });
-      dispatch(gameActions.toggleIsGameStarted());
     }
-    const quatre = DEFAULT_SECONDS_FOR_GAME / 4;
-    if (secondsForGame === quatre || secondsForGame === 3 * quatre) {
-      dispatch(gameActions.loadCommentatorJoke());
+    const quatre = defaultGameTime / 4;
+    if (gameTimerValue === quatre || gameTimerValue === 3 * quatre) {
+      dispatch(racingActions.loadCommentatorText(CommentatorEvent.JOKE));
     }
-    if (secondsForGame === 2 * quatre) {
-      const text = getCommentatorText(
-        CommentatorEvent.GAME_MIDDLE,
-        participants,
-      );
-      dispatch(gameActions.setCommentatorText(text));
+    if (gameTimerValue === 2 * quatre) {
+      dispatch(racingActions.loadCommentatorText(CommentatorEvent.GAME_MIDDLE));
     }
-  }, [secondsForGame]);
+  }, [gameTimerValue]);
 
   useEffect(() => {
+    if (!commentatorText) {
+      return;
+    }
     speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(commentatorText);
-    setTimeout(() => {
+    setImmediate(() => {
       utterance.voice = speechSynthesis
         .getVoices()
         .find((voice) => voice.voiceURI === VOICE_URI) as SpeechSynthesisVoice;
       speechSynthesis.speak(utterance);
-    }, DEFAULT_SECONDS_FOR_GAME);
+    });
   }, [commentatorText]);
 
   useEffect(() => {
-    socket.on(SocketEvents.ADD_PARTICIPANT, onAddParticipant);
-    socket.on(SocketEvents.REMOVE_PARTICIPANT, onRemoveParticipant);
-    socket.on(
-      SocketEvents.TOGGLE_PARTICIPANT_IS_READY,
-      onToggleParticipantIsReady,
-    );
-    socket.on(
-      SocketEvents.INCREASE_PARTICIPANT_POSITION,
-      onIncreaseParticipantPosition,
-    );
-
     return (): void => {
       speechSynthesis.cancel();
       handleLeaveRoom();
-      socket.off(SocketEvents.ADD_PARTICIPANT, onAddParticipant);
-      socket.off(SocketEvents.REMOVE_PARTICIPANT, onRemoveParticipant);
-      socket.off(
-        SocketEvents.TOGGLE_PARTICIPANT_IS_READY,
-        onToggleParticipantIsReady,
-      );
-      socket.off(
-        SocketEvents.INCREASE_PARTICIPANT_POSITION,
-        onIncreaseParticipantPosition,
-      );
     };
   }, []);
 
@@ -343,34 +272,32 @@ const Room: FC = () => {
       ref={pageRef}
       tabIndex={0}
     >
-      {!userId || !roomId ? (
-        <Spinner height={'12rem'} width={'12rem'} />
+      {!currentRoom ? (
+        <Spinner size={SpinnerSize.MEDIUM} />
       ) : (
         <>
           <div className={clsx('d-flex flex-column', styles.info)}>
-            <h1>{currentRoom?.name}</h1>
+            <h1>{name}</h1>
             <Button
-              variant="success"
-              size="lg"
               onClick={handleLeaveRoom}
-              disabled={isGameStarted}
+              isDisabled={isGameStarted}
               className="w-50"
             >
               Back to home page
             </Button>
-            {participants.length ? (
+            {participants?.length ? (
               participants.map((participant) => (
-                <Participant
+                <ParticipantItem
                   participant={participant}
                   key={participant.id}
-                  textLength={text.length}
+                  textLength={(lessonContent as string).length}
                   isCurrentParticipant={
                     participant.id === currentParticipant?.id
                   }
                 />
               ))
             ) : (
-              <Spinner height={'6rem'} width={'6rem'} />
+              <Spinner size={SpinnerSize.MEDIUM} />
             )}
           </div>
           <div
@@ -381,43 +308,46 @@ const Room: FC = () => {
           >
             {currentParticipant &&
               (isGameStarted ? (
-                secondsBeforeGame ? (
+                timerBeforeGameValue ? (
                   <span className="position-absolute top-50 start-51 fs-1">
-                    {secondsBeforeGame}
+                    {timerBeforeGameValue}
                   </span>
                 ) : (
                   <>
                     <p className="d-flex justify-content-center position-absolute top-0 start-40">
-                      {secondsForGame === 1
-                        ? `${secondsForGame} second left`
-                        : `${secondsForGame} seconds left`}
+                      {timerBeforeGameValue === 1
+                        ? `${timerBeforeGameValue} second left`
+                        : `${timerBeforeGameValue} seconds left`}
                     </p>
                     <p>
                       <span className="bg-success">
-                        {text.slice(0, currentParticipant.position)}
+                        {(lessonContent as string).slice(
+                          0,
+                          currentParticipant.position,
+                        )}
                       </span>
-                      <span>{text.slice(currentParticipant.position)}</span>
+                      <span>
+                        {(lessonContent as string).slice(
+                          currentParticipant.position,
+                        )}
+                      </span>
                     </p>
                   </>
                 )
               ) : (
-                <Button
-                  variant={currentParticipant?.isReady ? 'danger' : 'success'}
-                  size="lg"
-                  onClick={handleToggleIsReady}
-                >
+                <Button onClick={handleToggleIsReady}>
                   {currentParticipant?.isReady ? 'Not ready' : 'Ready'}
                 </Button>
               ))}
           </div>
           <div className={clsx('d-flex flex-column', styles.commentator)}>
             <div className={styles.speechBubble}>
-              {commentatorText.split('\n').map((line) => {
+              {(commentatorText as string).split('\n').map((line) => {
                 return (
-                  <React.Fragment key={line}>
+                  <>
                     {line}
                     <br />
-                  </React.Fragment>
+                  </>
                 );
               })}
             </div>

@@ -14,13 +14,12 @@ const update = createAsyncThunk(
   },
 );
 
-const setAll = createAction(
-  ActionType.SET_ALL,
-  (payload: SettingsDto) => ({ payload }),
-);
+const setAll = createAction(ActionType.SET_ALL, (payload: SettingsDto) => ({
+  payload,
+}));
 
-const resetAllToDefault = createAction(ActionType.RESET_ALL_TO_DEFAULT);
+const resetAll = createAction(ActionType.RESET_ALL);
 
-const actions = { update, setAll, resetAllToDefault };
+const actions = { update, setAll, resetAll };
 
 export { actions };

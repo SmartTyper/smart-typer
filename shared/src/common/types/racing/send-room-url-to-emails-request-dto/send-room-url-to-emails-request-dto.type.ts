@@ -1,8 +1,8 @@
-import { ShareRoomUrlResponseDto } from '../racing';
+import { ShareRoomUrlDto } from '../racing';
 
 type SendRoomUrlToEmailsRequestDto = {
   emails: string[];
-  shareRoomUrl: ShareRoomUrlResponseDto['url'];
+  shareRoomUrl: ShareRoomUrlDto['url'];
 };
 
 export type { SendRoomUrlToEmailsRequestDto };
