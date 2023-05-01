@@ -1,41 +1,41 @@
-import React, { MutableRefObject, KeyboardEvent } from 'react';
-import { Button } from 'react-bootstrap';
-import { toast } from 'react-toastify';
-
-import { HttpError } from 'common/exceptions';
-import { getAllowedClasses } from 'common/helpers';
+import { KeyboardEvent, MutableRefObject } from 'react';
+import { Button } from 'components/common/common';
 import {
-  useAppDispatch,
-  useAppSelector,
-  useHistory,
-  useParams,
-  useState,
-  useRef,
-  useContext,
-  useEffect,
-  useSound,
-} from 'hooks';
-import { Spinner } from 'components/common';
+  DEFAULT_SECONDS_FOR_GAME,
+  VOICE_URI,
+} from 'common/constants/constants';
 import {
   AppRoute,
+  CommentatorEvent,
   RoomType,
   SocketEvents,
-  CommentatorEvent,
 } from 'common/enums';
-import { DEFAULT_SECONDS_FOR_GAME, VOICE_URI } from 'common/constants';
-import { IParticipant, IUser, IUserAction } from 'common/interfaces';
-import { SocketContext } from 'socket';
+import { HttpError } from 'common/exceptions';
+import { clsx } from 'helpers/helpers';
+import { FC } from 'common/types/types';
+import { UserDto } from 'common/types/types';
+import { Spinner } from 'components/common/common';
+import {
+  useContext,
+  useEffect,
+  useParams,
+  useRef,
+  useSound,
+  useState,
+} from 'hooks/hooks';
 import { gameApi, userApi } from 'services';
-import { gameActions, roomActions } from 'store/actions';
-import commentatorImage from 'assets/img/commentator.gif';
+import { SocketContext } from 'socket';
+import { gameActions } from 'store/actions';
 import { Participant, ResultModal } from './components';
-import { getParticipantsRating, getCommentatorText, setTimer } from './helpers';
+import { getCommentatorText, getParticipantsRating, setTimer } from './helpers';
+
+import { useDispatch, useNavigate, useSelector } from 'hooks/hooks';
+import { racing as racingActions } from 'store/modules/actions';
+
+import commentatorImage from 'assets/img/commentator.gif';
 import styles from './styles.module.scss';
 
-import { racing as racingActions } from 'store/modules/actions';
-import { useSelector, useDispatch, useNavigate } from 'hooks/hooks';
-
-export const Game: React.FC = () => {
+const Room: FC = () => {
   const {
     participants,
     text,
@@ -55,8 +55,9 @@ export const Game: React.FC = () => {
   const navigate = useNavigate();
   const socket = useContext(SocketContext);
 
-  const params = useParams<{ roomId?: string }>();
+  const params = useParams();
   const roomId = Number(params.roomId);
+  const userId = user?.id;
 
   const [currentParticipant, setCurrentParticipant] = useState<IParticipant>();
   const [isResultsModalVisible, setIsResultsModalVisible] = useState(false);
@@ -79,13 +80,13 @@ export const Game: React.FC = () => {
   const pageRef = useRef() as MutableRefObject<HTMLDivElement>;
 
   const onAddParticipant = (participant: IUser): void => {
-    if (user?.id !== participant.id) {
+    if (userId !== participant.id) {
       dispatch(gameActions.addParticipant(participant));
     }
   };
 
   const onRemoveParticipant = ({ userId }: IUserAction): void => {
-    if (user?.id !== userId) {
+    if (userId !== userId) {
       dispatch(gameActions.removeParticipant(userId));
     }
   };
@@ -99,7 +100,7 @@ export const Game: React.FC = () => {
   };
 
   const handleLeaveRoom = async (): Promise<void> => {
-    const userId = user?.id;
+    const userId = userId;
     if (userId && roomId) {
       try {
         await gameApi.deleteParticipant({ roomId, userId });
@@ -184,11 +185,8 @@ export const Game: React.FC = () => {
   ]);
 
   useEffect(() => {
-    const userId = user?.id;
     if (userId && roomId) {
       dispatch(racingActions.loadCurrentRoom({ roomId }));
-      
-      dispatch(gameActions.setCommentatorText(text));
       gameApi
         .addParticipant({ roomId, userId })
         .then(() => {
@@ -201,11 +199,11 @@ export const Game: React.FC = () => {
           history.push(AppRoute.ROOMS);
         });
     }
-  }, [roomId, user?.id]);
+  }, [roomId, userId]);
 
   useEffect(() => {
     const current = participants.find(
-      (participant) => participant.id === user?.id,
+      (participant) => participant.id === userId,
     );
     setCurrentParticipant(current);
 
@@ -342,11 +340,11 @@ export const Game: React.FC = () => {
       ref={pageRef}
       tabIndex={0}
     >
-      {!user?.id || !roomId ? (
+      {!userId || !roomId ? (
         <Spinner height={'12rem'} width={'12rem'} />
       ) : (
         <>
-          <div className={getAllowedClasses('d-flex flex-column', styles.info)}>
+          <div className={clsx('d-flex flex-column', styles.info)}>
             <h1>{currentRoom?.name}</h1>
             <Button
               variant="success"
@@ -373,7 +371,7 @@ export const Game: React.FC = () => {
             )}
           </div>
           <div
-            className={getAllowedClasses(
+            className={clsx(
               'd-flex flex-column justify-content-center align-items-center shadow',
               styles.field,
             )}
@@ -409,12 +407,7 @@ export const Game: React.FC = () => {
                 </Button>
               ))}
           </div>
-          <div
-            className={getAllowedClasses(
-              'd-flex flex-column',
-              styles.commentator,
-            )}
-          >
+          <div className={clsx('d-flex flex-column', styles.commentator)}>
             <div className={styles.speechBubble}>
               {commentatorText.split('\n').map((line) => {
                 return (
@@ -439,3 +432,5 @@ export const Game: React.FC = () => {
     </div>
   );
 };
+
+export { Room };

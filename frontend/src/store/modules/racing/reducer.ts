@@ -1,6 +1,6 @@
 import { ReducerName } from 'common/enums/enums';
 import { GameRoom, RoomDto, ShareRoomUrlResponseDto } from 'common/types/types';
-import { createSlice, isAnyOf } from 'store/external/external';
+import { createSlice } from 'store/external/external';
 import { actions } from './actions';
 
 type State = {
@@ -24,14 +24,13 @@ const { reducer } = createSlice({
   extraReducers: (builder) => {
     const {
       setPersonalRoom,
-      loadCurrentRoom,
-      setPersonalRoomAsCurrent,
+      setCurrentRoom,
       loadAvailableRooms,
       addRoomToAvailableRooms,
       removeRoomToAvailableRooms,
-      createRoom,
       resetShareRoomUrl,
-      setCommentatorText,
+      // setCommentatorText,
+      loadShareRoomUrl,
     } = actions;
     builder
       .addCase(setPersonalRoom, (state, action) => {
@@ -48,26 +47,23 @@ const { reducer } = createSlice({
           (room) => room.id !== action.payload,
         );
       })
-      .addCase(createRoom.fulfilled, (state, action) => {
+      .addCase(loadShareRoomUrl.fulfilled, (state, action) => {
         state.shareRoomUrl = action.payload;
       })
       .addCase(resetShareRoomUrl, (state) => {
         state.shareRoomUrl = null;
       })
-      .addCase(setCommentatorText, (state, action) => {
-        if (state.currentRoom) {
-          state.currentRoom = {
-            ...state.currentRoom,
-            commentatorText: action.payload,
-          };
-        }
-      })
-      .addMatcher(
-        isAnyOf(setPersonalRoomAsCurrent, loadCurrentRoom.fulfilled),
-        (state, action) => {
-          state.currentRoom = action.payload;
-        },
-      );
+      // .addCase(setCommentatorText, (state, action) => {
+      //   if (state.currentRoom) {
+      //     state.currentRoom = {
+      //       ...state.currentRoom,
+      //       commentatorText: action.payload,
+      //     };
+      //   }
+      // })
+      .addCase(setCurrentRoom, (state, action) => {
+        state.currentRoom = action.payload;
+      });
   },
 });
 

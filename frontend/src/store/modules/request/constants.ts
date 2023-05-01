@@ -10,7 +10,7 @@ import {
   RacingActionType,
   SettingsActionType,
 } from 'store/modules/action-type';
-import { AsyncThunk, AsyncThunkOptions } from 'common/types/types';
+import { AsyncThunk, ActionOptions } from 'common/types/types';
 
 const REQUEST_ACTIONS_TYPES = [
   AuthActionType.LOG_IN,
@@ -39,7 +39,7 @@ const actions = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AnyAsyncThunk = AsyncThunk<any, any, AsyncThunkOptions>;
+type AnyAsyncThunk = AsyncThunk<any, any, ActionOptions>;
 
 const requestActions = Object.values(actions).filter((action) => {
   const type = (action as AnyAsyncThunk).typePrefix;

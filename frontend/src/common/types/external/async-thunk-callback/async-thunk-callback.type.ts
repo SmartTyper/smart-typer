@@ -1,8 +1,5 @@
-import { AsyncThunkOptions } from 'common/types/types';
+import { ActionOptions } from 'common/types/types';
 
-type AsyncThunkCallback<T, K> = (
-  payload: K,
-  opts: AsyncThunkOptions,
-) => Promise<T>;
+type AsyncThunkCallback<T, K> = (payload: K, opts: ActionOptions) => Promise<T>;
 
 export type { AsyncThunkCallback };

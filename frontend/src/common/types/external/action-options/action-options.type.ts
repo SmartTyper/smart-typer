@@ -1,9 +1,9 @@
 import { Dispatch, RootState, Extra } from 'common/types/types';
 
-type AsyncThunkOptions = {
+type ActionOptions = {
   state?: RootState;
   dispatch: Dispatch;
   extra: Extra;
 };
 
-export type { AsyncThunkOptions };
+export type { ActionOptions };

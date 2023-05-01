@@ -11,6 +11,7 @@ enum ActionType {
   CREATE_ROOM = 'racingCreateRoom',
   SEND_ROOM_URL_TO_EMAILS = 'racingSendRoomUrlToEmails',
   SET_COMMENTATOR_TEXT = 'racingSetCommentatorText',
+  ADD_PARTICIPANT = 'racingAddParticipant',
 }
 
 export { ActionType };

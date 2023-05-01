@@ -39,7 +39,7 @@ const logIn = createAsyncThunk(
         isHttpError &&
         error.message === HttpErrorMessage.INVALID_LOG_IN_DATA
       ) {
-        dispatch(_setError(error.message));
+        dispatch(setError(error.message));
       } else {
         throw error;
       }
@@ -47,7 +47,7 @@ const logIn = createAsyncThunk(
   },
 );
 
-const _setError = createAction(
+const setError = createAction(
   ActionType.SET_ERROR,
   (authError: HttpErrorMessage) => ({
     payload: authError,
@@ -146,7 +146,7 @@ const resetPassword = createAsyncThunk(
     } catch (error) {
       const isHttpError = error instanceof HttpError;
       if (isHttpError && error.message === HttpErrorMessage.NO_SUCH_EMAIL) {
-        dispatch(_setError(error.message));
+        dispatch(setError(error.message));
       } else {
         throw error;
       }
@@ -202,6 +202,7 @@ const actions = {
   setPassword,
   resetPassword,
   loadGoogleUrl,
+  setError,
 };
 
 export { actions };
