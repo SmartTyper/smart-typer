@@ -31,6 +31,7 @@ const { reducer } = createSlice({
       removeRoomToAvailableRooms,
       createRoom,
       resetShareRoomUrl,
+      setCommentatorText,
     } = actions;
     builder
       .addCase(setPersonalRoom, (state, action) => {
@@ -52,6 +53,14 @@ const { reducer } = createSlice({
       })
       .addCase(resetShareRoomUrl, (state) => {
         state.shareRoomUrl = null;
+      })
+      .addCase(setCommentatorText, (state, action) => {
+        if (state.currentRoom) {
+          state.currentRoom = {
+            ...state.currentRoom,
+            commentatorText: action.payload,
+          };
+        }
       })
       .addMatcher(
         isAnyOf(setPersonalRoomAsCurrent, loadCurrentRoom.fulfilled),

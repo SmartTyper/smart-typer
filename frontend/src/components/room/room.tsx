@@ -32,6 +32,9 @@ import { Participant, ResultModal } from './components';
 import { getParticipantsRating, getCommentatorText, setTimer } from './helpers';
 import styles from './styles.module.scss';
 
+import { racing as racingActions } from 'store/modules/actions';
+import { useSelector, useDispatch, useNavigate } from 'hooks/hooks';
+
 export const Game: React.FC = () => {
   const {
     participants,
@@ -40,16 +43,16 @@ export const Game: React.FC = () => {
     isGameStarted,
     secondsBeforeGame,
     secondsForGame,
-  } = useAppSelector((state) => state.game);
-  const { user } = useAppSelector((state) => state.auth);
-  const { currentRoom } = useAppSelector((state) => state.room);
+  } = useSelector((state) => state.game);
+  const { user } = useSelector((state) => state.auth);
+  const { currentRoom } = useSelector((state) => state.room);
   const {
     secondsBeforeGame: secondsBeforePersonalGame,
     secondsForGame: secondsForPersonalGame,
-  } = useAppSelector((state) => state.settings);
+  } = useSelector((state) => state.settings);
 
-  const dispatch = useAppDispatch();
-  const history = useHistory();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const socket = useContext(SocketContext);
 
   const params = useParams<{ roomId?: string }>();
@@ -183,8 +186,8 @@ export const Game: React.FC = () => {
   useEffect(() => {
     const userId = user?.id;
     if (userId && roomId) {
-      dispatch(roomActions.loadRoom(roomId));
-      const text = getCommentatorText(CommentatorEvent.GREETING);
+      dispatch(racingActions.loadCurrentRoom({ roomId }));
+      
       dispatch(gameActions.setCommentatorText(text));
       gameApi
         .addParticipant({ roomId, userId })
