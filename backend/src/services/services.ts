@@ -1,10 +1,11 @@
+import { ENV } from 'common/constants/constants';
+
 import {
   user as userRepository,
   refreshToken as refreshTokenRepository,
   // settings as settingsRepository,
   // statistics as statisticsRepository,
 } from 'data/repositories/repositories';
-import { ENV } from 'common/constants/constants';
 
 import { Auth } from './auth/auth.service';
 import { Token } from './token/token.service';
@@ -16,7 +17,11 @@ import { Hash } from './hash/hash.service';
 import { Oauth2 } from './oauth2/oauth2.service';
 import { Mailer } from './mailer/mailer.service';
 
-const s3 = new S3();
+const s3 = new S3({
+  accessKeyId: ENV.S3.ACCESS_KEY_ID,
+  secretAccessKey: ENV.S3.SECRET_ACCESS_KEY,
+  bucketName: ENV.S3.BUCKET_NAME,
+});
 
 const hash = new Hash();
 

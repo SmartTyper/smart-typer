@@ -1,5 +1,8 @@
 import { Router } from 'express';
-import { getValidationMiddleware } from 'api/middlewares/middlewares';
+import {
+  getValidationMiddleware,
+  getFileMiddleware,
+} from 'api/middlewares/middlewares';
 import {
   auth as authService,
   token as tokenService,
@@ -12,6 +15,7 @@ type Options = {
   authService: typeof authService;
   tokenService: typeof tokenService;
   userService: typeof userService;
+  getFileMiddleware: typeof getFileMiddleware;
   getValidationMiddleware: typeof getValidationMiddleware;
 };
 

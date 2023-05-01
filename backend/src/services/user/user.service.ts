@@ -1,3 +1,4 @@
+import { basename } from 'path';
 import { HttpCode, HttpErrorMessage } from 'common/enums/enums';
 import {
   UserDto,
@@ -45,6 +46,7 @@ class User {
       id: 1,
       lessonId: null,
       name: 'personal',
+      participants: [user],
     };
     return {
       ...user,
@@ -148,12 +150,57 @@ class User {
     userId: number,
     file?: Express.Multer.File,
   ): Promise<UpdateAvatarResponseDto> {
-    console.log(userId, file);
-    return { photoUrl: 'newPhotoUrl' };
+    if (!file) {
+      throw new HttpError({
+        status: HttpCode.UNPROCESSABLE_ENTITY,
+        message: HttpErrorMessage.NO_FILE,
+      });
+    }
+
+    const userToUpdate = await this._userRepository.getById(userId);
+    if (!userToUpdate) {
+      throw new HttpError({
+        status: HttpCode.NOT_FOUND,
+        message: HttpErrorMessage.NO_USER_WITH_SUCH_ID,
+      });
+    }
+
+    const { photoUrl } = userToUpdate;
+    if (photoUrl) {
+      const fileName = basename(photoUrl);
+      const isExistsAvatar = await this._s3Service.doesFileExistInS3(fileName);
+      if (isExistsAvatar) {
+        await this._s3Service.deleteInS3(photoUrl);
+      }
+    }
+
+    const uploadedFile = await this._s3Service.uploadToS3(file);
+    const { Location: location } = uploadedFile;
+    await this._userRepository.patchById(userId, {
+      photoUrl: location,
+    });
+
+    const newPhotoUrl = await this._s3Service.getSignedUrl(location);
+    return { photoUrl: newPhotoUrl };
   }
 
   public async deleteAvatar(userId: number): Promise<void> {
-    console.log(userId);
+    const userToUpdate = await this._userRepository.getById(userId);
+    if (!userToUpdate) {
+      throw new HttpError({
+        status: HttpCode.NOT_FOUND,
+        message: HttpErrorMessage.NO_USER_WITH_SUCH_ID,
+      });
+    }
+    const { photoUrl } = userToUpdate;
+    if (photoUrl) {
+      const fileName = basename(photoUrl);
+      const isExistsAvatar = await this._s3Service.doesFileExistInS3(fileName);
+      if (isExistsAvatar) {
+        await this._s3Service.deleteInS3(photoUrl);
+      }
+      await this._userRepository.patchById(userId, { photoUrl: null });
+    }
   }
 }
 

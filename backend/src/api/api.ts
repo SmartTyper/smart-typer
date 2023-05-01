@@ -3,6 +3,7 @@ import {
   getValidationMiddleware,
   getAuthMiddleware,
   getErrorHandlerMiddleware,
+  getFileMiddleware,
 } from 'api/middlewares/middlewares';
 import { getRoutes } from 'api/routes/routes';
 import {
@@ -19,6 +20,7 @@ const initApi = (logger: Logger): Router => {
     '/api',
     getAuthMiddleware({ tokenService }),
     getRoutes({
+      getFileMiddleware,
       getValidationMiddleware,
       authService,
       tokenService,
