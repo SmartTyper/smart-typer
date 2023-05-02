@@ -10,7 +10,7 @@ import path from 'path';
 import { initApi } from 'api/api';
 import { ENV } from 'common/constants/constants';
 import { Environment } from 'common/enums/enums';
-import { SocketEvent } from 'common/enums/socket/soket';
+import { SocketEvent } from 'common/enums/socket/socket';
 import { socket as socketService } from 'services/services';
 import { logger as loggerService } from 'services/services';
 import knexConfig from '../knexfile';

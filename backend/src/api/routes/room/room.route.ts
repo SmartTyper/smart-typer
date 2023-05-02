@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { room as roomService } from 'services/services';
 import { Abstract } from '../abstract/abstract.route';
+import { IRequestWithUser } from 'common/interfaces/interfaces';
 // import { getValidationMiddleware } from 'api/middlewares/middlewares';
 
 type Constructor = {
@@ -49,7 +50,10 @@ class Room extends Abstract {
 
     router.post(
       '/share-url',
-      this._run((req) => this._roomService.sendShareUrlToEmails(req.body)),
+      this._run((req: IRequestWithUser) => {
+        const userId = req.userId;
+        return this._roomService.sendShareUrlToEmails(userId, req.body);
+      }),
     );
 
     router.post(

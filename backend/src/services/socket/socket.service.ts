@@ -1,10 +1,16 @@
-import { SocketErrorMessage } from 'common/enums/enums';
-import { SocketEvent } from 'common/enums/socket/soket';
+import { SocketErrorMessage, SocketEvent } from 'common/enums/enums';
 import { RoomIdDto, RoomIdParticipantIdDto } from 'common/types/types';
 import { Socket as SocketIo, Server } from 'socket.io';
 
 class Socket {
   private _io: Server | null = null;
+
+  public get io(): Server {
+    if (!this._io) {
+      throw new Error(SocketErrorMessage.NO_SOCKET_SERVICE_PROVIDED);
+    }
+    return this._io;
+  }
 
   public initIo(io: Server): void {
     this._io = io;
