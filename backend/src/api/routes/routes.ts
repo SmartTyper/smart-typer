@@ -9,6 +9,7 @@ import {
   user as userService,
   settings as settingsService,
   room as roomService,
+  logger as loggerService,
 } from 'services/services';
 import { Auth } from './auth/auth.route';
 import { User } from './user/user.route';
@@ -21,6 +22,7 @@ type Options = {
   userService: typeof userService;
   settingsService: typeof settingsService;
   roomService: typeof roomService;
+  loggerService: typeof loggerService;
   getFileMiddleware: typeof getFileMiddleware;
   getValidationMiddleware: typeof getValidationMiddleware;
 };

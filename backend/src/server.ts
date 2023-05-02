@@ -7,7 +7,7 @@ import cors from 'cors';
 import Knex from 'knex';
 import path from 'path';
 
-import { initApi } from 'api/api';
+import { router as apiRoutes } from 'api/api';
 import { ENV } from 'common/constants/constants';
 import { Environment } from 'common/enums/enums';
 import { SocketEvent } from 'common/enums/socket/soket';
@@ -40,7 +40,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(initApi(logger));
+app.use(apiRoutes);
 
 app.use(express.static(path.join(__dirname, '../public')));
 app.use('/*', (_req, res) => {
