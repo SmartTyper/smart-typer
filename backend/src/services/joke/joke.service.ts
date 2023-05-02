@@ -3,6 +3,7 @@ import {
   logger as loggerService,
 } from 'services/services';
 import { JokeDto } from 'common/types/types';
+import { JOKE_API_REQUEST_ENDPOINT } from 'common/constants/constants';
 
 type Constructor = {
   axiosService: typeof axiosService;
@@ -21,7 +22,7 @@ class Joke {
   public async getRandom(): Promise<JokeDto> {
     try {
       const response = await this._axiosService.makeGetRequest(
-        'https://v2.jokeapi.dev/joke/Any?amount=1&type=single',
+        `${JOKE_API_REQUEST_ENDPOINT}?amount=1&type=single`,
       );
       return response.data as JokeDto;
     } catch (error) {

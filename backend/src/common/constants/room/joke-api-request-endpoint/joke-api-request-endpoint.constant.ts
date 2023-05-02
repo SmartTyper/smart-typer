@@ -1,1 +1,0 @@
-const JOKE_API_REQUEST_ENDPOINT = '';
