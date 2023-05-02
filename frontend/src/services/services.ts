@@ -1,4 +1,4 @@
-import { AuthApi, RacingApi, SettingsApi, UserApi } from './api/api';
+import { AuthApi, RoomApi, JokeApi, SettingsApi, UserApi } from './api/api';
 import { Http } from './http/http.service';
 import { Navigation } from './navigation/navigation.service';
 import { Notification } from './notification/notification.service';
@@ -24,7 +24,9 @@ const userApi = new UserApi({ httpService: http });
 
 const settingsApi = new SettingsApi({ httpService: http });
 
-const racingApi = new RacingApi({ httpService: http });
+const roomApi = new RoomApi({ httpService: http });
+
+const jokeApi = new JokeApi({ httpService: http });
 
 export {
   localStorage,
@@ -32,7 +34,8 @@ export {
   authApi,
   userApi,
   settingsApi,
-  racingApi,
+  roomApi,
+  jokeApi,
   socket,
   navigation,
 };

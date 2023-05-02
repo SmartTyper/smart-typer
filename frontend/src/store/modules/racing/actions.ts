@@ -33,8 +33,8 @@ const loadCurrentRoom = createAsyncThunk(
     payload: RoomIdDto,
     { dispatch, extra: { services } },
   ): Promise<void> => {
-    const { racingApi: racingApiService } = services;
-    const room = await racingApiService.getRoom(payload);
+    const { roomApi: roomApiService } = services;
+    const room = await roomApiService.get(payload);
     dispatch(setCurrentRoom(room));
   },
 );
@@ -81,10 +81,10 @@ const joinRoom = createAsyncThunk(
   ): Promise<RoomIdDto> => {
     const { auth } = getState();
     const user = auth.user as UserDto;
-    const { racingApi: racingApiService } = services;
+    const { roomApi: roomApiService } = services;
     const { roomId } = payload;
     const { id: participantId } = user;
-    await racingApiService.addParticipant({ roomId, participantId });
+    await roomApiService.addParticipant({ roomId, participantId });
     dispatch(addParticipant(user));
     return payload;
   },
@@ -96,9 +96,9 @@ const leaveRoom = createAsyncThunk(
     payload: RoomIdParticipantIdDto,
     { dispatch, extra: { services } },
   ): Promise<RoomIdDto> => {
-    const { racingApi: racingApiService } = services;
+    const { roomApi: roomApiService } = services;
     const { participantId, roomId } = payload;
-    await racingApiService.removeParticipant(payload);
+    await roomApiService.removeParticipant(payload);
     dispatch(removeParticipant({ participantId }));
     return { roomId };
   },
@@ -107,8 +107,8 @@ const leaveRoom = createAsyncThunk(
 const loadAvailableRooms = createAsyncThunk(
   ActionType.LOAD_AVAILABLE_ROOMS,
   async (_: undefined, { extra: { services } }): Promise<RoomDto[]> => {
-    const { racingApi: racingApiService } = services;
-    return racingApiService.getAvailableRooms();
+    const { roomApi: roomApiService } = services;
+    return roomApiService.getAllAvailable();
   },
 );
 
@@ -128,8 +128,8 @@ const createRoom = createAsyncThunk(
     payload: CreateRoomRequestDto,
     { dispatch, extra: { services } },
   ): Promise<void> => {
-    const { racingApi: racingApiService } = services;
-    const { roomId } = await racingApiService.createRoom(payload);
+    const { roomApi: roomApiService } = services;
+    const { roomId } = await roomApiService.create(payload);
     dispatch(loadShareRoomUrl({ roomId }));
   },
 );
@@ -140,8 +140,8 @@ const loadShareRoomUrl = createAsyncThunk(
     payload: RoomIdDto,
     { extra: { services } },
   ): Promise<ShareRoomUrlDto['url']> => {
-    const { racingApi: racingApiService } = services;
-    const { url } = await racingApiService.getShareRoomUrl(payload);
+    const { roomApi: roomApiService } = services;
+    const { url } = await roomApiService.getShareUrl(payload);
     return url;
   },
 );
@@ -152,9 +152,9 @@ const sendRoomUrlToEmails = createAsyncThunk(
     payload: SendRoomUrlToEmailsRequestDto,
     { extra: { services } },
   ): Promise<void> => {
-    const { racingApi: racingApiService, notification: notificationService } =
+    const { roomApi: roomApiService, notification: notificationService } =
       services;
-    await racingApiService.sendRoomUrlToEmails(payload);
+    await roomApiService.sendShareUrlToEmails(payload);
     notificationService.info(NotificationMessage.SHARED_LINK_SENT);
   },
 );
@@ -197,9 +197,9 @@ const loadCommentatorText = createAsyncThunk(
     const {
       racing: { currentRoom },
     } = getState();
-    const { racingApi: racingApiService } = services;
+    const { jokeApi: jokeApiService } = services;
     if (payload === CommentatorEvent.JOKE) {
-      const { joke } = await racingApiService.getRandomJoke();
+      const { joke } = await jokeApiService.getRandom();
       return { commentatorText: joke };
     }
     const commentatorText = getGameCommentatorText(
@@ -226,8 +226,8 @@ const loadLessonContent = createAsyncThunk(
     payload: RoomIdDto,
     { extra: { services } },
   ): Promise<Pick<LessonDto, 'content'>> => {
-    const { racingApi: racingApiService } = services;
-    const { content } = await racingApiService.getLessonContent(payload);
+    const { roomApi: roomApiService } = services;
+    const { content } = await roomApiService.getLessonContent(payload);
     return { content };
   },
 );
@@ -235,8 +235,8 @@ const loadLessonContent = createAsyncThunk(
 const deleteLessonContent = createAsyncThunk(
   ActionType.LOAD_SHARE_ROOM_URL,
   async (payload: RoomIdDto, { extra: { services } }): Promise<void> => {
-    const { racingApi: racingApiService } = services;
-    await racingApiService.deleteLessonContent(payload);
+    const { roomApi: roomApiService } = services;
+    await roomApiService.deleteLessonContent(payload);
   },
 );
 

@@ -9,6 +9,7 @@ import pino from 'pino';
 import { initApi } from 'api/api';
 import { ENV } from 'common/constants/constants';
 import { Environment } from 'common/enums/enums';
+import { logger as loggerService } from 'services/services';
 import knexConfig from '../knexfile';
 
 const app: Express = express();
@@ -20,6 +21,8 @@ Model.knex();
 const logger = pino({
   prettyPrint: true,
 });
+
+loggerService.initLogger(logger);
 
 app.use(
   cors({

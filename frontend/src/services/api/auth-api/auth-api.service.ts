@@ -70,13 +70,13 @@ class AuthApi {
   }
 
   public async getLogInGoogleUrl(): Promise<GoogleLogInUrlResponseDto> {
-    return this._httpService.load(`${this._baseUrl}/logIn/google`);
+    return this._httpService.load(`${this._baseUrl}/log-in/google`);
   }
 
   public async logInGoogle(
     payload: GoogleLogInCodeRequestDto,
   ): Promise<UserAuthInfoResponseDto> {
-    return this._httpService.load(`${this._baseUrl}/logIn/google`, {
+    return this._httpService.load(`${this._baseUrl}/log-in/google`, {
       method: HttpMethod.POST,
       payload: JSON.stringify(payload),
       contentType: ContentType.JSON,

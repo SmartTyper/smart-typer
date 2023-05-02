@@ -10,6 +10,8 @@ import {
   auth as authService,
   token as tokenService,
   user as userService,
+  settings as settingsService,
+  room as roomService,
 } from 'services/services';
 import { Logger } from 'common/types/types';
 
@@ -25,6 +27,8 @@ const initApi = (logger: Logger): Router => {
       authService,
       tokenService,
       userService,
+      settingsService,
+      roomService,
     }),
   );
 

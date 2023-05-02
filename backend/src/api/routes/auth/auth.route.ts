@@ -69,13 +69,13 @@ class Auth extends Abstract {
     );
 
     router.post(
-      '/logIn/google',
+      '/log-in/google',
       this._getValidationMiddleware({ body: logInGoogleSchema }),
       this._run((req) => this._authService.logInGoogle(req.body)),
     );
 
     router.get(
-      '/logIn/google',
+      '/log-in/google',
       this._run(() => this._authService.getLogInGoogleUrl()),
     );
 

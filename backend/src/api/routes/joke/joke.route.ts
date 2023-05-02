@@ -1,36 +1,33 @@
 import { Router } from 'express';
-import { settings as settingsService } from 'services/services';
-import { IRequestWithUser } from 'common/interfaces/interfaces';
+import { joke as jokeService } from 'services/services';
 import { Abstract } from '../abstract/abstract.route';
 // import { getValidationMiddleware } from 'api/middlewares/middlewares';
 
 type Constructor = {
-  settingsService: typeof settingsService;
+  jokeService: typeof jokeService;
   // getValidationMiddleware: typeof getValidationMiddleware;
 };
 
-class Settings extends Abstract {
-  private _settingsService: typeof settingsService;
+class Joke extends Abstract {
+  private _jokeService: typeof jokeService;
   // private _getValidationMiddleware: typeof getValidationMiddleware;
 
   public constructor(params: Constructor) {
     super();
-    this._settingsService = params.settingsService;
+    this._jokeService = params.jokeService;
     // this._getValidationMiddleware = params.getValidationMiddleware;
   }
 
   public getRoutes(): Router {
     const router: Router = Router();
 
-    router.put(
-      '/',
-      this._run((req: IRequestWithUser) =>
-        this._settingsService.updateByUserId(req.userId, req.body),
-      ),
+    router.get(
+      '/random',
+      this._run(() => this._jokeService.getRandom()),
     );
 
     return router;
   }
 }
 
-export { Settings };
+export { Joke };

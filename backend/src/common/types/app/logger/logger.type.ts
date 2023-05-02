@@ -12,4 +12,4 @@ type Logger = {
   error: ErrorLogger & ObjectLogger & MessageLogger;
 };
 
-export type { Logger };
+export type { ObjectLogger, ErrorLogger, MessageLogger, Logger };
