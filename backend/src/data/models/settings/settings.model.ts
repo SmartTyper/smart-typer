@@ -12,11 +12,9 @@ class Settings extends Base implements ISettingsRecord {
 
   public [SettingsKey.IS_SHOWN_IN_RATING]!: ISettingsRecord[SettingsKey.IS_SHOWN_IN_RATING];
 
-  public [SettingsKey.HAS_GAME_VOICE]!: ISettingsRecord[SettingsKey.HAS_GAME_VOICE];
+  public [SettingsKey.IS_SOUND_TURNED_ON]!: ISettingsRecord[SettingsKey.IS_SOUND_TURNED_ON];
 
   public [SettingsKey.HAS_EMAIL_NOTIFICATIONS]!: ISettingsRecord[SettingsKey.HAS_EMAIL_NOTIFICATIONS];
-
-  public [SettingsKey.HAS_LESSON_VOICE]!: ISettingsRecord[SettingsKey.HAS_LESSON_VOICE];
 
   public static override get tableName(): string {
     return TableName.SETTINGS;

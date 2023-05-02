@@ -1,4 +1,4 @@
-import { HttpMethod, ContentType } from 'common/enums/enums';
+import { HttpMethod, RequestContentType } from 'common/enums/enums';
 import {
   ResetPasswordRequestDto,
   SetPasswordRequestDto,
@@ -29,7 +29,7 @@ class AuthApi {
     return this._httpService.load(`${this._baseUrl}/log-in`, {
       method: HttpMethod.POST,
       payload: JSON.stringify(payload),
-      contentType: ContentType.JSON,
+      contentType: RequestContentType.JSON,
     });
   }
 
@@ -39,7 +39,7 @@ class AuthApi {
     return this._httpService.load(`${this._baseUrl}/register`, {
       method: HttpMethod.POST,
       payload: JSON.stringify(payload),
-      contentType: ContentType.JSON,
+      contentType: RequestContentType.JSON,
     });
   }
 
@@ -47,7 +47,7 @@ class AuthApi {
     return this._httpService.load(`${this._baseUrl}/reset-password`, {
       method: HttpMethod.POST,
       payload: JSON.stringify(payload),
-      contentType: ContentType.JSON,
+      contentType: RequestContentType.JSON,
     });
   }
 
@@ -57,7 +57,7 @@ class AuthApi {
     return this._httpService.load(`${this._baseUrl}/set-password`, {
       method: HttpMethod.POST,
       payload: JSON.stringify(payload),
-      contentType: ContentType.JSON,
+      contentType: RequestContentType.JSON,
     });
   }
 
@@ -65,7 +65,7 @@ class AuthApi {
     return this._httpService.load(`${this._baseUrl}/log-out`, {
       method: HttpMethod.POST,
       payload: JSON.stringify(payload),
-      contentType: ContentType.JSON,
+      contentType: RequestContentType.JSON,
     });
   }
 
@@ -79,7 +79,7 @@ class AuthApi {
     return this._httpService.load(`${this._baseUrl}/log-in/google`, {
       method: HttpMethod.POST,
       payload: JSON.stringify(payload),
-      contentType: ContentType.JSON,
+      contentType: RequestContentType.JSON,
     });
   }
 }

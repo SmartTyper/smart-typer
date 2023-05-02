@@ -2,7 +2,7 @@ import * as queryString from 'query-string';
 import EventEmitter from 'events';
 import { HttpError } from 'exceptions/exceptions';
 import {
-  ContentType,
+  RequestContentType,
   HttpHeader,
   HttpMethod,
   StorageKey,
@@ -92,11 +92,11 @@ class Http {
     }
 
     const resContentType = response.headers.get(HttpHeader.CONTENT_TYPE);
-    if (resContentType && resContentType.includes(ContentType.TEXT)) {
+    if (resContentType && resContentType.includes(RequestContentType.TEXT)) {
       return response.text() as unknown as T;
     }
 
-    if (resContentType && resContentType.includes(ContentType.BLOB)) {
+    if (resContentType && resContentType.includes(RequestContentType.BLOB)) {
       return response.blob() as unknown as T;
     }
 
@@ -130,7 +130,7 @@ class Http {
           {
             method: HttpMethod.POST,
             payload: JSON.stringify({ refreshToken }),
-            contentType: ContentType.JSON,
+            contentType: RequestContentType.JSON,
           },
         );
 
@@ -171,7 +171,7 @@ class Http {
   }
 
   private _getHeaders(
-    contentType?: ContentType,
+    contentType?: RequestContentType,
     token?: string | null,
   ): Headers {
     const headers = new Headers();

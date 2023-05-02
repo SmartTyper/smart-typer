@@ -2,9 +2,8 @@ type SettingsDto = {
   countdownBeforeGame: number;
   gameTime: number;
   isShownInRating: boolean;
-  hasGameVoice: boolean;
+  isSoundTurnedOn: boolean;
   hasEmailNotifications: boolean;
-  hasLessonVoice: boolean;
 };
 
 export type { SettingsDto };

@@ -1,6 +1,7 @@
 import ReactAvatar from 'react-avatar';
 import ReactGoogleButton from 'react-google-button';
 import ReactCrop from 'react-image-crop';
+import ReactSelect from 'react-select';
 import 'react-image-crop/dist/ReactCrop.css';
 
 export {
@@ -27,4 +28,10 @@ export {
 
 import { ReactMultiEmail } from 'react-multi-email';
 
-export { ReactAvatar, ReactGoogleButton, ReactCrop, ReactMultiEmail };
+export {
+  ReactAvatar,
+  ReactGoogleButton,
+  ReactCrop,
+  ReactMultiEmail,
+  ReactSelect,
+};

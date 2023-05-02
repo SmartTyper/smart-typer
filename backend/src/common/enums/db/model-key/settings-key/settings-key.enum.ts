@@ -3,9 +3,8 @@ enum SettingsKey {
   COUNTDOWN_BEFORE_GAME = 'countdownBeforeGame',
   GAME_TIME = 'gameTime',
   IS_SHOWN_IN_RATING = 'isShownInRating',
-  HAS_GAME_VOICE = 'hasGameVoice',
+  IS_SOUND_TURNED_ON = 'isSoundTurnedOn',
   HAS_EMAIL_NOTIFICATIONS = 'hasEmailNotifications',
-  HAS_LESSON_VOICE = 'hasLessonVoice',
 }
 
 export { SettingsKey };

@@ -24,12 +24,12 @@ import commentatorImage from 'assets/img/commentator.gif';
 import styles from './styles.module.scss';
 
 const Room: FC = () => {
-  const { user, currentRoom, isLoadCurrentRoomFailed, hasGameVoice } =
+  const { user, currentRoom, isLoadCurrentRoomFailed, isSoundTurnedOn } =
     useSelector(({ racing, auth, settings }) => ({
       user: auth.user,
       currentRoom: racing.currentRoom,
       isLoadCurrentRoomFailed: racing.isLoadCurrentRoomFailed,
-      hasGameVoice: settings.hasGameVoice,
+      isSoundTurnedOn: settings.isSoundTurnedOn,
     }));
 
   const {
@@ -249,12 +249,14 @@ const Room: FC = () => {
       return;
     }
     speechSynthesis.cancel();
-    if(hasGameVoice){
+    if (isSoundTurnedOn) {
       const utterance = new SpeechSynthesisUtterance(commentatorText);
       setImmediate(() => {
         utterance.voice = speechSynthesis
           .getVoices()
-          .find((voice) => voice.voiceURI === VOICE_URI) as SpeechSynthesisVoice;
+          .find(
+            (voice) => voice.voiceURI === VOICE_URI,
+          ) as SpeechSynthesisVoice;
         speechSynthesis.speak(utterance);
       });
     }

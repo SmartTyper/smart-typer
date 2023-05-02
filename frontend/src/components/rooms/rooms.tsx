@@ -38,7 +38,7 @@ const Rooms: FC = () => {
 
   const handleCreateRoomSubmit = (payload: CreateRoomRequestDto): void => {
     dispatch(racingActions.createRoom(payload));
-    setIsShareRoomModalVisible(true);
+    setIsShareRoomModalVisible(false);
   };
 
   useEffect(() => {

@@ -6,9 +6,8 @@ interface ISettingsRecord extends ICommonRecord {
   [SettingsKey.COUNTDOWN_BEFORE_GAME]: number;
   [SettingsKey.GAME_TIME]: number;
   [SettingsKey.IS_SHOWN_IN_RATING]: boolean;
-  [SettingsKey.HAS_GAME_VOICE]: boolean;
+  [SettingsKey.IS_SOUND_TURNED_ON]: boolean;
   [SettingsKey.HAS_EMAIL_NOTIFICATIONS]: boolean;
-  [SettingsKey.HAS_LESSON_VOICE]: boolean;
 }
 
 export type { ISettingsRecord };

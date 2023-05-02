@@ -1,8 +1,8 @@
-import { ContentType, HttpMethod } from 'common/enums/enums';
+import { RequestContentType, HttpMethod } from 'common/enums/enums';
 
 type HttpOptions = {
   method: HttpMethod;
-  contentType: ContentType;
+  contentType: RequestContentType;
   payload: BodyInit | null;
   queryParams: Record<string, unknown>;
 };

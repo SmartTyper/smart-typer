@@ -19,9 +19,7 @@ class Lesson extends Base implements ILessonRecord {
 
   public [LessonKey.CREATOR_TYPE]!: ILessonRecord[LessonKey.CREATOR_TYPE];
 
-  public [LessonKey.HAS_VOICE_ACTING]!: ILessonRecord[LessonKey.HAS_VOICE_ACTING];
-
-  public [LessonKey.MUSIC_ACTING_URL]!: ILessonRecord[LessonKey.MUSIC_ACTING_URL];
+  public [LessonKey.CREATOR_ID]!: ILessonRecord[LessonKey.CREATOR_ID];
 
   public [LessonKey.CONTENT]!: ILessonRecord[LessonKey.CONTENT];
 
