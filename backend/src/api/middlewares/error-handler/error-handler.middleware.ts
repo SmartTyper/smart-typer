@@ -1,14 +1,14 @@
 import { NextFunction, Request, ErrorRequestHandler, Response } from 'express';
 import { HttpCode, HttpErrorMessage } from 'common/enums/enums';
 import { HttpError } from 'exceptions/exceptions';
-import { Logger } from 'common/types/types';
+import { logger as loggerService } from 'services/services';
 
 type Options = {
-  logger: Logger;
+  loggerService: typeof loggerService;
 };
 
 const getErrorHandlerMiddleware = (opts: Options): ErrorRequestHandler => {
-  const { logger } = opts;
+  const { loggerService } = opts;
   return (
     err: Error,
     _req: Request,
@@ -24,8 +24,8 @@ const getErrorHandlerMiddleware = (opts: Options): ErrorRequestHandler => {
       ? err.message
       : HttpErrorMessage.INTERNAL_SERVER_ERROR;
 
-    logger.error({ status, message });
-    logger.error(err);
+    loggerService.error({ status, message });
+    loggerService.error(err.message);
 
     res.status(status).send({ error: message });
   };

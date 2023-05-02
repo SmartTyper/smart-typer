@@ -12,28 +12,26 @@ import {
   user as userService,
   settings as settingsService,
   room as roomService,
+  logger as loggerService,
 } from 'services/services';
-import { Logger } from 'common/types/types';
 
-const initApi = (logger: Logger): Router => {
-  const router: Router = Router();
+const router: Router = Router();
 
-  router.use(
-    '/api',
-    getAuthMiddleware({ tokenService }),
-    getRoutes({
-      getFileMiddleware,
-      getValidationMiddleware,
-      authService,
-      tokenService,
-      userService,
-      settingsService,
-      roomService,
-    }),
-  );
+router.use(
+  '/api',
+  getAuthMiddleware({ tokenService }),
+  getRoutes({
+    getFileMiddleware,
+    getValidationMiddleware,
+    authService,
+    tokenService,
+    userService,
+    settingsService,
+    roomService,
+    loggerService,
+  }),
+);
 
-  router.use('/*', getErrorHandlerMiddleware({ logger }));
-  return router;
-};
+router.use('/*', getErrorHandlerMiddleware({ loggerService }));
 
-export { initApi };
+export { router };
