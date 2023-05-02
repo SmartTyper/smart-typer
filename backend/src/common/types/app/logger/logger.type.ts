@@ -1,7 +1,4 @@
-type LoggerHandler = (
-  data: Record<string, unknown> | string,
-  objectDescription?: string,
-) => void;
+type LoggerHandler = (data: Record<string, unknown> | string) => void;
 
 type Logger = {
   info: LoggerHandler;
