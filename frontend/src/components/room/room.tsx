@@ -24,13 +24,13 @@ import commentatorImage from 'assets/img/commentator.gif';
 import styles from './styles.module.scss';
 
 const Room: FC = () => {
-  const { user, currentRoom, isLoadCurrentRoomFailed } = useSelector(
-    ({ racing, auth }) => ({
+  const { user, currentRoom, isLoadCurrentRoomFailed, hasGameVoice } =
+    useSelector(({ racing, auth, settings }) => ({
       user: auth.user,
       currentRoom: racing.currentRoom,
       isLoadCurrentRoomFailed: racing.isLoadCurrentRoomFailed,
-    }),
-  );
+      hasGameVoice: settings.hasGameVoice,
+    }));
 
   const {
     commentatorText,
@@ -249,13 +249,15 @@ const Room: FC = () => {
       return;
     }
     speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(commentatorText);
-    setImmediate(() => {
-      utterance.voice = speechSynthesis
-        .getVoices()
-        .find((voice) => voice.voiceURI === VOICE_URI) as SpeechSynthesisVoice;
-      speechSynthesis.speak(utterance);
-    });
+    if(hasGameVoice){
+      const utterance = new SpeechSynthesisUtterance(commentatorText);
+      setImmediate(() => {
+        utterance.voice = speechSynthesis
+          .getVoices()
+          .find((voice) => voice.voiceURI === VOICE_URI) as SpeechSynthesisVoice;
+        speechSynthesis.speak(utterance);
+      });
+    }
   }, [commentatorText]);
 
   useEffect(() => {

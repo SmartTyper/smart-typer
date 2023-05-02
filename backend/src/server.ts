@@ -1,14 +1,17 @@
-import cors from 'cors';
-import Knex from 'knex';
-import path from 'path';
 import express, { Express } from 'express';
 import { createServer } from 'http';
 import { Model } from 'objection';
+import { Server } from 'socket.io';
 import pino from 'pino';
+import cors from 'cors';
+import Knex from 'knex';
+import path from 'path';
 
 import { initApi } from 'api/api';
 import { ENV } from 'common/constants/constants';
 import { Environment } from 'common/enums/enums';
+import { SocketEvent } from 'common/enums/socket/soket';
+import { socket as socketService } from 'services/services';
 import { logger as loggerService } from 'services/services';
 import knexConfig from '../knexfile';
 
@@ -21,6 +24,10 @@ Model.knex();
 const logger = pino({
   prettyPrint: true,
 });
+
+const io = new Server(httpServer);
+socketService.initIo(io);
+io.on(SocketEvent.CONNECTION, socketService.initHandlers);
 
 loggerService.initLogger(logger);
 
