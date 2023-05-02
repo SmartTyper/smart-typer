@@ -16,6 +16,7 @@ import { Settings } from './settings/settings.service';
 import { Hash } from './hash/hash.service';
 import { Oauth2 } from './oauth2/oauth2.service';
 import { Mailer } from './mailer/mailer.service';
+import { Socket } from './socket/socket.service';
 
 const s3 = new S3({
   accessKeyId: ENV.S3.ACCESS_KEY_ID,
@@ -26,6 +27,8 @@ const s3 = new S3({
 const hash = new Hash();
 
 const settings = new Settings();
+
+const socket = new Socket();
 
 // const statistics = new Statistics({ statisticsRepository });
 
@@ -64,4 +67,4 @@ const auth = new Auth({
   appUrl: ENV.APP.URL,
 });
 
-export { auth, token, user, s3, hash, oauth2, mailer, settings };
+export { auth, token, user, s3, hash, oauth2, mailer, settings, socket };
