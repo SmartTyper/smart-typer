@@ -1,6 +1,6 @@
 type LoggerHandler = (
   data: Record<string, unknown> | string,
-  description?: string,
+  objectDescription?: string,
 ) => void;
 
 type Logger = {
