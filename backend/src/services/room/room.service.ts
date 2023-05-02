@@ -3,7 +3,7 @@ import {
   LessonDto,
   RoomDto,
   RoomIdDto,
-  RoomIdParticipantIdDto,
+  ParticipantIdDto,
   SendRoomUrlToEmailsRequestDto,
   ShareRoomUrlDto,
 } from 'common/types/types';
@@ -20,7 +20,7 @@ class Room {
     this._roomRepository = params.roomRepository;
   }
 
-  public async getById(payload: RoomIdDto): Promise<RoomDto> {
+  public async getById(roomId: number): Promise<RoomDto> {
     return {} as RoomDto;
   }
 
@@ -32,7 +32,7 @@ class Room {
     return {} as RoomIdDto;
   }
 
-  public async getShareUrl(payload: RoomIdDto): Promise<ShareRoomUrlDto> {
+  public async getShareUrl(roomId: number): Promise<ShareRoomUrlDto> {
     return {} as ShareRoomUrlDto;
   }
 
@@ -42,23 +42,27 @@ class Room {
     return;
   }
 
-  public async addParticipant(payload: RoomIdParticipantIdDto): Promise<void> {
+  public async addParticipant(
+    roomId: number,
+    payload: ParticipantIdDto,
+  ): Promise<void> {
     return;
   }
 
   public async removeParticipant(
-    payload: RoomIdParticipantIdDto,
+    roomId: number,
+    participantId: number,
   ): Promise<void> {
     return;
   }
 
   public async getLessonContent(
-    payload: RoomIdDto,
+    roomId: number,
   ): Promise<Pick<LessonDto, 'content'>> {
     return {} as Promise<Pick<LessonDto, 'content'>>;
   }
 
-  public async deleteLessonContent(payload: RoomIdDto): Promise<void> {
+  public async deleteLessonContent(roomId: number): Promise<void> {
     return;
   }
 }

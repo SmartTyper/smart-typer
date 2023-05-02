@@ -23,7 +23,10 @@ class Room extends Abstract {
 
     router.get(
       '/:roomId',
-      this._run((req) => this._roomService.getById(req.params.roomId)),
+      this._run((req) => {
+        const roomId = Number(req.params.roomId);
+        return this._roomService.getById(roomId);
+      }),
     );
 
     router.get(
@@ -38,7 +41,10 @@ class Room extends Abstract {
 
     router.get(
       '/:roomId/share-url',
-      this._run((req) => this._roomService.getShareUrl(req.params.roomId)),
+      this._run((req) => {
+        const roomId = Number(req.params.roomId);
+        return this._roomService.getShareUrl(roomId);
+      }),
     );
 
     router.post(
@@ -48,31 +54,35 @@ class Room extends Abstract {
 
     router.post(
       '/:roomId/participants',
-      this._run((req) =>
-        this._roomService.addParticipant(req.params.roomId, req.body),
-      ),
+      this._run((req) => {
+        const roomId = Number(req.params.roomId);
+        return this._roomService.addParticipant(roomId, req.body);
+      }),
     );
 
     router.delete(
       '/:roomId/participants/:participantId',
-      this._run((req) =>
-        this._roomService.removeParticipant(
-          req.params.roomId,
-          req.params.participantId,
-        ),
-      ),
+      this._run((req) => {
+        const roomId = Number(req.params.roomId);
+        const participantId = Number(req.params.participantId);
+        return this._roomService.removeParticipant(roomId, participantId);
+      }),
     );
 
     router.get(
       '/:roomId/lesson-content',
-      this._run((req) => this._roomService.getLessonContent(req.params.roomId)),
+      this._run((req) => {
+        const roomId = Number(req.params.roomId);
+        return this._roomService.getLessonContent(roomId);
+      }),
     );
 
     router.delete(
       '/:roomId/lesson-content',
-      this._run((req) =>
-        this._roomService.deleteLessonContent(req.params.roomId),
-      ),
+      this._run((req) => {
+        const roomId = Number(req.params.roomId);
+        return this._roomService.deleteLessonContent(roomId);
+      }),
     );
 
     return router;

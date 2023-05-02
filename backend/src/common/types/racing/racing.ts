@@ -6,4 +6,5 @@ export type {
   CreateRoomRequestDto,
   ShareRoomUrlDto,
   SendRoomUrlToEmailsRequestDto,
+  ParticipantIdDto,
 } from 'smart-typer-shared/common/types/types';
