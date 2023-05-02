@@ -1,24 +1,25 @@
 import { ENV } from 'common/constants/constants';
 
 import {
-  user as userRepository,
   refreshToken as refreshTokenRepository,
-  // settings as settingsRepository,
-  // statistics as statisticsRepository,
+  room as roomRepository,
+  user as userRepository,
 } from 'data/repositories/repositories';
 
 import { Auth } from './auth/auth.service';
-import { Token } from './token/token.service';
-import { User } from './user/user.service';
 import { S3 } from './s3/s3.service';
 import { Settings } from './settings/settings.service';
+import { Token } from './token/token.service';
+import { User } from './user/user.service';
 // import { Statistics } from './statistics/statistics.service';
-import { Hash } from './hash/hash.service';
-import { Oauth2 } from './oauth2/oauth2.service';
-import { Mailer } from './mailer/mailer.service';
-import { Socket } from './socket/socket.service';
 import { Axios } from './axios/axios';
+import { Hash } from './hash/hash.service';
+import { Joke } from './joke/joke.service';
 import { Logger } from './logger/logger.service';
+import { Mailer } from './mailer/mailer.service';
+import { Oauth2 } from './oauth2/oauth2.service';
+import { Room } from './room/room.service';
+import { Socket } from './socket/socket.service';
 
 const s3 = new S3({
   accessKeyId: ENV.S3.ACCESS_KEY_ID,
@@ -35,6 +36,10 @@ const socket = new Socket();
 const axios = new Axios();
 
 const logger = new Logger();
+
+const joke = new Joke({ axiosService: axios, loggerService: logger });
+
+const room = new Room({ roomRepository: roomRepository });
 
 // const statistics = new Statistics({ statisticsRepository });
 
@@ -85,4 +90,6 @@ export {
   socket,
   axios,
   logger,
+  joke,
+  room,
 };
