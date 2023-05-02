@@ -1,11 +1,12 @@
 import { SocketErrorMessage } from 'common/enums/enums';
 import { SocketEvent } from 'common/enums/socket/soket';
+import { RoomIdDto, RoomIdParticipantIdDto } from 'common/types/types';
 import { Socket as SocketIo, Server } from 'socket.io';
 
 class Socket {
   private _io: Server | null = null;
 
-  initIo(io: Server): void {
+  public initIo(io: Server): void {
     this._io = io;
   }
 
@@ -13,28 +14,30 @@ class Socket {
     if (!this._io) {
       throw new Error(SocketErrorMessage.NO_SOCKET_SERVICE_PROVIDED);
     }
-    socket.on(SocketEvent.JOIN_ROOM, async ({ roomId }: IRoomAction) => {
+    const io = this._io as Server;
+
+    socket.on(SocketEvent.JOIN_ROOM, async ({ roomId }: RoomIdDto) => {
       await socket.join(String(roomId));
     });
 
-    socket.on(SocketEvent.LEAVE_ROOM, async ({ roomId }: IRoomAction) => {
+    socket.on(SocketEvent.LEAVE_ROOM, async ({ roomId }: RoomIdDto) => {
       await socket.leave(String(roomId));
     });
 
     socket.on(
       SocketEvent.TOGGLE_CURRENT_PARTICIPANT_IS_READY,
-      async ({ roomId, userId }: IUserRoomAction) => {
+      async ({ roomId, participantId }: RoomIdParticipantIdDto) => {
         io.to(String(roomId)).emit(SocketEvent.TOGGLE_PARTICIPANT_IS_READY, {
-          userId,
+          participantId,
         });
       },
     );
 
     socket.on(
       SocketEvent.INCREASE_CURRENT_PARTICIPANT_POSITION,
-      async ({ userId, roomId }: IUserRoomAction) => {
+      async ({ participantId, roomId }: RoomIdParticipantIdDto) => {
         io.to(String(roomId)).emit(SocketEvent.INCREASE_PARTICIPANT_POSITION, {
-          userId,
+          participantId,
         });
       },
     );

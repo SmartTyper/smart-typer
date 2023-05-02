@@ -25,9 +25,8 @@ const logger = pino({
 });
 
 const io = new Server(httpServer);
-
 socketService.initIo(io);
-io.on(SocketEvent.CONNECTION, socketService.initHandlers(io));
+io.on(SocketEvent.CONNECTION, socketService.initHandlers);
 
 app.use(
   cors({
