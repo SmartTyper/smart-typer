@@ -8,9 +8,9 @@ import { auth as authActions } from 'store/modules/actions';
 const ResetPassword: FC = () => {
   const dispatch = useDispatch();
   const { authError, isResetPasswordLoading } = useSelector(
-    ({ auth, request }) => ({
+    ({ auth, requests }) => ({
       authError: auth.error,
-      isResetPasswordLoading: request.authResetPassword,
+      isResetPasswordLoading: requests.authResetPassword,
     }),
   );
   const {

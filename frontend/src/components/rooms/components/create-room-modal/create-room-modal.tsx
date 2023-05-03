@@ -18,7 +18,7 @@ type Props = {
 
 const CreateRoomModal: FC<Props> = ({ isVisible, onClose, onSubmit }) => {
   const { racingCreateRoom: isSubmitting } = useSelector(
-    (state) => state.request,
+    (state) => state.requests,
   );
   const {
     handleSubmit,

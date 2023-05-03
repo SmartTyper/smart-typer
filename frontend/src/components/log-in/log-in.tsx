@@ -15,10 +15,10 @@ const LogIn: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { authError, user, isLogInLoading } = useSelector(
-    ({ auth, request }) => ({
+    ({ auth, requests }) => ({
       authError: auth.error,
       user: auth.user,
-      isLogInLoading: request.authLogIn,
+      isLogInLoading: requests.authLogIn,
     }),
   );
   const {

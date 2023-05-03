@@ -15,10 +15,10 @@ const SignUp: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { authError, user, isSignUpLoading } = useSelector(
-    ({ auth, request }) => ({
+    ({ auth, requests }) => ({
       authError: auth.error,
       user: auth.user,
-      isSignUpLoading: request.authRegister,
+      isSignUpLoading: requests.authRegister,
     }),
   );
   const {
