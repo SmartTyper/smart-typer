@@ -1,4 +1,11 @@
-import { AuthApi, RoomApi, JokeApi, SettingsApi, UserApi } from './api/api';
+import {
+  AuthApi,
+  RoomApi,
+  JokeApi,
+  SettingsApi,
+  UserApi,
+  LessonApi,
+} from './api/api';
 import { Http } from './http/http.service';
 import { Navigation } from './navigation/navigation.service';
 import { Notification } from './notification/notification.service';
@@ -28,6 +35,8 @@ const roomApi = new RoomApi({ httpService: http });
 
 const jokeApi = new JokeApi({ httpService: http });
 
+const lessonApi = new LessonApi({ httpService: http });
+
 export {
   localStorage,
   notification,
@@ -38,4 +47,5 @@ export {
   jokeApi,
   socket,
   navigation,
+  lessonApi,
 };

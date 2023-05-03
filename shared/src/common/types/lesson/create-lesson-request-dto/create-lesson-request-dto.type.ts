@@ -1,11 +1,10 @@
-import { CreatorType, ContentType } from 'common/enums/enums';
+import { LessonDto } from 'common/types/types';
 
-type CreateLessonRequestDto = {
-  name: string;
-  contentType: ContentType;
-  creatorType: CreatorType;
+type CreateLessonRequestDto = Pick<
+  LessonDto,
+  'name' | 'contentType' | 'creatorType' | 'content'
+> & {
   creatorId: number;
-  content: string;
 };
 
 export type { CreateLessonRequestDto };

@@ -11,7 +11,7 @@ const Lessons: FC = () => {
     { value: 'sentences', label: 'Sentences' },
   ];
 
-  const contentCreatorOptions = [
+  const creatorTypeOptions = [
     { value: 'all', label: 'All' },
     { value: 'currentUser', label: 'Me' },
     { value: 'otherUsers', label: 'Others' },
@@ -21,7 +21,7 @@ const Lessons: FC = () => {
 
   const [selectedContentTypeOption, setSelectedContentTypeOption] =
     useState(null);
-  const [selectedContentCreatorOption, setSelectedContentCreatorOption] =
+  const [selectedCreatorTypeOption, setSelectedCreatorTypeOption] =
     useState(null);
   const [isCreateLessonModalVisible, setIsCreateLessonModalVisible] =
     useState(false);
@@ -46,10 +46,10 @@ const Lessons: FC = () => {
         onChange={setSelectedContentTypeOption}
       />
       <ReactSelect
-        options={contentCreatorOptions}
+        options={creatorTypeOptions}
         isMulti
-        value={selectedContentCreatorOption}
-        onChange={setSelectedContentCreatorOption}
+        value={selectedCreatorTypeOption}
+        onChange={setSelectedCreatorTypeOption}
       />
       <Button
         label="Create lesson"
@@ -61,6 +61,14 @@ const Lessons: FC = () => {
         onSubmit={handleCreateLessonSubmit}
         // isSubmitButtonLoading
       />
+      {[].map(({ name, contentType, creatorType, content }, i) => (
+        <div key={i}>
+          <div>{name}</div>
+          <div>{contentType}</div>
+          <div>{creatorType}</div>
+          <div>{content}</div>
+        </div>
+      ))}
     </div>
   );
 };

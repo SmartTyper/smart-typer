@@ -14,7 +14,7 @@ for (const requestActionType of REQUEST_ACTIONS_TYPES) {
 }
 
 const { reducer } = createSlice({
-  name: ReducerName.REQUEST,
+  name: ReducerName.REQUESTS,
   initialState,
   reducers: {},
   extraReducers: (builder) => {

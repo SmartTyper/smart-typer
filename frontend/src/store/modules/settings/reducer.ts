@@ -9,7 +9,7 @@ type State = SettingsDto;
 const initialState: State = DEFAULT_SETTINGS;
 
 const { reducer } = createSlice({
-  name: ReducerName.PROFILE,
+  name: ReducerName.SETTINGS,
   initialState,
   reducers: {},
   extraReducers: (builder) => {

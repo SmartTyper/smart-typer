@@ -20,7 +20,7 @@ const initialState: State = {
 };
 
 const { reducer } = createSlice({
-  name: ReducerName.PROFILE,
+  name: ReducerName.RACING,
   initialState,
   reducers: {},
   extraReducers: (builder) => {

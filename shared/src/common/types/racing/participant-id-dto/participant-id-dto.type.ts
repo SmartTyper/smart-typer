@@ -1,5 +1,7 @@
+import { UserDto } from 'common/types/types';
+
 type ParticipantIdDto = {
-  participantId: number;
+  participantId: UserDto['id'];
 };
 
 export type { ParticipantIdDto };
