@@ -20,6 +20,7 @@ enum ActionType {
   INCREASE_CURRENT_PARTICIPANT_POSITION = 'increaseCurrentParticipantPosition',
   TOGGLE_CURRENT_PARTICIPANT_IS_READY = 'toggleCurrentParticipantIsReady',
   RESET_ALL = 'resetAll',
+  RESET_AVAILABLE_ROOMS = 'resetResetAvailableRooms',
   RESET_ALL_TO_DEFAULT = 'resetAllToDefault',
 }
 

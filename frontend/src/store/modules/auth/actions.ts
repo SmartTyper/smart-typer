@@ -16,6 +16,7 @@ import {
 import { HttpError } from 'exceptions/exceptions';
 import { ActionType } from './action-type';
 import { handleExternalError } from 'helpers/helpers';
+import { DEFAULT_LESSONS_OFFSET } from 'common/constants/constants';
 
 const logIn = createAsyncThunk(
   ActionType.LOG_IN,
@@ -26,12 +27,15 @@ const logIn = createAsyncThunk(
     try {
       const { authApi: authApiService, localStorage: localStorageService } =
         services;
-      const { settings: settingsActions } = actions;
+      const { settings: settingsActions, lessons: lessonsActions } = actions;
       const userData = await authApiService.logIn(payload);
       const { accessToken, refreshToken, settings, ...user } = userData;
       localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
       localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
       dispatch(settingsActions.setAll(settings));
+      dispatch(
+        lessonsActions.loadMoreLessons({ offset: DEFAULT_LESSONS_OFFSET }),
+      );
       return user;
     } catch (error) {
       const isHttpError = error instanceof HttpError;
@@ -62,12 +66,15 @@ const register = createAsyncThunk(
   ): Promise<UserDto> => {
     const { authApi: authApiService, localStorage: localStorageService } =
       services;
-    const { settings: settingsActions } = actions;
+    const { settings: settingsActions, lessons: lessonsActions } = actions;
     const userData = await authApiService.register(payload);
     const { accessToken, refreshToken, settings, ...user } = userData;
     localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
     localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
     dispatch(settingsActions.setAll(settings));
+    dispatch(
+      lessonsActions.loadMoreLessons({ offset: DEFAULT_LESSONS_OFFSET }),
+    );
     return user;
   },
 );
@@ -80,11 +87,19 @@ const logOut = createAsyncThunk(
   ): Promise<void> => {
     const { authApi: authApiService, localStorage: localStorageService } =
       services;
-    const { settings: settingsActions } = actions;
+    const {
+      settings: settingsActions,
+      lessons: lessonsActions,
+      profile: profileActions,
+      racing: racingActions,
+    } = actions;
     const refreshToken = localStorageService.getItem(StorageKey.REFRESH_TOKEN);
     localStorageService.removeItem(StorageKey.ACCESS_TOKEN);
     localStorageService.removeItem(StorageKey.REFRESH_TOKEN);
     dispatch(settingsActions.resetAll());
+    dispatch(lessonsActions.resetAll());
+    dispatch(profileActions.resetAll());
+    dispatch(racingActions.resetAll());
     if (refreshToken) {
       await authApiService.logOut({ refreshToken });
     }
@@ -99,12 +114,15 @@ const logInGoogle = createAsyncThunk(
   ): Promise<UserDto> => {
     const { authApi: authApiService, localStorage: localStorageService } =
       services;
-    const { settings: settingsActions } = actions;
+    const { settings: settingsActions, lessons: lessonsActions } = actions;
     const userData = await authApiService.logInGoogle(payload);
     const { accessToken, refreshToken, settings, ...user } = userData;
     localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
     localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
     dispatch(settingsActions.setAll(settings));
+    dispatch(
+      lessonsActions.loadMoreLessons({ offset: DEFAULT_LESSONS_OFFSET }),
+    );
     return user;
   },
 );
@@ -117,11 +135,14 @@ const loadUser = createAsyncThunk(
   ): Promise<UserDto | void> => {
     const { userApi: userApiService, localStorage: localStorageService } =
       services;
-    const { settings: settingsActions } = actions;
+    const { settings: settingsActions, lessons: lessonsActions } = actions;
     const accessToken = localStorageService.getItem(StorageKey.ACCESS_TOKEN);
     if (accessToken) {
       const { settings, ...user } = await userApiService.getAuthInfo();
       dispatch(settingsActions.setAll(settings));
+      dispatch(
+        lessonsActions.loadMoreLessons({ offset: DEFAULT_LESSONS_OFFSET }),
+      );
       return user;
     }
   },

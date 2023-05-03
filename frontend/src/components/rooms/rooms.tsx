@@ -43,6 +43,9 @@ const Rooms: FC = () => {
 
   useEffect(() => {
     dispatch(racingActions.loadAvailableRooms());
+    return () => {
+      dispatch(racingActions.resetAvailableRooms());
+    };
   }, []);
 
   return (

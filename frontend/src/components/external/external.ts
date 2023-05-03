@@ -2,6 +2,7 @@ import ReactAvatar from 'react-avatar';
 import ReactGoogleButton from 'react-google-button';
 import ReactCrop from 'react-image-crop';
 import ReactSelect from 'react-select';
+import ReactInfiniteScroll from 'react-infinite-scroll-component';
 import 'react-image-crop/dist/ReactCrop.css';
 
 export {
@@ -34,4 +35,5 @@ export {
   ReactCrop,
   ReactMultiEmail,
   ReactSelect,
+  ReactInfiniteScroll,
 };

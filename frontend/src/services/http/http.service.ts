@@ -166,7 +166,6 @@ class Http {
     const fetchUrl = `${endpoint}${
       queryParams ? `?${queryString.stringify(queryParams)}` : ''
     }`;
-
     return fetchUrl;
   }
 

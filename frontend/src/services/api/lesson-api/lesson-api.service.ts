@@ -3,9 +3,14 @@ import { Http as HttpService } from '../../http/http.service';
 import {
   CreateLessonRequestDto,
   LessonDto,
+  LessonFilters,
   LessonIdDto,
   LessonWithSkillsDto,
 } from 'common/types/types';
+import {
+  IPaginationRequest,
+  IPaginationResponse,
+} from 'common/interface/interface';
 
 type Constructor = {
   httpService: HttpService;
@@ -33,8 +38,13 @@ class LessonApi {
     return this._httpService.load(`${this._baseUrl}/${lessonId}`);
   }
 
-  public async getAll(): Promise<LessonDto[]> {
-    return this._httpService.load(this._baseUrl);
+  public async getAll(
+    payload: IPaginationRequest & LessonFilters,
+  ): Promise<IPaginationResponse<LessonDto>> {
+    return this._httpService.load(this._baseUrl, {
+      method: HttpMethod.GET,
+      queryParams: payload,
+    });
   }
 }
 

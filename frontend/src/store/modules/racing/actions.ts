@@ -216,7 +216,7 @@ const increaseCurrentParticipantPosition = createAction(
 );
 
 const toggleCurrentParticipantIsReady = createAction(
-  ActionType.INCREASE_CURRENT_PARTICIPANT_POSITION,
+  ActionType.TOGGLE_CURRENT_PARTICIPANT_IS_READY,
   (payload: RoomIdParticipantIdDto) => ({ payload }),
 );
 
@@ -252,6 +252,8 @@ const resetToDefault = createAsyncThunk(
   },
 );
 
+const resetAvailableRooms = createAction(ActionType.RESET_AVAILABLE_ROOMS);
+
 const actions = {
   setPersonalRoom,
   loadCurrentRoom,
@@ -279,6 +281,7 @@ const actions = {
   deleteLessonContent,
   resetAll,
   resetToDefault,
+  resetAvailableRooms,
 };
 
 export { actions };

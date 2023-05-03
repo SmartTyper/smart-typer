@@ -1,6 +1,6 @@
 import { ReducerName } from 'common/enums/enums';
 import { GameRoom, RoomDto, ShareRoomUrlDto } from 'common/types/types';
-import { createSlice } from 'store/external/external';
+import { createSlice, isAnyOf } from 'store/external/external';
 import { actions } from './actions';
 
 type State = {
@@ -42,6 +42,9 @@ const { reducer } = createSlice({
       increaseParticipantPosition,
       resetAll,
       resetToDefault,
+      increaseCurrentParticipantPosition,
+      toggleCurrentParticipantIsReady,
+      resetAvailableRooms,
     } = actions;
     builder
       .addCase(setPersonalRoom, (state, action) => {
@@ -57,6 +60,9 @@ const { reducer } = createSlice({
         state.availableRooms = state.availableRooms.filter(
           (room) => room.id !== action.payload,
         );
+      })
+      .addCase(resetAvailableRooms, (state) => {
+        state.availableRooms = [];
       })
       .addCase(loadShareRoomUrl.fulfilled, (state, action) => {
         state.shareRoomUrl = action.payload;
@@ -104,38 +110,6 @@ const { reducer } = createSlice({
           };
         }
       })
-      .addCase(toggleParticipantIsReady, (state, action) => {
-        if (state.currentRoom) {
-          const participantId = action.payload;
-          const { participants } = state.currentRoom;
-          const updatedParticipants = participants.map((participant) => {
-            if (participant.id === participantId) {
-              return { ...participant, isReady: !participant.isReady };
-            }
-            return participant;
-          });
-          state.currentRoom = {
-            ...state.currentRoom,
-            participants: updatedParticipants,
-          };
-        }
-      })
-      .addCase(increaseParticipantPosition, (state, action) => {
-        if (state.currentRoom) {
-          const participantId = action.payload;
-          const { participants } = state.currentRoom;
-          const updatedParticipants = participants.map((participant) => {
-            if (participant.id === participantId) {
-              return { ...participant, position: participant.position + 1 };
-            }
-            return participant;
-          });
-          state.currentRoom = {
-            ...state.currentRoom,
-            participants: updatedParticipants,
-          };
-        }
-      })
       .addCase(setSpentSeconds, (state, action) => {
         if (state.currentRoom) {
           const { id: participantId, spentSeconds } = action.payload;
@@ -159,7 +133,48 @@ const { reducer } = createSlice({
         if (action.payload) {
           state.currentRoom = action.payload;
         }
-      });
+      })
+      .addMatcher(
+        isAnyOf(toggleParticipantIsReady, toggleCurrentParticipantIsReady),
+        (state, action) => {
+          if (state.currentRoom) {
+            const participantId = action.payload;
+            const { participants } = state.currentRoom;
+            const updatedParticipants = participants.map((participant) => {
+              if (participant.id === participantId) {
+                return { ...participant, isReady: !participant.isReady };
+              }
+              return participant;
+            });
+            state.currentRoom = {
+              ...state.currentRoom,
+              participants: updatedParticipants,
+            };
+          }
+        },
+      )
+      .addMatcher(
+        isAnyOf(
+          increaseParticipantPosition,
+          increaseCurrentParticipantPosition,
+        ),
+        (state, action) => {
+          if (state.currentRoom) {
+            const participantId = action.payload;
+            const { participants } = state.currentRoom;
+            const updatedParticipants = participants.map((participant) => {
+              if (participant.id === participantId) {
+                return { ...participant, position: participant.position + 1 };
+              }
+              return participant;
+            });
+            state.currentRoom = {
+              ...state.currentRoom,
+              participants: updatedParticipants,
+            };
+          }
+        },
+      );
   },
 });
 

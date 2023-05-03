@@ -5,3 +5,4 @@ export * from './skill/skill.type';
 export * from './skill-result/skill-result.type';
 export * from './lesson-with-skills-dto/lesson-with-skills-dto.type';
 export * from './lesson-id-dto/lesson-id-dto.type';
+export * from './lesson-filters/lesson-filters.type';

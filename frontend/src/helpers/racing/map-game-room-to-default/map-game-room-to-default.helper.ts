@@ -5,13 +5,13 @@ import { mapUserToParticipant } from 'helpers/helpers';
 const mapRoomToGameRoom = (room: GameRoomWithOptionalFields): GameRoom => {
   const participants = room.participants.map(mapUserToParticipant);
 
-  const currentRoom = {
+  const mappedRoom = {
     ...DEFAULT_GAME_ROOM,
     ...room,
     participants,
   };
 
-  return currentRoom;
+  return mappedRoom;
 };
 
 export { mapRoomToGameRoom };

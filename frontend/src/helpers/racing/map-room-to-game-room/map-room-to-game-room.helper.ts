@@ -1,4 +1,7 @@
-import { DEFAULT_GAME_ROOM, DEFAULT_PARTICIPANT } from 'common/constants/constants';
+import {
+  DEFAULT_GAME_ROOM,
+  DEFAULT_PARTICIPANT,
+} from 'common/constants/constants';
 import { GameRoom } from 'common/types/types';
 
 const mapGameRoomToDefault = (room: GameRoom): GameRoom => {
@@ -7,13 +10,13 @@ const mapGameRoomToDefault = (room: GameRoom): GameRoom => {
     ...DEFAULT_PARTICIPANT,
   }));
 
-  const currentRoom = {
+  const mappedRoom = {
     ...room,
     ...DEFAULT_GAME_ROOM,
     participants,
   };
 
-  return currentRoom;
+  return mappedRoom;
 };
 
 export { mapGameRoomToDefault };
