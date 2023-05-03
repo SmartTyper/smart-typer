@@ -117,8 +117,8 @@ const addRoomToAvailableRooms = createAction(
   (payload: RoomDto) => ({ payload }),
 );
 
-const removeRoomToAvailableRooms = createAction(
-  ActionType.REMOVE_ROOM_TO_AVAILABLE_ROOMS,
+const removeRoomFromAvailableRooms = createAction(
+  ActionType.REMOVE_ROOM_FROM_AVAILABLE_ROOMS,
   ({ roomId }: RoomIdDto) => ({ payload: roomId }),
 );
 
@@ -242,8 +242,8 @@ const deleteLessonContent = createAsyncThunk(
 
 const resetAll = createAction(ActionType.RESET_ALL);
 
-const resetToDefault = createAsyncThunk(
-  ActionType.RESET_ALL_TO_DEFAULT,
+const resetCurrentRoomToDefault = createAsyncThunk(
+  ActionType.RESET_CURRENT_ROOM_TO_DEFAULT,
   async (_: undefined, { getState }): Promise<void | GameRoom> => {
     const {
       racing: { currentRoom },
@@ -258,7 +258,7 @@ const actions = {
   setPersonalRoomAsCurrent,
   loadAvailableRooms,
   addRoomToAvailableRooms,
-  removeRoomToAvailableRooms,
+  removeRoomFromAvailableRooms,
   createRoom,
   resetShareRoomUrl,
   sendRoomUrlToEmails,
@@ -278,7 +278,7 @@ const actions = {
   loadLessonContent,
   deleteLessonContent,
   resetAll,
-  resetToDefault,
+  resetCurrentRoomToDefault,
 };
 
 export { actions };
