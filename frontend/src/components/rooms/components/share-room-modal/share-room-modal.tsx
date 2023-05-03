@@ -30,7 +30,7 @@ type Emails = SendRoomUrlToEmailsRequestDto['emails'];
 
 const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl }) => {
   const { racingSendRoomUrlToEmails: isRoomUrlSending } = useSelector(
-    (state) => state.request,
+    (state) => state.requests,
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();

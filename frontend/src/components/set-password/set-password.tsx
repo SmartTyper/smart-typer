@@ -16,9 +16,9 @@ import { NewPassword } from './common/types/types';
 const SetPassword: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isSetPasswordLoading, user } = useSelector(({ auth, request }) => ({
+  const { isSetPasswordLoading, user } = useSelector(({ auth, requests }) => ({
     user: auth.user,
-    isSetPasswordLoading: request.authSetPassword,
+    isSetPasswordLoading: requests.authSetPassword,
   }));
   const {
     register,

@@ -7,9 +7,9 @@ import styles from './styles.module.scss';
 
 const WithHeader: FC = ({ children }) => {
   const navigate = useNavigate();
-  const { isLogOutLoading, user } = useSelector(({ auth, request }) => ({
+  const { isLogOutLoading, user } = useSelector(({ auth, requests }) => ({
     user: auth.user,
-    isLogOutLoading: request.authLogOut,
+    isLogOutLoading: requests.authLogOut,
   }));
 
   useEffect(() => {

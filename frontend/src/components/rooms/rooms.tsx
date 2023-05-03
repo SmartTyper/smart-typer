@@ -16,10 +16,10 @@ import styles from './styles.module.scss';
 const Rooms: FC = () => {
   const dispatch = useDispatch();
   const { shareRoomUrl, rooms, areRoomsLoading } = useSelector(
-    ({ racing, request }) => ({
+    ({ racing, requests }) => ({
       rooms: racing.availableRooms,
       shareRoomUrl: racing.shareRoomUrl,
-      areRoomsLoading: request.racingLoadAvailableRooms,
+      areRoomsLoading: requests.racingLoadAvailableRooms,
     }),
   );
 
