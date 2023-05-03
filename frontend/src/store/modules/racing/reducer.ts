@@ -29,7 +29,7 @@ const { reducer } = createSlice({
       loadCurrentRoom,
       loadAvailableRooms,
       addRoomToAvailableRooms,
-      removeRoomToAvailableRooms,
+      removeRoomFromAvailableRooms,
       resetShareRoomUrl,
       loadCommentatorText,
       setCurrentRoom,
@@ -41,7 +41,7 @@ const { reducer } = createSlice({
       setSpentSeconds,
       increaseParticipantPosition,
       resetAll,
-      resetToDefault,
+      resetCurrentRoomToDefault,
       increaseCurrentParticipantPosition,
       toggleCurrentParticipantIsReady,
       resetAvailableRooms,
@@ -56,7 +56,7 @@ const { reducer } = createSlice({
       .addCase(addRoomToAvailableRooms, (state, action) => {
         state.availableRooms = [...state.availableRooms, action.payload];
       })
-      .addCase(removeRoomToAvailableRooms, (state, action) => {
+      .addCase(removeRoomFromAvailableRooms, (state, action) => {
         state.availableRooms = state.availableRooms.filter(
           (room) => room.id !== action.payload,
         );
@@ -129,7 +129,7 @@ const { reducer } = createSlice({
       .addCase(resetAll, (state) => {
         Object.assign(state, initialState);
       })
-      .addCase(resetToDefault.fulfilled, (state, action) => {
+      .addCase(resetCurrentRoomToDefault.fulfilled, (state, action) => {
         if (action.payload) {
           state.currentRoom = action.payload;
         }

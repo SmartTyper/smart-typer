@@ -154,7 +154,7 @@ const Room: FC = () => {
       return;
     }
     setIsResultsModalVisible(false);
-    dispatch(racingActions.resetToDefault());
+    dispatch(racingActions.resetCurrentRoomToDefault());
     dispatch(racingActions.deleteLessonContent({ roomId }));
   };
 

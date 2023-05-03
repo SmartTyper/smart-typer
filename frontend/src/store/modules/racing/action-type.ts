@@ -5,7 +5,7 @@ enum ActionType {
   SET_CURRENT_ROOM = 'setCurrentRoom',
   LOAD_AVAILABLE_ROOMS = 'racingLoadAvailableRooms',
   ADD_ROOM_TO_AVAILABLE_ROOMS = 'racingAddRoomToAvailableRooms',
-  REMOVE_ROOM_TO_AVAILABLE_ROOMS = 'racingRemoveRoomToAvailableRooms',
+  REMOVE_ROOM_FROM_AVAILABLE_ROOMS = 'racingRemoveRoomFromAvailableRooms',
   LOAD_SHARE_ROOM_URL = 'loadShareRoomUrl',
   RESET_SHARE_ROOM_URL = 'racingResetShareRoomUrl',
   CREATE_ROOM = 'racingCreateRoom',
@@ -21,7 +21,7 @@ enum ActionType {
   TOGGLE_CURRENT_PARTICIPANT_IS_READY = 'toggleCurrentParticipantIsReady',
   RESET_ALL = 'resetAll',
   RESET_AVAILABLE_ROOMS = 'resetResetAvailableRooms',
-  RESET_ALL_TO_DEFAULT = 'resetAllToDefault',
+  RESET_CURRENT_ROOM_TO_DEFAULT = 'resetCurrentRoomToDefault',
 }
 
 export { ActionType };
