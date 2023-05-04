@@ -38,7 +38,7 @@ class LessonApi {
     return this._httpService.load(`${this._baseUrl}/${lessonId}`);
   }
 
-  public async getAll(
+  public async getMore(
     payload: IPaginationRequest & LessonFilters,
   ): Promise<IPaginationResponse<LessonDto>> {
     return this._httpService.load(this._baseUrl, {

@@ -40,7 +40,7 @@ const loadMoreLessons = createAsyncThunk(
   ): Promise<IPaginationResponse<LessonDto>> => {
     const { lessonApi: lessonApiService } = services;
 
-    const result = await lessonApiService.getAll({
+    const result = await lessonApiService.getMore({
       limit: LESSONS_AMOUNT_FOR_ONE_REQUEST,
       ...payload,
     });

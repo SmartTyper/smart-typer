@@ -95,7 +95,7 @@ const Lessons: FC = () => {
       <ReactInfiniteScroll
         dataLength={lessons.length}
         next={handleLoadMoreLessons}
-        hasMore={lessons.length !== allLessonsCount}
+        hasMore={lessons.length < allLessonsCount}
         loader={<h4>Loading...</h4>}
         endMessage={
           <p style={{ textAlign: 'center' }}>

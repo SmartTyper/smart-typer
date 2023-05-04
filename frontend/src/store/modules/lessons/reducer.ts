@@ -1,19 +1,20 @@
 import { ReducerName } from 'common/enums/enums';
+import { LessonDto, LessonWithSkillsStatistics } from 'common/types/types';
 import { createSlice, isAnyOf } from 'store/external/external';
 import { actions } from './actions';
-import { LessonDto } from 'smart-typer-shared/common/types/types';
-import { LessonWithSkillsStatistics } from 'common/types/types';
 
 type State = {
   currentLesson: LessonWithSkillsStatistics | null;
   lessons: LessonDto[];
   allLessonsCount: number;
+  studyPlan: LessonDto[];
 };
 
 const initialState: State = {
   currentLesson: null,
   lessons: [],
   allLessonsCount: 0,
+  studyPlan: [],
 };
 
 const { reducer } = createSlice({

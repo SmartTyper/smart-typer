@@ -1,1 +1,4 @@
-export type { LessonDto } from 'smart-typer-shared/common/types/types';
+export type {
+  LessonDto,
+  LessonWithSkillsDto,
+} from 'smart-typer-shared/common/types/types';
