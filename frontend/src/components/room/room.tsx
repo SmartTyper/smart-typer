@@ -128,9 +128,9 @@ const Room: FC = () => {
   const handleParticipantFinishedGame = (participantId: number): void => {
     dispatch(racingActions.toggleParticipantIsReady({ participantId }));
     dispatch(
-      racingActions.setSpentSeconds({
+      racingActions.setspentTime({
         id: userId,
-        spentSeconds: defaultGameTime - gameTimerValue,
+        spentTime: defaultGameTime - gameTimerValue,
       }),
     );
   };
@@ -180,7 +180,7 @@ const Room: FC = () => {
       (participant) => participant.isReady,
     );
     const allParticipantsEndedGame = participants.every(
-      (participant) => participant.spentSeconds,
+      (participant) => participant.spentTime,
     );
     const needToStartGame = !isGameStarted && allParticipantsAreReady;
     const needToFinishGame = isGameStarted && allParticipantsEndedGame;
@@ -192,7 +192,7 @@ const Room: FC = () => {
       const { length } = lessonContent;
       participants.forEach((participant) => {
         const participantTypedAllText = participant.position === length;
-        const participantSpentSomeTime = !participant.spentSeconds;
+        const participantSpentSomeTime = !participant.spentTime;
         if (participantTypedAllText && participantSpentSomeTime) {
           handleParticipantFinishedGame(participant.id);
         }
@@ -201,21 +201,21 @@ const Room: FC = () => {
   }, [participants]);
 
   useEffect(() => {
-    const { position, spentSeconds } = currentParticipant ?? {};
-    if (isGameStarted && !spentSeconds) {
+    const { position, spentTime } = currentParticipant ?? {};
+    if (isGameStarted && !spentTime) {
       dispatch(racingActions.loadCommentatorText(CommentatorEvent.GAME_START));
       playClockTick();
       setTimer(countdownBeforeGame as number, decreaseTimerBeforeGameValue);
       return;
     }
-    if (!isGameStarted && spentSeconds) {
+    if (!isGameStarted && spentTime) {
       playClockRing();
       resetTimerValues();
       setIsResultsModalVisible(true);
       alert(position);
-      // todo userApi.updateRecord((position as number) / spentSeconds);
+      // todo userApi.updateRecord((position as number) / spentTime);
     }
-  }, [isGameStarted, currentParticipant?.spentSeconds]);
+  }, [isGameStarted, currentParticipant?.spentTime]);
 
   useEffect(() => {
     if (!timerBeforeGameValue && isGameStarted) {
@@ -229,7 +229,7 @@ const Room: FC = () => {
   useEffect(() => {
     if (!gameTimerValue && isGameStarted) {
       (participants as Participant[]).forEach((participant) => {
-        const hadFinishGameBeforeDeadline = participant.spentSeconds;
+        const hadFinishGameBeforeDeadline = participant.spentTime;
         if (!hadFinishGameBeforeDeadline) {
           handleParticipantFinishedGame(participant.id);
         }

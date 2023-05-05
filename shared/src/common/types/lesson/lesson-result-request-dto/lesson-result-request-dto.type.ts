@@ -1,7 +1,5 @@
-import { SkillResult } from 'common/types/types';
+import { LessonIdDto, SkillsStatistics } from 'common/types/types';
 
-type LessonResultRequestDto = {
-  skills: SkillResult[];
-};
+type LessonResultRequestDto = LessonIdDto & SkillsStatistics;
 
 export type { LessonResultRequestDto };

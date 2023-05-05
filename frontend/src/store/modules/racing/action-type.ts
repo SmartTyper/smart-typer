@@ -16,7 +16,7 @@ enum ActionType {
   RESET_IS_LOAD_CURRENT_ROOM_FAILED = 'racingResetIsLoadCurrentRoomFailed',
   TOGGLE_IS_GAME_STARTED = 'racingToggleIsGameStarted',
   TOGGLE_PARTICIPANT_IS_READY = 'racingToggleParticipantIsReady',
-  SET_SPENT_SECONDS = 'racingSetSpentSeconds',
+  SET_SPENT_SECONDS = 'racingSetspentTime',
   INCREASE_CURRENT_PARTICIPANT_POSITION = 'increaseCurrentParticipantPosition',
   TOGGLE_CURRENT_PARTICIPANT_IS_READY = 'toggleCurrentParticipantIsReady',
   RESET_ALL = 'resetAll',

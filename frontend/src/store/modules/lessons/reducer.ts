@@ -22,8 +22,14 @@ const { reducer } = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    const { create, loadMoreLessons, addLesson, loadCurrent, resetAll } =
-      actions;
+    const {
+      create,
+      loadMoreLessons,
+      addLesson,
+      loadCurrent,
+      resetAll,
+      loadStudyPlan,
+    } = actions;
     builder
       .addCase(addLesson, (state, action) => {
         state.lessons = [...state.lessons, action.payload];
@@ -34,6 +40,9 @@ const { reducer } = createSlice({
       })
       .addCase(resetAll, (state) => {
         Object.assign(state, initialState);
+      })
+      .addCase(loadStudyPlan.fulfilled, (state, action) => {
+        state.studyPlan = action.payload;
       })
       .addMatcher(
         isAnyOf(create.fulfilled, loadCurrent.fulfilled),

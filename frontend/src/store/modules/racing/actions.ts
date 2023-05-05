@@ -183,9 +183,9 @@ const increaseParticipantPosition = createAction(
   ({ participantId }: ParticipantIdDto) => ({ payload: participantId }),
 );
 
-const setSpentSeconds = createAction(
+const setspentTime = createAction(
   ActionType.SET_SPENT_SECONDS,
-  (payload: Pick<Participant, 'id' | 'spentSeconds'>) => ({ payload }),
+  (payload: Pick<Participant, 'id' | 'spentTime'>) => ({ payload }),
 );
 
 const loadCommentatorText = createAsyncThunk(
@@ -271,7 +271,7 @@ const actions = {
   addParticipant,
   removeParticipant,
   toggleParticipantIsReady,
-  setSpentSeconds,
+  setspentTime,
   increaseParticipantPosition,
   joinRoom,
   leaveRoom,

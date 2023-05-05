@@ -60,8 +60,24 @@ const loadCurrent = createAsyncThunk(
   },
 );
 
+const loadStudyPlan = createAsyncThunk(
+  ActionType.LOAD_STUDY_PLAN,
+  async (_: undefined, { extra: { services } }): Promise<LessonDto[]> => {
+    const { lessonApi: lessonApiService } = services;
+    const studyPlan = await lessonApiService.getStudyPlan();
+    return studyPlan;
+  },
+);
+
 const resetAll = createAction(ActionType.RESET_ALL);
 
-const actions = { create, loadMoreLessons, loadCurrent, addLesson, resetAll };
+const actions = {
+  create,
+  loadMoreLessons,
+  loadCurrent,
+  addLesson,
+  resetAll,
+  loadStudyPlan,
+};
 
 export { actions };

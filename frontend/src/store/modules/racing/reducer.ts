@@ -38,7 +38,7 @@ const { reducer } = createSlice({
       addParticipant,
       removeParticipant,
       toggleParticipantIsReady,
-      setSpentSeconds,
+      setspentTime,
       increaseParticipantPosition,
       resetAll,
       resetCurrentRoomToDefault,
@@ -110,13 +110,13 @@ const { reducer } = createSlice({
           };
         }
       })
-      .addCase(setSpentSeconds, (state, action) => {
+      .addCase(setspentTime, (state, action) => {
         if (state.currentRoom) {
-          const { id: participantId, spentSeconds } = action.payload;
+          const { id: participantId, spentTime } = action.payload;
           const { participants } = state.currentRoom;
           const updatedParticipants = participants.map((participant) => {
             if (participant.id === participantId) {
-              return { ...participant, spentSeconds };
+              return { ...participant, spentTime };
             }
             return participant;
           });

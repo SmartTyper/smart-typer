@@ -46,6 +46,10 @@ class LessonApi {
       queryParams: payload,
     });
   }
+
+  public async getStudyPlan(): Promise<LessonDto[]> {
+    return this._httpService.load(`${this._baseUrl}/study-plan`);
+  }
 }
 
 export { LessonApi };

@@ -32,6 +32,16 @@ class Lesson {
   ): Promise<IPaginationResponse<LessonDto>> {
     return {} as IPaginationResponse<LessonDto>;
   }
+
+  public async getStudyPlan(userId: number): Promise<LessonDto[]> {
+    // if(allTestLesson are finished){
+    //   show study plan without test lessons
+    // }
+    // else{
+    //   show only test lessons
+    // }
+    return {} as LessonDto[];
+  }
 }
 
 export { Lesson };

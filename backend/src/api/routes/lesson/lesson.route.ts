@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { lesson as lessonService } from 'services/services';
 import { Abstract } from '../abstract/abstract.route';
+import { IRequestWithUser } from 'common/interfaces/interfaces';
 // import { getValidationMiddleware } from 'api/middlewares/middlewares';
 
 type Constructor = {
@@ -45,6 +46,13 @@ class Lesson extends Abstract {
           creatorType,
         );
       }),
+    );
+
+    router.get(
+      '/study-plan',
+      this._run((req: IRequestWithUser) =>
+        this._lessonService.getStudyPlan(req.userId),
+      ),
     );
 
     return router;

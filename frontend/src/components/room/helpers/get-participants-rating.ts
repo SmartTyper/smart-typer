@@ -4,11 +4,11 @@ const getParticipantsRating = (
   participants: IParticipant[],
 ): IParticipantsResult[] => {
   return participants
-    .map(({ fullName, photoUrl, spentSeconds, position, id }) => ({
+    .map(({ fullName, photoUrl, spentTime, position, id }) => ({
       id,
       fullName,
       photoUrl,
-      speed: position / spentSeconds,
+      speed: position / spentTime,
     }))
     .sort((firstParticipant, secondParticipant) => {
       return secondParticipant.speed - firstParticipant.speed;

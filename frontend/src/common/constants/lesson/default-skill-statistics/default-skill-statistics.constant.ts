@@ -1,5 +1,5 @@
 const DEFAULT_SKILL_STATISTICS = {
-  spentSeconds: [],
+  spentTime: [],
   misclickCount: 0,
 };
 

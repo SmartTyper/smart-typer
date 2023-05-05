@@ -4,6 +4,7 @@ enum ActionType {
   LOAD_MORE_LESSONS = 'lessonsLoadMoreLessons',
   ADD_LESSON = 'lessonsAddLesson',
   RESET_ALL = 'lessonsResetAll',
+  LOAD_STUDY_PLAN = 'lessonsLoadStudyPlan',
 }
 
 export { ActionType };
