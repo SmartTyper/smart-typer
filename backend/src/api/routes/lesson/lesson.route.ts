@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { lesson as lessonService } from 'services/services';
 import { Abstract } from '../abstract/abstract.route';
 import { IRequestWithUser } from 'common/interfaces/interfaces';
+import { SkillsStatisticsDto } from 'common/types/types';
 // import { getValidationMiddleware } from 'api/middlewares/middlewares';
 
 type Constructor = {
@@ -53,6 +54,14 @@ class Lesson extends Abstract {
       this._run((req: IRequestWithUser) =>
         this._lessonService.getStudyPlan(req.userId),
       ),
+    );
+
+    router.post(
+      '/:lessonId/result',
+      this._run((req) => {
+        const lessonId = Number(req.params.lessonId);
+        return this._lessonService.handleLessonResult(lessonId, req.body);
+      }),
     );
 
     return router;

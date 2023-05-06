@@ -3,7 +3,6 @@ import {
   CreateRoomRequestDto,
   GameRoom,
   GameRoomWithOptionalFields,
-  LessonDto,
   Participant,
   ParticipantIdDto,
   RoomDto,
@@ -183,8 +182,8 @@ const increaseParticipantPosition = createAction(
   ({ participantId }: ParticipantIdDto) => ({ payload: participantId }),
 );
 
-const setspentTime = createAction(
-  ActionType.SET_SPENT_SECONDS,
+const setSpentTime = createAction(
+  ActionType.SET_SPENT_TIME,
   (payload: Pick<Participant, 'id' | 'spentTime'>) => ({ payload }),
 );
 
@@ -220,26 +219,6 @@ const toggleCurrentParticipantIsReady = createAction(
   (payload: RoomIdParticipantIdDto) => ({ payload }),
 );
 
-const loadLessonContent = createAsyncThunk(
-  ActionType.LOAD_SHARE_ROOM_URL,
-  async (
-    payload: RoomIdDto,
-    { extra: { services } },
-  ): Promise<Pick<LessonDto, 'content'>> => {
-    const { roomApi: roomApiService } = services;
-    const { content } = await roomApiService.getLessonContent(payload);
-    return { content };
-  },
-);
-
-const deleteLessonContent = createAsyncThunk(
-  ActionType.LOAD_SHARE_ROOM_URL,
-  async (payload: RoomIdDto, { extra: { services } }): Promise<void> => {
-    const { roomApi: roomApiService } = services;
-    await roomApiService.deleteLessonContent(payload);
-  },
-);
-
 const resetAll = createAction(ActionType.RESET_ALL);
 
 const resetCurrentRoomToDefault = createAsyncThunk(
@@ -271,14 +250,12 @@ const actions = {
   addParticipant,
   removeParticipant,
   toggleParticipantIsReady,
-  setspentTime,
+  setSpentTime,
   increaseParticipantPosition,
   joinRoom,
   leaveRoom,
   increaseCurrentParticipantPosition,
   toggleCurrentParticipantIsReady,
-  loadLessonContent,
-  deleteLessonContent,
   resetAll,
   resetCurrentRoomToDefault,
   resetAvailableRooms,

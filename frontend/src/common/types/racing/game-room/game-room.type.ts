@@ -6,7 +6,6 @@ type GameRoom = Omit<RoomDto, 'participants'> & {
   commentatorText: string;
   countdownBeforeGame: number;
   gameTime: number;
-  lessonContent: string;
 };
 
 export type { GameRoom };

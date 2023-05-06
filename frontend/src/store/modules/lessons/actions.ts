@@ -5,6 +5,7 @@ import {
   LessonDto,
   LessonFilters,
   LessonIdDto,
+  LessonResult,
   LessonWithSkillsStatistics,
 } from 'common/types/types';
 import { LESSONS_AMOUNT_FOR_ONE_REQUEST } from 'common/constants/constants';
@@ -12,7 +13,7 @@ import {
   IPaginationRequest,
   IPaginationResponse,
 } from 'common/interface/interface';
-import { mapLessonWithSkillsToLessonWithSkillsStatistics } from 'helpers/helpers';
+import { mapLessonToLessonWithSkillsStatistics } from 'helpers/helpers';
 
 const create = createAsyncThunk(
   ActionType.CREATE,
@@ -23,7 +24,7 @@ const create = createAsyncThunk(
     const { lessonApi: lessonApiService } = services;
     const lesson = await lessonApiService.create(payload);
     dispatch(addLesson({ ...payload, id: lesson.id }));
-    return mapLessonWithSkillsToLessonWithSkillsStatistics(lesson);
+    return mapLessonToLessonWithSkillsStatistics(lesson);
   },
 );
 
@@ -56,7 +57,7 @@ const loadCurrent = createAsyncThunk(
   ): Promise<LessonWithSkillsStatistics> => {
     const { lessonApi: lessonApiService } = services;
     const lesson = await lessonApiService.get(payload);
-    return mapLessonWithSkillsToLessonWithSkillsStatistics(lesson);
+    return mapLessonToLessonWithSkillsStatistics(lesson);
   },
 );
 
@@ -71,6 +72,26 @@ const loadStudyPlan = createAsyncThunk(
 
 const resetAll = createAction(ActionType.RESET_ALL);
 
+const resetCurrent = createAction(ActionType.RESET_CURRENT_LESSON);
+
+const addMisclick = createAction(
+  ActionType.ADD_MISCLICK,
+  (charIndex: number) => ({ payload: charIndex }),
+);
+
+const addTimestamp = createAction(
+  ActionType.ADD_TIMESTAMP,
+  (timestamp: number) => ({ payload: timestamp }),
+);
+
+const sendLessonResult = createAsyncThunk(
+  ActionType.SEND_LESSON_RESULT,
+  async (payload: LessonResult, { extra: { services } }): Promise<void> => {
+    const { lessonApi: lessonApiService } = services;
+    await lessonApiService.sendLessonResult(payload);
+  },
+);
+
 const actions = {
   create,
   loadMoreLessons,
@@ -78,6 +99,11 @@ const actions = {
   addLesson,
   resetAll,
   loadStudyPlan,
+  resetCurrent,
+  addMisclick,
+  addTimestamp,
+
+  sendLessonResult,
 };
 
 export { actions };

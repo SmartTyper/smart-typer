@@ -1,6 +1,11 @@
 import { ContentType } from 'common/enums/enums';
 import { IPaginationResponse } from 'common/interfaces/interfaces';
-import { LessonDto, LessonWithSkillsDto } from 'common/types/types';
+import {
+  LessonDto,
+  LessonResponseDto,
+  CreateLessonRequestDto,
+  SkillsStatisticsDto,
+} from 'common/types/types';
 import { lesson as lessonRepository } from 'data/repositories/repositories';
 
 type Constructor = {
@@ -14,14 +19,14 @@ class Lesson {
     this._lessonRepository = params.lessonRepository;
   }
 
-  public async getById(lessonId: number): Promise<LessonWithSkillsDto> {
-    return {} as LessonWithSkillsDto;
+  public async getById(lessonId: number): Promise<LessonResponseDto> {
+    return {} as LessonResponseDto;
   }
 
   public async create(
     payload: CreateLessonRequestDto,
-  ): Promise<LessonWithSkillsDto> {
-    return {} as LessonWithSkillsDto;
+  ): Promise<LessonResponseDto> {
+    return {} as LessonResponseDto;
   }
 
   public async getMore(
@@ -41,6 +46,17 @@ class Lesson {
     //   show only test lessons
     // }
     return {} as LessonDto[];
+  }
+
+  public async handleLessonResult(
+    lessonId: number,
+    payload: SkillsStatisticsDto,
+  ): Promise<void> {
+    // map to skills, if test - call IRT, else call BKT, than call AHP
+    // skillsRepository
+    // statisticsRepository
+    // ITSService
+    return;
   }
 }
 

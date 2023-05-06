@@ -98,16 +98,6 @@ class Room {
     // }
     return;
   }
-
-  public async getLessonContent(
-    roomId: number,
-  ): Promise<Pick<LessonDto, 'content'>> {
-    return {} as Promise<Pick<LessonDto, 'content'>>;
-  }
-
-  public async deleteLessonContent(roomId: number): Promise<void> {
-    return;
-  }
 }
 
 export { Room };

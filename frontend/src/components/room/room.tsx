@@ -38,8 +38,10 @@ const Room: FC = () => {
     countdownBeforeGame,
     name,
     participants,
-    lessonContent,
+    lesson,
   } = currentRoom ?? {};
+
+  const { content, timestamps, misclicks } = lesson ?? {};
 
   const {
     gameTime: defaultGameTime,
@@ -111,7 +113,7 @@ const Room: FC = () => {
       return;
     }
 
-    const nextSymbol = (lessonContent as string)[currentParticipant?.position];
+    const nextSymbol = (content as string)[currentParticipant?.position];
     const isRightSymbol = key === nextSymbol;
     if (isRightSymbol) {
       dispatch(
@@ -128,7 +130,7 @@ const Room: FC = () => {
   const handleParticipantFinishedGame = (participantId: number): void => {
     dispatch(racingActions.toggleParticipantIsReady({ participantId }));
     dispatch(
-      racingActions.setspentTime({
+      racingActions.setSpentTime({
         id: userId,
         spentTime: defaultGameTime - gameTimerValue,
       }),
@@ -137,7 +139,7 @@ const Room: FC = () => {
 
   const handleToggleIsReady = (): void => {
     if (currentParticipant) {
-      if (!lessonContent) {
+      if (!content) {
         dispatch(racingActions.loadLessonContent({ roomId }));
       }
       dispatch(
@@ -188,8 +190,8 @@ const Room: FC = () => {
       setIsGameStarted((prev) => !prev);
     }
 
-    if (lessonContent?.length) {
-      const { length } = lessonContent;
+    if (content?.length) {
+      const { length } = content;
       participants.forEach((participant) => {
         const participantTypedAllText = participant.position === length;
         const participantSpentSomeTime = !participant.spentTime;
@@ -294,7 +296,7 @@ const Room: FC = () => {
                 <ParticipantItem
                   participant={participant}
                   key={participant.id}
-                  textLength={(lessonContent as string).length}
+                  textLength={(content as string).length}
                   isCurrentParticipant={
                     participant.id === currentParticipant?.id
                   }
@@ -325,15 +327,13 @@ const Room: FC = () => {
                     </p>
                     <p>
                       <span className="bg-success">
-                        {(lessonContent as string).slice(
+                        {(content as string).slice(
                           0,
                           currentParticipant.position,
                         )}
                       </span>
                       <span>
-                        {(lessonContent as string).slice(
-                          currentParticipant.position,
-                        )}
+                        {(content as string).slice(currentParticipant.position)}
                       </span>
                     </p>
                   </>

@@ -1,10 +1,9 @@
 export type {
   LessonDto,
-  Skill,
   CreateLessonRequestDto,
-  LessonWithSkillsDto,
   LessonIdDto,
   LessonFilters,
-  SkillStatistics,
+  LessonResponseDto,
 } from 'smart-typer-shared/common/types/types';
-export * from './lesson-with-skills/lesson-with-skills.type';
+export * from './lesson-with-skills-statistics/lesson-with-skills-statistics.type';
+export * from './lesson-result/lesson-result.type';

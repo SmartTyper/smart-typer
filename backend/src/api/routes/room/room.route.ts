@@ -73,22 +73,6 @@ class Room extends Abstract {
       }),
     );
 
-    router.get(
-      '/:roomId/lesson-content',
-      this._run((req) => {
-        const roomId = Number(req.params.roomId);
-        return this._roomService.getLessonContent(roomId);
-      }),
-    );
-
-    router.delete(
-      '/:roomId/lesson-content',
-      this._run((req) => {
-        const roomId = Number(req.params.roomId);
-        return this._roomService.deleteLessonContent(roomId);
-      }),
-    );
-
     return router;
   }
 }

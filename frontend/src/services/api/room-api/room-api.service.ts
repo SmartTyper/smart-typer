@@ -1,6 +1,5 @@
 import {
   CreateRoomRequestDto,
-  LessonDto,
   RoomDto,
   RoomIdDto,
   RoomIdParticipantIdDto,
@@ -70,20 +69,6 @@ class RoomApi {
         method: HttpMethod.DELETE,
       },
     );
-  }
-
-  public async getLessonContent(
-    payload: RoomIdDto,
-  ): Promise<Pick<LessonDto, 'content'>> {
-    const { roomId } = payload;
-    return this._httpService.load(`${this._baseUrl}/${roomId}/lesson-content`);
-  }
-
-  public async deleteLessonContent(payload: RoomIdDto): Promise<void> {
-    const { roomId } = payload;
-    return this._httpService.load(`${this._baseUrl}/${roomId}/lesson-content`, {
-      method: HttpMethod.DELETE,
-    });
   }
 }
 

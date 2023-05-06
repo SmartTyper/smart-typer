@@ -1,4 +1,6 @@
 export type {
   LessonDto,
-  LessonWithSkillsDto,
+  CreateLessonRequestDto,
+  LessonResponseDto,
+  SkillsStatisticsDto,
 } from 'smart-typer-shared/common/types/types';

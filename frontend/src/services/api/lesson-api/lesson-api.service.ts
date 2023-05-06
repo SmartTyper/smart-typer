@@ -5,7 +5,8 @@ import {
   LessonDto,
   LessonFilters,
   LessonIdDto,
-  LessonWithSkillsDto,
+  LessonResponseDto,
+  LessonResult,
 } from 'common/types/types';
 import {
   IPaginationRequest,
@@ -26,14 +27,14 @@ class LessonApi {
 
   public async create(
     payload: CreateLessonRequestDto,
-  ): Promise<LessonWithSkillsDto> {
+  ): Promise<LessonResponseDto> {
     return this._httpService.load(this._baseUrl, {
       method: HttpMethod.POST,
       payload: JSON.stringify(payload),
     });
   }
 
-  public async get(payload: LessonIdDto): Promise<LessonWithSkillsDto> {
+  public async get(payload: LessonIdDto): Promise<LessonResponseDto> {
     const { lessonId } = payload;
     return this._httpService.load(`${this._baseUrl}/${lessonId}`);
   }
@@ -44,6 +45,14 @@ class LessonApi {
     return this._httpService.load(this._baseUrl, {
       method: HttpMethod.GET,
       queryParams: payload,
+    });
+  }
+
+  public async sendLessonResult(payload: LessonResult): Promise<void> {
+    const { lessonId, ...skillsStatistics } = payload;
+    return this._httpService.load(`${this._baseUrl}/${lessonId}/result`, {
+      method: HttpMethod.POST,
+      payload: JSON.stringify(skillsStatistics),
     });
   }
 

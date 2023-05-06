@@ -29,6 +29,9 @@ const { reducer } = createSlice({
       loadCurrent,
       resetAll,
       loadStudyPlan,
+      resetCurrent,
+      addMisclick,
+      addTimestamp,
     } = actions;
     builder
       .addCase(addLesson, (state, action) => {
@@ -44,10 +47,28 @@ const { reducer } = createSlice({
       .addCase(loadStudyPlan.fulfilled, (state, action) => {
         state.studyPlan = action.payload;
       })
+      .addCase(resetCurrent, (state) => {
+        state.currentLesson = null;
+      })
+      .addCase(addMisclick, (state, action) => {
+        const index = action.payload;
+        if (state.currentLesson) {
+          state.currentLesson.misclicks.splice(index, 0, true);
+        }
+      })
+      .addCase(addTimestamp, (state, action) => {
+        if (state.currentLesson) {
+          state.currentLesson.timestamps.push(action.payload);
+        }
+      })
       .addMatcher(
         isAnyOf(create.fulfilled, loadCurrent.fulfilled),
         (state, action) => {
           state.currentLesson = action.payload;
+          const misclicksLength = action.payload.content.length;
+          state.currentLesson.misclicks = new Array(misclicksLength).fill(
+            false,
+          );
         },
       );
   },
