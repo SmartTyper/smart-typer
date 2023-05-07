@@ -4,6 +4,9 @@ import {
   refreshToken as refreshTokenRepository,
   room as roomRepository,
   user as userRepository,
+  settings as settingsRepository,
+  userToRoom as userToRoomRepository,
+  lesson as lessonRepository,
 } from 'data/repositories/repositories';
 
 import { Auth } from './auth/auth.service';
@@ -20,6 +23,8 @@ import { Mailer } from './mailer/mailer.service';
 import { Oauth2 } from './oauth2/oauth2.service';
 import { Room } from './room/room.service';
 import { Socket } from './socket/socket.service';
+import { UserToRoom } from './user-to-room/user-to-room.service';
+import { Lesson } from './lesson/lesson.service';
 
 const s3 = new S3({
   accessKeyId: ENV.S3.ACCESS_KEY_ID,
@@ -29,7 +34,7 @@ const s3 = new S3({
 
 const hash = new Hash();
 
-const settings = new Settings();
+const settings = new Settings({ settingsRepository });
 
 const socket = new Socket();
 
@@ -38,8 +43,6 @@ const axios = new Axios();
 const logger = new Logger();
 
 const joke = new Joke({ axiosService: axios, loggerService: logger });
-
-const room = new Room({ roomRepository: roomRepository });
 
 // const statistics = new Statistics({ statisticsRepository });
 
@@ -78,6 +81,18 @@ const auth = new Auth({
   appUrl: ENV.APP.URL,
 });
 
+const userToRoom = new UserToRoom({ userToRoomRepository });
+
+const room = new Room({
+  roomRepository,
+  socketService: socket,
+  userService: user,
+  mailerService: mailer,
+  userToRoomService: userToRoom,
+});
+
+const lesson = new Lesson({ lessonRepository });
+
 export {
   auth,
   token,
@@ -92,4 +107,6 @@ export {
   logger,
   joke,
   room,
+  userToRoom,
+  lesson,
 };

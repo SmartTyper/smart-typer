@@ -1,5 +1,5 @@
 enum RoomRelationMappings {
-  USERS = 'users',
+  PARTICIPANTS = 'participants',
   LESSON = 'lesson',
 }
 
