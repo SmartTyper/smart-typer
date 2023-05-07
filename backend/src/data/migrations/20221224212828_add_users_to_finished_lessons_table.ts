@@ -9,6 +9,11 @@ async function up(knex: Knex): Promise<void> {
       .references('id')
       .inTable('lessons')
       .notNullable();
+    table
+      .integer('best_skill_id')
+      .references('id')
+      .inTable('skills')
+      .notNullable();
     table.integer('average_speed').notNullable();
     table.dateTime('created_at').notNullable().defaultTo(knex.fn.now());
     table.dateTime('updated_at').notNullable().defaultTo(knex.fn.now());

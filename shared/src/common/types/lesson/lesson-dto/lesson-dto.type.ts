@@ -6,6 +6,7 @@ type LessonDto = {
   contentType: ContentType;
   creatorType: CreatorType;
   content: string;
+  bestSkill: string | null;
 };
 
 export type { LessonDto };

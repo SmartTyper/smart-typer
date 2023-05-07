@@ -1,14 +1,14 @@
 import { Model, RelationMappings } from 'objection';
-
 import {
   CommonKey,
   TableName,
   LessonKey,
   LessonToSkillKey,
   LessonRelationMappings,
+  UserToFinishedLessonKey,
 } from 'common/enums/enums';
 import { ILessonRecord } from 'common/interfaces/interfaces';
-import { Skill } from 'data/models/models';
+import { Skill, UserToFinishedLesson } from 'data/models/models';
 
 import { Base } from '../base/base.model';
 
@@ -35,6 +35,14 @@ class Lesson extends Base implements ILessonRecord {
             to: `${TableName.LESSONS_TO_SKILLS}.${LessonToSkillKey.SKILL_ID}`,
           },
           to: `${TableName.SKILLS}.${CommonKey.ID}`,
+        },
+      },
+      [LessonRelationMappings.FINISHED_LESSON]: {
+        relation: Model.HasManyRelation,
+        modelClass: UserToFinishedLesson,
+        join: {
+          from: `${TableName.LESSONS}.${CommonKey.ID}`,
+          to: `${TableName.USERS_TO_FINISHED_LESSONS}.${UserToFinishedLessonKey.LESSON_ID}`,
         },
       },
     };
