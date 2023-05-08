@@ -1,3 +1,4 @@
+import { TEST_LESSON_NAME } from 'common/constants/constants';
 import {
   CommonKey,
   ContentType,
@@ -89,6 +90,24 @@ class Lesson {
       data: lessons,
       count,
     };
+  }
+
+  public async getTestLessonsByUserId(userId: number): Promise<LessonDto[]> {
+    return this._LessonModel
+      .query()
+      .select(
+        ...Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN,
+        `${TableName.LESSONS}.${LessonKey.CONTENT_TYPE}`,
+        `${TableName.LESSONS}.${LessonKey.CREATOR_TYPE}`,
+        `${LessonRelationMappings.FINISHED_LESSON}.${UserToFinishedLessonKey.BEST_SKILL_ID}`,
+      )
+      .where({
+        [LessonKey.NAME]: TEST_LESSON_NAME,
+        [UserToFinishedLessonKey.USER_ID]: userId,
+      })
+      .withGraphJoined(`[${LessonRelationMappings.FINISHED_LESSON}]`)
+      .castTo<LessonDto[]>()
+      .execute();
   }
 }
 export { Lesson };

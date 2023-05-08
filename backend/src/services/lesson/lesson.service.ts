@@ -58,13 +58,15 @@ class Lesson {
   }
 
   public async getStudyPlan(userId: number): Promise<LessonDto[]> {
-    // if(allTestLesson are finished){
-    //   show study plan without test lessons
-    // }
-    // else{
-    //   show only test lessons
-    // }
-    return {} as LessonDto[];
+    const testLessons = await this._lessonRepository.getTestLessonsByUserId(
+      userId,
+    );
+    testLessons.filter((testLesson) => testLesson.bestSkill);
+    if (testLessons.length > 0) {
+      // show study plan without test lessons
+    } else {
+      return testLessons;
+    }
   }
 
   public async handleLessonResult(
@@ -74,7 +76,9 @@ class Lesson {
     // map to skills, if test - call IRT, else call BKT, than call AHP
     // skillsRepository
     // statisticsRepository
+    // finishedLessonRepository
     // ITSService
+    // StudyPlanRepository
     return;
   }
 }
