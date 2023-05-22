@@ -6,6 +6,7 @@ enum HttpErrorMessage {
   UNAUTHORIZED = 'Unauthorized',
   NO_USER_WITH_SUCH_ID = 'User with such id does not exist',
   NO_ROOM_WITH_SUCH_ID = 'Room with such id does not exist',
+  NO_LESSON_WITH_SUCH_ID = 'Lesson with such id does not exist',
   ROOM_ALREADY_EXISTS = 'Room with such name already exists',
   MAX_COUNT_OF_USERS = 'Room has max count of users',
   // prettier-ignore

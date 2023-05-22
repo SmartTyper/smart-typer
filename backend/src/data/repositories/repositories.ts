@@ -1,26 +1,30 @@
 import {
   User as UserModel,
   RefreshToken as RefreshTokenModel,
-  // Settings as SettingsModel,
-  // Statistics as StatisticsModel,
+  Settings as SettingsModel,
+  Statistics as StatisticsModel,
   Skill as SkillModel,
   Room as RoomModel,
+  UserToRoom as UserToRoomModel,
+  Lesson as LessonModel,
 } from 'data/models/models';
 
 import { User } from './user/user.repository';
 import { RefreshToken } from './refresh-token/refresh-token.repository';
-// import { Settings } from './settings/settings.repository';
-// import { Statistics } from './statistics/statistics.repository';
+import { Settings } from './settings/settings.repository';
+import { Statistics } from './statistics/statistics.repository';
 import { Skill } from './skill/skill.repository';
 import { Room } from './room/room.repository';
+import { UserToRoom } from './user-to-room/user-to-room.repository';
+import { Lesson } from './lesson/lesson.repository';
 
 const refreshToken = new RefreshToken({
   RefreshTokenModel,
 });
 
-// const settings = new Settings({ SettingsModel });
+const settings = new Settings({ SettingsModel });
 
-// const statistics = new Statistics({ StatisticsModel });
+const statistics = new Statistics({ StatisticsModel });
 
 const skill = new Skill({ SkillModel });
 
@@ -32,4 +36,17 @@ const user = new User({
   roomRepository: room,
 });
 
-export { user, refreshToken, skill, room };
+const userToRoom = new UserToRoom({ UserToRoomModel });
+
+const lesson = new Lesson({ LessonModel });
+
+export {
+  user,
+  refreshToken,
+  skill,
+  room,
+  settings,
+  statistics,
+  userToRoom,
+  lesson,
+};

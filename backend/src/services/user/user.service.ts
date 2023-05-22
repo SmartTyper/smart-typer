@@ -6,74 +6,78 @@ import {
   CreateUserRequestDto,
   UserAuthInfoResponseDto,
   UserProfileInfoResponseDto,
+  TokensResponseDto,
+  UpdateAvatarResponseDto,
 } from 'common/types/types';
 import { user as userRepository } from 'data/repositories/repositories';
 import { HttpError } from 'exceptions/exceptions';
-import { token as tokenService, s3 as s3Service } from 'services/services';
-import { UpdateAvatarResponseDto } from 'smart-typer-shared/common/types/types';
+import {
+  token as tokenService,
+  s3 as s3Service,
+  // userToRoom as userToRoomService,
+} from 'services/services';
 
 type Constructor = {
   userRepository: typeof userRepository;
   tokenService: typeof tokenService;
   s3Service: typeof s3Service;
+  // userToRoomService: typeof userToRoomService;
 };
 
 class User {
   private _userRepository: typeof userRepository;
   private _tokenService: typeof tokenService;
   private _s3Service: typeof s3Service;
+  // private _userToRoomService: typeof userToRoomService;
 
   public constructor(params: Constructor) {
     this._userRepository = params.userRepository;
     this._tokenService = params.tokenService;
     this._s3Service = params.s3Service;
+    // this._userToRoomService = params.userToRoomService;
   }
 
-  private async _getAuthInfo(user: UserDto): Promise<UserAuthInfoResponseDto> {
+  private async _addPhotoUrlAndTokens(
+    user: Omit<UserAuthInfoResponseDto, keyof TokensResponseDto>,
+  ): Promise<UserAuthInfoResponseDto> {
     const photoUrl = user.photoUrl
       ? await this._s3Service.getSignedUrl(user.photoUrl)
-      : user.photoUrl;
+      : null;
     const tokens = await this._tokenService.getTokens(user.id);
-    const settings = {
-      countdownBeforeGame: 10,
-      gameTime: 60,
-      isShownInRating: true,
-      isSoundTurnedOn: true,
-      hasEmailNotifications: true,
-    };
-    const personalRoom = {
-      id: 1,
-      lessonId: null,
-      name: 'personal',
-      participants: [user],
-    };
     return {
       ...user,
       ...tokens,
       photoUrl,
-      settings,
-      personalRoom,
     };
   }
 
   public async getAuthInfoByEmail(
     email: string,
   ): Promise<UserAuthInfoResponseDto> {
-    const user = await this.getByEmail(email);
-    return this._getAuthInfo(user);
+    const user =
+      await this._userRepository.getByEmailWithSettingsAndPersonalRoom(email);
+    if (!user) {
+      throw new HttpError({
+        status: HttpCode.NOT_FOUND,
+        message: HttpErrorMessage.NO_SUCH_EMAIL,
+      });
+    }
+    return this._addPhotoUrlAndTokens(user);
   }
 
   public async getAuthInfoById(
     userId: number,
   ): Promise<UserAuthInfoResponseDto> {
-    const user = await this._userRepository.getById(userId);
+    const user = await this._userRepository.getByIdWithSettingsAndPersonalRoom(
+      userId,
+    );
     if (!user) {
       throw new HttpError({
-        status: HttpCode.BAD_REQUEST,
-        message: HttpErrorMessage.INVALID_LOG_IN_DATA,
+        status: HttpCode.NOT_FOUND,
+        message: HttpErrorMessage.NO_USER_WITH_SUCH_ID,
       });
     }
-    return this._getAuthInfo(user);
+    return this._addPhotoUrlAndTokens(user);
   }
 
   public async getByEmail(email: string): Promise<UserWithPassword> {
@@ -112,37 +116,25 @@ class User {
   public async getProfileInfoById(
     userId: number,
   ): Promise<UserProfileInfoResponseDto> {
-    console.log(userId);
+    const userWithStatistics = await this._userRepository.getByIdWithStatistics(
+      userId,
+    );
+    const rating = await this._userRepository.getRating();
     return {
-      id: 2,
-      nickname: 'nickname2',
-      email: 'email2',
-      photoUrl: null,
-      statistics: {
-        totalTime: 10,
-        todayTime: 10,
-        totalLessons: 10,
-        todayLessons: 10,
-        topSpeed: 10,
-        todayTopSpeed: 10,
-        averageSpeed: 10,
-        todayAverageSpeed: 10,
-      },
-      rating: [
-        {
-          nickname: 'nickname3',
-          photoUrl: null,
-          id: 3,
-          averageSpeed: 20,
-        },
-        {
-          nickname: 'nickname4',
-          photoUrl: null,
-          id: 4,
-          averageSpeed: 30,
-        },
-      ],
+      ...userWithStatistics,
+      rating,
     };
+  }
+
+  public async getById(userId: number): Promise<UserDto> {
+    const user = await this._userRepository.getById(userId);
+    if (!user) {
+      throw new HttpError({
+        status: HttpCode.BAD_REQUEST,
+        message: HttpErrorMessage.INVALID_LOG_IN_DATA,
+      });
+    }
+    return user;
   }
 
   public async updateAvatar(
@@ -156,7 +148,7 @@ class User {
       });
     }
 
-    const userToUpdate = await this._userRepository.getById(userId);
+    const userToUpdate = await this.getById(userId);
     if (!userToUpdate) {
       throw new HttpError({
         status: HttpCode.NOT_FOUND,
@@ -184,7 +176,7 @@ class User {
   }
 
   public async deleteAvatar(userId: number): Promise<void> {
-    const userToUpdate = await this._userRepository.getById(userId);
+    const userToUpdate = await this.getById(userId);
     if (!userToUpdate) {
       throw new HttpError({
         status: HttpCode.NOT_FOUND,

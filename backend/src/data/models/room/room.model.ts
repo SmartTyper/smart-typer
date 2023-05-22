@@ -21,7 +21,7 @@ class Room extends Base implements IRoomRecord {
 
   public static override get relationMappings(): RelationMappings {
     return {
-      [RoomRelationMappings.USERS]: {
+      [RoomRelationMappings.PARTICIPANTS]: {
         relation: Model.HasManyRelation,
         modelClass: User,
         join: {

@@ -1,6 +1,21 @@
-import { UserKey, UserRelationMappings } from 'common/enums/enums';
+import {
+  CommonKey,
+  RoomKey,
+  RoomRelationMappings,
+  SettingsKey,
+  StatisticsKey,
+  TableName,
+  UserKey,
+  UserRelationMappings,
+} from 'common/enums/enums';
 import { IUserRecord } from 'common/interfaces/interfaces';
-import { RecordWithoutCommonKeys } from 'common/types/types';
+import {
+  Rating,
+  RecordWithoutCommonDateKeys,
+  RecordWithoutCommonKeys,
+  UserAuthInfoResponseDto,
+  UserProfileInfoResponseDto,
+} from 'common/types/types';
 import { User as UserModel } from 'data/models/models';
 import {
   skill as skillRepository,
@@ -24,13 +39,29 @@ class User {
     this._roomRepository = params.roomRepository;
   }
 
+  private static DEFAULT_USER_COLUMNS_TO_RETURN: string[] = [
+    `${TableName.USERS}.${CommonKey.ID}`,
+    `${TableName.USERS}.${UserKey.NICKNAME}`,
+    `${TableName.USERS}.${UserKey.EMAIL}`,
+    `${TableName.USERS}.${UserKey.PHOTO_URL}`,
+  ];
+
   public async create(
     data: RecordWithoutCommonKeys<IUserRecord>,
-  ): Promise<IUserRecord> {
-    const user = await this._UserModel.query().insert({
-      ...data,
-      [UserKey.EMAIL]: data.email.toLowerCase(),
-    });
+  ): Promise<RecordWithoutCommonDateKeys<IUserRecord>> {
+    const user = await this._UserModel
+      .query()
+      .insert({
+        ...data,
+        [UserKey.EMAIL]: data.email.toLowerCase(),
+      })
+      .returning([
+        CommonKey.ID,
+        UserKey.EMAIL,
+        UserKey.NICKNAME,
+        UserKey.PASSWORD,
+        UserKey.PHOTO_URL,
+      ]);
 
     await this._UserModel
       .relatedQuery(UserRelationMappings.SKILLS)
@@ -55,21 +86,174 @@ class User {
     return user;
   }
 
-  public async getByEmail(email: string): Promise<IUserRecord | undefined> {
+  public async getByEmail(
+    email: string,
+  ): Promise<RecordWithoutCommonDateKeys<IUserRecord> | undefined> {
     return this._UserModel
       .query()
-      .findOne({ [UserKey.EMAIL]: email.toLowerCase() });
+      .findOne({ [UserKey.EMAIL]: email.toLowerCase() })
+      .returning([
+        CommonKey.ID,
+        UserKey.EMAIL,
+        UserKey.NICKNAME,
+        UserKey.PASSWORD,
+        UserKey.PHOTO_URL,
+      ]);
   }
 
-  public async getById(userId: number): Promise<IUserRecord | undefined> {
-    return this._UserModel.query().findById(userId);
+  public async getByEmailWithSettingsAndPersonalRoom(
+    email: string,
+  ): Promise<
+    | (RecordWithoutCommonDateKeys<IUserRecord> &
+        Pick<UserAuthInfoResponseDto, 'personalRoom' | 'settings'>)
+    | undefined
+  > {
+    return this._UserModel
+      .query()
+      .select(
+        ...User.DEFAULT_USER_COLUMNS_TO_RETURN,
+
+        `${UserRelationMappings.SETTINGS}.${SettingsKey.COUNTDOWN_BEFORE_GAME}`,
+        `${UserRelationMappings.SETTINGS}.${SettingsKey.GAME_TIME}`,
+        `${UserRelationMappings.SETTINGS}.${SettingsKey.HAS_EMAIL_NOTIFICATIONS}`,
+        `${UserRelationMappings.SETTINGS}.${SettingsKey.IS_SHOWN_IN_RATING}`,
+        `${UserRelationMappings.SETTINGS}.${SettingsKey.IS_SOUND_TURNED_ON}`,
+
+        `${UserRelationMappings.PERSONAL_ROOM}.${CommonKey.ID}`,
+        `${UserRelationMappings.PERSONAL_ROOM}.${RoomKey.LESSON_ID}`,
+        `${UserRelationMappings.PERSONAL_ROOM}.${RoomKey.NAME}`,
+
+        `${UserRelationMappings.PERSONAL_ROOM}.${RoomRelationMappings.PARTICIPANTS}.*`,
+      )
+      .findOne({ [UserKey.EMAIL]: email.toLowerCase() })
+      .withGraphJoined(
+        [
+          `${UserRelationMappings.SETTINGS}`,
+          `${UserRelationMappings.PERSONAL_ROOM}.[${RoomRelationMappings.PARTICIPANTS}]`,
+        ].join(),
+      )
+      .castTo<
+        IUserRecord & Pick<UserAuthInfoResponseDto, 'personalRoom' | 'settings'>
+      >()
+      .execute();
+  }
+
+  public async getByIdWithSettingsAndPersonalRoom(
+    userId: number,
+  ): Promise<
+    | (RecordWithoutCommonDateKeys<IUserRecord> &
+        Pick<UserAuthInfoResponseDto, 'personalRoom' | 'settings'>)
+    | undefined
+  > {
+    return this._UserModel
+      .query()
+      .select(
+        ...User.DEFAULT_USER_COLUMNS_TO_RETURN,
+
+        `${UserRelationMappings.SETTINGS}.${SettingsKey.COUNTDOWN_BEFORE_GAME}`,
+        `${UserRelationMappings.SETTINGS}.${SettingsKey.GAME_TIME}`,
+        `${UserRelationMappings.SETTINGS}.${SettingsKey.HAS_EMAIL_NOTIFICATIONS}`,
+        `${UserRelationMappings.SETTINGS}.${SettingsKey.IS_SHOWN_IN_RATING}`,
+        `${UserRelationMappings.SETTINGS}.${SettingsKey.IS_SOUND_TURNED_ON}`,
+
+        `${UserRelationMappings.PERSONAL_ROOM}.${CommonKey.ID}`,
+        `${UserRelationMappings.PERSONAL_ROOM}.${RoomKey.LESSON_ID}`,
+        `${UserRelationMappings.PERSONAL_ROOM}.${RoomKey.NAME}`,
+
+        `${UserRelationMappings.PERSONAL_ROOM}.${RoomRelationMappings.PARTICIPANTS}.*`,
+      )
+      .findById(userId)
+      .withGraphJoined(
+        [
+          `${UserRelationMappings.SETTINGS}`,
+          `${UserRelationMappings.PERSONAL_ROOM}.[${RoomRelationMappings.PARTICIPANTS}]`,
+        ].join(),
+      )
+      .castTo<
+        IUserRecord & Pick<UserAuthInfoResponseDto, 'personalRoom' | 'settings'>
+      >()
+      .execute();
+  }
+
+  public async getById(
+    userId: number,
+  ): Promise<RecordWithoutCommonDateKeys<IUserRecord> | undefined> {
+    return this._UserModel
+      .query()
+      .findById(userId)
+      .returning([
+        CommonKey.ID,
+        UserKey.EMAIL,
+        UserKey.NICKNAME,
+        UserKey.PASSWORD,
+        UserKey.PHOTO_URL,
+      ]);
   }
 
   public async patchById(
     userId: number,
     data: Partial<IUserRecord>,
-  ): Promise<IUserRecord> {
-    return this._UserModel.query().patchAndFetchById(userId, data);
+  ): Promise<RecordWithoutCommonDateKeys<IUserRecord>> {
+    return this._UserModel
+      .query()
+      .patchAndFetchById(userId, data)
+      .returning([
+        CommonKey.ID,
+        UserKey.EMAIL,
+        UserKey.NICKNAME,
+        UserKey.PASSWORD,
+        UserKey.PHOTO_URL,
+      ]);
+  }
+
+  public async getByIdWithStatistics(
+    userId: number,
+  ): Promise<
+    RecordWithoutCommonDateKeys<IUserRecord> &
+      Pick<UserProfileInfoResponseDto, 'statistics'>
+  > {
+    return this._UserModel
+      .query()
+      .select(
+        ...User.DEFAULT_USER_COLUMNS_TO_RETURN,
+
+        `${UserRelationMappings.STATISTICS}.${StatisticsKey.AVERAGE_SPEED}`,
+        `${UserRelationMappings.STATISTICS}.${StatisticsKey.TODAY_AVERAGE_SPEED}`,
+        `${UserRelationMappings.STATISTICS}.${StatisticsKey.TODAY_LESSONS}`,
+        `${UserRelationMappings.STATISTICS}.${StatisticsKey.TODAY_TIME}`,
+        `${UserRelationMappings.STATISTICS}.${StatisticsKey.TODAY_TOP_SPEED}`,
+        `${UserRelationMappings.STATISTICS}.${StatisticsKey.TOP_SPEED}`,
+        `${UserRelationMappings.STATISTICS}.${StatisticsKey.TOTAL_LESSONS}`,
+        `${UserRelationMappings.STATISTICS}.${StatisticsKey.TOTAL_TIME}`,
+      )
+      .findById(userId)
+      .withGraphJoined(`[${UserRelationMappings.STATISTICS}]`)
+      .castTo<IUserRecord & Pick<UserProfileInfoResponseDto, 'statistics'>>()
+      .execute();
+  }
+
+  public async getRating(): Promise<Rating> {
+    return this._UserModel
+      .query()
+      .select(
+        `${TableName.USERS}.${CommonKey.ID}`,
+        `${TableName.USERS}.${UserKey.NICKNAME}`,
+        `${TableName.USERS}.${UserKey.PHOTO_URL}`,
+
+        `${UserRelationMappings.STATISTICS}.${StatisticsKey.AVERAGE_SPEED}`,
+      )
+      .withGraphJoined(
+        [
+          `${UserRelationMappings.STATISTICS}`,
+          `${UserRelationMappings.SETTINGS}`,
+        ].join(),
+      )
+      .where(
+        `${UserRelationMappings.SETTINGS}.${SettingsKey.IS_SHOWN_IN_RATING}`,
+        true,
+      )
+      .castTo<Rating>()
+      .execute();
   }
 }
 
