@@ -1,4 +1,4 @@
-import { HttpMethod } from 'common/enums/enums';
+import { HttpMethod, RequestContentType } from 'common/enums/enums';
 import {
   UpdateAvatarResponseDto,
   UserDto,
@@ -14,7 +14,7 @@ type Constructor = {
 
 class UserApi {
   private _httpService: HttpService;
-  private _baseUrl = '/api/user';
+  private _baseUrl = '/api/users';
 
   public constructor(params: Constructor) {
     this._httpService = params.httpService;
@@ -44,6 +44,7 @@ class UserApi {
     return this._httpService.load(`${this._baseUrl}/current/avatar`, {
       method: HttpMethod.PUT,
       payload: fd,
+      contentType: RequestContentType.JSON,
     });
   }
 

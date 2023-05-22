@@ -91,9 +91,7 @@ class User {
     return user;
   }
 
-  public async create(
-    data: CreateUserRequestDto,
-  ): Promise<UserAuthInfoResponseDto> {
+  public create(data: CreateUserRequestDto): Promise<UserWithPassword> {
     const { nickname, email, photoUrl, password } = data;
     const userData = {
       email,
@@ -101,9 +99,7 @@ class User {
       password: password ?? null,
       photoUrl: photoUrl ?? null,
     };
-    const newUser = await this._userRepository.create(userData);
-
-    return this.getAuthInfoByEmail(newUser.email);
+    return this._userRepository.create(userData);
   }
 
   public async updateById(

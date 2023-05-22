@@ -13,6 +13,8 @@ import {
   settings as settingsService,
   room as roomService,
   logger as loggerService,
+  lesson as lessonService,
+  joke as jokeService,
 } from 'services/services';
 
 const router: Router = Router();
@@ -29,6 +31,8 @@ router.use(
     settingsService,
     roomService,
     loggerService,
+    lessonService,
+    jokeService,
   }),
 );
 

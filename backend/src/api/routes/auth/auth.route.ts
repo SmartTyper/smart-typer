@@ -65,7 +65,8 @@ class Auth extends Abstract {
     router.post(
       '/log-out',
       this._getValidationMiddleware({ body: refreshTokenSchema }),
-      this._run((req) => this._authService.logOut(req.body)),
+      this._run((req) => this._authService.logOut(req.body)), // remove req.body from log-out
+      // userID
     );
 
     router.post(

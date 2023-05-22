@@ -63,19 +63,31 @@ const register = createAsyncThunk(
   async (
     payload: RegisterRequestDto,
     { dispatch, extra: { services, actions } },
-  ): Promise<UserDto> => {
-    const { authApi: authApiService, localStorage: localStorageService } =
-      services;
-    const { settings: settingsActions, lessons: lessonsActions } = actions;
-    const userData = await authApiService.register(payload);
-    const { accessToken, refreshToken, settings, ...user } = userData;
-    localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
-    localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
-    dispatch(settingsActions.setAll(settings));
-    dispatch(
-      lessonsActions.loadMoreLessons({ offset: DEFAULT_LESSONS_OFFSET }),
-    );
-    return user;
+  ): Promise<UserDto | void> => {
+    try {
+      const { authApi: authApiService, localStorage: localStorageService } =
+        services;
+      const { settings: settingsActions, lessons: lessonsActions } = actions;
+      const userData = await authApiService.register(payload);
+      const { accessToken, refreshToken, settings, ...user } = userData;
+      localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
+      localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
+      dispatch(settingsActions.setAll(settings));
+      dispatch(
+        lessonsActions.loadMoreLessons({ offset: DEFAULT_LESSONS_OFFSET }),
+      );
+      return user;
+    } catch (error) {
+      const isHttpError = error instanceof HttpError;
+      if (
+        isHttpError &&
+        error.message === HttpErrorMessage.EMAIL_ALREADY_EXISTS
+      ) {
+        dispatch(setError(error.message));
+      } else {
+        throw error;
+      }
+    }
   },
 );
 

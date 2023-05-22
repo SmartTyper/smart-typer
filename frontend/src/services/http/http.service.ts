@@ -150,7 +150,7 @@ class Http {
         ) {
           this._localStorageService.removeItem(StorageKey.ACCESS_TOKEN);
           this._localStorageService.removeItem(StorageKey.REFRESH_TOKEN);
-          this._navigationService.setPath(AppRoute.ROOT);
+          this._navigationService.setPath(AppRoute.LOG_IN);
         }
         throw refreshTokensError;
       }

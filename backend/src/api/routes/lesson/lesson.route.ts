@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { lesson as lessonService } from 'services/services';
 import { Abstract } from '../abstract/abstract.route';
 import { IRequestWithUser } from 'common/interfaces/interfaces';
-import { SkillsStatisticsDto } from 'common/types/types';
+import { ContentType, CreatorType } from 'common/enums/enums';
 // import { getValidationMiddleware } from 'api/middlewares/middlewares';
 
 type Constructor = {
@@ -41,10 +41,10 @@ class Lesson extends Abstract {
       this._run((req) => {
         const { offset, limit, contentType, creatorType } = req.query;
         return this._lessonService.getMore(
-          offset,
-          limit,
-          contentType,
-          creatorType,
+          Number(offset),
+          Number(limit),
+          contentType as ContentType,
+          creatorType as CreatorType,
         );
       }),
     );
@@ -63,6 +63,8 @@ class Lesson extends Abstract {
         return this._lessonService.handleLessonResult(lessonId, req.body);
       }),
     );
+
+    // delete lesson
 
     return router;
   }

@@ -59,11 +59,13 @@ class Auth {
     const hashedPassword = await this._hashService.hash(payload.password);
     const email = payload.email;
 
-    return this._userService.create({
+    const newUser = await this._userService.create({
       ...payload,
       email,
       password: hashedPassword,
     });
+
+    return this._userService.getAuthInfoByEmail(newUser.email);
   }
 
   public async logIn(
@@ -155,11 +157,13 @@ class Auth {
     if (user) {
       return user;
     }
-    return this._userService.create({
+    const newUser = await this._userService.create({
       nickname: name,
       email,
       photoUrl: picture,
     });
+
+    return this._userService.getAuthInfoByEmail(newUser.email);
   }
 }
 

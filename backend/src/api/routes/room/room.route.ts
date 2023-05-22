@@ -56,6 +56,7 @@ class Room extends Abstract {
       }),
     );
 
+    // remove participantId from body
     router.post(
       '/:roomId/participants',
       this._run((req) => {
@@ -64,6 +65,7 @@ class Room extends Abstract {
       }),
     );
 
+    // /:roomId/participants
     router.delete(
       '/:roomId/participants/:participantId',
       this._run((req) => {

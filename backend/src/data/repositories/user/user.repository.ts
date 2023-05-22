@@ -79,7 +79,7 @@ class User {
       .insert();
 
     await this._UserModel
-      .relatedQuery(UserRelationMappings.STATISTICS)
+      .relatedQuery(UserRelationMappings.PERSONAL_ROOM)
       .for(user.id)
       .relate(this._roomRepository.createPersonal());
 
