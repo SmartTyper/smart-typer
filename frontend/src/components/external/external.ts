@@ -15,7 +15,6 @@ export {
   Form as RBForm,
   InputGroup as RBInputGroup,
   Modal as RBModal,
-  Container as RBContainer,
 } from 'react-bootstrap';
 
 export {

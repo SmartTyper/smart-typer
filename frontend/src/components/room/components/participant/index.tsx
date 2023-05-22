@@ -1,24 +1,27 @@
-import ProgressBar from 'react-bootstrap/ProgressBar';
-import { IParticipant } from 'common/interfaces';
-import { DEFAULT_PARTICIPANT } from 'common/constants/game';
-import { Profile } from 'components/common';
-import { getAllowedClasses } from 'common/helpers';
-import styles from './styles.module.scss';
+// import ProgressBar from 'react-bootstrap/ProgressBar';
+// import { IParticipant } from 'common/interfaces';
+// import { DEFAULT_PARTICIPANT } from 'common/constants/game';
+// import { Profile } from 'components/common';
+// import { getAllowedClasses } from 'common/helpers';
+// import styles from './styles.module.scss';
+
+import { FC, Participant as ParticipantType } from 'common/types/types';
 
 type Props = {
-  participant: IParticipant;
+  participant: ParticipantType;
   textLength: number;
   isCurrentParticipant: boolean;
 };
 
-const Participant: React.FC<Props> = ({
+const Participant: FC<Props> = ({
   participant,
   textLength,
   isCurrentParticipant,
 }) => {
+  console.log(participant, textLength, isCurrentParticipant);
   return (
     <div className="d-flex flex-column my-3">
-      <div className="d-flex my-2">
+      {/* <div className="d-flex my-2">
         <div
           className={getAllowedClasses(
             'rounded-circle',
@@ -43,7 +46,7 @@ const Participant: React.FC<Props> = ({
         }
         className="border border-success"
         variant="success"
-      />
+      /> */}
     </div>
   );
 };

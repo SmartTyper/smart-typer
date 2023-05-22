@@ -23,14 +23,16 @@ const create = createAsyncThunk(
   ): Promise<LessonWithSkillsStatistics> => {
     const { lessonApi: lessonApiService } = services;
     const lesson = await lessonApiService.create(payload);
-    dispatch(addLesson({ ...payload, id: lesson.id }));
+    dispatch(addLesson({ ...payload, id: lesson.id, bestSkill: null }));
     return mapLessonToLessonWithSkillsStatistics(lesson);
   },
 );
 
 const addLesson = createAction(
   ActionType.ADD_LESSON,
-  (payload: CreateLessonRequestDto & Pick<LessonDto, 'id'>) => ({ payload }),
+  (payload: CreateLessonRequestDto & Pick<LessonDto, 'id' | 'bestSkill'>) => ({
+    payload,
+  }),
 );
 
 const loadMoreLessons = createAsyncThunk(

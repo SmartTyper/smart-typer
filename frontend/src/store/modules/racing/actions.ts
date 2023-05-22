@@ -178,7 +178,7 @@ const toggleParticipantIsReady = createAction(
 );
 
 const increaseParticipantPosition = createAction(
-  ActionType.REMOVE_PARTICIPANT,
+  ActionType.INCREASE_PARTICIPANT_POSITION,
   ({ participantId }: ParticipantIdDto) => ({ payload: participantId }),
 );
 
