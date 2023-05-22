@@ -21,6 +21,7 @@ const REQUEST_ACTIONS_TYPES = [
   AuthActionType.LOG_IN_GOOGLE,
   AuthActionType.SET_PASSWORD,
   AuthActionType.RESET_PASSWORD,
+  AuthActionType.LOAD_GOOGLE_URL,
 
   ProfileActionType.DELETE_AVATAR,
   ProfileActionType.UPDATE_AVATAR,
@@ -35,8 +36,10 @@ const REQUEST_ACTIONS_TYPES = [
   SettingsActionType.UPDATE,
 
   LessonsActionType.CREATE,
+  LessonsActionType.DELETE,
   LessonsActionType.LOAD_CURRENT,
   LessonsActionType.LOAD_MORE_LESSONS,
+  LessonsActionType.LOAD_STUDY_PLAN,
 ] as const;
 
 const actions = {

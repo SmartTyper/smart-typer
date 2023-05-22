@@ -1,5 +1,6 @@
 enum ActionType {
   CREATE = 'lessonsCreate',
+  DELETE = 'lessonsDelete',
   LOAD_CURRENT = 'lessonsLoadCurrent',
   LOAD_MORE_LESSONS = 'lessonsLoadMoreLessons',
   ADD_LESSON = 'lessonsAddLesson',

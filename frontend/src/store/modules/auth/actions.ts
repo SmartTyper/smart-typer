@@ -190,7 +190,6 @@ const setPassword = createAsyncThunk(
     const { accessToken, refreshToken, ...user } = userData;
     localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
     localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
-    notificationService.info(NotificationMessage.RESET_PASSWORD_SENT);
     notificationService.success(NotificationMessage.NEW_PASSWORD_SAVED);
     return user;
   },

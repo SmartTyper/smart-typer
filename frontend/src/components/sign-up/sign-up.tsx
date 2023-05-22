@@ -28,7 +28,7 @@ const SignUp: FC = () => {
   } = useForm<RegisterRequestDto>(signUpSchema);
 
   useEffect(() => {
-    if (!authError && user?.id) {
+    if (user?.id) {
       navigate(AppRoute.ROOT);
     }
   }, [authError, user?.id]);

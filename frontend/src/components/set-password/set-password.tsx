@@ -39,7 +39,9 @@ const SetPassword: FC = () => {
   };
 
   useEffect(() => {
-    if (!isSetPasswordLoading && user) navigate(AppRoute.ROOT);
+    if (!isSetPasswordLoading && user) {
+      navigate(AppRoute.ROOT);
+    }
   }, [isSetPasswordLoading, user]);
 
   return (

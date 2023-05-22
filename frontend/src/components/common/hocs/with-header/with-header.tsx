@@ -17,15 +17,14 @@ const WithHeader: FC = ({ children }) => {
       navigate(AppRoute.LOG_IN);
     }
   }, [isLogOutLoading, user]);
+
   return (
     <div className={styles.withHeader}>
-      {user ? (
+      {!user ? (
         <Spinner size={SpinnerSize.LARGE} />
       ) : (
         <>
-          <div className={styles.header}>
-            <Header />
-          </div>
+          <Header />
           <div className={styles.childComponent}>{children}</div>
         </>
       )}

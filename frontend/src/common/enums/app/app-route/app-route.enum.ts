@@ -5,6 +5,7 @@ enum AppRoute {
   SIGN_UP = '/sign-up',
   THEORY = '/theory',
   LESSONS = '/lessons',
+  LESSON_$ID = '/lessons/:id',
   STUDY_PLAN = '/study-plan',
   RACING = '/racing',
   ROOMS = '/rooms',

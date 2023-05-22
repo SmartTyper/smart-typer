@@ -99,7 +99,6 @@ const App: FC = () => {
       <RRDRoute path={AppRoute.SIGN_UP} element={<SignUp />} />
       <RRDRoute path={AppRoute.LOG_IN_GOOGLE} element={<LogInGoogle />} />
       <RRDRoute path={AppRoute.SIGN_UP} element={<SignUp />} />
-      <RRDRoute path={AppRoute.LOG_IN} element={<LogIn />} />
     </RRDRoutes>
   );
 };
