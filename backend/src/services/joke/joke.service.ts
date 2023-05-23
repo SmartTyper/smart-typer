@@ -4,6 +4,7 @@ import {
 } from 'services/services';
 import { JokeDto } from 'common/types/types';
 import { JOKE_API_REQUEST_ENDPOINT } from 'common/constants/constants';
+import { HttpCode, HttpError, HttpErrorMessage } from 'smart-typer-shared';
 
 type Constructor = {
   axiosService: typeof axiosService;
@@ -28,8 +29,10 @@ class Joke {
     } catch (error) {
       const err = error as Error;
       this._loggerService.error({ err });
-
-      return { joke: '' };
+      throw new HttpError({
+        status: HttpCode.INTERNAL_SERVER_ERROR,
+        message: HttpErrorMessage.INTERNAL_SERVER_ERROR,
+      });
     }
   }
 }

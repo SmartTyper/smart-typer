@@ -192,14 +192,18 @@ const loadCommentatorText = createAsyncThunk(
   async (
     payload: CommentatorEvent,
     { getState, extra: { services } },
-  ): Promise<Pick<GameRoom, 'commentatorText'>> => {
+  ): Promise<Pick<GameRoom, 'commentatorText'> | undefined> => {
     const {
       racing: { currentRoom },
     } = getState();
     const { jokeApi: jokeApiService } = services;
     if (payload === CommentatorEvent.JOKE) {
-      const { joke } = await jokeApiService.getRandom();
-      return { commentatorText: joke };
+      try {
+        const { joke } = await jokeApiService.getRandom();
+        return { commentatorText: joke };
+      } catch {
+        return;
+      }
     }
     const commentatorText = getGameCommentatorText(
       payload,

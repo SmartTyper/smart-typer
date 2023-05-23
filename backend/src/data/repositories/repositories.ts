@@ -5,7 +5,6 @@ import {
   Statistics as StatisticsModel,
   Skill as SkillModel,
   Room as RoomModel,
-  UserToRoom as UserToRoomModel,
   Lesson as LessonModel,
 } from 'data/models/models';
 
@@ -15,7 +14,6 @@ import { Settings } from './settings/settings.repository';
 import { Statistics } from './statistics/statistics.repository';
 import { Skill } from './skill/skill.repository';
 import { Room } from './room/room.repository';
-import { UserToRoom } from './user-to-room/user-to-room.repository';
 import { Lesson } from './lesson/lesson.repository';
 
 const refreshToken = new RefreshToken({
@@ -36,17 +34,6 @@ const user = new User({
   roomRepository: room,
 });
 
-const userToRoom = new UserToRoom({ UserToRoomModel });
-
 const lesson = new Lesson({ LessonModel });
 
-export {
-  user,
-  refreshToken,
-  skill,
-  room,
-  settings,
-  statistics,
-  userToRoom,
-  lesson,
-};
+export { user, refreshToken, skill, room, settings, statistics, lesson };

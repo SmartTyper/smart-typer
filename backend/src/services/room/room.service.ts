@@ -13,7 +13,6 @@ import {
   socket as socketService,
   user as userService,
   mailer as mailerService,
-  userToRoom as userToRoomService,
 } from 'services/services';
 
 type Constructor = {
@@ -21,7 +20,6 @@ type Constructor = {
   socketService: typeof socketService;
   userService: typeof userService;
   mailerService: typeof mailerService;
-  userToRoomService: typeof userToRoomService;
 };
 
 class Room {
@@ -29,14 +27,12 @@ class Room {
   private _socketService: typeof socketService;
   private _userService: typeof userService;
   private _mailerService: typeof mailerService;
-  private _userToRoomService: typeof userToRoomService;
 
   public constructor(params: Constructor) {
     this._roomRepository = params.roomRepository;
     this._socketService = params.socketService;
     this._userService = params.userService;
     this._mailerService = params.mailerService;
-    this._userToRoomService = params.userToRoomService;
   }
 
   public async getById(roomId: number): Promise<RoomDto> {
@@ -102,32 +98,42 @@ class Room {
     payload: ParticipantIdDto,
   ): Promise<void> {
     const { participantId } = payload;
-    const room = await this._roomRepository.getNotPrivateById(roomId);
-    if (!room) {
+    const { count } =
+      (await this._roomRepository.getParticipantsCountById(roomId)) ?? {};
+
+    if (!count && count !== 0) {
       throw new HttpError({
         status: HttpCode.NOT_FOUND,
         message: HttpErrorMessage.NO_ROOM_WITH_SUCH_ID,
       });
-    } else if (room.participants.length >= MAX_USERS_IN_ROOM) {
+    } else if (count >= MAX_USERS_IN_ROOM) {
       throw new HttpError({
         status: HttpCode.BAD_REQUEST,
         message: HttpErrorMessage.MAX_COUNT_OF_USERS,
       });
     }
 
-    const participant = room.participants.find(
-      (participant) => participant.id === participantId,
-    );
-    if (!participant) {
+    const { ownerId } =
+      (await this._roomRepository.getOwnerIdByPersonalRoomId(roomId)) ?? {};
+
+    if (participantId !== ownerId && ownerId) {
+      throw new HttpError({
+        status: HttpCode.FORBIDDEN,
+        message: HttpErrorMessage.JOIN_PERSONAL_ROOM,
+      });
+    }
+
+    await this._userService.updateCurrentRoomByUserId(participantId, roomId);
+
+    const { email, ...participant } =
+      (await this._userService.getById(participantId)) ?? {};
+
+    if (!email) {
       throw new HttpError({
         status: HttpCode.NOT_FOUND,
         message: HttpErrorMessage.NO_USER_WITH_SUCH_ID,
       });
     }
-
-    await this._userToRoomService.setCurrentRoomIdByUserId(participant.id, {
-      currentRoomId: room.id,
-    });
 
     this._socketService.io
       .to(String(roomId))
@@ -138,38 +144,26 @@ class Room {
     roomId: number,
     participantId: number,
   ): Promise<void> {
-    const room = await this._roomRepository.getNotPrivateById(roomId);
-    if (!room) {
+    const { count } =
+      (await this._roomRepository.getParticipantsCountById(roomId)) ?? {};
+
+    if (!count && count !== 0) {
       throw new HttpError({
         status: HttpCode.NOT_FOUND,
         message: HttpErrorMessage.NO_ROOM_WITH_SUCH_ID,
       });
-    } else if (room.participants.length >= MAX_USERS_IN_ROOM) {
-      throw new HttpError({
-        status: HttpCode.BAD_REQUEST,
-        message: HttpErrorMessage.MAX_COUNT_OF_USERS,
-      });
     }
 
-    const participant = room.participants.find(
-      (participant) => participant.id === participantId,
-    );
-    if (!participant) {
-      throw new HttpError({
-        status: HttpCode.NOT_FOUND,
-        message: HttpErrorMessage.NO_USER_WITH_SUCH_ID,
-      });
-    }
+    const { ownerId } =
+      (await this._roomRepository.getOwnerIdByPersonalRoomId(roomId)) ?? {};
 
-    await this._userToRoomService.setCurrentRoomIdByUserId(participant.id, {
-      currentRoomId: null,
-    });
+    await this._userService.updateCurrentRoomByUserId(participantId, null);
 
     this._socketService.io
       .to(String(roomId))
-      .emit(SocketEvent.REMOVE_PARTICIPANT, { userId: participantId });
+      .emit(SocketEvent.REMOVE_PARTICIPANT, { participantId });
 
-    if (!room.participants.length) {
+    if (count === 1 && !ownerId) {
       this._socketService.io.emit(SocketEvent.DELETE_ROOM, { roomId });
       await this._roomRepository.removeById(roomId);
     }

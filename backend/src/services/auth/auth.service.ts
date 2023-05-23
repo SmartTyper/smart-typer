@@ -47,68 +47,89 @@ class Auth {
   public async register(
     payload: RegisterRequestDto,
   ): Promise<UserAuthInfoResponseDto> {
-    const existingUser = await this._userService.getByEmail(payload.email);
+    try {
+      await this._userService.getByEmail(payload.email);
 
-    if (existingUser) {
-      throw new HttpError({
-        status: HttpCode.CONFLICT,
-        message: HttpErrorMessage.EMAIL_ALREADY_EXISTS,
+      const hashedPassword = await this._hashService.hash(payload.password);
+
+      const newUser = await this._userService.create({
+        ...payload,
+        password: hashedPassword,
       });
+
+      return this._userService.getAuthInfoByEmail(newUser.email);
+    } catch (error) {
+      if (
+        error instanceof HttpError &&
+        error.message === HttpErrorMessage.NO_USER_WITH_SUCH_ID
+      ) {
+        throw new HttpError({
+          status: HttpCode.CONFLICT,
+          message: HttpErrorMessage.EMAIL_ALREADY_EXISTS,
+        });
+      } else {
+        throw error;
+      }
     }
-
-    const hashedPassword = await this._hashService.hash(payload.password);
-    const email = payload.email;
-
-    const newUser = await this._userService.create({
-      ...payload,
-      email,
-      password: hashedPassword,
-    });
-
-    return this._userService.getAuthInfoByEmail(newUser.email);
   }
 
   public async logIn(
     payload: LogInRequestDto,
   ): Promise<UserAuthInfoResponseDto> {
-    const user = await this._userService.getByEmail(payload.email);
-    if (!user || !user.password) {
-      throw new HttpError({
-        status: HttpCode.BAD_REQUEST,
-        message: HttpErrorMessage.INVALID_LOG_IN_DATA,
-      });
-    }
+    try {
+      const user = await this._userService.getByEmail(payload.email);
 
-    const isPasswordCorrect = await this._hashService.verify(
-      payload.password,
-      user.password,
-    );
-    if (!isPasswordCorrect) {
-      throw new HttpError({
-        status: HttpCode.BAD_REQUEST,
-        message: HttpErrorMessage.INVALID_LOG_IN_DATA,
-      });
-    }
+      const isPasswordCorrect = await this._hashService.verify(
+        payload.password,
+        user.password ?? '',
+      );
+      if (!isPasswordCorrect) {
+        throw new HttpError({
+          status: HttpCode.BAD_REQUEST,
+          message: HttpErrorMessage.INVALID_LOG_IN_DATA,
+        });
+      }
 
-    return this._userService.getAuthInfoByEmail(user.email);
+      return this._userService.getAuthInfoByEmail(user.email);
+    } catch (error) {
+      if (
+        error instanceof HttpError &&
+        error.message === HttpErrorMessage.NO_USER_WITH_SUCH_ID
+      ) {
+        throw new HttpError({
+          status: HttpCode.CONFLICT,
+          message: HttpErrorMessage.INVALID_LOG_IN_DATA,
+        });
+      } else {
+        throw error;
+      }
+    }
   }
 
   public async resetPassword(payload: ResetPasswordRequestDto): Promise<void> {
-    const user = await this._userService.getByEmail(payload.email);
-    if (!user) {
-      throw new HttpError({
-        status: HttpCode.BAD_REQUEST,
-        message: HttpErrorMessage.NO_SUCH_EMAIL,
-      });
-    }
+    try {
+      const user = await this._userService.getByEmail(payload.email);
 
-    const { accessToken } = this._tokenService.generateTokens(user.id);
-    const url = `${this._appUrl}/set-password?token=${accessToken}`;
-    await this._mailerService.sendMail({
-      to: user.email,
-      subject: 'Reset Password',
-      text: url,
-    });
+      const { accessToken } = this._tokenService.generateTokens(user.id);
+      const url = `${this._appUrl}/set-password?token=${accessToken}`;
+      await this._mailerService.sendMail({
+        to: user.email,
+        subject: 'Reset Password',
+        text: url,
+      });
+    } catch (error) {
+      if (
+        error instanceof HttpError &&
+        error.message === HttpErrorMessage.NO_USER_WITH_SUCH_ID
+      ) {
+        throw new HttpError({
+          status: HttpCode.CONFLICT,
+          message: HttpErrorMessage.NO_SUCH_EMAIL,
+        });
+      } else {
+        throw error;
+      }
+    }
   }
 
   public async setPassword(
@@ -122,10 +143,10 @@ class Auth {
       });
     }
 
-    const decoded = this._tokenService.verifyToken(token);
+    const { userId } = this._tokenService.verifyToken(token);
 
     const hashedPassword = await this._hashService.hash(password);
-    const user = await this._userService.updateById(decoded.userId, {
+    const user = await this._userService.updateById(userId, {
       password: hashedPassword,
     });
     return this._userService.getAuthInfoByEmail(user.email);

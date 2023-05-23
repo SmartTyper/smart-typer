@@ -7,8 +7,9 @@ import {
   TableName,
   UserKey,
   UserRelationMappings,
+  UserToRoomKey,
 } from 'common/enums/enums';
-import { IUserRecord } from 'common/interfaces/interfaces';
+import { IUserRecord, IUserToRoomRecord } from 'common/interfaces/interfaces';
 import {
   Rating,
   RecordWithoutCommonDateKeys,
@@ -83,6 +84,8 @@ class User {
       .for(user.id)
       .relate(this._roomRepository.createPersonal());
 
+    //user-to-study-plan create records with test lessons
+
     return user;
   }
 
@@ -100,7 +103,7 @@ class User {
         UserKey.PHOTO_URL,
       ]);
   }
-
+  // move constants to up level
   public async getByEmailWithSettingsAndPersonalRoom(
     email: string,
   ): Promise<
@@ -253,6 +256,29 @@ class User {
         true,
       )
       .castTo<Rating>()
+      .execute();
+  }
+
+  public async updateCurrentRoomByUserId(
+    userId: number,
+    roomId: number | null,
+  ): Promise<
+    Pick<
+      IUserToRoomRecord,
+      UserToRoomKey.USER_ID | UserToRoomKey.CURRENT_ROOM_ID
+    >
+  > {
+    return this._UserModel
+      .relatedQuery(UserRelationMappings.USER_TO_ROOMS)
+      .patch({ roomId })
+      .findOne({ userId })
+      .returning([UserToRoomKey.USER_ID, UserToRoomKey.CURRENT_ROOM_ID])
+      .castTo<
+        Pick<
+          IUserToRoomRecord,
+          UserToRoomKey.USER_ID | UserToRoomKey.CURRENT_ROOM_ID
+        >
+      >()
       .execute();
   }
 }

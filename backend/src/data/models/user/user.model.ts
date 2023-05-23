@@ -14,13 +14,15 @@ import {
   UserRelationMappings,
 } from 'common/enums/enums';
 import { IUserRecord } from 'common/interfaces/interfaces';
-import { RefreshToken, 
+import {
+  RefreshToken,
   Settings,
   Statistics,
-  UserToStudyPlanLesson, 
-  UserToFinishedLesson, 
-  Room, 
+  UserToStudyPlanLesson,
+  UserToFinishedLesson,
+  Room,
   Skill,
+  UserToRoom,
 } from 'data/models/models';
 
 import { Base } from '../base/base.model';
@@ -94,6 +96,14 @@ class User extends Base implements IUserRecord {
             to: `${TableName.USERS_TO_ROOMS}.${UserToRoomKey.PERSONAL_ROOM_ID}`,
           },
           to: `${TableName.ROOMS}.${CommonKey.ID}`,
+        },
+      },
+      [UserRelationMappings.USER_TO_ROOMS]: {
+        relation: Model.HasOneRelation,
+        modelClass: UserToRoom,
+        join: {
+          from: `${TableName.USERS}.${CommonKey.ID}`,
+          to: `${TableName.USERS_TO_ROOMS}.${UserToRoomKey.CURRENT_ROOM_ID}`,
         },
       },
       [UserRelationMappings.SKILLS]: {

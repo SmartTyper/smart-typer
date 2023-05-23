@@ -1,7 +1,7 @@
-interface IUserToRoom {
+type UserToRoom = {
   userId: number;
   currentRoomId: number | null;
   personalRoomId: number;
-}
+};
 
-export type { IUserToRoom };
+export type { UserToRoom };

@@ -1,4 +1,4 @@
-import { TEST_LESSON_NAME } from 'common/constants/constants';
+import { TEST_LESSON_NAMES } from 'common/constants/constants';
 import {
   CommonKey,
   ContentType,
@@ -43,6 +43,8 @@ class Lesson {
       .execute();
   }
 
+  // public async getByIdWithSkills
+
   public async create(
     data: CreateLessonRequestDto,
   ): Promise<LessonResponseDto> {
@@ -66,7 +68,7 @@ class Lesson {
         `${TableName.LESSONS}.${LessonKey.CONTENT_TYPE}`,
         `${TableName.LESSONS}.${LessonKey.CREATOR_TYPE}`,
         `${LessonRelationMappings.FINISHED_LESSON}.${UserToFinishedLessonKey.BEST_SKILL_ID}`,
-      )
+      ) // best skill instead of BEST_SKILL_ID (add relation mapping)
       .where((builder) => {
         if (contentType) {
           builder.where({ contentType });
@@ -100,14 +102,16 @@ class Lesson {
         `${TableName.LESSONS}.${LessonKey.CONTENT_TYPE}`,
         `${TableName.LESSONS}.${LessonKey.CREATOR_TYPE}`,
         `${LessonRelationMappings.FINISHED_LESSON}.${UserToFinishedLessonKey.BEST_SKILL_ID}`,
-      )
+      ) // best skill instead of BEST_SKILL_ID
       .where({
-        [LessonKey.NAME]: TEST_LESSON_NAME,
         [UserToFinishedLessonKey.USER_ID]: userId,
       })
-      .withGraphJoined(`[${LessonRelationMappings.FINISHED_LESSON}]`)
+      .whereIn(LessonKey.NAME, TEST_LESSON_NAMES)
+      .withGraphJoined(`[${LessonRelationMappings.FINISHED_LESSON}]`) // userToStudy plan relation mapping
       .castTo<LessonDto[]>()
       .execute();
   }
+
+  // public getStudyPlanWithoutTestLessons(offset: 3)
 }
 export { Lesson };

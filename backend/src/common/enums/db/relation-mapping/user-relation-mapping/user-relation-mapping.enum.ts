@@ -6,6 +6,7 @@ enum UserRelationMappings {
   USER_TO_FINISHED_LESSONS = 'userToFinishedLessons',
   PERSONAL_ROOM = 'personalRoom',
   SKILLS = 'skills',
+  USER_TO_ROOMS = 'userToRooms',
 }
 
 export { UserRelationMappings };

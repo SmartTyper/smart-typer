@@ -8,33 +8,27 @@ import {
   UserProfileInfoResponseDto,
   TokensResponseDto,
   UpdateAvatarResponseDto,
+  UserToRoom,
 } from 'common/types/types';
 import { user as userRepository } from 'data/repositories/repositories';
 import { HttpError } from 'exceptions/exceptions';
-import {
-  token as tokenService,
-  s3 as s3Service,
-  // userToRoom as userToRoomService,
-} from 'services/services';
+import { token as tokenService, s3 as s3Service } from 'services/services';
 
 type Constructor = {
   userRepository: typeof userRepository;
   tokenService: typeof tokenService;
   s3Service: typeof s3Service;
-  // userToRoomService: typeof userToRoomService;
 };
 
 class User {
   private _userRepository: typeof userRepository;
   private _tokenService: typeof tokenService;
   private _s3Service: typeof s3Service;
-  // private _userToRoomService: typeof userToRoomService;
 
   public constructor(params: Constructor) {
     this._userRepository = params.userRepository;
     this._tokenService = params.tokenService;
     this._s3Service = params.s3Service;
-    // this._userToRoomService = params.userToRoomService;
   }
 
   private async _addPhotoUrlAndTokens(
@@ -82,12 +76,14 @@ class User {
 
   public async getByEmail(email: string): Promise<UserWithPassword> {
     const user = await this._userRepository.getByEmail(email);
+
     if (!user) {
       throw new HttpError({
-        status: HttpCode.BAD_REQUEST,
-        message: HttpErrorMessage.INVALID_LOG_IN_DATA,
+        status: HttpCode.NOT_FOUND,
+        message: HttpErrorMessage.NO_USER_WITH_SUCH_ID,
       });
     }
+
     return user;
   }
 
@@ -188,6 +184,13 @@ class User {
       }
       await this._userRepository.patchById(userId, { photoUrl: null });
     }
+  }
+
+  public async updateCurrentRoomByUserId(
+    userId: number,
+    roomId: number | null,
+  ): Promise<Omit<UserToRoom, 'personalRoomId'>> {
+    return this._userRepository.updateCurrentRoomByUserId(userId, roomId);
   }
 }
 

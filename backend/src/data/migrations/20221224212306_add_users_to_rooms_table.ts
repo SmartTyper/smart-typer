@@ -14,6 +14,7 @@ async function up(knex: Knex): Promise<void> {
       .integer('personal_room_id')
       .references('id')
       .inTable('rooms')
+      .unique()
       .notNullable();
     table.dateTime('created_at').notNullable().defaultTo(knex.fn.now());
     table.dateTime('updated_at').notNullable().defaultTo(knex.fn.now());

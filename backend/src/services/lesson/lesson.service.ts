@@ -1,3 +1,4 @@
+import { TEST_LESSON_NAMES } from 'common/constants/constants';
 import {
   ContentType,
   CreatorType,
@@ -61,9 +62,13 @@ class Lesson {
     const testLessons = await this._lessonRepository.getTestLessonsByUserId(
       userId,
     );
-    testLessons.filter((testLesson) => testLesson.bestSkill);
-    if (testLessons.length > 0) {
+    const passedTestLessons = testLessons.filter(
+      (testLesson) => testLesson.bestSkill,
+    );
+    if (passedTestLessons.length === TEST_LESSON_NAMES.length) {
       // show study plan without test lessons
+      // get lessons with offset 3
+      // getStudyPlanWithoutTestLessons()
     } else {
       return testLessons;
     }
@@ -74,11 +79,14 @@ class Lesson {
     payload: SkillsStatisticsDto,
   ): Promise<void> {
     // map to skills, if test - call IRT, else call BKT, than call AHP
+    // getLessonWithSkillsById
+
     // skillsRepository
     // statisticsRepository
     // finishedLessonRepository
     // ITSService
     // StudyPlanRepository
+    console.log(lessonId, payload);
     return;
   }
 }

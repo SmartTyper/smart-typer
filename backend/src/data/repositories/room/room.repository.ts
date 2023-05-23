@@ -46,20 +46,9 @@ class Room {
       .execute();
   }
 
-  public async getNotPrivateById(roomId: number): Promise<RoomDto | undefined> {
-    return this._RoomModel
-      .query()
-      .findOne({ [CommonKey.ID]: roomId, [RoomKey.IS_PRIVATE]: false })
-      .withGraphJoined(`[${RoomRelationMappings.PARTICIPANTS}]`)
-      .returning([
-        `${CommonKey.ID}`,
-        `${RoomKey.LESSON_ID}`,
-        `${RoomKey.NAME}`,
-        `${RoomRelationMappings.PARTICIPANTS}`,
-      ])
-      .castTo<RoomDto>()
-      .execute();
-  }
+  // public async getParticipantsCountById(roomId: number): Promise<number> {}
+
+  // public async getOwnerIdByPersonalRoomId(roomId: number): Promise<number> {}
 
   public async getAllAvailable(): Promise<RoomDto[]> {
     return this._RoomModel
