@@ -8,6 +8,7 @@ import {
   UserKey,
   UserRelationMappings,
   UserToRoomKey,
+  UserToSkillKey,
 } from 'common/enums/enums';
 import { IUserRecord, IUserToRoomRecord } from 'common/interfaces/interfaces';
 import {
@@ -16,6 +17,7 @@ import {
   RecordWithoutCommonKeys,
   UserAuthInfoResponseDto,
   UserProfileInfoResponseDto,
+  Skill,
 } from 'common/types/types';
 import { User as UserModel } from 'data/models/models';
 import {
@@ -280,6 +282,20 @@ class User {
         >
       >()
       .execute();
+  }
+
+  public async getCurrentSkillLevelsByUserId(
+    userId: number,
+  ): Promise<Omit<Skill, 'name'>[] | undefined> {
+    return this._UserModel
+      .query()
+      .select(
+        `${TableName.USERS_TO_SKILLS}.${UserToSkillKey.LEVEL}`,
+        `${TableName.USERS_TO_SKILLS}.${UserToSkillKey.SKILL_ID} as ${CommonKey.ID}`,
+      )
+      .findById(userId)
+      .withGraphJoined(`[${UserRelationMappings.USER_TO_SKILLS}]`)
+      .castTo<Skill[]>();
   }
 }
 

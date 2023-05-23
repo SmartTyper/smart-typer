@@ -1,6 +1,6 @@
 type BktResult = {
   skillId: number;
-  pLearned: number;
+  pKnown: number;
 }[];
 
 export type { BktResult };

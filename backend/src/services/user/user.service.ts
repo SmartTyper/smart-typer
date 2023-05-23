@@ -9,10 +9,15 @@ import {
   TokensResponseDto,
   UpdateAvatarResponseDto,
   UserToRoom,
+  Skill,
 } from 'common/types/types';
 import { user as userRepository } from 'data/repositories/repositories';
 import { HttpError } from 'exceptions/exceptions';
-import { token as tokenService, s3 as s3Service } from 'services/services';
+import {
+  token as tokenService,
+  s3 as s3Service,
+  user,
+} from 'services/services';
 
 type Constructor = {
   userRepository: typeof userRepository;
@@ -191,6 +196,22 @@ class User {
     roomId: number | null,
   ): Promise<Omit<UserToRoom, 'personalRoomId'>> {
     return this._userRepository.updateCurrentRoomByUserId(userId, roomId);
+  }
+
+  public async getCurrentSkillLevelsByUserId(
+    userId: number,
+  ): Promise<Omit<Skill, 'name'>[]> {
+    const currentSkillLevels =
+      await this._userRepository.getCurrentSkillLevelsByUserId(userId);
+
+    if (!currentSkillLevels) {
+      throw new HttpError({
+        status: HttpCode.NOT_FOUND,
+        message: HttpErrorMessage.NO_USER_WITH_SUCH_ID,
+      });
+    }
+
+    return currentSkillLevels;
   }
 }
 

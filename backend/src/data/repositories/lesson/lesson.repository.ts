@@ -5,14 +5,19 @@ import {
   CreatorType,
   LessonKey,
   LessonRelationMappings,
+  RecordsSortOrder,
+  SkillKey,
   TableName,
   UserToFinishedLessonKey,
+  UserToStudyPlanLessonKey,
 } from 'common/enums/enums';
 import { IPaginationResponse } from 'common/interfaces/interfaces';
 import {
   CreateLessonRequestDto,
   LessonDto,
   LessonResponseDto,
+  LessonWithSkillNames,
+  Statistics,
 } from 'common/types/types';
 import { Lesson as LessonModel } from 'data/models/models';
 
@@ -38,12 +43,25 @@ class Lesson {
   ): Promise<LessonResponseDto | undefined> {
     return this._LessonModel
       .query()
+      .select(...Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN)
       .findOne({ [CommonKey.ID]: lessonId })
-      .returning(Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN)
       .execute();
   }
 
-  // public async getByIdWithSkills
+  public async getByIdWithSkills(
+    lessonId: number,
+  ): Promise<LessonWithSkillNames | undefined> {
+    return this._LessonModel
+      .query()
+      .select(
+        ...Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN,
+        `${LessonRelationMappings.SKILLS}.${SkillKey.NAME}`,
+      )
+      .findOne({ [CommonKey.ID]: lessonId })
+      .withGraphJoined(`[${LessonRelationMappings.SKILLS}]`)
+      .castTo<LessonWithSkillNames>()
+      .execute();
+  }
 
   public async create(
     data: CreateLessonRequestDto,
@@ -67,8 +85,8 @@ class Lesson {
         ...Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN,
         `${TableName.LESSONS}.${LessonKey.CONTENT_TYPE}`,
         `${TableName.LESSONS}.${LessonKey.CREATOR_TYPE}`,
-        `${LessonRelationMappings.FINISHED_LESSON}.${UserToFinishedLessonKey.BEST_SKILL_ID}`,
-      ) // best skill instead of BEST_SKILL_ID (add relation mapping)
+        `${LessonRelationMappings.BEST_SKILL}.${SkillKey.NAME}`,
+      )
       .where((builder) => {
         if (contentType) {
           builder.where({ contentType });
@@ -79,8 +97,8 @@ class Lesson {
           builder.where({ creatorType });
         }
       })
-      .withGraphJoined(`[${LessonRelationMappings.FINISHED_LESSON}]`)
-      .orderBy(`${TableName.LESSONS}.${CommonKey.ID}`, 'asc')
+      .withGraphJoined(`[${LessonRelationMappings.BEST_SKILL}]`)
+      .orderBy(`${TableName.LESSONS}.${CommonKey.ID}`, RecordsSortOrder.ASC)
       .offset(offset)
       .limit(limit)
       .castTo<LessonDto[]>()
@@ -94,24 +112,80 @@ class Lesson {
     };
   }
 
-  public async getTestLessonsByUserId(userId: number): Promise<LessonDto[]> {
+  public async getStudyPlanByUserId(
+    userId: number,
+    areTestLessons = false,
+  ): Promise<LessonDto[]> {
     return this._LessonModel
       .query()
       .select(
         ...Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN,
         `${TableName.LESSONS}.${LessonKey.CONTENT_TYPE}`,
         `${TableName.LESSONS}.${LessonKey.CREATOR_TYPE}`,
-        `${LessonRelationMappings.FINISHED_LESSON}.${UserToFinishedLessonKey.BEST_SKILL_ID}`,
-      ) // best skill instead of BEST_SKILL_ID
+        `${LessonRelationMappings.BEST_SKILL}.${SkillKey.NAME}`,
+      )
       .where({
-        [UserToFinishedLessonKey.USER_ID]: userId,
+        [`${LessonRelationMappings.STUDY_PLAN}.${UserToStudyPlanLessonKey.USER_ID}`]:
+          userId,
       })
-      .whereIn(LessonKey.NAME, TEST_LESSON_NAMES)
-      .withGraphJoined(`[${LessonRelationMappings.FINISHED_LESSON}]`) // userToStudy plan relation mapping
+      .andWhere((builder) => {
+        if (areTestLessons) {
+          builder.whereIn(LessonKey.NAME, TEST_LESSON_NAMES);
+        } else {
+          builder.whereNotIn(LessonKey.NAME, TEST_LESSON_NAMES);
+        }
+      })
+      .withGraphJoined(
+        [
+          `${LessonRelationMappings.STUDY_PLAN}`,
+          `${LessonRelationMappings.BEST_SKILL}`,
+        ].join(),
+      )
+      .orderBy(
+        `${LessonRelationMappings.STUDY_PLAN}.${UserToStudyPlanLessonKey.PRIORITY}`,
+      )
       .castTo<LessonDto[]>()
       .execute();
   }
 
-  // public getStudyPlanWithoutTestLessons(offset: 3)
+  public async getAverageSpeed(
+    userId: number,
+  ): Promise<Pick<Statistics, 'averageSpeed' | 'todayAverageSpeed'>> {
+    const today = new Date().setHours(0, 0, 0, 0);
+    return this._LessonModel
+      .query()
+      .select([
+        this._LessonModel
+          .query()
+          .where({
+            [`${LessonRelationMappings.FINISHED_LESSON}.${UserToFinishedLessonKey.USER_ID}`]:
+              userId,
+          })
+          .withGraphJoined(`[${LessonRelationMappings.FINISHED_LESSON}]`)
+          .avg(
+            `${LessonRelationMappings.FINISHED_LESSON}.${UserToFinishedLessonKey.AVERAGE_SPEED}`,
+          )
+          .as('averageSpeed'),
+
+        this._LessonModel
+          .query()
+          .where({ userId })
+          .andWhere(CommonKey.UPDATED_AT, '=', today)
+          .withGraphJoined(`[${LessonRelationMappings.FINISHED_LESSON}]`)
+          .avg(
+            `${LessonRelationMappings.FINISHED_LESSON}.${UserToFinishedLessonKey.AVERAGE_SPEED}`,
+          )
+          .as('todayAverageSpeed'),
+      ])
+      .first()
+      .castTo<Pick<Statistics, 'averageSpeed' | 'todayAverageSpeed'>>();
+  }
+
+  public insertNewStudyPlanLesson(userId: number, lessonId: number) {
+    return this._LessonModel
+      .relatedQuery(LessonRelationMappings.STUDY_PLAN)
+      .for(lessonId)
+      .insert(userId);
+  }
 }
 export { Lesson };

@@ -23,6 +23,7 @@ import { Oauth2 } from './oauth2/oauth2.service';
 import { Room } from './room/room.service';
 import { Socket } from './socket/socket.service';
 import { Lesson } from './lesson/lesson.service';
+import { ITS } from './its/its.service';
 
 const s3 = new S3({
   accessKeyId: ENV.S3.ACCESS_KEY_ID,
@@ -86,7 +87,9 @@ const room = new Room({
   mailerService: mailer,
 });
 
-const lesson = new Lesson({ lessonRepository });
+const its = new ITS();
+
+const lesson = new Lesson({ lessonRepository, itsService: its });
 
 export {
   auth,
@@ -103,4 +106,5 @@ export {
   joke,
   room,
   lesson,
+  its,
 };

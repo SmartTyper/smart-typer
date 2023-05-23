@@ -1,4 +1,5 @@
 import { IStatisticsRecord } from 'common/interfaces/interfaces';
+import { Statistics as StatisticsData } from 'common/types/types';
 import { Statistics as StatisticsModel } from 'data/models/models';
 
 type Constructor = {
@@ -11,5 +12,9 @@ class Statistics {
   public constructor(params: Constructor) {
     this._StatisticsModel = params.StatisticsModel;
   }
+
+  // public update(): Promise<StatisticsData>{
+  //   return this.
+  // }
 }
 export { Statistics };

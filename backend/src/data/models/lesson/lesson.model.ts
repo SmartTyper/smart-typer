@@ -6,6 +6,7 @@ import {
   LessonToSkillKey,
   LessonRelationMappings,
   UserToFinishedLessonKey,
+  UserToStudyPlanLessonKey,
 } from 'common/enums/enums';
 import { ILessonRecord } from 'common/interfaces/interfaces';
 import { Skill, UserToFinishedLesson } from 'data/models/models';
@@ -43,6 +44,26 @@ class Lesson extends Base implements ILessonRecord {
         join: {
           from: `${TableName.LESSONS}.${CommonKey.ID}`,
           to: `${TableName.USERS_TO_FINISHED_LESSONS}.${UserToFinishedLessonKey.LESSON_ID}`,
+        },
+      },
+      [LessonRelationMappings.BEST_SKILL]: {
+        relation: Model.ManyToManyRelation,
+        modelClass: UserToFinishedLesson,
+        join: {
+          from: `${TableName.LESSONS}.${CommonKey.ID}`,
+          through: {
+            from: `${TableName.USERS_TO_FINISHED_LESSONS}.${UserToFinishedLessonKey.LESSON_ID}`,
+            to: `${TableName.USERS_TO_FINISHED_LESSONS}.${UserToFinishedLessonKey.BEST_SKILL_ID}`,
+          },
+          to: `${TableName.SKILLS}.${CommonKey.ID}`,
+        },
+      },
+      [LessonRelationMappings.STUDY_PLAN]: {
+        relation: Model.HasManyRelation,
+        modelClass: UserToFinishedLesson,
+        join: {
+          from: `${TableName.LESSONS}.${CommonKey.ID}`,
+          to: `${TableName.USERS_TO_STUDY_PLAN_LESSONS}.${UserToStudyPlanLessonKey.LESSON_ID}`,
         },
       },
     };

@@ -118,6 +118,14 @@ class User extends Base implements IUserRecord {
           to: `${TableName.SKILLS}.${CommonKey.ID}`,
         },
       },
+      [UserRelationMappings.USER_TO_SKILLS]: {
+        relation: Model.HasManyRelation,
+        modelClass: UserToRoom,
+        join: {
+          from: `${TableName.USERS}.${CommonKey.ID}`,
+          to: `${TableName.USERS_TO_SKILLS}.${UserToRoomKey.USER_ID}`,
+        },
+      },
     };
   }
 
