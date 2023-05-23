@@ -18,19 +18,10 @@ class Settings {
     userId: number,
     payload: Partial<SettingsDto>,
   ): Promise<SettingsDto> {
-    const settings = await this._settingsRepository.updateByUserId(
+    return this._settingsRepository.patchByUserId(
       userId,
       payload,
     );
-
-    if (!settings) {
-      throw new HttpError({
-        status: HttpCode.NOT_FOUND,
-        message: HttpErrorMessage.NO_USER_WITH_SUCH_ID,
-      });
-    }
-
-    return settings;
   }
 }
 

@@ -78,7 +78,7 @@ const App: FC = () => {
         <RRDRoute
           path={replaceRouteIdParam(
             AppRoute.USERS_$ID_PROFILE,
-            (user as UserDto).id,
+            user?.id,
           )}
           element={
             <WithHeader>

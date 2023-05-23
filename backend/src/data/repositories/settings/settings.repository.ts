@@ -14,13 +14,14 @@ class Settings {
     this._SettingsModel = params.SettingsModel;
   }
 
-  public async updateByUserId(
+  public async patchByUserId(
     userId: number,
     payload: Partial<SettingsDto>,
-  ): Promise<Omit<ISettingsRecord, 'userId'> | undefined> {
+  ): Promise<Omit<ISettingsRecord, 'userId'>> {
     return this._SettingsModel
       .query()
-      .patch(payload)
+      .findOne({ userId })
+      .patchAndFetch(payload)
       .returning([
         SettingsKey.COUNTDOWN_BEFORE_GAME,
         SettingsKey.GAME_TIME,
@@ -28,7 +29,6 @@ class Settings {
         SettingsKey.IS_SHOWN_IN_RATING,
         SettingsKey.IS_SOUND_TURNED_ON,
       ])
-      .findOne({ userId })
       .execute();
   }
 }
