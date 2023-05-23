@@ -1,7 +1,5 @@
 import { SettingsDto } from 'smart-typer-shared/common/types/types';
 import { settings as settingsRepository } from 'data/repositories/repositories';
-import { HttpError } from 'exceptions/exceptions';
-import { HttpCode, HttpErrorMessage } from 'common/enums/enums';
 
 type Constructor = {
   settingsRepository: typeof settingsRepository;
