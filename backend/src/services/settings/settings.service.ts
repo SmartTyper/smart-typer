@@ -1,4 +1,4 @@
-import { SettingsDto } from 'smart-typer-shared/common/types/types';
+import { SettingsDto } from 'common/types/types';
 import { settings as settingsRepository } from 'data/repositories/repositories';
 
 type Constructor = {
@@ -16,10 +16,7 @@ class Settings {
     userId: number,
     payload: Partial<SettingsDto>,
   ): Promise<SettingsDto> {
-    return this._settingsRepository.patchByUserId(
-      userId,
-      payload,
-    );
+    return this._settingsRepository.patchByUserId(userId, payload);
   }
 }
 

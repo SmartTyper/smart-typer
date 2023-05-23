@@ -23,6 +23,8 @@ import {
   Room,
   Skill,
   UserToRoom,
+  UserToSkill,
+  Lesson,
 } from 'data/models/models';
 
 import { Base } from '../base/base.model';
@@ -64,7 +66,7 @@ class User extends Base implements IUserRecord {
       },
       [UserRelationMappings.USER_TO_STUDY_PLAN_lESSONS]: {
         relation: Model.ManyToManyRelation,
-        modelClass: UserToStudyPlanLesson,
+        modelClass: Lesson,
         join: {
           from: `${TableName.USERS}.${CommonKey.ID}`,
           through: {
@@ -76,7 +78,7 @@ class User extends Base implements IUserRecord {
       },
       [UserRelationMappings.USER_TO_FINISHED_LESSONS]: {
         relation: Model.ManyToManyRelation,
-        modelClass: UserToFinishedLesson,
+        modelClass: Lesson,
         join: {
           from: `${TableName.USERS}.${CommonKey.ID}`,
           through: {
@@ -120,10 +122,10 @@ class User extends Base implements IUserRecord {
       },
       [UserRelationMappings.USER_TO_SKILLS]: {
         relation: Model.HasManyRelation,
-        modelClass: UserToRoom,
+        modelClass: UserToSkill,
         join: {
           from: `${TableName.USERS}.${CommonKey.ID}`,
-          to: `${TableName.USERS_TO_SKILLS}.${UserToRoomKey.USER_ID}`,
+          to: `${TableName.USERS_TO_SKILLS}.${UserToSkillKey.USER_ID}`,
         },
       },
     };

@@ -6,6 +6,7 @@ import {
   user as userRepository,
   settings as settingsRepository,
   lesson as lessonRepository,
+  statistics as statisticsRepository,
 } from 'data/repositories/repositories';
 
 import { Auth } from './auth/auth.service';
@@ -13,7 +14,7 @@ import { S3 } from './s3/s3.service';
 import { Settings } from './settings/settings.service';
 import { Token } from './token/token.service';
 import { User } from './user/user.service';
-// import { Statistics } from './statistics/statistics.service';
+import { Statistics } from './statistics/statistics.service';
 import { Axios } from './axios/axios';
 import { Hash } from './hash/hash.service';
 import { Joke } from './joke/joke.service';
@@ -43,7 +44,7 @@ const logger = new Logger();
 
 const joke = new Joke({ axiosService: axios, loggerService: logger });
 
-// const statistics = new Statistics({ statisticsRepository });
+const statistics = new Statistics({ statisticsRepository });
 
 const token = new Token({
   refreshTokenRepository,
@@ -89,7 +90,11 @@ const room = new Room({
 
 const its = new ITS();
 
-const lesson = new Lesson({ lessonRepository, itsService: its });
+const lesson = new Lesson({
+  lessonRepository,
+  itsService: its,
+  userService: user,
+});
 
 export {
   auth,
@@ -107,4 +112,5 @@ export {
   room,
   lesson,
   its,
+  statistics,
 };

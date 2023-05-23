@@ -9,7 +9,11 @@ import {
   UserToStudyPlanLessonKey,
 } from 'common/enums/enums';
 import { ILessonRecord } from 'common/interfaces/interfaces';
-import { Skill, UserToFinishedLesson } from 'data/models/models';
+import {
+  Skill,
+  UserToFinishedLesson,
+  UserToStudyPlanLesson,
+} from 'data/models/models';
 
 import { Base } from '../base/base.model';
 
@@ -48,7 +52,7 @@ class Lesson extends Base implements ILessonRecord {
       },
       [LessonRelationMappings.BEST_SKILL]: {
         relation: Model.ManyToManyRelation,
-        modelClass: UserToFinishedLesson,
+        modelClass: Skill,
         join: {
           from: `${TableName.LESSONS}.${CommonKey.ID}`,
           through: {
@@ -60,7 +64,7 @@ class Lesson extends Base implements ILessonRecord {
       },
       [LessonRelationMappings.STUDY_PLAN]: {
         relation: Model.HasManyRelation,
-        modelClass: UserToFinishedLesson,
+        modelClass: UserToStudyPlanLesson,
         join: {
           from: `${TableName.LESSONS}.${CommonKey.ID}`,
           to: `${TableName.USERS_TO_STUDY_PLAN_LESSONS}.${UserToStudyPlanLessonKey.LESSON_ID}`,

@@ -13,11 +13,8 @@ import {
 } from 'common/types/types';
 import { user as userRepository } from 'data/repositories/repositories';
 import { HttpError } from 'exceptions/exceptions';
-import {
-  token as tokenService,
-  s3 as s3Service,
-  user,
-} from 'services/services';
+import { token as tokenService, s3 as s3Service } from 'services/services';
+import { IUserToSkillRecord } from 'common/interfaces/interfaces';
 
 type Constructor = {
   userRepository: typeof userRepository;
@@ -212,6 +209,13 @@ class User {
     }
 
     return currentSkillLevels;
+  }
+
+  public async updateSkillLevelsByUserId(
+    userId: number,
+    payload: Omit<Skill, 'name'>[],
+  ): Promise<Omit<IUserToSkillRecord, 'userId'>[]> {
+    return this._userRepository.patchSkillLevelsByUserId(userId, payload);
   }
 }
 

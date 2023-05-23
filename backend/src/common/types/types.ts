@@ -8,3 +8,4 @@ export * from './lesson/lesson';
 export * from './its/its';
 export * from './skill/skill.type';
 export * from './statistics/statistics';
+export * from './settings/settings';

@@ -11,11 +11,12 @@ import {
   LessonResponseDto,
   CreateLessonRequestDto,
   SkillsStatisticsDto,
-  BktResult,
-  IrtResult,
-  Skill,
 } from 'common/types/types';
-import { its as itsService, user as userService } from 'services/services';
+import {
+  its as itsService,
+  user as userService,
+  statistics as statisticsService,
+} from 'services/services';
 import { lesson as lessonRepository } from 'data/repositories/repositories';
 import { HttpError } from 'exceptions/exceptions';
 import {
@@ -28,17 +29,20 @@ type Constructor = {
   lessonRepository: typeof lessonRepository;
   itsService: typeof itsService;
   userService: typeof userService;
+  statisticsService: typeof statisticsService;
 };
 
 class Lesson {
   private _lessonRepository: typeof lessonRepository;
   private _itsService: typeof itsService;
   private _userService: typeof userService;
+  private _statisticsService: typeof statisticsService;
 
   public constructor(params: Constructor) {
     this._lessonRepository = params.lessonRepository;
     this._itsService = params.itsService;
     this._userService = params.userService;
+    this._statisticsService = params.statisticsService;
   }
 
   public async getById(lessonId: number): Promise<LessonResponseDto> {
@@ -113,19 +117,28 @@ class Lesson {
     const resultSkillLevels = isTestLesson
       ? await this._itsService.IRT(payload)
       : await this._itsService.BKT(payload);
-    // update pKnown(skill_level) in user_to_skills table
 
-    // calculate lesson best skill
+    await this._userService.updateSkillLevelsByUserId(
+      userId,
+      resultSkillLevels.map((skill) => ({
+        id: skill.skillId,
+        level: skill.pKnown,
+      })),
+    );
+
     const lessonBestSkill = calculateLessonBestSkill(
       currentSkillLevels,
       resultSkillLevels,
     );
-    // calculate lesson average speed
     const lessonAverageSpeed = calculateLessonAverageSpeed(
       lesson.content,
       timestamps,
     );
-    // => save lessonId to finishedLessons
+    await this._lessonRepository.insertFinishedLesson(lessonId, {
+      userId,
+      bestSkillId: lessonBestSkill,
+      averageSpeed: lessonAverageSpeed,
+    });
 
     const oldStatistics = await this._statisticsService.getByUserId(userId);
     const { averageSpeed, todayAverageSpeed } =
@@ -137,14 +150,12 @@ class Lesson {
       newStatistics: { averageSpeed, todayAverageSpeed },
       lessonAverageSpeed,
     });
-    await this._statisticsService.updateByUserId(newStatistics);
+    await this._statisticsService.updateByUserId(userId, newStatistics);
 
     if (isLastTestLesson || !isTestLesson) {
       const { lessonId } = await this._itsService.AHP(payload);
       await this._lessonRepository.insertNewStudyPlanLesson(userId, lessonId);
     }
-    console.log(lessonId, payload);
-    return;
   }
 }
 

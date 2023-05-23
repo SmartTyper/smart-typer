@@ -14,6 +14,7 @@ import {
 import { IPaginationResponse } from 'common/interfaces/interfaces';
 import {
   CreateLessonRequestDto,
+  FinishedLesson,
   LessonDto,
   LessonResponseDto,
   LessonWithSkillNames,
@@ -186,6 +187,13 @@ class Lesson {
       .relatedQuery(LessonRelationMappings.STUDY_PLAN)
       .for(lessonId)
       .insert(userId);
+  }
+
+  public insertFinishedLesson(lessonId: number, payload: FinishedLesson) {
+    return this._LessonModel
+      .relatedQuery(LessonRelationMappings.FINISHED_LESSON)
+      .for(lessonId)
+      .insert(payload);
   }
 }
 export { Lesson };
