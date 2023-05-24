@@ -23,6 +23,8 @@ import {
   calculateLessonAverageSpeed,
   calculateLessonBestSkill,
   calculateStatistics,
+  mapLessonResultToSkillLevelsPayload,
+  mapLessonsToNextStudyPlanLessonPayload,
 } from 'helpers/helpers';
 
 type Constructor = {
@@ -98,7 +100,6 @@ class Lesson {
     lessonId: number,
     payload: SkillsStatisticsDto,
   ): Promise<void> {
-    // map to skills
     const { misclicks, timestamps } = payload;
     const lesson = await this._lessonRepository.getByIdWithSkills(lessonId);
     const currentSkillLevels =
@@ -111,12 +112,19 @@ class Lesson {
       });
     }
 
+    const skillLevelsPayload = mapLessonResultToSkillLevelsPayload({
+      lesson,
+      misclicks,
+      timestamps,
+      currentSkillLevels,
+    });
+
     const isTestLesson = TEST_LESSON_NAMES.includes(lesson.name);
     const isLastTestLesson = lesson.name === [...TEST_LESSON_NAMES].pop();
 
     const resultSkillLevels = isTestLesson
-      ? await this._itsService.IRT(payload)
-      : await this._itsService.BKT(payload);
+      ? await this._itsService.IRT(skillLevelsPayload)
+      : await this._itsService.BKT(skillLevelsPayload);
 
     await this._userService.updateSkillLevelsByUserId(
       userId,
@@ -153,7 +161,20 @@ class Lesson {
     await this._statisticsService.updateByUserId(userId, newStatistics);
 
     if (isLastTestLesson || !isTestLesson) {
-      const { lessonId } = await this._itsService.AHP(payload);
+      const lastFinishedLessonIds =
+        await this._lessonRepository.getLastNFinishedIds(userId, 5);
+      const systemLessons =
+        await this._lessonRepository.getAllSystemWithSkills();
+
+      const nextStudyPlanLessonPayload = mapLessonsToNextStudyPlanLessonPayload(
+        {
+          lastFinishedLessons: lastFinishedLessonIds,
+          systemLessons,
+        },
+      );
+      const { lessonId } = await this._itsService.AHP(
+        nextStudyPlanLessonPayload,
+      );
       await this._lessonRepository.insertNewStudyPlanLesson(userId, lessonId);
     }
   }

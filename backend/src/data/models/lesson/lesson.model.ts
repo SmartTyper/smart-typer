@@ -10,6 +10,7 @@ import {
 } from 'common/enums/enums';
 import { ILessonRecord } from 'common/interfaces/interfaces';
 import {
+  LessonToSkill,
   Skill,
   UserToFinishedLesson,
   UserToStudyPlanLesson,
@@ -68,6 +69,14 @@ class Lesson extends Base implements ILessonRecord {
         join: {
           from: `${TableName.LESSONS}.${CommonKey.ID}`,
           to: `${TableName.USERS_TO_STUDY_PLAN_LESSONS}.${UserToStudyPlanLessonKey.LESSON_ID}`,
+        },
+      },
+      [LessonRelationMappings.LESSON_TO_SKILLS]: {
+        relation: Model.HasManyRelation,
+        modelClass: LessonToSkill,
+        join: {
+          from: `${TableName.LESSONS}.${CommonKey.ID}`,
+          to: `${TableName.LESSONS_TO_SKILLS}.${LessonToSkillKey.LESSON_ID}`,
         },
       },
     };

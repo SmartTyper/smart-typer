@@ -5,6 +5,7 @@ import {
   CreatorType,
   LessonKey,
   LessonRelationMappings,
+  LessonToSkillKey,
   RecordsSortOrder,
   SkillKey,
   TableName,
@@ -17,7 +18,7 @@ import {
   FinishedLesson,
   LessonDto,
   LessonResponseDto,
-  LessonWithSkillNames,
+  LessonWithSkills,
   Statistics,
 } from 'common/types/types';
 import { Lesson as LessonModel } from 'data/models/models';
@@ -51,27 +52,46 @@ class Lesson {
 
   public async getByIdWithSkills(
     lessonId: number,
-  ): Promise<LessonWithSkillNames | undefined> {
+  ): Promise<LessonWithSkills | undefined> {
     return this._LessonModel
       .query()
       .select(
         ...Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN,
+        `${LessonRelationMappings.SKILLS}.${CommonKey.ID}`,
         `${LessonRelationMappings.SKILLS}.${SkillKey.NAME}`,
+        `${LessonRelationMappings.LESSON_TO_SKILLS}.${LessonToSkillKey.COUNT}`,
       )
       .findOne({ [CommonKey.ID]: lessonId })
-      .withGraphJoined(`[${LessonRelationMappings.SKILLS}]`)
-      .castTo<LessonWithSkillNames>()
+      .withGraphJoined(
+        `[${LessonRelationMappings.SKILLS}, ${LessonRelationMappings.LESSON_TO_SKILLS}]`,
+      )
+      .castTo<LessonWithSkills>()
       .execute();
   }
 
   public async create(
     data: CreateLessonRequestDto,
   ): Promise<LessonResponseDto> {
-    return this._LessonModel
+    const lesson = await this._LessonModel
       .query()
       .insert(data)
       .returning(Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN)
       .execute();
+
+    await this._LessonModel.raw(`
+      WITH skill_count AS (
+        SELECT ${lesson.id} AS lesson_id, skills.id AS skill_id,
+        (
+          SELECT count(*) GROUP BY regexp_matches('${data.content}', skills.name, 'gi')
+        ) AS count
+        FROM skills
+      )
+      INSERT INTO lessons_to_skills (lesson_id, skill_id, count)
+      SELECT * FROM skill_count
+      WHERE count IS NOT NULL;
+    `);
+
+    return lesson;
   }
 
   public async getLessons(
@@ -144,6 +164,7 @@ class Lesson {
       )
       .orderBy(
         `${LessonRelationMappings.STUDY_PLAN}.${UserToStudyPlanLessonKey.PRIORITY}`,
+        RecordsSortOrder.ASC,
       )
       .castTo<LessonDto[]>()
       .execute();
@@ -194,6 +215,42 @@ class Lesson {
       .relatedQuery(LessonRelationMappings.FINISHED_LESSON)
       .for(lessonId)
       .insert(payload);
+  }
+
+  public async getAllSystemWithSkills(): Promise<
+    Omit<LessonWithSkills, 'content' | 'name'>[]
+  > {
+    return this._LessonModel
+      .query()
+      .select(
+        `${TableName.LESSONS}.${CommonKey.ID}`,
+
+        `${LessonRelationMappings.SKILLS}.${CommonKey.ID}`,
+        `${LessonRelationMappings.SKILLS}.${SkillKey.NAME}`,
+        `${LessonRelationMappings.LESSON_TO_SKILLS}.${LessonToSkillKey.COUNT}`,
+      )
+      .where(LessonKey.CREATOR_TYPE, '=', CreatorType.SYSTEM)
+      .withGraphJoined(
+        `[${LessonRelationMappings.SKILLS}, ${LessonRelationMappings.LESSON_TO_SKILLS}]`,
+      )
+      .castTo<LessonWithSkills[]>()
+      .execute();
+  }
+
+  public async getLastNFinishedIds(
+    userId: number,
+    n: number,
+  ): Promise<Pick<LessonDto, 'id'>[]> {
+    return this._LessonModel
+      .query()
+      .select(CommonKey.ID)
+      .where({ userId })
+      .withGraphJoined(`[${LessonRelationMappings.FINISHED_LESSON}]`)
+      .orderBy(
+        `${LessonRelationMappings.FINISHED_LESSON}.${CommonKey.CREATED_AT}`,
+        RecordsSortOrder.DESC,
+      )
+      .limit(n);
   }
 }
 export { Lesson };

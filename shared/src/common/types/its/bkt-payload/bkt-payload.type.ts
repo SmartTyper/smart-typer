@@ -3,6 +3,7 @@ type BktPayload = {
   n: number;
   t: number;
   pKnown: number;
+  skillId: number;
 }[];
 
 export type { BktPayload };
