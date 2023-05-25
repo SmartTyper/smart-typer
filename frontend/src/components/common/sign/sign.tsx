@@ -1,7 +1,11 @@
 import { FC, SyntheticEvent } from 'common/types/types';
 import { RBForm } from 'components/external/external';
-import { HttpErrorMessage, WhiteSheetSize } from 'common/enums/enums';
-import { WhiteSheet } from 'components/common/common';
+import {
+  HttpErrorMessage,
+  ContentWrapperShadow,
+  ContentWrapperSize,
+} from 'common/enums/enums';
+import { ContentWrapper } from 'components/common/common';
 import {
   AlternativeRoute,
   GoogleButton,
@@ -40,7 +44,7 @@ const Sign: FC<Props> = ({
       <h3>{header}</h3>
       <span>{description}</span>
 
-      <WhiteSheet size={WhiteSheetSize.MEDIUM}>
+      <ContentWrapper size={ContentWrapperSize.MEDIUM} shadow={ContentWrapperShadow.LIGHT}>
         <RBForm className={styles.form}>
           <>
             {!!authError && <AuthError error={authError} />}
@@ -65,7 +69,7 @@ const Sign: FC<Props> = ({
             <GoogleButton />
           </>
         </RBForm>
-      </WhiteSheet>
+      </ContentWrapper>
     </div>
   );
 };

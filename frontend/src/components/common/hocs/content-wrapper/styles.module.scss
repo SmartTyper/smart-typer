@@ -1,12 +1,18 @@
 @import 'src/assets/css/variables';
 
-.whiteSheet {
-  box-shadow: $white-sheet-shadow;
+.contentWrapper {
   background-color: $light-green;
-  margin: auto;
-  margin-top: 3rem;
+  margin: 3rem auto;
   padding: 2rem;
   border-radius: 2px;
+
+  &.light {
+    box-shadow: $white-sheet-light-shadow;
+  }
+
+  &.strong {
+    box-shadow: $white-sheet-strong-shadow;
+  }
 
   &.medium {
     width: 40%;
