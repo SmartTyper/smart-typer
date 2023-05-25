@@ -58,9 +58,13 @@ class Lesson extends Abstract {
 
     router.post(
       '/:lessonId/result',
-      this._run((req) => {
+      this._run((req: IRequestWithUser) => {
         const lessonId = Number(req.params.lessonId);
-        return this._lessonService.handleLessonResult(lessonId, req.body);
+        return this._lessonService.handleLessonResult(
+          req.userId,
+          lessonId,
+          req.body,
+        );
       }),
     );
 

@@ -1,0 +1,61 @@
+import {
+  BktPayload,
+  IrtPayload,
+  LessonWithSkills,
+  Skill,
+} from 'common/types/types';
+
+type MapLessonResultItsPayload = {
+  lesson: LessonWithSkills;
+  misclicks: boolean[];
+  timestamps: number[];
+  currentSkillLevels: Omit<Skill, 'name'>[];
+};
+
+const mapLessonResultToSkillLevelsPayload = ({
+  lesson,
+  misclicks,
+  timestamps,
+  currentSkillLevels,
+}: MapLessonResultItsPayload): BktPayload & IrtPayload => {
+  return lesson.skills.map(({ id, name, count }) => {
+    const pKnown = currentSkillLevels.find((skill) => id === skill.id)
+      ?.level as number;
+
+    const startIndexes = [
+      ...lesson.content.matchAll(new RegExp(name, 'gi')),
+    ].map((result) => result.index as number);
+
+    const indexes =
+      name.length === 1
+        ? startIndexes
+        : startIndexes.reduce((indexes, index) => {
+            const nextIndexes = [...name].map((_, i) => i + (index as number));
+            return indexes.concat(nextIndexes);
+          }, [] as number[]);
+
+    const m = misclicks.filter(
+      (value, i) => indexes.includes(i) && value,
+    ).length;
+
+    const skillTimestamps = indexes.map(
+      (index) => timestamps[index + 1] - timestamps[index],
+    );
+
+    const skillTimestampsSum = skillTimestamps.reduce(
+      (partSum, value) => partSum + value,
+      0,
+    );
+    const t = skillTimestampsSum / skillTimestamps.length;
+
+    return {
+      m,
+      t,
+      n: count,
+      skillId: id,
+      pKnown,
+    };
+  });
+};
+
+export { mapLessonResultToSkillLevelsPayload };

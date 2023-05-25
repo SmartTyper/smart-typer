@@ -3,6 +3,7 @@ type IrtPayload = {
   n: number;
   t: number;
   pKnown: number;
+  skillId: number;
 }[];
 
 export type { IrtPayload };

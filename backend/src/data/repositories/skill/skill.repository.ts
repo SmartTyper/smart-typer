@@ -1,5 +1,5 @@
 // import { SkillKey } from 'common/enums/enums';
-import { ISkillRecord } from 'common/interfaces/interfaces';
+import { CommonKey } from 'common/enums/enums';
 import { Skill as SkillModel } from 'data/models/models';
 
 type Constructor = {
@@ -13,8 +13,11 @@ class Skill {
     this._SkillModel = params.SkillModel;
   }
 
-  public async getAllIds(): Promise<ISkillRecord[]> {
-    return this._SkillModel.query().select('id');
+  public async getAllIds(): Promise<CommonKey.ID[]> {
+    return this._SkillModel
+      .query()
+      .select(CommonKey.ID)
+      .castTo<CommonKey.ID[]>();
   }
 }
 export { Skill };
