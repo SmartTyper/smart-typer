@@ -1,7 +1,7 @@
-import { Knex } from 'knex';
 import axios from 'axios';
-import { load, CheerioAPI } from 'cheerio';
+import { CheerioAPI, load } from 'cheerio';
 import iconv from 'iconv-lite';
+import { Knex } from 'knex';
 
 const getHTML = async (url: string): Promise<CheerioAPI> => {
   const { data } = await axios.get(url, {
@@ -37,12 +37,8 @@ const getSkills = async (): Promise<string[]> => {
   const result = [];
 
   for (const firstLetter of alphabet) {
-    potentialSkills.push(firstLetter);
     for (const secondLetter of alphabet) {
       potentialSkills.push(`${firstLetter}${secondLetter}`);
-      for (const thirdLetter of alphabet) {
-        potentialSkills.push(`${firstLetter}${secondLetter}${thirdLetter}`);
-      }
     }
   }
 

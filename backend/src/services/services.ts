@@ -94,6 +94,7 @@ const lesson = new Lesson({
   lessonRepository,
   itsService: its,
   userService: user,
+  statisticsService: statistics,
 });
 
 export {

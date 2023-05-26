@@ -18,8 +18,6 @@ import {
   RefreshToken,
   Settings,
   Statistics,
-  UserToStudyPlanLesson,
-  UserToFinishedLesson,
   Room,
   Skill,
   UserToRoom,

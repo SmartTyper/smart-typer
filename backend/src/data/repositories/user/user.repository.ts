@@ -3,7 +3,6 @@ import {
   RoomKey,
   RoomRelationMappings,
   SettingsKey,
-  SkillKey,
   StatisticsKey,
   TableName,
   UserKey,
