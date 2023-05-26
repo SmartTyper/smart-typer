@@ -8,7 +8,7 @@ import {
   RoomRelationMappings,
 } from 'common/enums/enums';
 import { IRoomRecord } from 'common/interfaces/interfaces';
-import { Lesson, User } from 'data/models/models';
+import { Lesson, User, UserToRoom } from 'data/models/models';
 
 import { Base } from '../base/base.model';
 
@@ -39,6 +39,22 @@ class Room extends Base implements IRoomRecord {
         join: {
           from: `${TableName.ROOMS}.${RoomKey.LESSON_ID}`,
           to: `${TableName.LESSONS}.${CommonKey.ID}`,
+        },
+      },
+      [RoomRelationMappings.USER_TO_CURRENT_ROOM]: {
+        relation: Model.HasManyRelation,
+        modelClass: UserToRoom,
+        join: {
+          from: `${TableName.ROOMS}.${CommonKey.ID}`,
+          to: `${TableName.USERS_TO_ROOMS}.${UserToRoomKey.CURRENT_ROOM_ID}`,
+        },
+      },
+      [RoomRelationMappings.USER_TO_PERSONAL_ROOM]: {
+        relation: Model.HasOneRelation,
+        modelClass: UserToRoom,
+        join: {
+          from: `${TableName.ROOMS}.${CommonKey.ID}`,
+          to: `${TableName.USERS_TO_ROOMS}.${UserToRoomKey.PERSONAL_ROOM_ID}`,
         },
       },
     };

@@ -8,3 +8,4 @@ export type {
   SendRoomUrlToEmailsRequestDto,
   ParticipantIdDto,
 } from 'smart-typer-shared/common/types/types';
+export * from './participants-count/participants-count.type';

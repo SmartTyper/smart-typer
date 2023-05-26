@@ -113,7 +113,7 @@ class Room {
       });
     }
 
-    const { ownerId } =
+    const { userId: ownerId } =
       (await this._roomRepository.getOwnerIdByPersonalRoomId(roomId)) ?? {};
 
     if (participantId !== ownerId && ownerId) {
@@ -154,7 +154,7 @@ class Room {
       });
     }
 
-    const { ownerId } =
+    const { userId: ownerId } =
       (await this._roomRepository.getOwnerIdByPersonalRoomId(roomId)) ?? {};
 
     await this._userService.updateCurrentRoomByUserId(participantId, null);

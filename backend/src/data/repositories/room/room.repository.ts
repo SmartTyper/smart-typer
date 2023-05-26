@@ -2,9 +2,18 @@ import {
   DEFAULT_PERSONAL_ROOM_NAME,
   MAX_USERS_IN_ROOM,
 } from 'common/constants/constants';
-import { CommonKey, RoomRelationMappings, RoomKey } from 'common/enums/enums';
+import {
+  CommonKey,
+  RoomRelationMappings,
+  RoomKey,
+  UserToRoomKey,
+} from 'common/enums/enums';
 import { IRoomRecord } from 'common/interfaces/interfaces';
-import { RecordWithoutCommonDateKeys, RoomDto } from 'common/types/types';
+import {
+  ParticipantsCount,
+  RecordWithoutCommonDateKeys,
+  RoomDto,
+} from 'common/types/types';
 import { Room as RoomModel } from 'data/models/models';
 
 type Constructor = {
@@ -46,9 +55,33 @@ class Room {
       .execute();
   }
 
-  // public async getParticipantsCountById(roomId: number): Promise<number> {}
+  public async getParticipantsCountById(
+    roomId: number,
+  ): Promise<ParticipantsCount> {
+    return this._RoomModel
+      .query()
+      .count('*')
+      .where(CommonKey.ID, roomId)
+      .andWhereNot({
+        [`${RoomRelationMappings.USER_TO_CURRENT_ROOM}.${UserToRoomKey.USER_ID}`]:
+          null,
+      })
+      .withGraphJoined(`[${RoomRelationMappings.USER_TO_CURRENT_ROOM}]`)
+      .castTo<ParticipantsCount>();
+  }
 
-  // public async getOwnerIdByPersonalRoomId(roomId: number): Promise<number> {}
+  public async getOwnerIdByPersonalRoomId(
+    roomId: number,
+  ): Promise<{ [UserToRoomKey.USER_ID]: number | null }> {
+    return this._RoomModel
+      .query()
+      .select(
+        `${RoomRelationMappings.USER_TO_PERSONAL_ROOM}.${UserToRoomKey.USER_ID}`,
+      )
+      .where(CommonKey.ID, roomId)
+      .withGraphJoined(`[${RoomRelationMappings.USER_TO_PERSONAL_ROOM}]`)
+      .castTo<{ [UserToRoomKey.USER_ID]: number | null }>();
+  }
 
   public async getAllAvailable(): Promise<RoomDto[]> {
     return this._RoomModel
