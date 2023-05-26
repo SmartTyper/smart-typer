@@ -1,0 +1,120 @@
+@import 'src/assets/css/variables';
+
+.suggestionItem {
+  position: relative;
+  counter-increment: list;
+  width: 42.5rem;
+  margin: 2rem 0;
+  padding: 2rem 1rem 1rem;
+  overflow: hidden;
+  background-color: white;
+  border: 1px solid rgba($black, 0.25);
+
+  &:last-child {
+    margin: 2rem auto;
+  }
+
+  &::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  &.blue {
+    &::before {
+      background: linear-gradient(
+        to right,
+        $blue-accent 20%,
+        rgba($blue-accent, 0.2) 20%
+      );
+    }
+
+    .suggestionTitle::before {
+      background-color: $blue-accent;
+    }
+  }
+
+  &.green {
+    &::before {
+      background: linear-gradient(
+        to right,
+        $green-accent 20%,
+        rgba($green-accent, 0.2) 20%
+      );
+    }
+
+    .suggestionTitle::before {
+      background-color: $green-accent;
+    }
+  }
+
+  &.orange {
+    &::before {
+      background: linear-gradient(
+        to right,
+        $orange-accent 20%,
+        rgba($orange-accent, 0.2) 20%
+      );
+    }
+
+    .suggestionTitle::before {
+      background-color: $orange-accent;
+    }
+  }
+
+  &.yellow {
+    &::before {
+      background: linear-gradient(
+        to right,
+        $yellow-accent 20%,
+        rgba($yellow-accent, 0.2) 20%
+      );
+    }
+
+    .suggestionTitle::before {
+      background-color: $yellow-accent;
+    }
+  }
+
+  &.pink {
+    &::before {
+      background: linear-gradient(
+        to right,
+        $pink-accent 20%,
+        rgba($pink-accent, 0.2) 20%
+      );
+    }
+
+    .suggestionTitle::before {
+      background-color: $pink-accent;
+    }
+  }
+
+  .suggestionTitle {
+    display: flex;
+    align-items: baseline;
+    margin: 0 0 1rem;
+
+    &::before {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 0 0 auto;
+      margin-right: 1rem;
+      width: 3rem;
+      height: 3rem;
+      content: counter(list);
+      padding: 1rem;
+      border-radius: 50%;
+    }
+  }
+
+  .suggestionText {
+    margin: 0;
+    line-height: 1.6;
+  }
+}

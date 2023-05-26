@@ -102,8 +102,8 @@ const { reducer } = createSlice({
         }
       })
       .addCase(loadCommentatorText.fulfilled, (state, action) => {
-        const { commentatorText } = action.payload;
-        if (state.currentRoom) {
+        const { commentatorText } = action.payload ?? {};
+        if (commentatorText && state.currentRoom) {
           state.currentRoom = {
             ...state.currentRoom,
             commentatorText,

@@ -1,8 +1,8 @@
-import { DropdownButton, DropdownLink, FC, UserDto } from 'common/types/types';
+import { DropdownButton, DropdownLink, FC } from 'common/types/types';
 import { RBNavbar } from 'components/external/external';
 import { AppRoute } from 'common/enums/enums';
 import { NavItem, ProfileDropdown } from './components/components';
-import { useDispatch, useSelector } from 'hooks/hooks';
+import { useDispatch } from 'hooks/hooks';
 import { auth as authActions } from 'store/modules/actions';
 import { replaceRouteIdParam } from 'helpers/helpers';
 
@@ -10,7 +10,13 @@ import styles from './styles.module.scss';
 
 const Header: FC = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.auth.user as UserDto);
+  // const user = useSelector((state) => state.auth.user as UserDto);
+  const user = {
+    id: 1,
+    email: '1',
+    nickname: 'user',
+    photoUrl: null,
+  };
   const userId = user.id;
 
   const handleLogout = (): void => {

@@ -5,11 +5,20 @@ $light-grey: #e9ecef;
 $main-green: #4bba73;
 $dark-green: #0b673c;
 $light-green: #f2f6ee;
+$blue-accent: #64e3ff;
+$green-accent: #77e2a9;
+$yellow-accent: #feef7e;
+$orange-accent: #ffc17f;
+$pink-accent: #f69ec5;
+
 $avatar-shadow: rgba(0, 0, 0, 0.15) 0px 0px 10px inset;
-$white-sheet-shadow: 0 1px 3px rgba(0, 0, 0, 0.12),
+$white-sheet-light-shadow: 0 1px 3px rgba(0, 0, 0, 0.12),
   0 1px 2px rgba(0, 0, 0, 0.24);
+$white-sheet-strong-shadow: 0 1px 12px rgba(0, 0, 0, 0.252),
+  0 1px 8px rgba(0, 0, 0, 0.24);
 $button-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.4);
 $input-shadow: 0px 0px 5px 0px $main-green;
+
 $button-transition: background-color 0.218s ease 0s, border-color 0.218s ease 0s,
   box-shadow 0.218s ease 0s;
 

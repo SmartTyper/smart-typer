@@ -57,4 +57,4 @@ rules:
     - allowSingleExtends: true
   '@typescript-eslint/no-explicit-any':
     - error
-    - hasSuggestions
+    - hasSuggestions: true

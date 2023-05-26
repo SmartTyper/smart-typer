@@ -1,5 +1,5 @@
 import { AppRoute, StorageKey } from 'common/enums/enums';
-import { FC, UserDto } from 'common/types/types';
+import { FC } from 'common/types/types';
 import { RRDRoute, RRDRoutes } from 'components/external/external';
 import { WithHeader, ProtectedRoute } from 'components/common/common';
 import { Home } from 'components/home/home';

@@ -3,10 +3,10 @@
   width: 100%;
   display: grid;
   grid-template-rows: 60px 1fr;
-  background-image: url(../../../../assets/img/background.png);
-  background-size: 100%;
 
   .childComponent {
-    height: calc(100vh - 60px);
+    min-height: calc(100vh - 60px);
+    background-image: url(../../../../assets/img/background.png);
+    background-size: contain;
   }
 }
