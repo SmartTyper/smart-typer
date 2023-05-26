@@ -1,4 +1,4 @@
-import * as yup from 'yup';
+import { yup } from 'dependencies/dependencies';
 import { passwordSchema as baseSetPasswordSchema } from 'smart-typer-shared/validation-schemas/validation-schemas';
 import { ValidationErrorMessage } from 'common/enums/enums';
 

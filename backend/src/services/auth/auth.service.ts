@@ -50,23 +50,23 @@ class Auth {
     try {
       await this._userService.getByEmail(payload.email);
 
-      const hashedPassword = await this._hashService.hash(payload.password);
-
-      const newUser = await this._userService.create({
-        ...payload,
-        password: hashedPassword,
+      throw new HttpError({
+        status: HttpCode.CONFLICT,
+        message: HttpErrorMessage.EMAIL_ALREADY_EXISTS,
       });
-
-      return this._userService.getAuthInfoByEmail(newUser.email);
     } catch (error) {
       if (
         error instanceof HttpError &&
         error.message === HttpErrorMessage.NO_USER_WITH_SUCH_ID
       ) {
-        throw new HttpError({
-          status: HttpCode.CONFLICT,
-          message: HttpErrorMessage.EMAIL_ALREADY_EXISTS,
+        const hashedPassword = await this._hashService.hash(payload.password);
+
+        const newUser = await this._userService.create({
+          ...payload,
+          password: hashedPassword,
         });
+
+        return this._userService.getAuthInfoByEmail(newUser.email);
       } else {
         throw error;
       }

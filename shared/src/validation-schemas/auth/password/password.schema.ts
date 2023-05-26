@@ -1,4 +1,4 @@
-import * as yup from 'yup';
+import { yup } from 'dependencies/dependencies';
 import {
   MAX_PASSWORD_LENGTH,
   MIN_PASSWORD_LENGTH,

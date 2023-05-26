@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import { AnySchema } from 'yup';
+import { yup } from 'dependencies/dependencies';
 import { HttpCode } from 'common/enums/enums';
 import { ValidationError } from 'exceptions/exceptions';
 
-export const getValidationMiddleware = <T extends AnySchema>(
+export const getValidationMiddleware = <T extends yup.AnySchema>(
   schema: {
     body?: T;
     query?: T;
@@ -27,11 +27,11 @@ export const getValidationMiddleware = <T extends AnySchema>(
       next();
     } catch (err: unknown) {
       if (err instanceof ValidationError) {
-        const { errors } = err;
-
         res.status(HttpCode.BAD_REQUEST).send({
-          messages: errors,
+          messages: err.message,
         });
+      } else {
+        next(err);
       }
     }
   };

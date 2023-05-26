@@ -71,24 +71,24 @@ class User {
       ]);
 
     await this._UserModel
-      .relatedQuery(UserRelationMappings.SKILLS)
+      .relatedQuery(UserRelationMappings.USER_TO_SKILLS)
       .for(user.id)
-      .relate(this._skillRepository.getAllIds());
+      .insert(await this._skillRepository.getAllIds());
 
     await this._UserModel
       .relatedQuery(UserRelationMappings.SETTINGS)
       .for(user.id)
-      .insert();
+      .insert({});
 
     await this._UserModel
       .relatedQuery(UserRelationMappings.STATISTICS)
       .for(user.id)
-      .insert();
+      .insert({});
 
     await this._UserModel
-      .relatedQuery(UserRelationMappings.PERSONAL_ROOM)
+      .relatedQuery(UserRelationMappings.USER_TO_ROOMS)
       .for(user.id)
-      .relate(this._roomRepository.createPersonal());
+      .insert(await this._roomRepository.createPersonal());
 
     //user-to-study-plan create records with test lessons
 
@@ -136,10 +136,7 @@ class User {
       )
       .findOne({ [UserKey.EMAIL]: email.toLowerCase() })
       .withGraphJoined(
-        [
-          `${UserRelationMappings.SETTINGS}`,
-          `${UserRelationMappings.PERSONAL_ROOM}.[${RoomRelationMappings.PARTICIPANTS}]`,
-        ].join(),
+        `[${UserRelationMappings.SETTINGS}, ${UserRelationMappings.PERSONAL_ROOM}.[${RoomRelationMappings.PARTICIPANTS}]]`,
       )
       .castTo<
         IUserRecord & Pick<UserAuthInfoResponseDto, 'personalRoom' | 'settings'>

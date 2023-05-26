@@ -26,12 +26,17 @@ const logger = pino({
 });
 
 const io = new Server(httpServer);
+
 socketService.initIo(io);
 io.on(SocketEvent.CONNECTION, socketService.initHandlers);
 
 loggerService.initLogger(logger);
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ENV.APP.URL,
+  }),
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

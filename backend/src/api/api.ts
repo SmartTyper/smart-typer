@@ -16,11 +16,12 @@ import {
   lesson as lessonService,
   joke as jokeService,
 } from 'services/services';
+import { ENV } from 'common/constants/constants';
 
 const router: Router = Router();
 
 router.use(
-  '/api',
+  ENV.APP.API_PREFIX,
   getAuthMiddleware({ tokenService }),
   getRoutes({
     getFileMiddleware,

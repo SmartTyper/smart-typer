@@ -8,7 +8,7 @@ import {
   RoomKey,
   UserToRoomKey,
 } from 'common/enums/enums';
-import { IRoomRecord } from 'common/interfaces/interfaces';
+import { IRoomRecord, IUserToRoomRecord } from 'common/interfaces/interfaces';
 import {
   ParticipantsCount,
   RecordWithoutCommonDateKeys,
@@ -33,11 +33,19 @@ class Room {
     return this._RoomModel.query().insertAndFetch(data);
   }
 
-  public async createPersonal(): Promise<Pick<IRoomRecord, CommonKey.ID>> {
-    return this._RoomModel
+  public async createPersonal(): Promise<
+    Pick<IUserToRoomRecord, UserToRoomKey.PERSONAL_ROOM_ID>
+  > {
+    const { personalRoomId } = await this._RoomModel
       .query()
-      .insertAndFetch({ name: DEFAULT_PERSONAL_ROOM_NAME, isPrivate: true })
-      .returning(`${CommonKey.ID}`);
+      .insert({
+        name: DEFAULT_PERSONAL_ROOM_NAME,
+        isPrivate: true,
+      })
+      .returning(`${CommonKey.ID} as ${UserToRoomKey.PERSONAL_ROOM_ID}`)
+      .castTo<Pick<IUserToRoomRecord, UserToRoomKey.PERSONAL_ROOM_ID>>();
+
+    return { personalRoomId };
   }
 
   public async getById(roomId: number): Promise<RoomDto | undefined> {

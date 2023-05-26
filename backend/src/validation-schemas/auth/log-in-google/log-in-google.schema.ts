@@ -1,4 +1,4 @@
-import * as yup from 'yup';
+import { yup } from 'dependencies/dependencies';
 import { ValidationErrorMessage } from 'common/enums/enums';
 
 const logInGoogleSchema = yup

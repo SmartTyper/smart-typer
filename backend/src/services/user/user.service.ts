@@ -52,6 +52,7 @@ class User {
   ): Promise<UserAuthInfoResponseDto> {
     const user =
       await this._userRepository.getByEmailWithSettingsAndPersonalRoom(email);
+
     if (!user) {
       throw new HttpError({
         status: HttpCode.NOT_FOUND,
@@ -78,6 +79,7 @@ class User {
 
   public async getByEmail(email: string): Promise<UserWithPassword> {
     const user = await this._userRepository.getByEmail(email);
+    console.log(user);
 
     if (!user) {
       throw new HttpError({

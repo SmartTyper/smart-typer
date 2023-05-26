@@ -103,7 +103,7 @@ class User extends Base implements IUserRecord {
         modelClass: UserToRoom,
         join: {
           from: `${TableName.USERS}.${CommonKey.ID}`,
-          to: `${TableName.USERS_TO_ROOMS}.${UserToRoomKey.CURRENT_ROOM_ID}`,
+          to: `${TableName.USERS_TO_ROOMS}.${UserToRoomKey.USER_ID}`,
         },
       },
       [UserRelationMappings.SKILLS]: {
