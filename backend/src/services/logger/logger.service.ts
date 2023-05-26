@@ -31,7 +31,7 @@ class Logger {
     if (!this._logger) {
       return;
     }
-    this._logger.error.apply(this, args);
+    this._logger.error(...args);
   };
 }
 

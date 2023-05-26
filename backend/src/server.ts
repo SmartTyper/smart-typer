@@ -19,7 +19,7 @@ const app: Express = express();
 const httpServer = createServer(app);
 
 const knex = Knex(knexConfig[ENV.APP.NODE_ENV as Environment]);
-Model.knex();
+Model.knex(knex);
 
 const logger = pino({
   prettyPrint: true,
@@ -31,11 +31,7 @@ io.on(SocketEvent.CONNECTION, socketService.initHandlers);
 
 loggerService.initLogger(logger);
 
-app.use(
-  cors({
-    origin: ENV.APP.URL,
-  }),
-);
+app.use(cors());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

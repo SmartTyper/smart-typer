@@ -27,7 +27,7 @@ const ENV = {
   APP: {
     NODE_ENV,
     SERVER_PORT: Number(PORT),
-    API_PREFIX,
+    API_PREFIX: API_PREFIX ?? '',
     SECRET_KEY: SECRET_KEY ?? '',
     URL: APP_URL ?? '',
   },

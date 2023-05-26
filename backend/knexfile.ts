@@ -1,6 +1,5 @@
 import { Knex } from 'knex';
 import { knexSnakeCaseMappers } from 'objection';
-
 import { Environment } from './src/common/enums/enums';
 import { ENV } from './src/common/constants/constants';
 
