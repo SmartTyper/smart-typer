@@ -161,38 +161,44 @@ class User {
   public async getByIdWithSettingsAndPersonalRoom(
     userId: number,
   ): Promise<
-    | (RecordWithoutCommonDateKeys<IUserRecord> &
-        Pick<UserAuthInfoResponseDto, 'personalRoom' | 'settings'>)
-    | undefined
+    Omit<UserAuthInfoResponseDto, keyof TokensResponseDto> | undefined
   > {
-    return this._UserModel
-      .query()
-      .select(
-        ...User.DEFAULT_USER_COLUMNS_TO_RETURN,
+    const { userToRooms, ...user } =
+      (await this._UserModel
+        .query()
+        .select(...User.DEFAULT_USER_COLUMNS_TO_RETURN)
+        .findById(userId)
+        .withGraphJoined(
+          `[${UserRelationMappings.SETTINGS}, ${UserRelationMappings.USER_TO_ROOMS}.[${UserToRoomRelationMappings.PERSONAL_ROOM}.[${RoomRelationMappings.PARTICIPANTS}]]]`,
+        )
+        .modifyGraph(UserRelationMappings.SETTINGS, (builder) =>
+          builder.select(
+            SettingsKey.COUNTDOWN_BEFORE_GAME,
+            SettingsKey.GAME_TIME,
+            SettingsKey.HAS_EMAIL_NOTIFICATIONS,
+            SettingsKey.IS_SHOWN_IN_RATING,
+            SettingsKey.IS_SOUND_TURNED_ON,
+          ),
+        )
+        .modifyGraph(
+          `${UserRelationMappings.USER_TO_ROOMS}.[${UserToRoomRelationMappings.PERSONAL_ROOM}]`,
+          (builder) =>
+            builder.select(CommonKey.ID, RoomKey.LESSON_ID, RoomKey.NAME),
+        )
+        .modifyGraph(
+          `${UserRelationMappings.USER_TO_ROOMS}.[${UserToRoomRelationMappings.PERSONAL_ROOM}.[${RoomRelationMappings.PARTICIPANTS}]]`,
+          (builder) =>
+            builder.select(CommonKey.ID, UserKey.NICKNAME, UserKey.PHOTO_URL),
+        )
+        .castTo<any>()) ?? {};
 
-        `${UserRelationMappings.SETTINGS}.${SettingsKey.COUNTDOWN_BEFORE_GAME}`,
-        `${UserRelationMappings.SETTINGS}.${SettingsKey.GAME_TIME}`,
-        `${UserRelationMappings.SETTINGS}.${SettingsKey.HAS_EMAIL_NOTIFICATIONS}`,
-        `${UserRelationMappings.SETTINGS}.${SettingsKey.IS_SHOWN_IN_RATING}`,
-        `${UserRelationMappings.SETTINGS}.${SettingsKey.IS_SOUND_TURNED_ON}`,
-
-        `${UserRelationMappings.PERSONAL_ROOM}.${CommonKey.ID}`,
-        `${UserRelationMappings.PERSONAL_ROOM}.${RoomKey.LESSON_ID}`,
-        `${UserRelationMappings.PERSONAL_ROOM}.${RoomKey.NAME}`,
-
-        `${UserRelationMappings.PERSONAL_ROOM}.${RoomRelationMappings.PARTICIPANTS}.*`,
-      )
-      .findById(userId)
-      .withGraphJoined(
-        [
-          `${UserRelationMappings.SETTINGS}`,
-          `${UserRelationMappings.PERSONAL_ROOM}.[${RoomRelationMappings.PARTICIPANTS}]`,
-        ].join(),
-      )
-      .castTo<
-        IUserRecord & Pick<UserAuthInfoResponseDto, 'personalRoom' | 'settings'>
-      >()
-      .execute();
+    if (!userToRooms) {
+      return;
+    }
+    return {
+      ...user,
+      personalRoom: userToRooms.personalRoom,
+    };
   }
 
   public async getById(

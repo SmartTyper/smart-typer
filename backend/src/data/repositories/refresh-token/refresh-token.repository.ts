@@ -14,10 +14,14 @@ class RefreshToken {
     this._RefreshTokenModel = params.RefreshTokenModel;
   }
 
-  public async create(
+  public async upsert(
     data: RecordWithoutCommonKeys<IRefreshTokenRecord>,
   ): Promise<IRefreshTokenRecord> {
-    return this._RefreshTokenModel.query().insert(data);
+    return this._RefreshTokenModel
+      .query()
+      .insert(data)
+      .onConflict(RefreshTokenKey.USER_ID)
+      .merge();
   }
 
   public async getByToken(

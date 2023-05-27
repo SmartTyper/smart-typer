@@ -59,7 +59,7 @@ class Token {
 
   public async getTokens(userId: number): Promise<TokensResponseDto> {
     const tokens = this.generateTokens(userId);
-    await this._refreshTokenRepository.create({
+    await this._refreshTokenRepository.upsert({
       userId,
       token: tokens.refreshToken,
     });
@@ -78,9 +78,6 @@ class Token {
       if (!userRefreshToken) {
         throw new Error();
       }
-      await this._refreshTokenRepository.removeByUserId(
-        userRefreshToken.userId,
-      );
       const tokens = await this.getTokens(userRefreshToken.userId);
       return tokens;
     } catch {
