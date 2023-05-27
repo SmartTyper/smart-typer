@@ -18,7 +18,6 @@ import {
   RefreshToken,
   Settings,
   Statistics,
-  Room,
   Skill,
   UserToRoom,
   UserToSkill,
@@ -84,18 +83,6 @@ class User extends Base implements IUserRecord {
             to: `${TableName.USERS_TO_FINISHED_LESSONS}.${UserToFinishedLessonKey.LESSON_ID}`,
           },
           to: `${TableName.LESSONS}.${CommonKey.ID}`,
-        },
-      },
-      [UserRelationMappings.PERSONAL_ROOM]: {
-        relation: Model.BelongsToOneRelation,
-        modelClass: Room,
-        join: {
-          from: `${TableName.USERS}.${CommonKey.ID}`,
-          through: {
-            from: `${TableName.USERS_TO_ROOMS}.${UserToRoomKey.USER_ID}`,
-            to: `${TableName.USERS_TO_ROOMS}.${UserToRoomKey.PERSONAL_ROOM_ID}`,
-          },
-          to: `${TableName.ROOMS}.${CommonKey.ID}`,
         },
       },
       [UserRelationMappings.USER_TO_ROOMS]: {

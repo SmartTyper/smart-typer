@@ -22,7 +22,7 @@ class Room extends Base implements IRoomRecord {
   public static override get relationMappings(): RelationMappings {
     return {
       [RoomRelationMappings.PARTICIPANTS]: {
-        relation: Model.HasManyRelation,
+        relation: Model.ManyToManyRelation,
         modelClass: User,
         join: {
           from: `${TableName.ROOMS}.${CommonKey.ID}`,

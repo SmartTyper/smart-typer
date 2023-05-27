@@ -8,6 +8,7 @@ import {
   UserKey,
   UserRelationMappings,
   UserToRoomKey,
+  UserToRoomRelationMappings,
   UserToSkillKey,
 } from 'common/enums/enums';
 import {
@@ -22,6 +23,7 @@ import {
   UserAuthInfoResponseDto,
   UserProfileInfoResponseDto,
   Skill,
+  TokensResponseDto,
 } from 'common/types/types';
 import { User as UserModel } from 'data/models/models';
 import {
@@ -113,35 +115,42 @@ class User {
   public async getByEmailWithSettingsAndPersonalRoom(
     email: string,
   ): Promise<
-    | (RecordWithoutCommonDateKeys<IUserRecord> &
-        Pick<UserAuthInfoResponseDto, 'personalRoom' | 'settings'>)
-    | undefined
+    Omit<UserAuthInfoResponseDto, keyof TokensResponseDto> | undefined
   > {
-    return this._UserModel
+    const { userToRooms, ...user } = await this._UserModel
       .query()
-      .select(
-        ...User.DEFAULT_USER_COLUMNS_TO_RETURN,
-
-        `${UserRelationMappings.SETTINGS}.${SettingsKey.COUNTDOWN_BEFORE_GAME}`,
-        `${UserRelationMappings.SETTINGS}.${SettingsKey.GAME_TIME}`,
-        `${UserRelationMappings.SETTINGS}.${SettingsKey.HAS_EMAIL_NOTIFICATIONS}`,
-        `${UserRelationMappings.SETTINGS}.${SettingsKey.IS_SHOWN_IN_RATING}`,
-        `${UserRelationMappings.SETTINGS}.${SettingsKey.IS_SOUND_TURNED_ON}`,
-
-        `${UserRelationMappings.PERSONAL_ROOM}.${CommonKey.ID}`,
-        `${UserRelationMappings.PERSONAL_ROOM}.${RoomKey.LESSON_ID}`,
-        `${UserRelationMappings.PERSONAL_ROOM}.${RoomKey.NAME}`,
-
-        `${UserRelationMappings.PERSONAL_ROOM}.${RoomRelationMappings.PARTICIPANTS}.*`,
-      )
-      .findOne({ [UserKey.EMAIL]: email.toLowerCase() })
+      .select(...User.DEFAULT_USER_COLUMNS_TO_RETURN)
+      .findOne({
+        [`${TableName.USERS}.${UserKey.EMAIL}`]: email.toLowerCase(),
+      })
       .withGraphJoined(
-        `[${UserRelationMappings.SETTINGS}, ${UserRelationMappings.PERSONAL_ROOM}.[${RoomRelationMappings.PARTICIPANTS}]]`,
+        `[${UserRelationMappings.SETTINGS}, ${UserRelationMappings.USER_TO_ROOMS}.[${UserToRoomRelationMappings.PERSONAL_ROOM}.[${RoomRelationMappings.PARTICIPANTS}]]]`,
       )
-      .castTo<
-        IUserRecord & Pick<UserAuthInfoResponseDto, 'personalRoom' | 'settings'>
-      >()
-      .execute();
+      .modifyGraph(UserRelationMappings.SETTINGS, (builder) =>
+        builder.select(
+          SettingsKey.COUNTDOWN_BEFORE_GAME,
+          SettingsKey.GAME_TIME,
+          SettingsKey.HAS_EMAIL_NOTIFICATIONS,
+          SettingsKey.IS_SHOWN_IN_RATING,
+          SettingsKey.IS_SOUND_TURNED_ON,
+        ),
+      )
+      .modifyGraph(
+        `${UserRelationMappings.USER_TO_ROOMS}.[${UserToRoomRelationMappings.PERSONAL_ROOM}]`,
+        (builder) =>
+          builder.select(CommonKey.ID, RoomKey.LESSON_ID, RoomKey.NAME),
+      )
+      .modifyGraph(
+        `${UserRelationMappings.USER_TO_ROOMS}.[${UserToRoomRelationMappings.PERSONAL_ROOM}.[${RoomRelationMappings.PARTICIPANTS}]]`,
+        (builder) =>
+          builder.select(CommonKey.ID, UserKey.NICKNAME, UserKey.PHOTO_URL),
+      )
+      .castTo<any>();
+
+    return {
+      ...user,
+      personalRoom: userToRooms.personalRoom,
+    };
   }
 
   public async getByIdWithSettingsAndPersonalRoom(
