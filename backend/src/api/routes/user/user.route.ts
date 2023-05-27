@@ -44,7 +44,7 @@ class User extends Abstract {
       '/current',
       this._run(
         (req: IRequestWithUser) =>
-          this._userService.updateById(req.userId, req.body), // only nickname, email
+          this._userService.patchById(req.userId, req.body), // only nickname, email
       ),
     );
     // password kik

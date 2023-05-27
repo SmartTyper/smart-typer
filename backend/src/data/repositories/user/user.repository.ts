@@ -24,6 +24,7 @@ import {
   UserProfileInfoResponseDto,
   Skill,
   TokensResponseDto,
+  UserDto,
 } from 'common/types/types';
 import { User as UserModel } from 'data/models/models';
 import {
@@ -212,67 +213,68 @@ class User {
   public async patchById(
     userId: number,
     data: Partial<IUserRecord>,
-  ): Promise<RecordWithoutCommonDateKeys<IUserRecord>> {
+  ): Promise<UserDto> {
     return this._UserModel
       .query()
-      .patchAndFetchById(userId, data)
+      .findById(userId)
+      .patch(data)
       .returning([
         CommonKey.ID,
         UserKey.EMAIL,
         UserKey.NICKNAME,
-        UserKey.PASSWORD,
         UserKey.PHOTO_URL,
-      ]);
+      ])
+      .castTo<RecordWithoutCommonDateKeys<IUserRecord>>();
   }
 
   public async getByIdWithStatistics(
     userId: number,
-  ): Promise<
-    RecordWithoutCommonDateKeys<IUserRecord> &
-      Pick<UserProfileInfoResponseDto, 'statistics'>
-  > {
+  ): Promise<Omit<UserProfileInfoResponseDto, 'rating'> | undefined> {
     return this._UserModel
       .query()
-      .select(
-        ...User.DEFAULT_USER_COLUMNS_TO_RETURN,
-
-        `${UserRelationMappings.STATISTICS}.${StatisticsKey.AVERAGE_SPEED}`,
-        `${UserRelationMappings.STATISTICS}.${StatisticsKey.TODAY_AVERAGE_SPEED}`,
-        `${UserRelationMappings.STATISTICS}.${StatisticsKey.TODAY_LESSONS}`,
-        `${UserRelationMappings.STATISTICS}.${StatisticsKey.TODAY_TIME}`,
-        `${UserRelationMappings.STATISTICS}.${StatisticsKey.TODAY_TOP_SPEED}`,
-        `${UserRelationMappings.STATISTICS}.${StatisticsKey.TOP_SPEED}`,
-        `${UserRelationMappings.STATISTICS}.${StatisticsKey.TOTAL_LESSONS}`,
-        `${UserRelationMappings.STATISTICS}.${StatisticsKey.TOTAL_TIME}`,
-      )
+      .select(...User.DEFAULT_USER_COLUMNS_TO_RETURN)
       .findById(userId)
       .withGraphJoined(`[${UserRelationMappings.STATISTICS}]`)
-      .castTo<IUserRecord & Pick<UserProfileInfoResponseDto, 'statistics'>>()
-      .execute();
+      .modifyGraph(UserRelationMappings.STATISTICS, (builder) =>
+        builder.select(
+          StatisticsKey.AVERAGE_SPEED,
+          StatisticsKey.TODAY_AVERAGE_SPEED,
+          StatisticsKey.TODAY_LESSONS,
+          StatisticsKey.TODAY_TIME,
+          StatisticsKey.TODAY_TOP_SPEED,
+          StatisticsKey.TOP_SPEED,
+          StatisticsKey.TOTAL_LESSONS,
+          StatisticsKey.TOTAL_TIME,
+        ),
+      )
+      .castTo<Omit<UserProfileInfoResponseDto, 'rating'>>();
   }
 
   public async getRating(): Promise<Rating> {
-    return this._UserModel
+    const rating = await this._UserModel
       .query()
       .select(
         `${TableName.USERS}.${CommonKey.ID}`,
         `${TableName.USERS}.${UserKey.NICKNAME}`,
         `${TableName.USERS}.${UserKey.PHOTO_URL}`,
-
-        `${UserRelationMappings.STATISTICS}.${StatisticsKey.AVERAGE_SPEED}`,
       )
       .withGraphJoined(
-        [
-          `${UserRelationMappings.STATISTICS}`,
-          `${UserRelationMappings.SETTINGS}`,
-        ].join(),
+        `[${UserRelationMappings.STATISTICS},${UserRelationMappings.SETTINGS}]`,
       )
-      .where(
-        `${UserRelationMappings.SETTINGS}.${SettingsKey.IS_SHOWN_IN_RATING}`,
-        true,
+      .modifyGraph(UserRelationMappings.SETTINGS, (builder) =>
+        builder.where(SettingsKey.IS_SHOWN_IN_RATING, true),
       )
-      .castTo<Rating>()
-      .execute();
+      .modifyGraph(UserRelationMappings.STATISTICS, (builder) =>
+        builder.select(StatisticsKey.AVERAGE_SPEED),
+      )
+      .castTo<any[]>();
+
+    const mappedRating = rating.map(({ statistics, settings, ...user }) => ({
+      ...user,
+      averageSpeed: statistics.averageSpeed,
+    }));
+
+    return mappedRating;
   }
 
   public async updateCurrentRoomByUserId(

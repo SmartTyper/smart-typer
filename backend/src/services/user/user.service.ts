@@ -1,5 +1,5 @@
 import { basename } from 'path';
-import { HttpCode, HttpErrorMessage } from 'common/enums/enums';
+import { HttpCode, HttpErrorMessage, UserKey } from 'common/enums/enums';
 import {
   UserDto,
   UserWithPassword,
@@ -36,9 +36,14 @@ class User {
   private async _addPhotoUrlAndTokens(
     user: Omit<UserAuthInfoResponseDto, keyof TokensResponseDto>,
   ): Promise<UserAuthInfoResponseDto> {
-    const photoUrl = user.photoUrl
-      ? await this._s3Service.getSignedUrl(user.photoUrl)
-      : null;
+    const isGoogleUrl = user?.photoUrl?.match(/google/i);
+
+    const photoUrl = !user.photoUrl
+      ? null
+      : isGoogleUrl
+      ? user.photoUrl
+      : await this._s3Service.getSignedUrl(user.photoUrl);
+
     const tokens = await this._tokenService.getTokens(user.id);
     return {
       ...user,
@@ -103,9 +108,16 @@ class User {
     return this._userRepository.create(userData);
   }
 
-  public async updateById(
+  public async patchById(
     userId: number,
-    data: Partial<UserWithPassword>,
+    data: Partial<Pick<UserDto, UserKey.NICKNAME | UserKey.EMAIL>>,
+  ): Promise<UserDto> {
+    return this._userRepository.patchById(userId, data);
+  }
+
+  public async updatePasswordById(
+    userId: number,
+    data: Pick<UserWithPassword, UserKey.PASSWORD>,
   ): Promise<UserDto> {
     return this._userRepository.patchById(userId, data);
   }
@@ -116,6 +128,12 @@ class User {
     const userWithStatistics = await this._userRepository.getByIdWithStatistics(
       userId,
     );
+    if (!userWithStatistics) {
+      throw new HttpError({
+        status: HttpCode.NOT_FOUND,
+        message: HttpErrorMessage.NO_USER_WITH_SUCH_ID,
+      });
+    }
     const rating = await this._userRepository.getRating();
     return {
       ...userWithStatistics,
