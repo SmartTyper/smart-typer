@@ -126,6 +126,7 @@ class User {
           [`${TableName.USERS}.${UserKey.EMAIL}`]: email.toLowerCase(),
         })
         .withGraphJoined(
+          // eslint-disable-next-line max-len
           `[${UserRelationMappings.SETTINGS}, ${UserRelationMappings.USER_TO_ROOMS}.[${UserToRoomRelationMappings.PERSONAL_ROOM}.[${RoomRelationMappings.PARTICIPANTS}]]]`,
         )
         .modifyGraph(UserRelationMappings.SETTINGS, (builder) =>
@@ -143,10 +144,12 @@ class User {
             builder.select(CommonKey.ID, RoomKey.LESSON_ID, RoomKey.NAME),
         )
         .modifyGraph(
+          // eslint-disable-next-line max-len
           `${UserRelationMappings.USER_TO_ROOMS}.[${UserToRoomRelationMappings.PERSONAL_ROOM}.[${RoomRelationMappings.PARTICIPANTS}]]`,
           (builder) =>
             builder.select(CommonKey.ID, UserKey.NICKNAME, UserKey.PHOTO_URL),
         )
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .castTo<any>()) ?? {};
 
     if (!userToRooms) {
@@ -169,6 +172,7 @@ class User {
         .select(...User.DEFAULT_USER_COLUMNS_TO_RETURN)
         .findById(userId)
         .withGraphJoined(
+          // eslint-disable-next-line max-len
           `[${UserRelationMappings.SETTINGS}, ${UserRelationMappings.USER_TO_ROOMS}.[${UserToRoomRelationMappings.PERSONAL_ROOM}.[${RoomRelationMappings.PARTICIPANTS}]]]`,
         )
         .modifyGraph(UserRelationMappings.SETTINGS, (builder) =>
@@ -186,10 +190,12 @@ class User {
             builder.select(CommonKey.ID, RoomKey.LESSON_ID, RoomKey.NAME),
         )
         .modifyGraph(
+          // eslint-disable-next-line max-len
           `${UserRelationMappings.USER_TO_ROOMS}.[${UserToRoomRelationMappings.PERSONAL_ROOM}.[${RoomRelationMappings.PARTICIPANTS}]]`,
           (builder) =>
             builder.select(CommonKey.ID, UserKey.NICKNAME, UserKey.PHOTO_URL),
         )
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .castTo<any>()) ?? {};
 
     if (!userToRooms) {
@@ -273,8 +279,10 @@ class User {
       .modifyGraph(UserRelationMappings.STATISTICS, (builder) =>
         builder.select(StatisticsKey.AVERAGE_SPEED),
       )
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .castTo<any[]>();
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const mappedRating = rating.map(({ statistics, settings, ...user }) => ({
       ...user,
       averageSpeed: statistics.averageSpeed,
@@ -328,6 +336,7 @@ class User {
       noInsert: true,
       relate: UserRelationMappings.USER_TO_SKILLS,
     };
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     return this._UserModel
       .query()
