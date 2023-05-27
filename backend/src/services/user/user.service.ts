@@ -41,8 +41,8 @@ class User {
     const photoUrl = !user.photoUrl
       ? null
       : isGoogleUrl
-      ? user.photoUrl
-      : await this._s3Service.getSignedUrl(user.photoUrl);
+        ? user.photoUrl
+        : await this._s3Service.getSignedUrl(user.photoUrl);
 
     const tokens = await this._tokenService.getTokens(user.id);
     return {

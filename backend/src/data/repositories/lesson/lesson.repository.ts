@@ -13,7 +13,7 @@ import {
   UserToFinishedLessonRelationMapping,
   UserToStudyPlanLessonKey,
 } from 'common/enums/enums';
-import { IPaginationResponse } from 'common/interfaces/interfaces';
+import { ILessonRecord, IPaginationResponse } from 'common/interfaces/interfaces';
 import {
   CreateLessonRequestDto,
   FinishedLesson,
@@ -132,6 +132,7 @@ class Lesson {
       .orderBy(`${TableName.LESSONS}.${CommonKey.ID}`, RecordsSortOrder.ASC)
       .offset(offset)
       .limit(limit)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .castTo<any[]>();
 
     const mappedLessons = lessons.map(({ finishedLesson, ...lesson }) => ({
@@ -217,18 +218,23 @@ class Lesson {
       .castTo<Pick<Statistics, 'averageSpeed' | 'todayAverageSpeed'>>();
   }
 
-  public insertNewStudyPlanLesson(userId: number, lessonId: number) {
+  public insertNewStudyPlanLesson(userId: number, lessonId: number): Promise<ILessonRecord> {
     return this._LessonModel
       .relatedQuery(LessonRelationMappings.STUDY_PLAN)
       .for(lessonId)
-      .insert(userId);
+      .insert(userId)
+      .castTo<ILessonRecord>()
+      .execute();
+
   }
 
-  public insertFinishedLesson(lessonId: number, payload: FinishedLesson) {
+  public insertFinishedLesson(lessonId: number, payload: FinishedLesson): Promise<ILessonRecord> {
     return this._LessonModel
       .relatedQuery(LessonRelationMappings.FINISHED_LESSON)
       .for(lessonId)
-      .insert(payload);
+      .insert(payload)
+      .castTo<ILessonRecord>()
+      .execute();
   }
 
   public async getAllSystemWithSkills(): Promise<

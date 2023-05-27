@@ -42,12 +42,10 @@ class User extends Abstract {
 
     router.put(
       '/current',
-      this._run(
-        (req: IRequestWithUser) =>
-          this._userService.patchById(req.userId, req.body), // only nickname, email
+      this._run((req: IRequestWithUser) =>
+        this._userService.patchById(req.userId, req.body),
       ),
     );
-    // password kik
 
     router.put(
       '/current/avatar',

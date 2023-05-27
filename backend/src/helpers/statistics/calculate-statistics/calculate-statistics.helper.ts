@@ -12,7 +12,7 @@ const calculateStatistics = ({
   timestamps,
   newStatistics,
   lessonAverageSpeed,
-}: CalculateStatisticsArgs) => {
+}: CalculateStatisticsArgs): Statistics => {
   const {
     totalTime: oldTotalTime,
     todayTime: oldTodayTime,

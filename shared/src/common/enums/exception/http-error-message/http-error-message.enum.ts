@@ -9,7 +9,6 @@ enum HttpErrorMessage {
   NO_LESSON_WITH_SUCH_ID = 'Lesson with such id does not exist',
   ROOM_ALREADY_EXISTS = 'Room with such name already exists',
   MAX_COUNT_OF_USERS = 'Room has max count of users',
-  // prettier-ignore
   JOIN_PERSONAL_ROOM = 'You can\'t join another user\'s personal room',
   INVALID_LOG_IN_DATA = 'Incorrect email or password',
   INVALID_FILE_TYPE = 'Invalid file type',
