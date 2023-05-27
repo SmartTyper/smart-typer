@@ -14,8 +14,11 @@ type Props = {
   note?: string | JSX.Element;
   error?: FieldError;
   className?: string;
+  inputClassName?: string;
   value?: string;
   readOnly?: boolean;
+  defaultValue?: number | string;
+  defaultChecked?: boolean;
 };
 
 const FormField: FC<Props> = ({
@@ -26,7 +29,10 @@ const FormField: FC<Props> = ({
   register,
   error,
   className,
+  inputClassName,
   value,
+  defaultValue,
+  defaultChecked,
   readOnly = false,
 }) => {
   const renderFormField = (type: FormFieldType): JSX.Element => {
@@ -37,7 +43,7 @@ const FormField: FC<Props> = ({
             placeholder={placeholder}
             register={register}
             error={error}
-            className={styles.input}
+            className={clsx(styles.input, inputClassName)}
             readOnly={readOnly}
             value={value}
           />
@@ -46,9 +52,10 @@ const FormField: FC<Props> = ({
         return (
           <Checkbox
             register={register}
-            className={styles.input}
+            className={inputClassName}
             readOnly={readOnly}
             value={value}
+            defaultChecked={defaultChecked}
           />
         );
       default:
@@ -58,16 +65,21 @@ const FormField: FC<Props> = ({
             type={type}
             register={register}
             error={error}
-            className={styles.input}
+            className={clsx(styles.input, inputClassName)}
             readOnly={readOnly}
             value={value}
+            defaultValue={defaultValue}
           />
         );
     }
   };
   return (
     <RBForm.Group
-      className={clsx(styles.formField, className)}
+      className={clsx(
+        styles.formField,
+        className,
+        type !== FormFieldType.CHECKBOX && styles.flexColumn,
+      )}
       controlId={label}
     >
       <RBForm.Label className={styles.label}>{label}</RBForm.Label>

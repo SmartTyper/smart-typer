@@ -1,0 +1,44 @@
+@import 'src/assets/css/variables';
+
+.settingItem {
+  position: relative;
+  counter-increment: list;
+  width: 20vw;
+  margin: 2rem;
+  padding: 2rem 2rem;
+  overflow: hidden;
+  background-color: white;
+  border: 1px solid rgba($black, 0.25);
+
+  &::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 1rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  &.blue::before {
+    background: rgba($blue-accent, 0.2);
+  }
+
+  &.orange::before {
+    background: rgba($orange-accent, 0.2);
+  }
+
+  &.yellow::before {
+    background: rgba($yellow-accent, 0.2);
+  }
+
+  &.pink::before {
+    background: rgba($pink-accent, 0.2);
+  }
+
+  .settingTitle {
+    display: flex;
+    align-items: baseline;
+    margin: 0 0 1rem;
+  }
+}

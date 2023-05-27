@@ -1,4 +1,9 @@
-import { TokensResponseDto, SettingsDto, RoomDto, UserDto } from 'common/types/types';
+import {
+  TokensResponseDto,
+  SettingsDto,
+  RoomDto,
+  UserDto,
+} from 'common/types/types';
 
 type UserAuthInfoResponseDto = UserDto &
   TokensResponseDto & {

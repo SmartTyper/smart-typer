@@ -1,7 +1,7 @@
 @import 'src/assets/css/variables';
 
 .googleButton {
-  font-size: 1.6rem !important;
+  font-size: $middle-font-size !important;
   margin: 0.5rem 0 !important;
   box-shadow: none !important;
   transition: $button-transition !important;

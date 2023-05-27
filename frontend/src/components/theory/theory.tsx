@@ -14,10 +14,7 @@ import styles from './styles.module.scss';
 
 const Theory: FC = () => {
   return (
-    <ContentWrapper
-      size={ContentWrapperSize.LARGE}
-      className={styles.theoryContainer}
-    >
+    <ContentWrapper size={ContentWrapperSize.LARGE} className={styles.theory}>
       <h2 className={styles.intro}>
         The journey to becoming a smarter and more efficient typist is a
         rewarding one, not just in terms of increased productivity, but also in

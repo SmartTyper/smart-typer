@@ -44,7 +44,10 @@ const Sign: FC<Props> = ({
       <h3>{header}</h3>
       <span>{description}</span>
 
-      <ContentWrapper size={ContentWrapperSize.MEDIUM} shadow={ContentWrapperShadow.LIGHT}>
+      <ContentWrapper
+        size={ContentWrapperSize.MEDIUM}
+        shadow={ContentWrapperShadow.LIGHT}
+      >
         <RBForm className={styles.form}>
           <>
             {!!authError && <AuthError error={authError} />}
