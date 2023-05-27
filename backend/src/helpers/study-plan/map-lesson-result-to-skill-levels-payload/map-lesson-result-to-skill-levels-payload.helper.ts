@@ -30,9 +30,9 @@ const mapLessonResultToSkillLevelsPayload = ({
       name.length === 1
         ? startIndexes
         : startIndexes.reduce((indexes, index) => {
-            const nextIndexes = [...name].map((_, i) => i + (index as number));
-            return indexes.concat(nextIndexes);
-          }, [] as number[]);
+          const nextIndexes = [...name].map((_, i) => i + (index as number));
+          return indexes.concat(nextIndexes);
+        }, [] as number[]);
 
     const m = misclicks.filter(
       (value, i) => indexes.includes(i) && value,

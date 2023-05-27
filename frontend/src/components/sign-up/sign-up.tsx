@@ -46,7 +46,6 @@ const SignUp: FC = () => {
       onSubmit={handleSubmit(handleSubmitForm)}
       isSubmitDisabled={isSignUpLoading}
       alternativeRoute={{
-        // prettier-ignore
         label: 'Already have an account?',
         linkText: 'Log in',
         path: AppRoute.LOG_IN,
