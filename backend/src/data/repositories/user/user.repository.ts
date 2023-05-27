@@ -25,6 +25,7 @@ import {
   Skill,
   TokensResponseDto,
   UserDto,
+  UserWithPassword,
 } from 'common/types/types';
 import { User as UserModel } from 'data/models/models';
 import {
@@ -224,7 +225,7 @@ class User {
 
   public async patchById(
     userId: number,
-    data: Partial<IUserRecord>,
+    data: Partial<Omit<UserWithPassword, CommonKey.ID>>,
   ): Promise<UserDto> {
     return this._UserModel
       .query()
