@@ -76,10 +76,7 @@ const App: FC = () => {
           }
         />
         <RRDRoute
-          path={replaceRouteIdParam(
-            AppRoute.USERS_$ID_PROFILE,
-            user?.id,
-          )}
+          path={replaceRouteIdParam(AppRoute.USERS_$ID_PROFILE, user?.id)}
           element={
             <WithHeader>
               <Profile />
@@ -95,10 +92,9 @@ const App: FC = () => {
           }
         />
       </RRDRoute>
-      <RRDRoute path={AppRoute.LOG_IN} element={<LogIn />} />
       <RRDRoute path={AppRoute.SIGN_UP} element={<SignUp />} />
       <RRDRoute path={AppRoute.LOG_IN_GOOGLE} element={<LogInGoogle />} />
-      <RRDRoute path={AppRoute.SIGN_UP} element={<SignUp />} />
+      <RRDRoute path={AppRoute.LOG_IN} element={<LogIn />} />
     </RRDRoutes>
   );
 };

@@ -91,6 +91,7 @@ class User {
     return user;
   }
 
+  //refactor result
   public create(data: CreateUserRequestDto): Promise<UserWithPassword> {
     const { nickname, email, photoUrl, password } = data;
     const userData = {

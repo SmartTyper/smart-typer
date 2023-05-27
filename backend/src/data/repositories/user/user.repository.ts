@@ -117,36 +117,40 @@ class User {
   ): Promise<
     Omit<UserAuthInfoResponseDto, keyof TokensResponseDto> | undefined
   > {
-    const { userToRooms, ...user } = await this._UserModel
-      .query()
-      .select(...User.DEFAULT_USER_COLUMNS_TO_RETURN)
-      .findOne({
-        [`${TableName.USERS}.${UserKey.EMAIL}`]: email.toLowerCase(),
-      })
-      .withGraphJoined(
-        `[${UserRelationMappings.SETTINGS}, ${UserRelationMappings.USER_TO_ROOMS}.[${UserToRoomRelationMappings.PERSONAL_ROOM}.[${RoomRelationMappings.PARTICIPANTS}]]]`,
-      )
-      .modifyGraph(UserRelationMappings.SETTINGS, (builder) =>
-        builder.select(
-          SettingsKey.COUNTDOWN_BEFORE_GAME,
-          SettingsKey.GAME_TIME,
-          SettingsKey.HAS_EMAIL_NOTIFICATIONS,
-          SettingsKey.IS_SHOWN_IN_RATING,
-          SettingsKey.IS_SOUND_TURNED_ON,
-        ),
-      )
-      .modifyGraph(
-        `${UserRelationMappings.USER_TO_ROOMS}.[${UserToRoomRelationMappings.PERSONAL_ROOM}]`,
-        (builder) =>
-          builder.select(CommonKey.ID, RoomKey.LESSON_ID, RoomKey.NAME),
-      )
-      .modifyGraph(
-        `${UserRelationMappings.USER_TO_ROOMS}.[${UserToRoomRelationMappings.PERSONAL_ROOM}.[${RoomRelationMappings.PARTICIPANTS}]]`,
-        (builder) =>
-          builder.select(CommonKey.ID, UserKey.NICKNAME, UserKey.PHOTO_URL),
-      )
-      .castTo<any>();
+    const { userToRooms, ...user } =
+      (await this._UserModel
+        .query()
+        .select(...User.DEFAULT_USER_COLUMNS_TO_RETURN)
+        .findOne({
+          [`${TableName.USERS}.${UserKey.EMAIL}`]: email.toLowerCase(),
+        })
+        .withGraphJoined(
+          `[${UserRelationMappings.SETTINGS}, ${UserRelationMappings.USER_TO_ROOMS}.[${UserToRoomRelationMappings.PERSONAL_ROOM}.[${RoomRelationMappings.PARTICIPANTS}]]]`,
+        )
+        .modifyGraph(UserRelationMappings.SETTINGS, (builder) =>
+          builder.select(
+            SettingsKey.COUNTDOWN_BEFORE_GAME,
+            SettingsKey.GAME_TIME,
+            SettingsKey.HAS_EMAIL_NOTIFICATIONS,
+            SettingsKey.IS_SHOWN_IN_RATING,
+            SettingsKey.IS_SOUND_TURNED_ON,
+          ),
+        )
+        .modifyGraph(
+          `${UserRelationMappings.USER_TO_ROOMS}.[${UserToRoomRelationMappings.PERSONAL_ROOM}]`,
+          (builder) =>
+            builder.select(CommonKey.ID, RoomKey.LESSON_ID, RoomKey.NAME),
+        )
+        .modifyGraph(
+          `${UserRelationMappings.USER_TO_ROOMS}.[${UserToRoomRelationMappings.PERSONAL_ROOM}.[${RoomRelationMappings.PARTICIPANTS}]]`,
+          (builder) =>
+            builder.select(CommonKey.ID, UserKey.NICKNAME, UserKey.PHOTO_URL),
+        )
+        .castTo<any>()) ?? {};
 
+    if (!userToRooms) {
+      return;
+    }
     return {
       ...user,
       personalRoom: userToRooms.personalRoom,

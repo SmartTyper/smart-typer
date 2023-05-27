@@ -172,19 +172,29 @@ class Auth {
         message: HttpErrorMessage.UNAUTHORIZED,
       });
     }
+
     const decodedToken = this._tokenService.decodeToken(idToken);
     const { email, name, picture } = decodedToken as unknown as GoogleUser;
-    const user = await this._userService.getAuthInfoByEmail(email);
-    if (user) {
-      return user;
-    }
-    const newUser = await this._userService.create({
-      nickname: name,
-      email,
-      photoUrl: picture,
-    });
 
-    return this._userService.getAuthInfoByEmail(newUser.email);
+    try {
+      const user = await this._userService.getAuthInfoByEmail(email);
+      return user;
+    } catch (error) {
+      if (
+        error instanceof HttpError &&
+        error.message === HttpErrorMessage.NO_SUCH_EMAIL
+      ) {
+        const newUser = await this._userService.create({
+          nickname: name,
+          email,
+          photoUrl: picture,
+        });
+
+        return this._userService.getAuthInfoByEmail(newUser.email);
+      } else {
+        throw error;
+      }
+    }
   }
 }
 

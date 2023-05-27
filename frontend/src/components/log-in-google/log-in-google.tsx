@@ -17,7 +17,7 @@ const LogInGoogle: FC = () => {
     if (code) {
       handleGoogle(code);
     } else {
-      navigate(AppRoute.ROOT);
+      navigate(AppRoute.LOG_IN);
     }
   }, []);
 

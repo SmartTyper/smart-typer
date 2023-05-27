@@ -1,7 +1,7 @@
 enum AppRoute {
   ROOT = '/',
   LOG_IN = '/log-in',
-  LOG_IN_GOOGLE = '/log-in-google',
+  LOG_IN_GOOGLE = '/log-in/google',
   SIGN_UP = '/sign-up',
   THEORY = '/theory',
   LESSONS = '/lessons',

@@ -13,14 +13,14 @@ const WithHeader: FC = ({ children }) => {
   }));
 
   useEffect(() => {
-    if (!isLogOutLoading && user) {
+    if (!isLogOutLoading && !user) {
       navigate(AppRoute.LOG_IN);
     }
   }, [isLogOutLoading, user]);
 
   return (
     <div className={styles.withHeader}>
-      {user ? (
+      {!user ? (
         <Spinner size={SpinnerSize.LARGE} />
       ) : (
         <>
