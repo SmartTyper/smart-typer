@@ -51,18 +51,6 @@ class Lesson extends Base implements ILessonRecord {
           to: `${TableName.USERS_TO_FINISHED_LESSONS}.${UserToFinishedLessonKey.LESSON_ID}`,
         },
       },
-      [LessonRelationMappings.BEST_SKILL]: {
-        relation: Model.ManyToManyRelation,
-        modelClass: Skill,
-        join: {
-          from: `${TableName.LESSONS}.${CommonKey.ID}`,
-          through: {
-            from: `${TableName.USERS_TO_FINISHED_LESSONS}.${UserToFinishedLessonKey.LESSON_ID}`,
-            to: `${TableName.USERS_TO_FINISHED_LESSONS}.${UserToFinishedLessonKey.BEST_SKILL_ID}`,
-          },
-          to: `${TableName.SKILLS}.${CommonKey.ID}`,
-        },
-      },
       [LessonRelationMappings.STUDY_PLAN]: {
         relation: Model.HasManyRelation,
         modelClass: UserToStudyPlanLesson,

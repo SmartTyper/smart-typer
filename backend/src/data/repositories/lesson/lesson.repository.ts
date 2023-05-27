@@ -10,6 +10,7 @@ import {
   SkillKey,
   TableName,
   UserToFinishedLessonKey,
+  UserToFinishedLessonRelationMapping,
   UserToStudyPlanLessonKey,
 } from 'common/enums/enums';
 import { IPaginationResponse } from 'common/interfaces/interfaces';
@@ -95,6 +96,7 @@ class Lesson {
   }
 
   public async getLessons(
+    userId: number,
     offset: number,
     limit: number,
     contentType?: ContentType,
@@ -104,9 +106,8 @@ class Lesson {
       .query()
       .select(
         ...Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN,
-        `${TableName.LESSONS}.${LessonKey.CONTENT_TYPE}`,
-        `${TableName.LESSONS}.${LessonKey.CREATOR_TYPE}`,
-        `${LessonRelationMappings.BEST_SKILL}.${SkillKey.NAME}`,
+        LessonKey.CONTENT_TYPE,
+        LessonKey.CREATOR_TYPE,
       )
       .where((builder) => {
         if (contentType) {
@@ -118,17 +119,30 @@ class Lesson {
           builder.where({ creatorType });
         }
       })
-      .withGraphJoined(`[${LessonRelationMappings.BEST_SKILL}]`)
+      .withGraphJoined(
+        `[${LessonRelationMappings.FINISHED_LESSON}.[${UserToFinishedLessonRelationMapping.SKILL}]]`,
+      )
+      .modifyGraph(LessonRelationMappings.FINISHED_LESSON, (builder) =>
+        builder.findOne({ userId }),
+      )
+      .modifyGraph(
+        `${LessonRelationMappings.FINISHED_LESSON}.[${UserToFinishedLessonRelationMapping.SKILL}]`,
+        (builder) => builder.select(SkillKey.NAME),
+      )
       .orderBy(`${TableName.LESSONS}.${CommonKey.ID}`, RecordsSortOrder.ASC)
       .offset(offset)
       .limit(limit)
-      .castTo<LessonDto[]>()
-      .execute();
+      .castTo<any[]>();
+
+    const mappedLessons = lessons.map(({ finishedLesson, ...lesson }) => ({
+      ...lesson,
+      bestSkill: finishedLesson?.pop()?.skill?.name ?? null,
+    }));
 
     const count = await this._LessonModel.query().resultSize();
 
     return {
-      data: lessons,
+      data: mappedLessons,
       count,
     };
   }

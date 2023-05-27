@@ -38,9 +38,10 @@ class Lesson extends Abstract {
 
     router.get(
       '/',
-      this._run((req) => {
+      this._run((req: IRequestWithUser) => {
         const { offset, limit, contentType, creatorType } = req.query;
         return this._lessonService.getMore(
+          req.userId,
           Number(offset),
           Number(limit),
           contentType as ContentType,

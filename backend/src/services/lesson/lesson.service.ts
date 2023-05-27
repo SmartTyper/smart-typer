@@ -66,12 +66,14 @@ class Lesson {
   }
 
   public async getMore(
+    userId: number,
     offset: number,
     limit: number,
     contentType?: ContentType,
     creatorType?: CreatorType,
   ): Promise<IPaginationResponse<LessonDto>> {
     return this._lessonRepository.getLessons(
+      userId,
       offset,
       limit,
       contentType,

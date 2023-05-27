@@ -50,13 +50,7 @@ class Http {
         } else {
           this._areTokensRefreshing = true;
           const { accessToken } = await this._refreshTokens(error);
-          const { queryParams, ...restOptions } = options;
-
-          return this._sendRequest(
-            this._getFetchUrl(url, queryParams),
-            restOptions,
-            accessToken,
-          );
+          return this._sendRequest(url, options, accessToken);
         }
       } else {
         throw error;
@@ -69,11 +63,18 @@ class Http {
     options: Partial<HttpOptions> = {},
     accessToken?: string,
   ): Promise<T> {
-    const { method = HttpMethod.GET, payload = null, contentType } = options;
+    const {
+      method = HttpMethod.GET,
+      payload = null,
+      contentType,
+      queryParams,
+    } = options;
+
     const token = accessToken || localStorage.getItem(StorageKey.ACCESS_TOKEN);
     const headers = this._getHeaders(contentType, token);
+    const fetchUrl = this._getFetchUrl(url, queryParams);
 
-    const response = await fetch(url, {
+    const response = await fetch(fetchUrl, {
       method,
       headers,
       body: payload,
@@ -163,9 +164,12 @@ class Http {
     endpoint: string,
     queryParams?: Record<string, unknown>,
   ): string {
+    console.log(queryParams);
+    console.log(queryString.stringify(queryParams as Record<string, unknown>));
     const fetchUrl = `${endpoint}${
       queryParams ? `?${queryString.stringify(queryParams)}` : ''
     }`;
+    console.log(fetchUrl);
     return fetchUrl;
   }
 

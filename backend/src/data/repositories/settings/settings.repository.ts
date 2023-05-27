@@ -1,5 +1,6 @@
 import { SettingsKey } from 'common/enums/enums';
 import { ISettingsRecord } from 'common/interfaces/interfaces';
+import { RecordWithoutCommonKeys } from 'common/types/types';
 import { Settings as SettingsModel } from 'data/models/models';
 import { SettingsDto } from 'smart-typer-shared/common/types/types';
 
@@ -17,11 +18,11 @@ class Settings {
   public async patchByUserId(
     userId: number,
     payload: Partial<SettingsDto>,
-  ): Promise<Omit<ISettingsRecord, 'userId'>> {
+  ): Promise<RecordWithoutCommonKeys<Omit<ISettingsRecord, 'userId'>>> {
     return this._SettingsModel
       .query()
       .findOne({ userId })
-      .patchAndFetch(payload)
+      .patch(payload)
       .returning([
         SettingsKey.COUNTDOWN_BEFORE_GAME,
         SettingsKey.GAME_TIME,
@@ -29,7 +30,7 @@ class Settings {
         SettingsKey.IS_SHOWN_IN_RATING,
         SettingsKey.IS_SOUND_TURNED_ON,
       ])
-      .execute();
+      .castTo<RecordWithoutCommonKeys<Omit<ISettingsRecord, 'userId'>>>();
   }
 }
 export { Settings };
