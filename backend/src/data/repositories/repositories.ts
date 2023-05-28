@@ -28,12 +28,13 @@ const skill = new Skill({ SkillModel });
 
 const room = new Room({ RoomModel });
 
+const lesson = new Lesson({ LessonModel });
+
 const user = new User({
   UserModel,
   skillRepository: skill,
   roomRepository: room,
+  lessonRepository: lesson,
 });
-
-const lesson = new Lesson({ LessonModel });
 
 export { user, refreshToken, skill, room, settings, statistics, lesson };

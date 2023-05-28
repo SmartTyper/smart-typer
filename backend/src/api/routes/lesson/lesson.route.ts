@@ -3,21 +3,22 @@ import { lesson as lessonService } from 'services/services';
 import { Abstract } from '../abstract/abstract.route';
 import { IRequestWithUser } from 'common/interfaces/interfaces';
 import { ContentType, CreatorType } from 'common/enums/enums';
-// import { getValidationMiddleware } from 'api/middlewares/middlewares';
+import { getValidationMiddleware } from 'api/middlewares/middlewares';
+import { createLessonSchema } from 'validation-schemas/validation-schemas';
 
 type Constructor = {
   lessonService: typeof lessonService;
-  // getValidationMiddleware: typeof getValidationMiddleware;
+  getValidationMiddleware: typeof getValidationMiddleware;
 };
 
 class Lesson extends Abstract {
   private _lessonService: typeof lessonService;
-  // private _getValidationMiddleware: typeof getValidationMiddleware;
+  private _getValidationMiddleware: typeof getValidationMiddleware;
 
   public constructor(params: Constructor) {
     super();
     this._lessonService = params.lessonService;
-    // this._getValidationMiddleware = params.getValidationMiddleware;
+    this._getValidationMiddleware = params.getValidationMiddleware;
   }
 
   public getRoutes(): Router {
@@ -33,7 +34,10 @@ class Lesson extends Abstract {
 
     router.post(
       '/',
-      this._run((req) => this._lessonService.create(req.body)),
+      this._getValidationMiddleware({ body: createLessonSchema }),
+      this._run((req: IRequestWithUser) =>
+        this._lessonService.create(req.userId, req.body),
+      ),
     );
 
     router.get(

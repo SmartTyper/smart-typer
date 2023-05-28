@@ -1,5 +1,6 @@
 import { TEST_LESSON_NAMES } from 'common/constants/constants';
 import {
+  CommonKey,
   ContentType,
   CreatorType,
   HttpCode,
@@ -11,6 +12,7 @@ import {
   LessonResponseDto,
   CreateLessonRequestDto,
   SkillsStatisticsDto,
+  UserDto,
 } from 'common/types/types';
 import {
   its as itsService,
@@ -60,9 +62,10 @@ class Lesson {
   }
 
   public async create(
+    userId: UserDto[CommonKey.ID],
     payload: CreateLessonRequestDto,
   ): Promise<LessonResponseDto> {
-    return this._lessonRepository.create(payload);
+    return this._lessonRepository.create(userId, payload);
   }
 
   public async getMore(

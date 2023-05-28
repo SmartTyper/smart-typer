@@ -6,7 +6,6 @@ async function up(knex: Knex): Promise<void> {
     table.string('name').notNullable();
     table.integer('creator_id').references('id').inTable('users');
     table.string('content_type').notNullable();
-    table.string('creator_type').notNullable();
     table.text('content').notNullable();
     table.dateTime('created_at').notNullable().defaultTo(knex.fn.now());
     table.dateTime('updated_at').notNullable().defaultTo(knex.fn.now());

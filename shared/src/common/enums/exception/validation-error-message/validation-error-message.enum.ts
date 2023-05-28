@@ -11,6 +11,12 @@ enum ValidationErrorMessage {
   PASSWORDS_MUST_MATCH = 'passwords must match',
   INVALID_FILE_SIZE = 'File must be less than 5 Mb.',
   FORBIDDEN_FILE_TYPE = 'Forbidden file type. Please choose image with type .png, .jpg or .jpeg',
+  LESSON_NAME_MIN_LENGTH = 'lesson\'s name must be at least 3 characters',
+  LESSON_NAME_MAX_LENGTH = 'lesson\'s name must be at most 15 characters',
+  INVALID_LESSON_NAME = 'lesson\'s name must not include \'System Test Lesson\' ',
+  INVALID_CONTENT_TYPE = 'lesson\'s content type must be one of: symbols, words, sentences',
+  LESSON_CONTENT_MIN_LENGTH = 'lesson\'s content must be at least 20 characters',
+  LESSON_CONTENT_MAX_LENGTH = 'lesson\'s content must be at most 1500 characters',
 }
 
 export { ValidationErrorMessage };

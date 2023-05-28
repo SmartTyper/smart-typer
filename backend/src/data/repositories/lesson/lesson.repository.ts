@@ -13,7 +13,11 @@ import {
   UserToFinishedLessonRelationMapping,
   UserToStudyPlanLessonKey,
 } from 'common/enums/enums';
-import { ILessonRecord, IPaginationResponse } from 'common/interfaces/interfaces';
+import {
+  ILessonRecord,
+  IPaginationResponse,
+  IUserToStudyPlanLessonRecord,
+} from 'common/interfaces/interfaces';
 import {
   CreateLessonRequestDto,
   FinishedLesson,
@@ -21,6 +25,7 @@ import {
   LessonResponseDto,
   LessonWithSkills,
   Statistics,
+  UserDto,
 } from 'common/types/types';
 import { Lesson as LessonModel } from 'data/models/models';
 
@@ -71,25 +76,35 @@ class Lesson {
   }
 
   public async create(
+    userId: UserDto[CommonKey.ID],
     data: CreateLessonRequestDto,
   ): Promise<LessonResponseDto> {
-    const lesson = await this._LessonModel
+    const { id, name, content } = await this._LessonModel
       .query()
-      .insert(data)
-      .returning(Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN)
-      .execute();
+      .insert({
+        ...data,
+        creatorId: userId,
+      })
+      .returning(Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN);
 
-    await this._LessonModel.raw(`
+    const lesson = {
+      id,
+      name,
+      content,
+    };
+
+    const contentReplaced = data.content.replace(/'/g, '"');
+
+    await this._LessonModel.knex().raw(`
       WITH skill_count AS (
-        SELECT ${lesson.id} AS lesson_id, skills.id AS skill_id,
-        (
-          SELECT count(*) GROUP BY regexp_matches('${data.content}', skills.name, 'gi')
-        ) AS count
-        FROM skills
+        SELECT ${lesson.id} AS lesson_id, skills.id AS skill_id, COUNT(matches)
+        FROM skills,
+        LATERAL regexp_matches('${contentReplaced}', skills.name, 'gi') AS matches
+        GROUP BY skills.id
       )
       INSERT INTO lessons_to_skills (lesson_id, skill_id, count)
       SELECT * FROM skill_count
-      WHERE count IS NOT NULL;
+      WHERE count > 0;
     `);
 
     return lesson;
@@ -106,8 +121,8 @@ class Lesson {
       .query()
       .select(
         ...Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN,
+        LessonKey.CREATOR_ID,
         LessonKey.CONTENT_TYPE,
-        LessonKey.CREATOR_TYPE,
       )
       .where((builder) => {
         if (contentType) {
@@ -135,10 +150,22 @@ class Lesson {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .castTo<any[]>();
 
-    const mappedLessons = lessons.map(({ finishedLesson, ...lesson }) => ({
-      ...lesson,
-      bestSkill: finishedLesson?.pop()?.skill?.name ?? null,
-    }));
+    const mappedLessons = lessons.map(
+      ({ creatorId: _creatorId, finishedLesson, ...lesson }) => {
+        const creatorType =
+          userId === lesson.creatorId
+            ? CreatorType.CURRENT_USER
+            : lesson.creatorId
+              ? CreatorType.OTHER_USERS
+              : CreatorType.SYSTEM;
+
+        return {
+          ...lesson,
+          creatorType,
+          bestSkill: finishedLesson?.pop()?.skill?.name ?? null,
+        };
+      },
+    );
 
     const count = await this._LessonModel.query().resultSize();
 
@@ -148,16 +175,29 @@ class Lesson {
     };
   }
 
+  public getTestIds(): Promise<
+    Pick<IUserToStudyPlanLessonRecord, UserToStudyPlanLessonKey.LESSON_ID>[]
+  > {
+    return this._LessonModel
+      .query()
+      .select(`${CommonKey.ID} as ${UserToStudyPlanLessonKey.LESSON_ID}`)
+      .whereIn(LessonKey.NAME, TEST_LESSON_NAMES)
+      .castTo<
+        Pick<IUserToStudyPlanLessonRecord, UserToStudyPlanLessonKey.LESSON_ID>[]
+      >()
+      .execute();
+  }
+
   public async getStudyPlanByUserId(
     userId: number,
     areTestLessons = false,
   ): Promise<LessonDto[]> {
-    return this._LessonModel
+    const lessons = await this._LessonModel
       .query()
       .select(
         ...Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN,
         `${TableName.LESSONS}.${LessonKey.CONTENT_TYPE}`,
-        `${TableName.LESSONS}.${LessonKey.CREATOR_TYPE}`,
+        `${TableName.LESSONS}.${LessonKey.CREATOR_ID}`,
         `${LessonRelationMappings.BEST_SKILL}.${SkillKey.NAME}`,
       )
       .where({
@@ -181,8 +221,24 @@ class Lesson {
         `${LessonRelationMappings.STUDY_PLAN}.${UserToStudyPlanLessonKey.PRIORITY}`,
         RecordsSortOrder.ASC,
       )
-      .castTo<LessonDto[]>()
+      .castTo<
+        (Omit<LessonDto, LessonKey.CREATOR_TYPE> &
+          Pick<ILessonRecord, LessonKey.CREATOR_ID>)[]
+      >()
       .execute();
+
+    const mappedLessons = lessons.map((lesson) => {
+      const creatorType =
+        userId === lesson.creatorId
+          ? CreatorType.CURRENT_USER
+          : lesson.creatorId
+            ? CreatorType.OTHER_USERS
+            : CreatorType.SYSTEM;
+
+      return { ...lesson, creatorType };
+    });
+
+    return mappedLessons;
   }
 
   public async getAverageSpeed(
@@ -218,17 +274,22 @@ class Lesson {
       .castTo<Pick<Statistics, 'averageSpeed' | 'todayAverageSpeed'>>();
   }
 
-  public insertNewStudyPlanLesson(userId: number, lessonId: number): Promise<ILessonRecord> {
+  public insertNewStudyPlanLesson(
+    userId: number,
+    lessonId: number,
+  ): Promise<ILessonRecord> {
     return this._LessonModel
       .relatedQuery(LessonRelationMappings.STUDY_PLAN)
       .for(lessonId)
       .insert(userId)
       .castTo<ILessonRecord>()
       .execute();
-
   }
 
-  public insertFinishedLesson(lessonId: number, payload: FinishedLesson): Promise<ILessonRecord> {
+  public insertFinishedLesson(
+    lessonId: number,
+    payload: FinishedLesson,
+  ): Promise<ILessonRecord> {
     return this._LessonModel
       .relatedQuery(LessonRelationMappings.FINISHED_LESSON)
       .for(lessonId)
@@ -249,7 +310,7 @@ class Lesson {
         `${LessonRelationMappings.SKILLS}.${SkillKey.NAME}`,
         `${LessonRelationMappings.LESSON_TO_SKILLS}.${LessonToSkillKey.COUNT}`,
       )
-      .where(LessonKey.CREATOR_TYPE, '=', CreatorType.SYSTEM)
+      .whereNull(LessonKey.CREATOR_ID)
       .withGraphJoined(
         `[${LessonRelationMappings.SKILLS}, ${LessonRelationMappings.LESSON_TO_SKILLS}]`,
       )

@@ -1,3 +1,4 @@
+import { TEST_LESSON_PRIORITY } from 'common/constants/constants';
 import {
   CommonKey,
   RoomKey,
@@ -31,23 +32,27 @@ import { User as UserModel } from 'data/models/models';
 import {
   skill as skillRepository,
   room as roomRepository,
+  lesson as lessonRepository,
 } from 'data/repositories/repositories';
 
 type Constructor = {
   UserModel: typeof UserModel;
   skillRepository: typeof skillRepository;
   roomRepository: typeof roomRepository;
+  lessonRepository: typeof lessonRepository;
 };
 
 class User {
   private _UserModel: typeof UserModel;
   private _skillRepository: typeof skillRepository;
   private _roomRepository: typeof roomRepository;
+  private _lessonRepository: typeof lessonRepository;
 
   public constructor(params: Constructor) {
     this._UserModel = params.UserModel;
     this._skillRepository = params.skillRepository;
     this._roomRepository = params.roomRepository;
+    this._lessonRepository = params.lessonRepository;
   }
 
   private static DEFAULT_USER_COLUMNS_TO_RETURN: string[] = [
@@ -94,7 +99,17 @@ class User {
       .for(user.id)
       .insert(await this._roomRepository.createPersonal());
 
-    //user-to-study-plan create records with test lessons
+    const testIds = await this._lessonRepository.getTestIds();
+    const testLessonsData = testIds.map(({ lessonId }) => ({
+      lessonId,
+      priority: TEST_LESSON_PRIORITY,
+    }));
+
+    await this._UserModel
+      .relatedQuery(UserRelationMappings.USER_TO_STUDY_PLAN)
+      .for(user.id)
+      .insert(testLessonsData)
+      .debug();
 
     return user;
   }
@@ -104,11 +119,13 @@ class User {
   ): Promise<RecordWithoutCommonDateKeys<IUserRecord> | undefined> {
     return this._UserModel
       .query()
-      .select(CommonKey.ID,
+      .select(
+        CommonKey.ID,
         UserKey.EMAIL,
         UserKey.NICKNAME,
         UserKey.PASSWORD,
-        UserKey.PHOTO_URL)
+        UserKey.PHOTO_URL,
+      )
       .findOne({ [UserKey.EMAIL]: email.toLowerCase() });
   }
 

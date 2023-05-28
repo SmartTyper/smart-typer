@@ -22,6 +22,7 @@ import {
   UserToRoom,
   UserToSkill,
   Lesson,
+  UserToStudyPlanLesson,
 } from 'data/models/models';
 
 import { Base } from '../base/base.model';
@@ -71,6 +72,14 @@ class User extends Base implements IUserRecord {
             to: `${TableName.USERS_TO_STUDY_PLAN_LESSONS}.${UserToStudyPlanLessonKey.LESSON_ID}`,
           },
           to: `${TableName.LESSONS}.${CommonKey.ID}`,
+        },
+      },
+      [UserRelationMappings.USER_TO_STUDY_PLAN]: {
+        relation: Model.HasManyRelation,
+        modelClass: UserToStudyPlanLesson,
+        join: {
+          from: `${TableName.USERS}.${CommonKey.ID}`,
+          to: `${TableName.USERS_TO_STUDY_PLAN_LESSONS}.${UserToStudyPlanLessonKey.USER_ID}`,
         },
       },
       [UserRelationMappings.USER_TO_FINISHED_LESSONS]: {
