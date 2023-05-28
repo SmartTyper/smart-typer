@@ -58,6 +58,18 @@ class Lesson {
       .execute();
   }
 
+  public async deleteByIdAndOwnerId(
+    userId: UserDto[CommonKey.ID],
+    lessonId: LessonDto[CommonKey.ID],
+  ): Promise<Pick<LessonDto, CommonKey.ID> | undefined> {
+    return this._LessonModel
+      .query()
+      .deleteById(lessonId)
+      .where(LessonKey.CREATOR_ID, userId)
+      .returning([CommonKey.ID])
+      .castTo<Pick<LessonDto, CommonKey.ID> | undefined>();
+  }
+
   public async getByIdWithSkills(
     lessonId: number,
   ): Promise<LessonWithSkills | undefined> {

@@ -8,7 +8,8 @@ async function up(knex: Knex): Promise<void> {
       .references('id')
       .inTable('users')
       .unique()
-      .notNullable();
+      .notNullable()
+      .onDelete('CASCADE');
     table.integer('countdown_before_game').notNullable().defaultTo(10);
     table.integer('game_time').notNullable().defaultTo(60);
     table.boolean('is_shown_in_rating').notNullable().defaultTo(true);

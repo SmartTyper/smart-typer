@@ -59,6 +59,14 @@ class Lesson extends Abstract {
       }),
     );
 
+    router.delete(
+      '/:lessonId',
+      this._run((req: IRequestWithUser) => {
+        const lessonId = Number(req.params.lessonId);
+        return this._lessonService.deleteById(req.userId, lessonId);
+      }),
+    );
+
     router.get(
       '/',
       this._run((req: IRequestWithUser) => {
@@ -72,8 +80,6 @@ class Lesson extends Abstract {
         );
       }),
     );
-
-    // delete lesson
 
     return router;
   }
