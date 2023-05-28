@@ -198,17 +198,22 @@ const setPassword = createAsyncThunk(
   ActionType.SET_PASSWORD,
   async (
     payload: SetPasswordRequestDto,
-    { extra: { services } },
+    { dispatch, extra: { services, actions } },
   ): Promise<UserDto> => {
     const {
       notification: notificationService,
       authApi: authApiService,
       localStorage: localStorageService,
     } = services;
+    const { settings: settingsActions, lessons: lessonsActions } = actions;
     const userData = await authApiService.setPassword(payload);
-    const { accessToken, refreshToken, ...user } = userData;
+    const { accessToken, refreshToken, settings, ...user } = userData;
     localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
     localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
+    dispatch(settingsActions.setAll(settings));
+    dispatch(
+      lessonsActions.loadMoreLessons({ offset: DEFAULT_LESSONS_OFFSET }),
+    );
     notificationService.success(NotificationMessage.NEW_PASSWORD_SAVED);
     return user;
   },

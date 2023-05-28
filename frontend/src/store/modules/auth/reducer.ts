@@ -29,6 +29,7 @@ const { reducer } = createSlice({
       loadCurrentUser,
       updateUser,
       loadGoogleUrl,
+      setPassword,
     } = actions;
     builder
       .addCase(logOut.fulfilled, (state) => {
@@ -53,7 +54,12 @@ const { reducer } = createSlice({
         }
       })
       .addMatcher(
-        isAnyOf(logIn.fulfilled, register.fulfilled, logInGoogle.fulfilled),
+        isAnyOf(
+          logIn.fulfilled,
+          register.fulfilled,
+          logInGoogle.fulfilled,
+          setPassword.fulfilled,
+        ),
         (state, action) => {
           if (action.payload) {
             state.user = action.payload;
