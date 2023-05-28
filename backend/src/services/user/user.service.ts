@@ -112,6 +112,15 @@ class User {
     userId: number,
     data: Partial<Pick<UserDto, UserKey.NICKNAME | UserKey.EMAIL>>,
   ): Promise<UserDto> {
+    if (data.email) {
+      const userWithEmail = await this._userRepository.getByEmail(data.email);
+      if (userWithEmail) {
+        throw new HttpError({
+          status: HttpCode.CONFLICT,
+          message: HttpErrorMessage.EMAIL_ALREADY_EXISTS,
+        });
+      }
+    }
     return this._userRepository.patchById(userId, data);
   }
 
