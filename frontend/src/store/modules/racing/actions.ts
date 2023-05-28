@@ -73,7 +73,7 @@ const setCurrentRoom = createAsyncThunk(
 );
 
 const joinRoom = createAsyncThunk(
-  ActionType.SET_CURRENT_ROOM,
+  ActionType.JOIN_ROOM,
   async (
     payload: RoomIdDto,
     { dispatch, getState, extra: { services } },
@@ -90,7 +90,7 @@ const joinRoom = createAsyncThunk(
 );
 
 const leaveRoom = createAsyncThunk(
-  ActionType.SET_CURRENT_ROOM,
+  ActionType.LEAVE_ROOM,
   async (
     payload: RoomIdParticipantIdDto,
     { dispatch, extra: { services } },

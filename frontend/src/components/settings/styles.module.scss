@@ -3,12 +3,6 @@
 .settings {
   display: flex;
   flex-direction: column;
-  align-items: center;
-
-  .title {
-    margin-bottom: 1.5rem;
-    text-decoration: underline;
-  }
 
   .form {
     display: flex;
@@ -18,13 +12,21 @@
 
     .cards {
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
       text-align: start;
       width: 100%;
 
-      .racingField {
-        width: 55px;
+      .racingCard {
+        margin-left: 0;
+        
+        .racingCardFieldsContainer {
+          display: flex;
+          flex-direction: column;
+
+          .racingField {
+            width: 55px;
+          }
+        }
       }
     }
 

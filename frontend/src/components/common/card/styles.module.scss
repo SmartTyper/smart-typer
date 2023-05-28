@@ -1,6 +1,6 @@
 @import 'src/assets/css/variables';
 
-.settingItem {
+.card {
   position: relative;
   counter-increment: list;
   width: 20vw;
@@ -36,7 +36,7 @@
     background: rgba($pink-accent, 0.2);
   }
 
-  .settingTitle {
+  .title {
     display: flex;
     align-items: baseline;
     margin: 0 0 1rem;

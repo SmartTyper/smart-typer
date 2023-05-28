@@ -1,4 +1,5 @@
 enum ContentWrapperSize {
+  SMALL = 'small',
   MEDIUM = 'medium',
   LARGE = 'large',
 }

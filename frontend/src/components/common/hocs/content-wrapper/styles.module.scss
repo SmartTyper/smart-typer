@@ -14,8 +14,13 @@
     box-shadow: $white-sheet-strong-shadow;
   }
 
-  &.medium {
+
+  &.small {
     width: 40%;
+  }
+
+  &.medium {
+    width: 60%;
   }
 
   &.large {

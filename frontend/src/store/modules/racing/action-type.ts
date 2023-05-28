@@ -23,6 +23,8 @@ enum ActionType {
   RESET_ALL = 'racingResetAll',
   RESET_AVAILABLE_ROOMS = 'racingResetResetAvailableRooms',
   RESET_CURRENT_ROOM_TO_DEFAULT = 'racingResetCurrentRoomToDefault',
+  JOIN_ROOM = 'racingJoinRoom',
+  LEAVE_ROOM = 'racingLeaveRoom',
 }
 
 export { ActionType };

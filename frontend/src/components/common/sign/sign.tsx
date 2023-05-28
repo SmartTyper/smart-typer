@@ -45,7 +45,7 @@ const Sign: FC<Props> = ({
       <span>{description}</span>
 
       <ContentWrapper
-        size={ContentWrapperSize.MEDIUM}
+        size={ContentWrapperSize.SMALL}
         shadow={ContentWrapperShadow.LIGHT}
       >
         <RBForm className={styles.form}>

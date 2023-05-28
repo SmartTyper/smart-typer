@@ -1,3 +1,4 @@
+/* eslint-disable prefer-spread */
 import { ReducerName } from 'common/enums/enums';
 import { createSlice, isAnyOf } from 'store/external/external';
 import {
@@ -19,11 +20,16 @@ const { reducer } = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addMatcher(isAnyOf.apply(STARTED_ACTIONS), (state, action) => {
-        state[action.type as RequestActionType] = true;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      .addMatcher(isAnyOf.apply(null, STARTED_ACTIONS), (state, action) => {
+        state[action.type.split('/').shift() as RequestActionType] = true;
       })
-      .addMatcher(isAnyOf.apply(FINISHED_ACTIONS), (state, action) => {
-        state[action.type as RequestActionType] = false;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      .addMatcher(isAnyOf.apply(null, FINISHED_ACTIONS), (state, action) => {
+        console.log(action.type.split('/'));
+        state[action.type.split('/').shift() as RequestActionType] = false;
       });
   },
 });

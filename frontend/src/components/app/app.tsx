@@ -17,14 +17,24 @@ import {
 } from 'components/components';
 import { RRDRoute, RRDRoutes } from 'components/external/external';
 import { replaceRouteIdParam } from 'helpers/helpers';
-import { useDispatch, useEffect, useLocation, useSelector } from 'hooks/hooks';
+import {
+  useDispatch,
+  useEffect,
+  useLocation,
+  useSelector,
+  useState,
+} from 'hooks/hooks';
 import { localStorage as localStorageService } from 'services/services';
 import { auth as authActions } from 'store/modules/actions';
 
 const App: FC = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
-  const { user } = useSelector((state) => state.auth);
+  const { user, isUserRequestLoading } = useSelector(({ auth, requests }) => ({
+    user: auth.user,
+    isUserRequestLoading: requests.authLoadCurrentUser,
+  }));
+
   const token = localStorageService.getItem(StorageKey.ACCESS_TOKEN);
 
   const authRoutes = [
@@ -33,21 +43,27 @@ const App: FC = () => {
     AppRoute.LOG_IN_GOOGLE,
   ] as string[];
   const isAuth = authRoutes.includes(pathname);
+  const needToLoadUser = !!token && !user && !isAuth;
+
+  const [isUserLoading, setIsUserLoading] = useState(needToLoadUser);
 
   useEffect(() => {
-    if (token && !user && !isAuth) {
-      dispatch(authActions.loadUser());
+    if (needToLoadUser) {
+      dispatch(authActions.loadCurrentUser());
     }
   }, []);
+
+  useEffect(() => {
+    console.log(user);
+    console.log(isUserRequestLoading);
+    setIsUserLoading(isUserRequestLoading);
+  }, [isUserRequestLoading, user]);
 
   return (
     <RRDRoutes>
       <RRDRoute
         element={
-          <ProtectedRoute
-            hasUser={!!user}
-            isUserLoading={!!token && !user && !isAuth}
-          />
+          <ProtectedRoute hasUser={!!user} isUserLoading={isUserLoading} />
         }
       >
         <RRDRoute
