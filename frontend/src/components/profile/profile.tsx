@@ -13,23 +13,30 @@ import {
 import { profile as profileActions } from 'store/modules/actions';
 import {
   AppRoute,
+  AvatarSize,
   CommonKey,
   ContentWrapperSize,
+  FormFieldLabel,
   FormFieldType,
   SpinnerSize,
   UserKey,
 } from 'common/enums/enums';
 import { updateUserInfoSchema } from 'validation-schemas/validation-schemas';
 import { MAX_FILE_SIZE, ALLOWED_FILE_TYPES } from 'common/constants/constants';
-import { Avatar, Spinner } from 'components/common/common';
+import { RBForm } from 'components/external/external';
+import {
+  Avatar,
+  FormField,
+  Spinner,
+  ContentWrapper,
+  Button,
+} from 'components/common/common';
 import { clsx, bytesToMegabytes } from 'helpers/helpers';
-import { CropAvatar } from './components/components';
 import { notification as notificationService } from 'services/services';
 import { ValidationErrorMessage } from 'common/enums/enums';
-import { ContentWrapper } from 'components/common/common';
+import { CropAvatar } from './components/components';
 
 import styles from './styles.module.scss';
-import { RBForm } from 'components/external/external';
 
 const Profile: FC = () => {
   const dispatch = useDispatch();
@@ -37,13 +44,14 @@ const Profile: FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const {
+    currentUserId,
     user,
     isUserLoading,
-    isUpdateLoading,
     isPersonalInfoUpdateLoading,
     isAvatarUpdateLoading,
     isAvatarDeleteLoading,
-  } = useSelector(({ profile, requests }) => ({
+  } = useSelector(({ auth, profile, requests }) => ({
+    currentUserId: auth.user?.id,
     user: profile.user,
     statistics: profile.statistics,
     rating: profile.rating,
@@ -52,7 +60,12 @@ const Profile: FC = () => {
     isAvatarUpdateLoading: requests.profileUpdateAvatar,
     isAvatarDeleteLoading: requests.profileDeleteAvatar,
   }));
+  const isApplyLoading =
+    isPersonalInfoUpdateLoading ||
+    isAvatarUpdateLoading ||
+    isAvatarDeleteLoading;
   const { userId } = useParams();
+  const isCurrentUser = currentUserId === userId;
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isCropModalVisible, setIsCropModalVisible] = useState(false);
@@ -69,14 +82,19 @@ const Profile: FC = () => {
     formState: { errors },
     getValues,
     setValue,
-  } = useForm<Omit<UserDto, CommonKey.ID>>(updateUserInfoSchema, user ?? {});
+  } = useForm<Omit<UserDto, CommonKey.ID>>(
+    updateUserInfoSchema,
+    _.omit(user ?? ({} as Omit<UserDto, CommonKey.ID>), CommonKey.ID),
+  );
 
-  const handleRemove = (): void => {
+  const handleDeleteAvatar = (): void => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     setValue(UserKey.PHOTO_URL, null);
     setSelectedFile(null);
   };
 
-  const handleUpload = (): void => {
+  const handleUploadAvatar = (): void => {
     inputRef.current?.click();
   };
 
@@ -147,6 +165,7 @@ const Profile: FC = () => {
     return <Spinner size={SpinnerSize.LARGE} />;
   }
 
+  const { nickname, photoUrl } = getValues();
   return (
     <>
       <ContentWrapper
@@ -155,85 +174,74 @@ const Profile: FC = () => {
       >
         <h1>Customize your experience</h1>
         <RBForm className={styles.form}>
-          <label className={clsx(styles.cardInputLabel, 'fs-5')}>Avatar</label>
-          {!unsavedUser.photoUrl ? (
-            <div className={styles.photoUrlImgContainer}>
-              <i className={clsx('bi bi-card-image', styles.noAvatar)}></i>
-            </div>
-          ) : (
-            <UserAvatar
-              className={`${clsx(styles.cardImage)} mb-3`}
-              name={user?.nickname}
-              src={unsavedUser.photoUrl}
-              round={true}
-              size="12.8rem"
-              showTooltip={false}
-            />
-          )}
-          {unsavedUser.photoUrl && (
-            <Button
-              variant="danger"
-              className={clsx(styles.photoUrlControlButton, 'mb-3')}
-              onClick={handleRemove}
-              disabled={isPhotoUpdating}
-            >
-              Remove
-            </Button>
-          )}
-          <input
+          <FormField
+            label={FormFieldLabel.AVATAR}
+            type={FormFieldType.FILE}
+            register={register(UserKey.PHOTO_URL, {
+              onChange: handleFileSelected,
+            })}
+            error={errors.photoUrl}
+            note={
+              <span>
+                For best results use an image at least 128px in .jpg format
+              </span>
+            }
             ref={inputRef}
-            type={FieldType.FILE}
-            onChange={handleFileSelected}
-            name="image"
             hidden
           />
-          <Button
-            variant="success"
-            className={clsx(
-              styles.photoUrlControlButton,
-              styles.spaceBetween,
-              'mb-3',
-            )}
-            onClick={handleUpload}
-            disabled={isPhotoUpdating}
-          >
-            <i
-              className={`bi bi-cloud-arrow-up-fill text-white ${clsx(
-                styles.uploadIcon,
-              )}`}
-            />
-            Upload
-          </Button>
+          <Avatar name={nickname} src={photoUrl} size={AvatarSize.LARGE} />
+          {isCurrentUser && (
+            <>
+              <Button
+                onClick={handleUploadAvatar}
+                isDisabled={!user}
+                isLoading={isAvatarUpdateLoading}
+                label="Upload"
+                className={clsx(styles.button, styles.uploadAvatarButton)}
+              />
+              {photoUrl && (
+                <Button
+                  onClick={handleDeleteAvatar}
+                  isDisabled={!user}
+                  isLoading={isAvatarUpdateLoading}
+                  label="Delete"
+                  className={clsx(styles.button, styles.deleteAvatarButton)}
+                />
+              )}
+            </>
+          )}
           <span className={clsx(styles.uploadText, 'fs-6')}>
             For best results use an image at least 128px in .jpg format
           </span>
           <FormField
-            label={FormFieldLabel.GAME_TIME}
-            type={FormFieldType.NUMBER}
-            register={register('gameTime')}
-            error={errors.gameTime}
-            inputClassName={styles.racingField}
-            note={<span>* only for the single player mode</span>}
+            label={FormFieldLabel.NICKNAME}
+            type={FormFieldType.TEXT}
+            register={register(UserKey.NICKNAME)}
+            error={errors.nickname}
+            readOnly={!isCurrentUser}
           />
-          <hr />
           <FormField
-            label={FormFieldLabel.COUNTDOWN_BEFORE_GAME}
-            type={FormFieldType.NUMBER}
-            register={register('countdownBeforeGame')}
-            error={errors.countdownBeforeGame}
-            inputClassName={styles.racingField}
-            note={<span>* only for the single player mode</span>}
+            label={FormFieldLabel.EMAIL}
+            type={FormFieldType.TEXT}
+            register={register(UserKey.EMAIL)}
+            error={errors.email}
+            readOnly={!isCurrentUser}
           />
-          <Button
-            onSubmit={handleSubmit(handleSaveChanges)}
-            disabled={!user || isPhotoUpdating}
-          />
+          {isCurrentUser && (
+            <Button
+              onClick={handleSubmit(handleSaveChanges)}
+              isDisabled={!user}
+              isLoading={isApplyLoading}
+              label="Apply"
+              className={clsx(styles.button, styles.submitButton)}
+            />
+          )}
         </RBForm>
       </ContentWrapper>
       <CropAvatar
-        isShown={isCropModalVisible}
-        src={selectedImgURL}
-        handleClose={handleCropModalClose}
+        isVisible={isCropModalVisible}
+        file={selectedFile}
+        onClose={handleCropModalClose}
         updateAvatar={updateAvatar}
       />
     </>

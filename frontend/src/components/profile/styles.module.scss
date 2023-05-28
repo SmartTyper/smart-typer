@@ -1,0 +1,33 @@
+@import 'src/assets/css/variables';
+
+.profile {
+  display: flex;
+  flex-direction: column;
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  .button {
+    height: 3.5rem;
+    width: 12rem;
+    font-size: $middle-font-size;
+    margin: 1rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $white;
+
+    &.submitButton,
+    &.uploadAvatarButton {
+      background-color: $main-green;
+    }
+
+    &.deleteAvatarButton {
+      background-color: $main-red;
+    }
+  }
+}

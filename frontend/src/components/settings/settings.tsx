@@ -2,6 +2,7 @@ import {
   ContentWrapperSize,
   FormFieldLabel,
   FormFieldType,
+  SettingsKey,
 } from 'common/enums/enums';
 import { FC, SettingsDto } from 'common/types/types';
 import { Button, ContentWrapper, FormField } from 'components/common/common';
@@ -65,7 +66,7 @@ const Settings: FC = () => {
             <FormField
               label={FormFieldLabel.GAME_TIME}
               type={FormFieldType.NUMBER}
-              register={register('gameTime')}
+              register={register(SettingsKey.GAME_TIME)}
               error={errors.gameTime}
               inputClassName={styles.racingField}
               note={<span>* only for the single player mode</span>}
@@ -74,7 +75,7 @@ const Settings: FC = () => {
             <FormField
               label={FormFieldLabel.COUNTDOWN_BEFORE_GAME}
               type={FormFieldType.NUMBER}
-              register={register('countdownBeforeGame')}
+              register={register(SettingsKey.GAME_TIME)}
               error={errors.countdownBeforeGame}
               inputClassName={styles.racingField}
               note={<span>* only for the single player mode</span>}
@@ -89,7 +90,7 @@ const Settings: FC = () => {
               <FormField
                 label={FormFieldLabel.HAS_EMAIL_NOTIFICATIONS}
                 type={FormFieldType.CHECKBOX}
-                register={register('hasEmailNotifications')}
+                register={register(SettingsKey.HAS_EMAIL_NOTIFICATIONS)}
                 error={errors.hasEmailNotifications}
               />
             </Card>
@@ -101,7 +102,7 @@ const Settings: FC = () => {
               <FormField
                 label={FormFieldLabel.IS_SHOWN_IN_RATING}
                 type={FormFieldType.CHECKBOX}
-                register={register('isShownInRating')}
+                register={register(SettingsKey.IS_SHOWN_IN_RATING)}
                 error={errors.isShownInRating}
               />
             </Card>
@@ -113,7 +114,7 @@ const Settings: FC = () => {
               <FormField
                 label={FormFieldLabel.IS_SOUND_TURNED_ON}
                 type={FormFieldType.CHECKBOX}
-                register={register('isSoundTurnedOn')}
+                register={register(SettingsKey.IS_SOUND_TURNED_ON)}
                 error={errors.isSoundTurnedOn}
               />
             </Card>

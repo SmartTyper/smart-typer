@@ -4,7 +4,7 @@ import { FC, VoidAction } from 'common/types/types';
 import { Button } from 'components/common/common';
 import { canvasToBlob, canvasToDataUrl } from 'helpers/helpers';
 import { CROPPED_IMAGE_TYPE } from 'common/constants/constants';
-import { Crop, CropData } from './common/types/types';
+import { Crop, CropData } from '../../common/types/types';
 
 type Props = {
   isVisible: boolean;
@@ -77,7 +77,6 @@ const CropAvatar: FC<Props> = ({ isVisible, file, onClose, updateAvatar }) => {
 
   return (
     <RBModal
-      className="d-flex align-items-center"
       dialogClassName="w-25 rounded"
       show={isVisible}
       onHide={onClose}
@@ -85,7 +84,7 @@ const CropAvatar: FC<Props> = ({ isVisible, file, onClose, updateAvatar }) => {
       keyboard={false}
     >
       <RBModal.Header closeButton>
-        <RBModal.Title className="fs-6">Crop the avatar</RBModal.Title>
+        <RBModal.Title>Crop the avatar</RBModal.Title>
       </RBModal.Header>
       <RBModal.Body>
         <ReactCrop
