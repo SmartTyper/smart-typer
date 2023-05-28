@@ -104,15 +104,14 @@ class User {
   ): Promise<RecordWithoutCommonDateKeys<IUserRecord> | undefined> {
     return this._UserModel
       .query()
-      .findOne({ [UserKey.EMAIL]: email.toLowerCase() })
-      .returning([
-        CommonKey.ID,
+      .select(CommonKey.ID,
         UserKey.EMAIL,
         UserKey.NICKNAME,
         UserKey.PASSWORD,
-        UserKey.PHOTO_URL,
-      ]);
+        UserKey.PHOTO_URL)
+      .findOne({ [UserKey.EMAIL]: email.toLowerCase() });
   }
+
   // move constants to up level
   public async getByEmailWithSettingsAndPersonalRoom(
     email: string,

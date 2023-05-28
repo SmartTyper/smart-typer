@@ -1,5 +1,9 @@
 import { HttpCode, HttpErrorMessage } from 'common/enums/enums';
-import { GoogleUser, UserAuthInfoResponseDto, UserDto } from 'common/types/types';
+import {
+  GoogleUser,
+  UserAuthInfoResponseDto,
+  UserDto,
+} from 'common/types/types';
 import {
   LogInRequestDto,
   RegisterRequestDto,
