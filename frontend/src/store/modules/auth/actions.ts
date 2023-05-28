@@ -105,15 +105,15 @@ const logOut = createAsyncThunk(
       profile: profileActions,
       racing: racingActions,
     } = actions;
-    const refreshToken = localStorageService.getItem(StorageKey.REFRESH_TOKEN);
-    localStorageService.removeItem(StorageKey.ACCESS_TOKEN);
-    localStorageService.removeItem(StorageKey.REFRESH_TOKEN);
+    const accessToken = localStorageService.getItem(StorageKey.ACCESS_TOKEN);
     dispatch(settingsActions.resetAll());
     dispatch(lessonsActions.resetAll());
     dispatch(profileActions.resetAll());
     dispatch(racingActions.resetAll());
-    if (refreshToken) {
-      await authApiService.logOut({ refreshToken });
+    if (accessToken) {
+      await authApiService.logOut();
+      localStorageService.removeItem(StorageKey.ACCESS_TOKEN);
+      localStorageService.removeItem(StorageKey.REFRESH_TOKEN);
     }
   },
 );

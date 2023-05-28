@@ -84,8 +84,6 @@ class User {
 
   public async getByEmail(email: string): Promise<UserWithPassword> {
     const user = await this._userRepository.getByEmail(email);
-    console.log(user);
-
     if (!user) {
       throw new HttpError({
         status: HttpCode.NOT_FOUND,
@@ -112,6 +110,15 @@ class User {
     userId: number,
     data: Partial<Pick<UserDto, UserKey.NICKNAME | UserKey.EMAIL>>,
   ): Promise<UserDto> {
+    if (data.email) {
+      const userWithEmail = await this._userRepository.getByEmail(data.email);
+      if (userWithEmail) {
+        throw new HttpError({
+          status: HttpCode.CONFLICT,
+          message: HttpErrorMessage.EMAIL_ALREADY_EXISTS,
+        });
+      }
+    }
     return this._userRepository.patchById(userId, data);
   }
 

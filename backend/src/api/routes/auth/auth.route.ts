@@ -10,6 +10,7 @@ import {
   logInGoogleSchema,
 } from 'validation-schemas/validation-schemas';
 import { Abstract } from '../abstract/abstract.route';
+import { IRequestWithUser } from 'common/interfaces/interfaces';
 
 type Constructor = {
   authService: typeof authService;
@@ -64,9 +65,7 @@ class Auth extends Abstract {
 
     router.post(
       '/log-out',
-      this._getValidationMiddleware({ body: refreshTokenSchema }),
-      this._run((req) => this._authService.logOut(req.body)), // remove req.body from log-out
-      // userID
+      this._run((req:IRequestWithUser) => this._authService.logOut(req.userId)),
     );
 
     router.post(
