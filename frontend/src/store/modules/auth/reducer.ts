@@ -26,7 +26,7 @@ const { reducer } = createSlice({
       register,
       logOut,
       logInGoogle,
-      loadUser,
+      loadCurrentUser,
       updateUser,
       loadGoogleUrl,
     } = actions;
@@ -47,7 +47,7 @@ const { reducer } = createSlice({
           state.googleUrl = action.payload;
         }
       })
-      .addCase(loadUser.fulfilled, (state, action) => {
+      .addCase(loadCurrentUser.fulfilled, (state, action) => {
         if (action.payload) {
           state.user = action.payload;
         }

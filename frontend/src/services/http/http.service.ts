@@ -39,8 +39,10 @@ class Http {
     options: Partial<HttpOptions> = {},
   ): Promise<T> {
     try {
-      return this._sendRequest(url, options);
+      const result = await this._sendRequest(url, options);
+      return result as T;
     } catch (error) {
+      alert(error);
       if (
         error instanceof HttpError &&
         error.status === HttpCode.UNAUTHORIZED
@@ -124,6 +126,7 @@ class Http {
     requestError: HttpError,
   ): Promise<TokensResponseDto> => {
     const refreshToken = localStorage.getItem(StorageKey.REFRESH_TOKEN);
+    alert(refreshToken);
     if (refreshToken) {
       try {
         const tokens: TokensResponseDto = await this._sendRequest(

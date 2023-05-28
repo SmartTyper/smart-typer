@@ -9,8 +9,8 @@ import { useSelector, useForm, useDispatch } from 'hooks/hooks';
 import { updateSettingsSchema } from 'validation-schemas/validation-schemas';
 import { settings as settingsActions } from 'store/modules/actions';
 import { RBForm } from 'components/external/external';
-import { Card } from './components/components';
-import { CardHeaderColor } from './common/enums/enums';
+import { Card } from 'components/common/common';
+import { CardHeaderColor } from 'common/enums/enums';
 
 import styles from './styles.module.scss';
 
@@ -55,35 +55,19 @@ const Settings: FC = () => {
   };
 
   return (
-    <ContentWrapper size={ContentWrapperSize.LARGE} className={styles.settings}>
-      <h2 className={styles.title}>Customize your experience</h2>
+    <ContentWrapper
+      size={ContentWrapperSize.MEDIUM}
+      className={styles.settings}
+    >
+      <h1>Customize your experience</h1>
       <RBForm className={styles.form}>
         <div className={styles.cards}>
-          <Card title="Notifications" color={CardHeaderColor.YELLOW}>
-            <FormField
-              label={FormFieldLabel.HAS_EMAIL_NOTIFICATIONS}
-              type={FormFieldType.CHECKBOX}
-              register={register('hasEmailNotifications')}
-              error={errors.hasEmailNotifications}
-            />
-          </Card>
-          <Card title="Security" color={CardHeaderColor.ORANGE}>
-            <FormField
-              label={FormFieldLabel.IS_SHOWN_IN_RATING}
-              type={FormFieldType.CHECKBOX}
-              register={register('isShownInRating')}
-              error={errors.isShownInRating}
-            />
-          </Card>
-          <Card title="Sound effects" color={CardHeaderColor.PINK}>
-            <FormField
-              label={FormFieldLabel.IS_SOUND_TURNED_ON}
-              type={FormFieldType.CHECKBOX}
-              register={register('isSoundTurnedOn')}
-              error={errors.isSoundTurnedOn}
-            />
-          </Card>
-          <Card title="Racing" color={CardHeaderColor.BLUE}>
+          <Card
+            title="Racing"
+            color={CardHeaderColor.BLUE}
+            className={styles.racingCard}
+            childrenContainerClassName={styles.racingCardFieldsContainer}
+          >
             <FormField
               label={FormFieldLabel.GAME_TIME}
               type={FormFieldType.NUMBER}
@@ -92,8 +76,7 @@ const Settings: FC = () => {
               inputClassName={styles.racingField}
               note={<span>* only for the single player mode</span>}
             />
-          </Card>
-          <Card title="Racing" color={CardHeaderColor.BLUE}>
+            <hr />
             <FormField
               label={FormFieldLabel.COUNTDOWN_BEFORE_GAME}
               type={FormFieldType.NUMBER}
@@ -103,6 +86,32 @@ const Settings: FC = () => {
               note={<span>* only for the single player mode</span>}
             />
           </Card>
+          <div className={styles.checkboxCards}>
+            <Card title="Notifications" color={CardHeaderColor.YELLOW}>
+              <FormField
+                label={FormFieldLabel.HAS_EMAIL_NOTIFICATIONS}
+                type={FormFieldType.CHECKBOX}
+                register={register('hasEmailNotifications')}
+                error={errors.hasEmailNotifications}
+              />
+            </Card>
+            <Card title="Security" color={CardHeaderColor.ORANGE}>
+              <FormField
+                label={FormFieldLabel.IS_SHOWN_IN_RATING}
+                type={FormFieldType.CHECKBOX}
+                register={register('isShownInRating')}
+                error={errors.isShownInRating}
+              />
+            </Card>
+            <Card title="Sound effects" color={CardHeaderColor.PINK}>
+              <FormField
+                label={FormFieldLabel.IS_SOUND_TURNED_ON}
+                type={FormFieldType.CHECKBOX}
+                register={register('isSoundTurnedOn')}
+                error={errors.isSoundTurnedOn}
+              />
+            </Card>
+          </div>
         </div>
         <Button
           onClick={onClick}

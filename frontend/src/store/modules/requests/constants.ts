@@ -15,6 +15,7 @@ import {
 import { AsyncThunk, AsyncThunkOptions } from 'common/types/types';
 
 const REQUEST_ACTIONS_TYPES = [
+  AuthActionType.LOAD_CURRENT_USER,
   AuthActionType.LOG_IN,
   AuthActionType.REGISTER,
   AuthActionType.LOG_OUT,
@@ -23,6 +24,7 @@ const REQUEST_ACTIONS_TYPES = [
   AuthActionType.RESET_PASSWORD,
   AuthActionType.LOAD_GOOGLE_URL,
 
+  ProfileActionType.LOAD_USER,
   ProfileActionType.DELETE_AVATAR,
   ProfileActionType.UPDATE_AVATAR,
   ProfileActionType.UPDATE_INFO,

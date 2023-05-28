@@ -139,8 +139,8 @@ const logInGoogle = createAsyncThunk(
   },
 );
 
-const loadUser = createAsyncThunk(
-  ActionType.LOAD_USER,
+const loadCurrentUser = createAsyncThunk(
+  ActionType.LOAD_CURRENT_USER,
   async (
     _: undefined,
     { dispatch, extra: { services, actions } },
@@ -232,11 +232,11 @@ const loadGoogleUrl = createAsyncThunk(
 );
 
 const actions = {
+  loadCurrentUser,
   logIn,
   register,
   logOut,
   logInGoogle,
-  loadUser,
   updateUser,
   setPassword,
   resetPassword,

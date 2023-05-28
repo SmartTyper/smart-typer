@@ -3,7 +3,7 @@ enum ActionType {
   REGISTER = 'authRegister',
   LOG_OUT = 'authLogOut',
   LOG_IN_GOOGLE = 'authLogInGoogle',
-  LOAD_USER = 'authLoadUser',
+  LOAD_CURRENT_USER = 'authLoadCurrentUser',
   UPDATE_USER = 'authUpdateUser',
   SET_ERROR = 'authSetError',
   SET_PASSWORD = 'authSetPassword',

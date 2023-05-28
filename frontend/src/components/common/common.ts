@@ -11,3 +11,4 @@ export * from './protected-route/protected-route';
 export * from './sign/sign';
 export * from './spinner/spinner';
 export * from './user-label/user-label';
+export * from './card/card';
