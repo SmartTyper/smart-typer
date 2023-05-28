@@ -10,7 +10,6 @@ type Props = {
   className?: string;
   value?: string;
   readOnly: boolean;
-  defaultChecked?: boolean;
 };
 
 const Checkbox: FC<Props> = ({
@@ -18,7 +17,6 @@ const Checkbox: FC<Props> = ({
   className,
   value,
   readOnly,
-  defaultChecked,
 }) => (
   <RBForm.Check
     {...register}
@@ -26,7 +24,6 @@ const Checkbox: FC<Props> = ({
     className={clsx(styles.checkbox, className)}
     readOnly={readOnly}
     value={value}
-    defaultChecked={defaultChecked}
   />
 );
 

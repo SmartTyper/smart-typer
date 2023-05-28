@@ -17,8 +17,6 @@ type Props = {
   inputClassName?: string;
   value?: string;
   readOnly?: boolean;
-  defaultValue?: number | string;
-  defaultChecked?: boolean;
 };
 
 const FormField: FC<Props> = ({
@@ -31,8 +29,6 @@ const FormField: FC<Props> = ({
   className,
   inputClassName,
   value,
-  defaultValue,
-  defaultChecked,
   readOnly = false,
 }) => {
   const renderFormField = (type: FormFieldType): JSX.Element => {
@@ -55,7 +51,6 @@ const FormField: FC<Props> = ({
             className={inputClassName}
             readOnly={readOnly}
             value={value}
-            defaultChecked={defaultChecked}
           />
         );
       default:
@@ -68,7 +63,6 @@ const FormField: FC<Props> = ({
             className={clsx(styles.input, inputClassName)}
             readOnly={readOnly}
             value={value}
-            defaultValue={defaultValue}
           />
         );
     }

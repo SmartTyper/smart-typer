@@ -150,7 +150,14 @@ const loadUser = createAsyncThunk(
     const { settings: settingsActions, lessons: lessonsActions } = actions;
     const accessToken = localStorageService.getItem(StorageKey.ACCESS_TOKEN);
     if (accessToken) {
-      const { settings, ...user } = await userApiService.getAuthInfo();
+      const {
+        settings,
+        accessToken: newAccessToken,
+        refreshToken: newRefreshToken,
+        ...user
+      } = await userApiService.getAuthInfo();
+      localStorageService.setItem(StorageKey.ACCESS_TOKEN, newAccessToken);
+      localStorageService.setItem(StorageKey.REFRESH_TOKEN, newRefreshToken);
       dispatch(settingsActions.setAll(settings));
       dispatch(
         lessonsActions.loadMoreLessons({ offset: DEFAULT_LESSONS_OFFSET }),

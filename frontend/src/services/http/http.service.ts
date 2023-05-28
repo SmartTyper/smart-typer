@@ -164,12 +164,9 @@ class Http {
     endpoint: string,
     queryParams?: Record<string, unknown>,
   ): string {
-    console.log(queryParams);
-    console.log(queryString.stringify(queryParams as Record<string, unknown>));
     const fetchUrl = `${endpoint}${
       queryParams ? `?${queryString.stringify(queryParams)}` : ''
     }`;
-    console.log(fetchUrl);
     return fetchUrl;
   }
 

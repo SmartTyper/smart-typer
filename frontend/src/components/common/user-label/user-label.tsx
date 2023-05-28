@@ -9,7 +9,7 @@ type Props = {
   userName: string;
   avatarSize: AvatarSize;
   textColor?: UserLabelColor;
-  avatarSrc?: string;
+  avatarSrc: string | null;
 };
 
 const UserLabel: FC<Props> = ({

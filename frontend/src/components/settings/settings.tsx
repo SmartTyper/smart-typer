@@ -35,15 +35,28 @@ const Settings: FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SettingsDto>(updateSettingsSchema);
+    getValues,
+  } = useForm<SettingsDto>(updateSettingsSchema, {
+    gameTime,
+    countdownBeforeGame,
+    hasEmailNotifications,
+    isShownInRating,
+    isSoundTurnedOn,
+  });
+
+  const onClick = (): void => {
+    console.log(getValues());
+    handleSubmit(handleSubmitForm)();
+  };
 
   const handleSubmitForm = (data: SettingsDto): void => {
+    console.log(data);
     dispatch(settingsActions.update(data));
   };
 
   return (
     <ContentWrapper size={ContentWrapperSize.LARGE} className={styles.settings}>
-      <h2>Customize your experience</h2>
+      <h2 className={styles.title}>Customize your experience</h2>
       <RBForm className={styles.form}>
         <div className={styles.cards}>
           <Card title="Notifications" color={CardHeaderColor.YELLOW}>
@@ -52,7 +65,6 @@ const Settings: FC = () => {
               type={FormFieldType.CHECKBOX}
               register={register('hasEmailNotifications')}
               error={errors.hasEmailNotifications}
-              defaultChecked={hasEmailNotifications}
             />
           </Card>
           <Card title="Security" color={CardHeaderColor.ORANGE}>
@@ -61,7 +73,6 @@ const Settings: FC = () => {
               type={FormFieldType.CHECKBOX}
               register={register('isShownInRating')}
               error={errors.isShownInRating}
-              defaultChecked={isShownInRating}
             />
           </Card>
           <Card title="Sound effects" color={CardHeaderColor.PINK}>
@@ -70,7 +81,6 @@ const Settings: FC = () => {
               type={FormFieldType.CHECKBOX}
               register={register('isSoundTurnedOn')}
               error={errors.isSoundTurnedOn}
-              defaultChecked={isSoundTurnedOn}
             />
           </Card>
           <Card title="Racing" color={CardHeaderColor.BLUE}>
@@ -79,7 +89,6 @@ const Settings: FC = () => {
               type={FormFieldType.NUMBER}
               register={register('gameTime')}
               error={errors.gameTime}
-              defaultValue={gameTime}
               inputClassName={styles.racingField}
               note={<span>* only for the single player mode</span>}
             />
@@ -90,14 +99,13 @@ const Settings: FC = () => {
               type={FormFieldType.NUMBER}
               register={register('countdownBeforeGame')}
               error={errors.countdownBeforeGame}
-              defaultValue={countdownBeforeGame}
               inputClassName={styles.racingField}
               note={<span>* only for the single player mode</span>}
             />
           </Card>
         </div>
         <Button
-          onClick={handleSubmit(handleSubmitForm)}
+          onClick={onClick}
           label="Apply"
           isLoading={isUpdateLoading}
           className={styles.submitButton}

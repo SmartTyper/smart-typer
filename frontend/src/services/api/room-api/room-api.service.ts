@@ -1,3 +1,4 @@
+import { HttpMethod, RequestContentType } from 'common/enums/enums';
 import {
   CreateRoomRequestDto,
   RoomDto,
@@ -7,7 +8,6 @@ import {
   ShareRoomUrlDto,
 } from 'common/types/types';
 import { Http as HttpService } from '../../http/http.service';
-import { HttpMethod } from 'common/enums/enums';
 
 type Constructor = {
   httpService: HttpService;
@@ -48,6 +48,7 @@ class RoomApi {
     return this._httpService.load(`${this._baseUrl}/share-url`, {
       method: HttpMethod.POST,
       payload: JSON.stringify(payload),
+      contentType: RequestContentType.JSON,
     });
   }
 
@@ -56,6 +57,7 @@ class RoomApi {
     return this._httpService.load(`${this._baseUrl}/${roomId}/participants`, {
       method: HttpMethod.POST,
       payload: JSON.stringify({ participantId }),
+      contentType: RequestContentType.JSON,
     });
   }
 

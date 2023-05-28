@@ -1,4 +1,4 @@
-import { HttpMethod } from 'common/enums/enums';
+import { HttpMethod, RequestContentType } from 'common/enums/enums';
 import { SettingsDto } from 'common/types/types';
 import { Http as HttpService } from '../../http/http.service';
 
@@ -18,6 +18,7 @@ class SettingsApi {
     return this._httpService.load(this._baseUrl, {
       method: HttpMethod.PUT,
       payload: JSON.stringify(payload),
+      contentType: RequestContentType.JSON,
     });
   }
 }

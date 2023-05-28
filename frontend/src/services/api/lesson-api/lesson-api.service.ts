@@ -1,4 +1,4 @@
-import { HttpMethod } from 'common/enums/enums';
+import { HttpMethod, RequestContentType } from 'common/enums/enums';
 import { Http as HttpService } from '../../http/http.service';
 import {
   CreateLessonRequestDto,
@@ -31,6 +31,7 @@ class LessonApi {
     return this._httpService.load(this._baseUrl, {
       method: HttpMethod.POST,
       payload: JSON.stringify(payload),
+      contentType: RequestContentType.JSON,
     });
   }
 
@@ -53,6 +54,7 @@ class LessonApi {
     return this._httpService.load(`${this._baseUrl}/${lessonId}/result`, {
       method: HttpMethod.POST,
       payload: JSON.stringify(skillsStatistics),
+      contentType: RequestContentType.JSON,
     });
   }
 

@@ -1,13 +1,18 @@
-import { AppRoute } from 'common/enums/enums';
+import { AppRoute, SpinnerSize } from 'common/enums/enums';
 import { RRDNavigate, RRDOutlet } from 'components/external/external';
-import { FC, UserDto } from 'common/types/types';
+import { FC } from 'common/types/types';
+import { Spinner } from 'components/common/common';
 
 type Props = {
-  user: UserDto | null;
+  hasUser: boolean;
+  isUserLoading: boolean;
 };
 
-const ProtectedRoute: FC<Props> = ({ user }) => {
-  if (!user) {
+const ProtectedRoute: FC<Props> = ({ hasUser, isUserLoading }) => {
+  if (isUserLoading) {
+    return <Spinner size={SpinnerSize.LARGE} />;
+  }
+  if (!hasUser) {
     return <RRDNavigate to={AppRoute.LOG_IN} replace />;
   }
   return <RRDOutlet />;
