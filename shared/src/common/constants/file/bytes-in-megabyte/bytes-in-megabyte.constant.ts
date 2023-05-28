@@ -1,0 +1,3 @@
+const BYTES_IN_MEGABYTE = 1024;
+
+export { BYTES_IN_MEGABYTE };

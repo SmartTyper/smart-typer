@@ -6,6 +6,7 @@ import {
 } from 'common/enums/enums';
 import { HttpError } from 'exceptions/exceptions';
 import { Request, Response, RequestHandler, NextFunction } from 'express';
+import { megabytesToBytes } from 'helpers/helpers';
 import multer, { FileFilterCallback, MulterError } from 'multer';
 
 type Options = {
@@ -16,7 +17,7 @@ const uploadToMemoryStorage = (fileName: string): RequestHandler => {
   const storage = multer.memoryStorage();
 
   const limits = {
-    fileSize: MAX_FILE_SIZE,
+    fileSize: megabytesToBytes(MAX_FILE_SIZE),
   };
 
   const fileFilter = (

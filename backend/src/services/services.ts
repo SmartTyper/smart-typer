@@ -30,6 +30,7 @@ const s3 = new S3({
   accessKeyId: ENV.S3.ACCESS_KEY_ID,
   secretAccessKey: ENV.S3.SECRET_ACCESS_KEY,
   bucketName: ENV.S3.BUCKET_NAME,
+  region: ENV.S3.REGION,
 });
 
 const hash = new Hash();

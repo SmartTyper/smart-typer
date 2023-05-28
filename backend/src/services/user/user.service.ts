@@ -176,11 +176,11 @@ class User {
       const fileName = basename(photoUrl);
       const isExistsAvatar = await this._s3Service.doesFileExistInS3(fileName);
       if (isExistsAvatar) {
-        await this._s3Service.deleteInS3(photoUrl);
+        await this._s3Service.deleteInS3(fileName);
       }
     }
 
-    const uploadedFile = await this._s3Service.uploadToS3(file);
+    const uploadedFile = await this._s3Service.uploadToS3(userId, file);
     const { Location: location } = uploadedFile;
     await this._userRepository.patchById(userId, {
       photoUrl: location,
@@ -203,7 +203,7 @@ class User {
       const fileName = basename(photoUrl);
       const isExistsAvatar = await this._s3Service.doesFileExistInS3(fileName);
       if (isExistsAvatar) {
-        await this._s3Service.deleteInS3(photoUrl);
+        await this._s3Service.deleteInS3(fileName);
       }
       await this._userRepository.patchById(userId, { photoUrl: null });
     }
