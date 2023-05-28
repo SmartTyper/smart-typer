@@ -1,8 +1,9 @@
+import { ShareUrlKey } from 'common/enums/enums';
 import { ShareRoomUrlDto } from '../racing';
 
 type SendRoomUrlToEmailsRequestDto = {
   emails: string[];
-  shareRoomUrl: ShareRoomUrlDto['url'];
+  shareRoomUrl: ShareRoomUrlDto[ShareUrlKey.URL];
 };
 
 export type { SendRoomUrlToEmailsRequestDto };

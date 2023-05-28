@@ -2,7 +2,7 @@ import { yup } from 'dependencies/dependencies';
 import { ValidationErrorMessage } from 'common/enums/enums';
 import { emailSchema, nicknameSchema } from 'validation-schemas/fields/fields';
 
-const updateProfileInfoSchema = yup
+const updateUserInfoSchema = yup
   .object()
   .shape({
     nickname: nicknameSchema.required(),
@@ -11,4 +11,4 @@ const updateProfileInfoSchema = yup
   })
   .noUnknown(true, ValidationErrorMessage.INVALID_KEYS_RECEIVED);
 
-export { updateProfileInfoSchema };
+export { updateUserInfoSchema };

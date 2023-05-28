@@ -1,10 +1,11 @@
+import { StatisticsKey } from 'common/enums/enums';
 import { Statistics } from 'common/types/types';
 
 type CalculateStatisticsArgs = {
   oldStatistics: Statistics;
   timestamps: number[];
   newStatistics: Partial<Statistics>;
-  lessonAverageSpeed: Statistics['averageSpeed'];
+  lessonAverageSpeed: Statistics[StatisticsKey.AVERAGE_SPEED];
 };
 
 const calculateStatistics = ({

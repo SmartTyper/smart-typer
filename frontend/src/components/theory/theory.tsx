@@ -1,8 +1,12 @@
-import { ContentWrapperSize } from 'common/enums/enums';
+import {
+  CardHeaderColor,
+  CardSize,
+  ContentWrapperSize,
+} from 'common/enums/enums';
 import { FC } from 'common/types/types';
-import { ContentWrapper } from 'components/common/common';
-import { Block, OLItem } from './components/components';
-import { ImageAlignment, OLItemColor } from './common/enums/enums';
+import { Card, ContentWrapper } from 'components/common/common';
+import { Block } from './components/components';
+import { ImageAlignment } from './common/enums/enums';
 
 import climbsUpKeyboardImg from 'assets/img/climbs-up-keyboard.png';
 import comfortWorkspaceImg from 'assets/img/comfort-workspace.png';
@@ -43,36 +47,64 @@ const Theory: FC = () => {
         text="Having learned the basics, the key to mastering fast and touch typing is consistent practice. However, this shouldn't be aimless repetition. It's crucial to have a structured practice regime that focuses on gradual skill improvement. There are a few steps to guide your practice below."
       >
         <ol className={styles.suggestions} role="list">
-          <OLItem
+          <Card
             title="Warm-up"
-            color={OLItemColor.YELLOW}
-            // eslint-disable-next-line max-len
-            text="Start your practice sessions with basic words and sentences. This will help you get comfortable with the keyboard and warm up your fingers for the practice session ahead."
-          />
-          <OLItem
+            color={CardHeaderColor.YELLOW}
+            size={CardSize.MEDIUM}
+          >
+            <p className={styles.suggestionText}>
+              Start your practice sessions with basic words and sentences. This
+              will help you get comfortable with the keyboard and warm up your
+              fingers for the practice session ahead.
+            </p>
+          </Card>
+          <Card
             title="Gradual Progress"
-            color={OLItemColor.ORANGE}
-            // eslint-disable-next-line max-len
-            text="Do not rush. Initially, focus more on accuracy than speed. Start at a slower pace and gradually increase your speed as you grow more confident and proficient. Mistakes are a part of the learning process. Embrace them and learn from them."
-          />
-          <OLItem
+            color={CardHeaderColor.ORANGE}
+            size={CardSize.MEDIUM}
+          >
+            <p className={styles.suggestionText}>
+              Do not rush. Initially, focus more on accuracy than speed. Start
+              at a slower pace and gradually increase your speed as you grow
+              more confident and proficient. Mistakes are a part of the learning
+              process. Embrace them and learn from them.
+            </p>
+          </Card>
+          <Card
             title="Regular Practice"
-            color={OLItemColor.PINK}
-            // eslint-disable-next-line max-len
-            text="Regular practice is vital to improve muscle memory. Try to allocate a specific time each day for your typing practice. This consistent routine will reinforce your muscle memory and enhance your typing skills."
-          />
-          <OLItem
+            color={CardHeaderColor.PINK}
+            size={CardSize.MEDIUM}
+          >
+            <p className={styles.suggestionText}>
+              Regular practice is vital to improve muscle memory. Try to
+              allocate a specific time each day for your typing practice. This
+              consistent routine will reinforce your muscle memory and enhance
+              your typing skills.
+            </p>
+          </Card>
+          <Card
             title="Variety"
-            color={OLItemColor.BLUE}
-            // eslint-disable-next-line max-len
-            text="Incorporate diverse exercises in your routine. Practice typing different sentences, paragraphs, and eventually entire pages. This will expose you to different word combinations and typing patterns, improving your overall typing skills."
-          />
-          <OLItem
+            color={CardHeaderColor.BLUE}
+            size={CardSize.MEDIUM}
+          >
+            <p className={styles.suggestionText}>
+              Incorporate diverse exercises in your routine. Practice typing
+              different sentences, paragraphs, and eventually entire pages. This
+              will expose you to different word combinations and typing
+              patterns, improving your overall typing skills.
+            </p>
+          </Card>
+          <Card
             title="Track Your Progress"
-            color={OLItemColor.GREEN}
-            // eslint-disable-next-line max-len
-            text="Keep track of your typing speed and accuracy regularly. This will help you identify areas you need to work on and monitor your progress over time."
-          />
+            color={CardHeaderColor.GREEN}
+            size={CardSize.MEDIUM}
+          >
+            <p className={styles.suggestionText}>
+              Keep track of your typing speed and accuracy regularly. This will
+              help you identify areas you need to work on and monitor your
+              progress over time.
+            </p>
+          </Card>
         </ol>
       </Block>
       <Block

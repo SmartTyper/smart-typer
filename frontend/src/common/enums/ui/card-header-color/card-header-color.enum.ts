@@ -3,6 +3,7 @@ enum CardHeaderColor {
   ORANGE = 'orange',
   YELLOW = 'yellow',
   PINK = 'pink',
+  GREEN = 'green',
 }
 
 export { CardHeaderColor };

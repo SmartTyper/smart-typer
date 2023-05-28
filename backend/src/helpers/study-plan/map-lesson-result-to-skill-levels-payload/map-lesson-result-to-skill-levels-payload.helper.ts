@@ -1,3 +1,4 @@
+import { SkillKey } from 'common/enums/enums';
 import {
   BktPayload,
   IrtPayload,
@@ -9,7 +10,7 @@ type MapLessonResultItsPayload = {
   lesson: LessonWithSkills;
   misclicks: boolean[];
   timestamps: number[];
-  currentSkillLevels: Omit<Skill, 'name'>[];
+  currentSkillLevels: Omit<Skill, SkillKey.NAME>[];
 };
 
 const mapLessonResultToSkillLevelsPayload = ({

@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { refreshToken as refreshTokenRepository } from 'data/repositories/repositories';
 import {
+  CommonKey,
   HttpCode,
   HttpErrorMessage,
   tokenExpirationTime,
@@ -95,7 +96,9 @@ class Token {
     return record.userId;
   }
 
-  public async removeRefreshToken(userId: UserDto['id']): Promise<void> {
+  public async removeRefreshToken(
+    userId: UserDto[CommonKey.ID],
+  ): Promise<void> {
     await this._refreshTokenRepository.removeByUserId(userId);
   }
 }

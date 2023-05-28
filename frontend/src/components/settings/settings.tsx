@@ -31,11 +31,11 @@ const Settings: FC = () => {
     isSoundTurnedOn: settings.isShownInRating,
     isUpdateLoading: requests.settingsUpdate,
   }));
+  
   const {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
   } = useForm<SettingsDto>(updateSettingsSchema, {
     gameTime,
     countdownBeforeGame,
@@ -44,13 +44,7 @@ const Settings: FC = () => {
     isSoundTurnedOn,
   });
 
-  const onClick = (): void => {
-    console.log(getValues());
-    handleSubmit(handleSubmitForm)();
-  };
-
   const handleSubmitForm = (data: SettingsDto): void => {
-    console.log(data);
     dispatch(settingsActions.update(data));
   };
 
@@ -65,7 +59,7 @@ const Settings: FC = () => {
           <Card
             title="Racing"
             color={CardHeaderColor.BLUE}
-            className={styles.racingCard}
+            className={styles.card}
             childrenContainerClassName={styles.racingCardFieldsContainer}
           >
             <FormField
@@ -86,8 +80,12 @@ const Settings: FC = () => {
               note={<span>* only for the single player mode</span>}
             />
           </Card>
-          <div className={styles.checkboxCards}>
-            <Card title="Notifications" color={CardHeaderColor.YELLOW}>
+          <div>
+            <Card
+              title="Notifications"
+              color={CardHeaderColor.YELLOW}
+              className={styles.card}
+            >
               <FormField
                 label={FormFieldLabel.HAS_EMAIL_NOTIFICATIONS}
                 type={FormFieldType.CHECKBOX}
@@ -95,7 +93,11 @@ const Settings: FC = () => {
                 error={errors.hasEmailNotifications}
               />
             </Card>
-            <Card title="Security" color={CardHeaderColor.ORANGE}>
+            <Card
+              title="Security"
+              color={CardHeaderColor.ORANGE}
+              className={styles.card}
+            >
               <FormField
                 label={FormFieldLabel.IS_SHOWN_IN_RATING}
                 type={FormFieldType.CHECKBOX}
@@ -103,7 +105,11 @@ const Settings: FC = () => {
                 error={errors.isShownInRating}
               />
             </Card>
-            <Card title="Sound effects" color={CardHeaderColor.PINK}>
+            <Card
+              title="Sound effects"
+              color={CardHeaderColor.PINK}
+              className={styles.card}
+            >
               <FormField
                 label={FormFieldLabel.IS_SOUND_TURNED_ON}
                 type={FormFieldType.CHECKBOX}
@@ -114,7 +120,7 @@ const Settings: FC = () => {
           </div>
         </div>
         <Button
-          onClick={onClick}
+          onClick={handleSubmit(handleSubmitForm)}
           label="Apply"
           isLoading={isUpdateLoading}
           className={styles.submitButton}

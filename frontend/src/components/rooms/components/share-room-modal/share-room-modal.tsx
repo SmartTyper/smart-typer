@@ -1,4 +1,4 @@
-import { AppRoute, FormFieldLabel, FormFieldType } from 'common/enums/enums';
+import { AppRoute, FormFieldLabel, FormFieldType, ShareUrlKey } from 'common/enums/enums';
 import {
   FC,
   SendRoomUrlToEmailsRequestDto,
@@ -23,10 +23,10 @@ import styles from './styles.module.scss';
 type Props = {
   isVisible: boolean;
   onClose: VoidAction;
-  shareRoomUrl: ShareRoomUrlDto['url'];
+  shareRoomUrl: ShareRoomUrlDto[ShareUrlKey.URL];
 };
 
-type Emails = SendRoomUrlToEmailsRequestDto['emails'];
+type Emails = SendRoomUrlToEmailsRequestDto[ShareUrlKey.EMAILS];
 
 const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl }) => {
   const { racingSendRoomUrlToEmails: isRoomUrlSending } = useSelector(

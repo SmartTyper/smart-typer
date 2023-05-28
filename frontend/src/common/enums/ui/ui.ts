@@ -6,3 +6,4 @@ export * from './user-label-color/user-label-color.enum';
 export * from './content-wrapper-size/content-wrapper-size.enum';
 export * from './content-wrapper-shadow/content-wrapper-size.enum';
 export * from './card-header-color/card-header-color.enum';
+export * from './card-size/card-size.enum';

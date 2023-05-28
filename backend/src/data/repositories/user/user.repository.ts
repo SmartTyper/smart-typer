@@ -1,8 +1,10 @@
 import {
   CommonKey,
+  ProfileInfoKey,
   RoomKey,
   RoomRelationMappings,
   SettingsKey,
+  SkillKey,
   StatisticsKey,
   TableName,
   UserKey,
@@ -104,11 +106,13 @@ class User {
   ): Promise<RecordWithoutCommonDateKeys<IUserRecord> | undefined> {
     return this._UserModel
       .query()
-      .select(CommonKey.ID,
+      .select(
+        CommonKey.ID,
         UserKey.EMAIL,
         UserKey.NICKNAME,
         UserKey.PASSWORD,
-        UserKey.PHOTO_URL)
+        UserKey.PHOTO_URL,
+      )
       .findOne({ [UserKey.EMAIL]: email.toLowerCase() });
   }
 
@@ -241,7 +245,9 @@ class User {
 
   public async getByIdWithStatistics(
     userId: number,
-  ): Promise<Omit<UserProfileInfoResponseDto, 'rating'> | undefined> {
+  ): Promise<
+    Omit<UserProfileInfoResponseDto, ProfileInfoKey.RATING> | undefined
+  > {
     return this._UserModel
       .query()
       .select(...User.DEFAULT_USER_COLUMNS_TO_RETURN)
@@ -259,7 +265,7 @@ class User {
           StatisticsKey.TOTAL_TIME,
         ),
       )
-      .castTo<Omit<UserProfileInfoResponseDto, 'rating'>>();
+      .castTo<Omit<UserProfileInfoResponseDto, ProfileInfoKey.RATING>>();
   }
 
   public async getRating(): Promise<Rating> {
@@ -316,7 +322,7 @@ class User {
 
   public async getCurrentSkillLevelsByUserId(
     userId: number,
-  ): Promise<Omit<Skill, 'name'>[] | undefined> {
+  ): Promise<Omit<Skill, SkillKey.NAME>[] | undefined> {
     return this._UserModel
       .query()
       .select(
@@ -330,8 +336,8 @@ class User {
 
   public async patchSkillLevelsByUserId(
     userId: number,
-    payload: Omit<Skill, 'name'>[],
-  ): Promise<Omit<IUserToSkillRecord, 'userId'>[]> {
+    payload: Omit<Skill, SkillKey.NAME>[],
+  ): Promise<Omit<IUserToSkillRecord, UserToSkillKey.USER_ID>[]> {
     const options = {
       noInsert: true,
       relate: UserRelationMappings.USER_TO_SKILLS,

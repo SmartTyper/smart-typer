@@ -4,7 +4,7 @@ import {
   UserDto,
   ParticipantIdDto,
 } from 'common/types/types';
-import { SocketEvent } from 'common/enums/enums';
+import { SocketEvent, UserKey } from 'common/enums/enums';
 import { socket as socketService } from 'services/services';
 import { racing as racingActions } from 'store/modules/actions';
 
@@ -21,7 +21,7 @@ const getSocketMiddleware = ({ socketService }: Options): Middleware => {
 
     socketService.on(
       SocketEvent.ADD_PARTICIPANT,
-      (payload: Omit<UserDto, 'email'>) => {
+      (payload: Omit<UserDto, UserKey.EMAIL>) => {
         dispatch(racingActions.addParticipant(payload));
       },
     );

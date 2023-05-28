@@ -2,7 +2,7 @@ import { RBModal, ReactCrop } from 'components/external/external';
 import { useState } from 'hooks/hooks';
 import { FC, VoidAction } from 'common/types/types';
 import { Button } from 'components/common/common';
-import { canvasToBlob } from 'helpers/helpers';
+import { canvasToBlob, canvasToDataUrl } from 'helpers/helpers';
 import { CROPPED_IMAGE_TYPE } from 'common/constants/constants';
 import { Crop, CropData } from './common/types/types';
 
@@ -10,7 +10,7 @@ type Props = {
   isVisible: boolean;
   file: File | null;
   onClose: VoidAction;
-  updateAvatar: (croppedFile: File) => void;
+  updateAvatar: (croppedFile: File, croppedFileUrl: string) => void;
 };
 
 const CropAvatar: FC<Props> = ({ isVisible, file, onClose, updateAvatar }) => {
@@ -65,8 +65,10 @@ const CropAvatar: FC<Props> = ({ isVisible, file, onClose, updateAvatar }) => {
       type: CROPPED_IMAGE_TYPE,
     });
 
+    const croppedImageUrl = canvasToDataUrl(croppedPhoto);
+
     onClose();
-    updateAvatar(croppedImageFile);
+    updateAvatar(croppedImageFile, croppedImageUrl);
   };
 
   if (!file) {

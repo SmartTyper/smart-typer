@@ -31,7 +31,8 @@ class Statistics {
   public getByUserId(
     userId: number,
   ): Promise<
-    RecordWithoutCommonKeys<Omit<IStatisticsRecord, 'userId'>> | undefined
+    | RecordWithoutCommonKeys<Omit<IStatisticsRecord, StatisticsKey.USER_ID>>
+    | undefined
   > {
     return this._StatisticsModel
       .query()

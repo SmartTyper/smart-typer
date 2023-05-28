@@ -20,7 +20,7 @@ const { reducer } = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    const { loadUser, resetAll, deleteAvatar, updateInfo, updateAvatar } =
+    const { loadUser, resetAll, deleteAvatar, updatePersonalInfo, updateAvatar } =
       actions;
     builder
       .addCase(loadUser.fulfilled, (state, action) => {
@@ -42,7 +42,7 @@ const { reducer } = createSlice({
           state.user.photoUrl = action.payload;
         }
       })
-      .addCase(updateInfo.fulfilled, (state, action) => {
+      .addCase(updatePersonalInfo.fulfilled, (state, action) => {
         if (state.user) {
           state.user = { ...state.user, ...action.payload };
         }

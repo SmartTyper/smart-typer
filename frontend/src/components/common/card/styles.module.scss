@@ -1,14 +1,22 @@
 @import 'src/assets/css/variables';
 
 .card {
-  position: relative;
-  counter-increment: list;
   width: 20vw;
-  margin: 2rem;
+  margin: 2rem 0;
   padding: 2rem 2rem;
   overflow: hidden;
   background-color: white;
   border: 1px solid rgba($black, 0.25);
+
+  .large {
+    width: 27.5vw;
+    padding: 2rem 1rem 1rem;
+  }
+
+  .medium {
+    width: 20vw;
+    padding: 2rem 2rem;
+  }
 
   &::before {
     content: '';
@@ -40,5 +48,93 @@
     display: flex;
     align-items: baseline;
     margin: 0 0 1rem;
+  }
+
+  &.numbered {
+    position: relative;
+    counter-increment: list;
+
+    &.blue {
+      &::before {
+        background: linear-gradient(
+          to right,
+          $blue-accent 20%,
+          rgba($blue-accent, 0.2) 20%
+        );
+      }
+  
+      .suggestionTitle::before {
+        background-color: $blue-accent;
+      }
+    }
+  
+    &.green {
+      &::before {
+        background: linear-gradient(
+          to right,
+          $green-accent 20%,
+          rgba($green-accent, 0.2) 20%
+        );
+      }
+  
+      .suggestionTitle::before {
+        background-color: $green-accent;
+      }
+    }
+  
+    &.orange {
+      &::before {
+        background: linear-gradient(
+          to right,
+          $orange-accent 20%,
+          rgba($orange-accent, 0.2) 20%
+        );
+      }
+  
+      .suggestionTitle::before {
+        background-color: $orange-accent;
+      }
+    }
+  
+    &.yellow {
+      &::before {
+        background: linear-gradient(
+          to right,
+          $yellow-accent 20%,
+          rgba($yellow-accent, 0.2) 20%
+        );
+      }
+  
+      .suggestionTitle::before {
+        background-color: $yellow-accent;
+      }
+    }
+  
+    &.pink {
+      &::before {
+        background: linear-gradient(
+          to right,
+          $pink-accent 20%,
+          rgba($pink-accent, 0.2) 20%
+        );
+      }
+  
+      .suggestionTitle::before {
+        background-color: $pink-accent;
+      }
+    }
+
+    .title::before {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 0 0 auto;
+        margin-right: 1rem;
+        width: 3rem;
+        height: 3rem;
+        content: counter(list);
+        padding: 1rem;
+        border-radius: 50%;
+      }
   }
 }
