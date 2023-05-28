@@ -13,11 +13,7 @@ import {
   UserToRoomRelationMappings,
   UserToSkillKey,
 } from 'common/enums/enums';
-import {
-  IUserRecord,
-  IUserToRoomRecord,
-  IUserToSkillRecord,
-} from 'common/interfaces/interfaces';
+import { IUserRecord, IUserToSkillRecord } from 'common/interfaces/interfaces';
 import {
   Rating,
   RecordWithoutCommonDateKeys,
@@ -28,6 +24,7 @@ import {
   TokensResponseDto,
   UserDto,
   UserWithPassword,
+  UserToRoom,
 } from 'common/types/types';
 import { User as UserModel } from 'data/models/models';
 import {
@@ -300,23 +297,13 @@ class User {
   public async updateCurrentRoomByUserId(
     userId: number,
     roomId: number | null,
-  ): Promise<
-    Pick<
-      IUserToRoomRecord,
-      UserToRoomKey.USER_ID | UserToRoomKey.CURRENT_ROOM_ID
-    >
-  > {
+  ): Promise<Promise<Omit<UserToRoom, UserToRoomKey.PERSONAL_ROOM_ID>>> {
     return this._UserModel
       .relatedQuery(UserRelationMappings.USER_TO_ROOMS)
       .patch({ roomId })
       .findOne({ userId })
       .returning([UserToRoomKey.USER_ID, UserToRoomKey.CURRENT_ROOM_ID])
-      .castTo<
-        Pick<
-          IUserToRoomRecord,
-          UserToRoomKey.USER_ID | UserToRoomKey.CURRENT_ROOM_ID
-        >
-      >()
+      .castTo<Promise<Omit<UserToRoom, UserToRoomKey.PERSONAL_ROOM_ID>>>()
       .execute();
   }
 
