@@ -44,7 +44,7 @@ class UserApi {
     return this._httpService.load(`${this._baseUrl}/current/avatar`, {
       method: HttpMethod.PUT,
       payload: fd,
-      contentType: RequestContentType.JSON,
+      contentType: RequestContentType.JSON, // check
     });
   }
 

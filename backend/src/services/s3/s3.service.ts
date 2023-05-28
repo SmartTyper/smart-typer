@@ -1,4 +1,5 @@
-import fs from 'fs';
+// import fs from 'fs';
+import path from 'path';
 import mime from 'mime-types';
 import AWSs3, { DeleteObjectOutput, ManagedUpload } from 'aws-sdk/clients/s3';
 import { PromiseResult } from 'aws-sdk/lib/request';
@@ -6,11 +7,13 @@ import { AWSError } from 'aws-sdk/lib/error';
 import { HttpError } from 'exceptions/exceptions';
 import { HttpCode, HttpErrorMessage } from 'common/enums/enums';
 import { getKeyFromObjectLocation } from 'helpers/helpers';
+import { UserDto } from 'smart-typer-shared/common/types/types';
 
 type Constructor = {
   accessKeyId: string;
   secretAccessKey: string;
   bucketName: string;
+  region: string
 };
 
 class S3 {
@@ -18,11 +21,12 @@ class S3 {
   private _bucketName: string;
 
   public constructor(params: Constructor) {
-    const { accessKeyId, secretAccessKey, bucketName } = params;
+    const { accessKeyId, secretAccessKey, bucketName, region } = params;
     this._s3 = new AWSs3({
       accessKeyId,
       secretAccessKey,
       signatureVersion: 'v4',
+      region,
     });
     this._bucketName = bucketName;
   }
@@ -30,7 +34,7 @@ class S3 {
   public async doesFileExistInS3(fileName: string): Promise<boolean> {
     try {
       const params = { Bucket: this._bucketName, Key: fileName };
-      this._s3.headObject(params).promise();
+      await this._s3.headObject(params).promise();
       return true;
     } catch {
       return false;
@@ -45,11 +49,14 @@ class S3 {
   }
 
   public async uploadToS3(
+    userId: UserDto['id'],
     file: Express.Multer.File,
   ): Promise<ManagedUpload.SendData> {
-    const fileStream = fs.createReadStream(file.path);
 
-    const fileType = mime.lookup(file.path);
+    // const fileStream = fs.createReadStream(file.path);
+
+    const fileName = userId + '.' + Date.now() + path.extname(file.originalname);
+    const fileType = file.path ? mime.lookup(file.path) : file.mimetype;
 
     if (!fileType) {
       throw new HttpError({
@@ -61,12 +68,15 @@ class S3 {
 
     const uploadParams = {
       Bucket: this._bucketName,
-      Body: fileStream,
-      Key: file.filename,
+      Body: file.buffer,
+      Key: fileName,
       ContentType: type || undefined,
     };
 
-    return this._s3.upload(uploadParams).promise();
+    return this._s3
+      .upload(uploadParams)
+      .promise();
+
   }
 
   public async getSignedUrl(location: string): Promise<string> {

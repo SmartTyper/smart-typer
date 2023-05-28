@@ -1,6 +1,6 @@
 enum tokenExpirationTime {
-  REFRESH_TOKEN = '7d',
-  ACCESS_TOKEN = '1d',
+  REFRESH_TOKEN = '37d',
+  ACCESS_TOKEN = '30d',
 }
 
 export { tokenExpirationTime };
