@@ -62,12 +62,12 @@
           rgba($blue-accent, 0.2) 20%
         );
       }
-  
+
       .suggestionTitle::before {
         background-color: $blue-accent;
       }
     }
-  
+
     &.green {
       &::before {
         background: linear-gradient(
@@ -76,12 +76,12 @@
           rgba($green-accent, 0.2) 20%
         );
       }
-  
+
       .suggestionTitle::before {
         background-color: $green-accent;
       }
     }
-  
+
     &.orange {
       &::before {
         background: linear-gradient(
@@ -90,12 +90,12 @@
           rgba($orange-accent, 0.2) 20%
         );
       }
-  
+
       .suggestionTitle::before {
         background-color: $orange-accent;
       }
     }
-  
+
     &.yellow {
       &::before {
         background: linear-gradient(
@@ -104,12 +104,12 @@
           rgba($yellow-accent, 0.2) 20%
         );
       }
-  
+
       .suggestionTitle::before {
         background-color: $yellow-accent;
       }
     }
-  
+
     &.pink {
       &::before {
         background: linear-gradient(
@@ -118,23 +118,23 @@
           rgba($pink-accent, 0.2) 20%
         );
       }
-  
+
       .suggestionTitle::before {
         background-color: $pink-accent;
       }
     }
 
     .title::before {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex: 0 0 auto;
-        margin-right: 1rem;
-        width: 3rem;
-        height: 3rem;
-        content: counter(list);
-        padding: 1rem;
-        border-radius: 50%;
-      }
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 0 0 auto;
+      margin-right: 1rem;
+      width: 3rem;
+      height: 3rem;
+      content: counter(list);
+      padding: 1rem;
+      border-radius: 50%;
+    }
   }
 }

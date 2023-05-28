@@ -13,7 +13,7 @@ type Constructor = {
   accessKeyId: string;
   secretAccessKey: string;
   bucketName: string;
-  region: string
+  region: string;
 };
 
 class S3 {
@@ -52,10 +52,10 @@ class S3 {
     userId: UserDto[CommonKey.ID],
     file: Express.Multer.File,
   ): Promise<ManagedUpload.SendData> {
-
     // const fileStream = fs.createReadStream(file.path);
 
-    const fileName = userId + '.' + Date.now() + path.extname(file.originalname);
+    const fileName =
+      userId + '.' + Date.now() + path.extname(file.originalname);
     const fileType = file.path ? mime.lookup(file.path) : file.mimetype;
 
     if (!fileType) {
@@ -73,10 +73,7 @@ class S3 {
       ContentType: type || undefined,
     };
 
-    return this._s3
-      .upload(uploadParams)
-      .promise();
-
+    return this._s3.upload(uploadParams).promise();
   }
 
   public async getSignedUrl(location: string): Promise<string> {

@@ -31,7 +31,7 @@ const Settings: FC = () => {
     isSoundTurnedOn: settings.isShownInRating,
     isUpdateLoading: requests.settingsUpdate,
   }));
-  
+
   const {
     register,
     handleSubmit,

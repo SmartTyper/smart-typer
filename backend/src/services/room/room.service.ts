@@ -1,5 +1,10 @@
 import { ENV, MAX_USERS_IN_ROOM } from 'common/constants/constants';
-import { GameRoomKey, HttpCode, HttpErrorMessage, SocketEvent } from 'common/enums/enums';
+import {
+  GameRoomKey,
+  HttpCode,
+  HttpErrorMessage,
+  SocketEvent,
+} from 'common/enums/enums';
 import {
   CreateRoomRequestDto,
   RoomDto,

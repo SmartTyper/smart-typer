@@ -10,10 +10,7 @@ import {
   GameRoomKey,
 } from 'common/enums/enums';
 import { IRoomRecord, IUserToRoomRecord } from 'common/interfaces/interfaces';
-import {
-  ParticipantsCount,
-  RoomDto,
-} from 'common/types/types';
+import { ParticipantsCount, RoomDto } from 'common/types/types';
 import { Room as RoomModel } from 'data/models/models';
 
 type Constructor = {
