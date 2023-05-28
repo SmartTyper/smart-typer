@@ -107,8 +107,7 @@ class User {
     await this._UserModel
       .relatedQuery(UserRelationMappings.USER_TO_STUDY_PLAN)
       .for(user.id)
-      .insert(testLessonsData)
-      .debug();
+      .insert(testLessonsData);
 
     return user;
   }

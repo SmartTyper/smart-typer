@@ -24,20 +24,39 @@ class Lesson extends Abstract {
   public getRoutes(): Router {
     const router: Router = Router();
 
+    router.post(
+      '/',
+      this._getValidationMiddleware({ body: createLessonSchema }),
+      this._run((req: IRequestWithUser) => {
+        return this._lessonService.create(req.userId, req.body);
+      }),
+    );
+
+    router.get(
+      '/study-plan',
+      this._run((req: IRequestWithUser) => {
+        return this._lessonService.getStudyPlan(req.userId);
+      }),
+    );
+
+    router.post(
+      '/:lessonId/result',
+      this._run((req: IRequestWithUser) => {
+        const lessonId = Number(req.params.lessonId);
+        return this._lessonService.handleLessonResult(
+          req.userId,
+          lessonId,
+          req.body,
+        );
+      }),
+    );
+
     router.get(
       '/:lessonId',
       this._run((req) => {
         const lessonId = Number(req.params.lessonId);
         return this._lessonService.getById(lessonId);
       }),
-    );
-
-    router.post(
-      '/',
-      this._getValidationMiddleware({ body: createLessonSchema }),
-      this._run((req: IRequestWithUser) =>
-        this._lessonService.create(req.userId, req.body),
-      ),
     );
 
     router.get(
@@ -50,25 +69,6 @@ class Lesson extends Abstract {
           Number(limit),
           contentType as ContentType,
           creatorType as CreatorType,
-        );
-      }),
-    );
-
-    router.get(
-      '/study-plan',
-      this._run((req: IRequestWithUser) =>
-        this._lessonService.getStudyPlan(req.userId),
-      ),
-    );
-
-    router.post(
-      '/:lessonId/result',
-      this._run((req: IRequestWithUser) => {
-        const lessonId = Number(req.params.lessonId);
-        return this._lessonService.handleLessonResult(
-          req.userId,
-          lessonId,
-          req.body,
         );
       }),
     );
