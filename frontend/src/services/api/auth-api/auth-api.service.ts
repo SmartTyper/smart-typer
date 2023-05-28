@@ -2,7 +2,6 @@ import { HttpMethod, RequestContentType } from 'common/enums/enums';
 import {
   ResetPasswordRequestDto,
   SetPasswordRequestDto,
-  RefreshTokenRequestDto,
   LogInRequestDto,
   RegisterRequestDto,
   GoogleLogInUrlResponseDto,
@@ -61,11 +60,9 @@ class AuthApi {
     });
   }
 
-  public async logOut(payload: RefreshTokenRequestDto): Promise<void> {
+  public async logOut(): Promise<void> {
     return this._httpService.load(`${this._baseUrl}/log-out`, {
       method: HttpMethod.POST,
-      payload: JSON.stringify(payload),
-      contentType: RequestContentType.JSON,
     });
   }
 

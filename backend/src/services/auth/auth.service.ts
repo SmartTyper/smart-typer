@@ -1,9 +1,8 @@
 import { HttpCode, HttpErrorMessage } from 'common/enums/enums';
-import { GoogleUser, UserAuthInfoResponseDto } from 'common/types/types';
+import { GoogleUser, UserAuthInfoResponseDto, UserDto } from 'common/types/types';
 import {
   LogInRequestDto,
   RegisterRequestDto,
-  RefreshTokenRequestDto,
   ResetPasswordRequestDto,
   SetPasswordRequestDto,
   GoogleLogInUrlResponseDto,
@@ -152,9 +151,8 @@ class Auth {
     return this._userService.getAuthInfoByEmail(user.email);
   }
 
-  public async logOut(body: RefreshTokenRequestDto): Promise<void> {
-    const { refreshToken } = body;
-    await this._tokenService.removeRefreshToken(refreshToken);
+  public async logOut(userId: UserDto['id']): Promise<void> {
+    await this._tokenService.removeRefreshToken(userId);
   }
 
   public async getLogInGoogleUrl(): Promise<GoogleLogInUrlResponseDto> {

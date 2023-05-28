@@ -8,6 +8,7 @@ import {
 import {
   RefreshTokenRequestDto,
   TokensResponseDto,
+  UserDto,
   UserIdDto,
 } from 'common/types/types';
 import { HttpError } from 'exceptions/exceptions';
@@ -94,10 +95,8 @@ class Token {
     return record.userId;
   }
 
-  public async removeRefreshToken(refreshToken: string): Promise<void> {
-    const record = await this._refreshTokenRepository.getByToken(refreshToken);
-    if (!record) return;
-    await this._refreshTokenRepository.removeByUserId(record.userId);
+  public async removeRefreshToken(userId: UserDto['id']): Promise<void> {
+    await this._refreshTokenRepository.removeByUserId(userId);
   }
 }
 
