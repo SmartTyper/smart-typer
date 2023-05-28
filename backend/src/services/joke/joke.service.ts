@@ -25,7 +25,8 @@ class Joke {
       const response = await this._axiosService.makeGetRequest(
         `${JOKE_API_REQUEST_ENDPOINT}?amount=1&type=single`,
       );
-      return response.data as JokeDto;
+      const { joke } = response.data as JokeDto;
+      return { joke };
     } catch (error) {
       const err = error as Error;
       this._loggerService.error({ err });
