@@ -8,6 +8,7 @@ import {
   LessonToSkillKey,
   RecordsSortOrder,
   SkillKey,
+  StatisticsKey,
   TableName,
   UserToFinishedLessonKey,
   UserToFinishedLessonRelationMapping,
@@ -243,7 +244,12 @@ class Lesson {
 
   public async getAverageSpeed(
     userId: number,
-  ): Promise<Pick<Statistics, 'averageSpeed' | 'todayAverageSpeed'>> {
+  ): Promise<
+    Pick<
+      Statistics,
+      StatisticsKey.AVERAGE_SPEED | StatisticsKey.TODAY_AVERAGE_SPEED
+    >
+  > {
     const today = new Date().setHours(0, 0, 0, 0);
     return this._LessonModel
       .query()
@@ -271,7 +277,12 @@ class Lesson {
           .as('todayAverageSpeed'),
       ])
       .first()
-      .castTo<Pick<Statistics, 'averageSpeed' | 'todayAverageSpeed'>>();
+      .castTo<
+        Pick<
+          Statistics,
+          StatisticsKey.AVERAGE_SPEED | StatisticsKey.TODAY_AVERAGE_SPEED
+        >
+      >();
   }
 
   public insertNewStudyPlanLesson(
@@ -299,7 +310,7 @@ class Lesson {
   }
 
   public async getAllSystemWithSkills(): Promise<
-    Omit<LessonWithSkills, 'content' | 'name'>[]
+    Omit<LessonWithSkills, LessonKey.CONTENT | LessonKey.NAME>[]
   > {
     return this._LessonModel
       .query()
@@ -321,7 +332,7 @@ class Lesson {
   public async getLastNFinishedIds(
     userId: number,
     n: number,
-  ): Promise<Pick<LessonDto, 'id'>[]> {
+  ): Promise<Pick<LessonDto, CommonKey.ID>[]> {
     return this._LessonModel
       .query()
       .select(CommonKey.ID)

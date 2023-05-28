@@ -5,7 +5,7 @@ import AWSs3, { DeleteObjectOutput, ManagedUpload } from 'aws-sdk/clients/s3';
 import { PromiseResult } from 'aws-sdk/lib/request';
 import { AWSError } from 'aws-sdk/lib/error';
 import { HttpError } from 'exceptions/exceptions';
-import { HttpCode, HttpErrorMessage } from 'common/enums/enums';
+import { CommonKey, HttpCode, HttpErrorMessage } from 'common/enums/enums';
 import { getKeyFromObjectLocation } from 'helpers/helpers';
 import { UserDto } from 'smart-typer-shared/common/types/types';
 
@@ -49,7 +49,7 @@ class S3 {
   }
 
   public async uploadToS3(
-    userId: UserDto['id'],
+    userId: UserDto[CommonKey.ID],
     file: Express.Multer.File,
   ): Promise<ManagedUpload.SendData> {
 

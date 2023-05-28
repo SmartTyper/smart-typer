@@ -16,9 +16,13 @@
       text-align: start;
       width: 100%;
 
-      .racingCard {
-        margin-left: 0;
-        
+      .card {
+        margin: 2rem;
+
+        &:first-child {
+          margin-left: 0;
+        }
+
         .racingCardFieldsContainer {
           display: flex;
           flex-direction: column;

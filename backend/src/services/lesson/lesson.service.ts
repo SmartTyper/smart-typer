@@ -5,6 +5,7 @@ import {
   CreatorType,
   HttpCode,
   HttpErrorMessage,
+  SkillKey,
 } from 'common/enums/enums';
 import { IPaginationResponse } from 'common/interfaces/interfaces';
 import {
@@ -12,6 +13,7 @@ import {
   LessonResponseDto,
   CreateLessonRequestDto,
   SkillsStatisticsDto,
+  Skill,
   UserDto,
 } from 'common/types/types';
 import {
@@ -137,7 +139,7 @@ class Lesson {
       resultSkillLevels.map((skill) => ({
         id: skill.skillId,
         level: skill.pKnown,
-      })),
+      })) as Omit<Skill, SkillKey.NAME>[],
     );
 
     const lessonBestSkill = calculateLessonBestSkill(

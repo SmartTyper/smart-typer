@@ -1,4 +1,4 @@
-import { HttpCode, HttpErrorMessage } from 'common/enums/enums';
+import { CommonKey, HttpCode, HttpErrorMessage } from 'common/enums/enums';
 import {
   GoogleUser,
   UserAuthInfoResponseDto,
@@ -155,7 +155,7 @@ class Auth {
     return this._userService.getAuthInfoByEmail(user.email);
   }
 
-  public async logOut(userId: UserDto['id']): Promise<void> {
+  public async logOut(userId: UserDto[CommonKey.ID]): Promise<void> {
     await this._tokenService.removeRefreshToken(userId);
   }
 

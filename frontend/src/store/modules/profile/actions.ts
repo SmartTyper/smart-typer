@@ -6,6 +6,7 @@ import {
   UpdateAvatarResponseDto,
 } from 'common/types/types';
 import { ActionType } from './action-type';
+import { UserKey } from 'smart-typer-shared';
 
 const loadUser = createAsyncThunk(
   ActionType.LOAD_USER,
@@ -25,22 +26,22 @@ const updateAvatar = createAsyncThunk(
   async (
     payload: File,
     { extra: { services } },
-  ): Promise<UpdateAvatarResponseDto['photoUrl']> => {
+  ): Promise<UpdateAvatarResponseDto[UserKey.PHOTO_URL]> => {
     const { userApi: userApiService } = services;
     const { photoUrl } = await userApiService.updateAvatar(payload);
     return photoUrl;
   },
 );
 
-const updateInfo = createAsyncThunk(
-  ActionType.UPDATE_INFO,
+const updatePersonalInfo = createAsyncThunk(
+  ActionType.UPDATE_PERSONAL_INFO,
   async (
-    payload: Partial<UserDto>,
+    payload: Partial<Pick<UserDto, UserKey.NICKNAME | UserKey.EMAIL>>,
     { dispatch, extra: { services, actions } },
-  ): Promise<Partial<UserDto>> => {
+  ): Promise<Partial<Pick<UserDto, UserKey.NICKNAME | UserKey.EMAIL>>> => {
     const { userApi: userApiService } = services;
     const { auth: authActions } = actions;
-    await userApiService.updateInfo(payload);
+    await userApiService.updatePersonalInfo(payload);
     dispatch(authActions.updateUser(payload));
     return payload;
   },
@@ -58,7 +59,7 @@ const actions = {
   loadUser,
   resetAll,
   updateAvatar,
-  updateInfo,
+  updatePersonalInfo,
   deleteAvatar,
 };
 

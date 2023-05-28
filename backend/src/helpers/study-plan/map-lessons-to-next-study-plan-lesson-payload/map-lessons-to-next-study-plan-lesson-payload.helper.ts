@@ -1,8 +1,9 @@
+import { CommonKey, LessonKey } from 'common/enums/enums';
 import { AhpPayload, LessonDto, LessonWithSkills } from 'common/types/types';
 
 type MapLessonsToNextStudyPlanLessonPayload = {
-  lastFinishedLessons: Pick<LessonDto, 'id'>[];
-  systemLessons: Omit<LessonWithSkills, 'content' | 'name'>[];
+  lastFinishedLessons: Pick<LessonDto, CommonKey.ID>[];
+  systemLessons: Omit<LessonWithSkills, LessonKey.CONTENT | LessonKey.NAME>[];
 };
 
 const mapLessonsToNextStudyPlanLessonPayload = ({

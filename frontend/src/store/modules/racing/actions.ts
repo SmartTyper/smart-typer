@@ -1,4 +1,12 @@
-import { CommentatorEvent, NotificationMessage } from 'common/enums/enums';
+import {
+  CommentatorEvent,
+  CommonKey,
+  GameRoomKey,
+  NotificationMessage,
+  ParticipantKey,
+  ShareUrlKey,
+  UserKey,
+} from 'common/enums/enums';
 import {
   CreateRoomRequestDto,
   GameRoom,
@@ -138,7 +146,7 @@ const loadShareRoomUrl = createAsyncThunk(
   async (
     payload: RoomIdDto,
     { extra: { services } },
-  ): Promise<ShareRoomUrlDto['url']> => {
+  ): Promise<ShareRoomUrlDto[ShareUrlKey.URL]> => {
     const { roomApi: roomApiService } = services;
     const { url } = await roomApiService.getShareUrl(payload);
     return url;
@@ -162,7 +170,7 @@ const resetShareRoomUrl = createAction(ActionType.RESET_SHARE_ROOM_URL);
 
 const addParticipant = createAction(
   ActionType.ADD_PARTICIPANT,
-  (payload: Omit<UserDto, 'email'>) => ({
+  (payload: Omit<UserDto, UserKey.EMAIL>) => ({
     payload: mapUserToParticipant(payload),
   }),
 );
@@ -184,7 +192,9 @@ const increaseParticipantPosition = createAction(
 
 const setSpentTime = createAction(
   ActionType.SET_SPENT_TIME,
-  (payload: Pick<Participant, 'id' | 'spentTime'>) => ({ payload }),
+  (payload: Pick<Participant, CommonKey.ID | ParticipantKey.SPENT_TIME>) => ({
+    payload,
+  }),
 );
 
 const loadCommentatorText = createAsyncThunk(
@@ -192,7 +202,7 @@ const loadCommentatorText = createAsyncThunk(
   async (
     payload: CommentatorEvent,
     { getState, extra: { services } },
-  ): Promise<Pick<GameRoom, 'commentatorText'> | undefined> => {
+  ): Promise<Pick<GameRoom, GameRoomKey.COMMENTATOR_TEXT> | undefined> => {
     const {
       racing: { currentRoom },
     } = getState();

@@ -1,9 +1,11 @@
 import { TEST_LESSON_PRIORITY } from 'common/constants/constants';
 import {
   CommonKey,
+  ProfileInfoKey,
   RoomKey,
   RoomRelationMappings,
   SettingsKey,
+  SkillKey,
   StatisticsKey,
   TableName,
   UserKey,
@@ -12,11 +14,7 @@ import {
   UserToRoomRelationMappings,
   UserToSkillKey,
 } from 'common/enums/enums';
-import {
-  IUserRecord,
-  IUserToRoomRecord,
-  IUserToSkillRecord,
-} from 'common/interfaces/interfaces';
+import { IUserRecord, IUserToSkillRecord } from 'common/interfaces/interfaces';
 import {
   Rating,
   RecordWithoutCommonDateKeys,
@@ -27,6 +25,7 @@ import {
   TokensResponseDto,
   UserDto,
   UserWithPassword,
+  UserToRoom,
 } from 'common/types/types';
 import { User as UserModel } from 'data/models/models';
 import {
@@ -258,7 +257,9 @@ class User {
 
   public async getByIdWithStatistics(
     userId: number,
-  ): Promise<Omit<UserProfileInfoResponseDto, 'rating'> | undefined> {
+  ): Promise<
+    Omit<UserProfileInfoResponseDto, ProfileInfoKey.RATING> | undefined
+  > {
     return this._UserModel
       .query()
       .select(...User.DEFAULT_USER_COLUMNS_TO_RETURN)
@@ -276,7 +277,7 @@ class User {
           StatisticsKey.TOTAL_TIME,
         ),
       )
-      .castTo<Omit<UserProfileInfoResponseDto, 'rating'>>();
+      .castTo<Omit<UserProfileInfoResponseDto, ProfileInfoKey.RATING>>();
   }
 
   public async getRating(): Promise<Rating> {
@@ -311,29 +312,19 @@ class User {
   public async updateCurrentRoomByUserId(
     userId: number,
     roomId: number | null,
-  ): Promise<
-    Pick<
-      IUserToRoomRecord,
-      UserToRoomKey.USER_ID | UserToRoomKey.CURRENT_ROOM_ID
-    >
-  > {
+  ): Promise<Promise<Omit<UserToRoom, UserToRoomKey.PERSONAL_ROOM_ID>>> {
     return this._UserModel
       .relatedQuery(UserRelationMappings.USER_TO_ROOMS)
       .patch({ roomId })
       .findOne({ userId })
       .returning([UserToRoomKey.USER_ID, UserToRoomKey.CURRENT_ROOM_ID])
-      .castTo<
-        Pick<
-          IUserToRoomRecord,
-          UserToRoomKey.USER_ID | UserToRoomKey.CURRENT_ROOM_ID
-        >
-      >()
+      .castTo<Promise<Omit<UserToRoom, UserToRoomKey.PERSONAL_ROOM_ID>>>()
       .execute();
   }
 
   public async getCurrentSkillLevelsByUserId(
     userId: number,
-  ): Promise<Omit<Skill, 'name'>[] | undefined> {
+  ): Promise<Omit<Skill, SkillKey.NAME>[] | undefined> {
     return this._UserModel
       .query()
       .select(
@@ -347,8 +338,8 @@ class User {
 
   public async patchSkillLevelsByUserId(
     userId: number,
-    payload: Omit<Skill, 'name'>[],
-  ): Promise<Omit<IUserToSkillRecord, 'userId'>[]> {
+    payload: Omit<Skill, SkillKey.NAME>[],
+  ): Promise<Omit<IUserToSkillRecord, UserToSkillKey.USER_ID>[]> {
     const options = {
       noInsert: true,
       relate: UserRelationMappings.USER_TO_SKILLS,

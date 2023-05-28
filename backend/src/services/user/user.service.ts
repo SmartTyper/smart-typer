@@ -1,5 +1,13 @@
 import { basename } from 'path';
-import { HttpCode, HttpErrorMessage, UserKey } from 'common/enums/enums';
+import {
+  CommonKey,
+  HttpCode,
+  HttpErrorMessage,
+  SkillKey,
+  UserKey,
+  UserToRoomKey,
+  UserToSkillKey,
+} from 'common/enums/enums';
 import {
   UserDto,
   UserWithPassword,
@@ -107,7 +115,7 @@ class User {
   }
 
   public async patchById(
-    userId: UserDto['id'],
+    userId: UserDto[CommonKey.ID],
     data: Partial<Pick<UserDto, UserKey.NICKNAME | UserKey.EMAIL>>,
   ): Promise<UserDto> {
     if (data.email) {
@@ -219,13 +227,13 @@ class User {
   public async updateCurrentRoomByUserId(
     userId: number,
     roomId: number | null,
-  ): Promise<Omit<UserToRoom, 'personalRoomId'>> {
+  ): Promise<Omit<UserToRoom, UserToRoomKey.PERSONAL_ROOM_ID>> {
     return this._userRepository.updateCurrentRoomByUserId(userId, roomId);
   }
 
   public async getCurrentSkillLevelsByUserId(
     userId: number,
-  ): Promise<Omit<Skill, 'name'>[]> {
+  ): Promise<Omit<Skill, SkillKey.NAME>[]> {
     const currentSkillLevels =
       await this._userRepository.getCurrentSkillLevelsByUserId(userId);
 
@@ -241,8 +249,8 @@ class User {
 
   public async updateSkillLevelsByUserId(
     userId: number,
-    payload: Omit<Skill, 'name'>[],
-  ): Promise<Omit<IUserToSkillRecord, 'userId'>[]> {
+    payload: Omit<Skill, SkillKey.NAME>[],
+  ): Promise<Omit<IUserToSkillRecord, UserToSkillKey.USER_ID>[]> {
     return this._userRepository.patchSkillLevelsByUserId(userId, payload);
   }
 }

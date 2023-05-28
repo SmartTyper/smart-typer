@@ -17,4 +17,9 @@
   justify-content: space-between;
   flex-wrap: wrap;
   padding: 0;
+
+  .suggestionText {
+    margin: 0;
+    line-height: 1.6;
+  }
 }

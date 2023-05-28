@@ -1,13 +1,17 @@
-export * from './common-key/common-key.enum';
-export * from './lesson-key/lesson-key.enum';
+export {
+  CommonKey,
+  LessonKey,
+  RefreshTokenKey,
+  RoomKey,
+  SettingsKey,
+  SkillKey,
+  StatisticsKey,
+  UserKey,
+  GameRoomKey,
+  ProfileInfoKey,
+} from 'smart-typer-shared/common/enums/enums';
 export * from './lesson-to-skill-key/lesson-to-skill-key.enum';
 export * from './user-to-finished-lesson-key/user-to-finished-lesson-key.enum';
-export * from './refresh-token-key/refresh-token-key.enum';
-export * from './room-key/room-key.enum';
 export * from './user-to-room-key/user-to-room-key.enum';
-export * from './settings-key/settings-key.enum';
-export * from './skill-key/skill-key.enum';
-export * from './statistics-key/statistics-key.enum';
 export * from './user-to-study-plan-lesson-key/user-to-study-plan-lesson-key.enum';
-export * from './user-key/user-key.enum';
 export * from './user-to-skill-key/user-to-skill-key.enum';

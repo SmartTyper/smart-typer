@@ -14,6 +14,7 @@ import {
   IPaginationResponse,
 } from 'common/interface/interface';
 import { mapLessonToLessonWithSkillsStatistics } from 'helpers/helpers';
+import { CommonKey, FinishedLessonKey, PaginationKey } from 'common/enums/enums';
 
 const create = createAsyncThunk(
   ActionType.CREATE,
@@ -30,7 +31,10 @@ const create = createAsyncThunk(
 
 const addLesson = createAction(
   ActionType.ADD_LESSON,
-  (payload: CreateLessonRequestDto & Pick<LessonDto, 'id' | 'bestSkill'>) => ({
+  (
+    payload: CreateLessonRequestDto &
+      Pick<LessonDto, CommonKey.ID | FinishedLessonKey.BEST_SKILL>,
+  ) => ({
     payload,
   }),
 );
@@ -38,7 +42,7 @@ const addLesson = createAction(
 const loadMoreLessons = createAsyncThunk(
   ActionType.LOAD_MORE_LESSONS,
   async (
-    payload: Pick<IPaginationRequest, 'offset'> & LessonFilters,
+    payload: Pick<IPaginationRequest, PaginationKey.OFFSET> & LessonFilters,
     { extra: { services } },
   ): Promise<IPaginationResponse<LessonDto>> => {
     const { lessonApi: lessonApiService } = services;

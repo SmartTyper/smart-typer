@@ -7,11 +7,11 @@ import {
   RoomRelationMappings,
   RoomKey,
   UserToRoomKey,
+  GameRoomKey,
 } from 'common/enums/enums';
 import { IRoomRecord, IUserToRoomRecord } from 'common/interfaces/interfaces';
 import {
   ParticipantsCount,
-  RecordWithoutCommonDateKeys,
   RoomDto,
 } from 'common/types/types';
 import { Room as RoomModel } from 'data/models/models';
@@ -29,8 +29,11 @@ class Room {
 
   public async create(
     data: Pick<IRoomRecord, RoomKey.NAME | RoomKey.IS_PRIVATE>,
-  ): Promise<RecordWithoutCommonDateKeys<IRoomRecord>> {
-    return this._RoomModel.query().insertAndFetch(data);
+  ): Promise<Omit<RoomDto, GameRoomKey.PARTICIPANTS>> {
+    return this._RoomModel
+      .query()
+      .insertAndFetch(data)
+      .castTo<Promise<Omit<RoomDto, GameRoomKey.PARTICIPANTS>>>();
   }
 
   public async createPersonal(): Promise<

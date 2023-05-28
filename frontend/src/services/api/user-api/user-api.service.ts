@@ -1,4 +1,4 @@
-import { HttpMethod, RequestContentType } from 'common/enums/enums';
+import { HttpMethod, RequestContentType, UserKey } from 'common/enums/enums';
 import {
   UpdateAvatarResponseDto,
   UserDto,
@@ -30,7 +30,9 @@ class UserApi {
     return this._httpService.load(`${this._baseUrl}/${userId}`);
   }
 
-  public async updateInfo(payload: Partial<UserDto>): Promise<void> {
+  public async updatePersonalInfo(
+    payload: Partial<Pick<UserDto, UserKey.NICKNAME | UserKey.EMAIL>>,
+  ): Promise<void> {
     return this._httpService.load(`${this._baseUrl}/current`, {
       method: HttpMethod.PUT,
       payload: JSON.stringify(payload),

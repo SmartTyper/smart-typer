@@ -1,5 +1,5 @@
 import { ENV, MAX_USERS_IN_ROOM } from 'common/constants/constants';
-import { HttpCode, HttpErrorMessage, SocketEvent } from 'common/enums/enums';
+import { GameRoomKey, HttpCode, HttpErrorMessage, SocketEvent } from 'common/enums/enums';
 import {
   CreateRoomRequestDto,
   RoomDto,
@@ -53,7 +53,7 @@ class Room {
 
   public async create(
     payload: CreateRoomRequestDto,
-  ): Promise<Omit<RoomDto, 'participants'>> {
+  ): Promise<Omit<RoomDto, GameRoomKey.PARTICIPANTS>> {
     const createdRoom = await this._roomRepository.create(payload);
 
     if (!payload.isPrivate) {

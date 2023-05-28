@@ -1,4 +1,4 @@
-import { ReducerName } from 'common/enums/enums';
+import { ReducerName, ShareUrlKey } from 'common/enums/enums';
 import { GameRoom, RoomDto, ShareRoomUrlDto } from 'common/types/types';
 import { createSlice, isAnyOf } from 'store/external/external';
 import { actions } from './actions';
@@ -6,7 +6,7 @@ import { actions } from './actions';
 type State = {
   personalRoom: RoomDto | null;
   currentRoom: GameRoom | null;
-  shareRoomUrl: ShareRoomUrlDto['url'] | null;
+  shareRoomUrl: ShareRoomUrlDto[ShareUrlKey.URL] | null;
   availableRooms: RoomDto[];
   isLoadCurrentRoomFailed: boolean;
 };

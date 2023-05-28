@@ -18,7 +18,9 @@ class Settings {
   public async patchByUserId(
     userId: number,
     payload: Partial<SettingsDto>,
-  ): Promise<RecordWithoutCommonKeys<Omit<ISettingsRecord, 'userId'>>> {
+  ): Promise<
+    RecordWithoutCommonKeys<Omit<ISettingsRecord, SettingsKey.USER_ID>>
+  > {
     return this._SettingsModel
       .query()
       .findOne({ userId })
@@ -30,7 +32,9 @@ class Settings {
         SettingsKey.IS_SHOWN_IN_RATING,
         SettingsKey.IS_SOUND_TURNED_ON,
       ])
-      .castTo<RecordWithoutCommonKeys<Omit<ISettingsRecord, 'userId'>>>();
+      .castTo<
+        RecordWithoutCommonKeys<Omit<ISettingsRecord, SettingsKey.USER_ID>>
+      >();
   }
 }
 export { Settings };

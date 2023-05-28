@@ -1,9 +1,10 @@
 import { BktResult, IrtResult, Skill } from 'common/types/types';
+import { CommonKey, SkillKey } from 'smart-typer-shared';
 
 const calculateLessonBestSkill = (
-  currentSkillLevels: Omit<Skill, 'name'>[],
+  currentSkillLevels: Omit<Skill, SkillKey.NAME>[],
   resultSkillLevels: IrtResult | BktResult,
-): Skill['id'] => {
+): Skill[CommonKey.ID] => {
   const bestSkill = currentSkillLevels
     .map(({ id, level }) => {
       const resultLevel = resultSkillLevels.find(
@@ -17,7 +18,7 @@ const calculateLessonBestSkill = (
     .sort((a, b) => a.delta - b.delta)
     .pop();
 
-  return bestSkill?.id as Skill['id'];
+  return bestSkill?.id as Skill[CommonKey.ID];
 };
 
 export { calculateLessonBestSkill };
