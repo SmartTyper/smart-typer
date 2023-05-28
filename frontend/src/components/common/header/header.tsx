@@ -69,8 +69,8 @@ const Header: FC = () => {
           <ProfileDropdown
             links={profileDropdownLinks}
             buttons={profileDropdownButtons}
-            userName="User Name"
-            avatarSrc=""
+            userName={user.nickname}
+            avatarSrc={user.photoUrl}
           />
           <NavItem iconName="bi bi-house-fill" label="" route={AppRoute.ROOT} />
         </RBNavbar>

@@ -5,7 +5,7 @@ import { DropdownButton, DropdownLink } from 'common/types/types';
 
 type Props = {
   userName: string;
-  avatarSrc?: string;
+  avatarSrc: string | null;
   links: DropdownLink[];
   buttons: DropdownButton[];
 };

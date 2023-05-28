@@ -34,6 +34,7 @@ class UserApi {
     return this._httpService.load(`${this._baseUrl}/current`, {
       method: HttpMethod.PUT,
       payload: JSON.stringify(payload),
+      contentType: RequestContentType.JSON,
     });
   }
 

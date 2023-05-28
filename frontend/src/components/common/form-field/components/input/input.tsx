@@ -10,7 +10,6 @@ type Props = {
   className?: string;
   value?: string;
   readOnly: boolean;
-  defaultValue?: number | string;
 };
 
 const Input: FC<Props> = ({
@@ -21,7 +20,6 @@ const Input: FC<Props> = ({
   className,
   readOnly,
   value,
-  defaultValue,
 }) => (
   <RBForm.Control
     {...register}
@@ -31,7 +29,6 @@ const Input: FC<Props> = ({
     className={className}
     readOnly={readOnly}
     value={value}
-    defaultValue={defaultValue}
   />
 );
 

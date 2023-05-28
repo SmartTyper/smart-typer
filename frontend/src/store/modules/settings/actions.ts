@@ -9,6 +9,7 @@ const update = createAsyncThunk(
     { extra: { services } },
   ): Promise<Partial<SettingsDto>> => {
     const { settingsApi: settingsApiService } = services;
+    console.log(payload);
     await settingsApiService.update(payload);
     return payload;
   },

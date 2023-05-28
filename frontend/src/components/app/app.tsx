@@ -23,7 +23,7 @@ const App: FC = () => {
   const { user } = useSelector((state) => state.auth);
   const token = localStorageService.getItem(StorageKey.ACCESS_TOKEN);
 
-  const authRoutes = [AppRoute.LOG_IN, AppRoute.SIGN_UP] as string[];
+  const authRoutes = [AppRoute.LOG_IN, AppRoute.SIGN_UP, AppRoute.LOG_IN_GOOGLE] as string[];
   const isAuth = authRoutes.includes(pathname);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const App: FC = () => {
 
   return (
     <RRDRoutes>
-      <RRDRoute element={<ProtectedRoute user={user} />}>
+      <RRDRoute element={<ProtectedRoute hasUser={!!user} isUserLoading={!!token && !user && !isAuth}/>}>
         <RRDRoute
           path={AppRoute.ROOT}
           element={
