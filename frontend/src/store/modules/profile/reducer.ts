@@ -20,13 +20,8 @@ const { reducer } = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    const {
-      loadUser,
-      resetAll,
-      deleteAvatar,
-      updateInfo,
-      updateAvatar,
-    } = actions;
+    const { loadUser, resetAll, deleteAvatar, updateInfo, updateAvatar } =
+      actions;
     builder
       .addCase(loadUser.fulfilled, (state, action) => {
         const { statistics, rating, ...user } = action.payload;

@@ -1,0 +1,38 @@
+@import 'src/assets/css/variables';
+
+.settings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+
+    .cards {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      text-align: start;
+      width: 100%;
+
+      .racingField {
+        width: 55px;
+      }
+    }
+
+    .submitButton {
+      height: 3.5rem;
+      width: 12rem;
+      font-size: $middle-font-size;
+      margin: 1rem 0;
+      background-color: $main-green;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: $white;
+    }
+  }
+}

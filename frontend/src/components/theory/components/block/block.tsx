@@ -20,18 +20,18 @@ const Block: React.FC<Props> = ({
     <>
       <hr />
       <div className={styles.block}>
-        <h4 className={styles.title}>{title}</h4>
+        <h2 className={styles.title}>{title}</h2>
         <div>
           <div className={styles.mainContent}>
             {imageSrc && imageAlignment === ImageAlignment.LEFT && (
               <img src={imageSrc} className={styles.image} />
             )}
-            <div className={styles.text}>{text}</div>
+            <p className={styles.text}>{text}</p>
             {imageSrc && imageAlignment === ImageAlignment.RIGHT && (
               <img src={imageSrc} className={styles.image} />
             )}
           </div>
-          <div className={styles.text}>{children}</div>
+          <p className={styles.text}>{children}</p>
         </div>
       </div>
     </>

@@ -20,7 +20,7 @@
 // import { getParticipantsRating, setTimer } from './helpers';
 // import { racing as racingActions } from 'store/modules/actions';
 
-import { FC } from "common/types/types";
+import { FC } from 'common/types/types';
 
 // import commentatorImage from 'assets/img/commentator.gif';
 // import styles from './styles.module.scss';
@@ -273,9 +273,8 @@ const Room: FC = () => {
   //   };
   // }, []);
 
-  return (
-    <div></div>)
-    /* <div
+  return <div></div>;
+  /* <div
       className={styles.container}
       onKeyDown={handleKeyDown}
       ref={pageRef}

@@ -1,8 +1,8 @@
 // import { IParticipant, IParticipantsResult } from 'common/interfaces';
 
 const getParticipantsRating = (): void => {
-//   participants: IParticipant[],
-// ): IParticipantsResult[] => {
+  //   participants: IParticipant[],
+  // ): IParticipantsResult[] => {
   // return participants
   //   .map(({ fullName, photoUrl, spentTime, position, id }) => ({
   //     id,

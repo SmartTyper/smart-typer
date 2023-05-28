@@ -104,8 +104,6 @@ class Lesson {
   ): Promise<void> {
     const { misclicks, timestamps } = payload;
     const lesson = await this._lessonRepository.getByIdWithSkills(lessonId);
-    const currentSkillLevels =
-      await this._userService.getCurrentSkillLevelsByUserId(userId);
 
     if (!lesson) {
       throw new HttpError({
@@ -113,6 +111,9 @@ class Lesson {
         message: HttpErrorMessage.NO_LESSON_WITH_SUCH_ID,
       });
     }
+
+    const currentSkillLevels =
+      await this._userService.getCurrentSkillLevelsByUserId(userId);
 
     const skillLevelsPayload = mapLessonResultToSkillLevelsPayload({
       lesson,

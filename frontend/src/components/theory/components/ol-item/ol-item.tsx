@@ -12,7 +12,7 @@ type Props = {
 const OLItem: React.FC<Props> = ({ color, title, text }) => {
   return (
     <li className={clsx(styles.suggestionItem, styles[color])}>
-      <h3 className={styles.suggestionTitle}>{title}</h3>
+      <h5 className={styles.suggestionTitle}>{title}</h5>
       <p className={styles.suggestionText}>{text}</p>
     </li>
   );

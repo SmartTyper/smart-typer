@@ -55,10 +55,16 @@ const getSocketMiddleware = ({ socketService }: Options): Middleware => {
         socketService.emit(SocketEvent.LEAVE_ROOM, action.payload);
       }
       if (racingActions.increaseCurrentParticipantPosition.match(action)) {
-        socketService.emit(SocketEvent.INCREASE_CURRENT_PARTICIPANT_POSITION, action.payload);
+        socketService.emit(
+          SocketEvent.INCREASE_CURRENT_PARTICIPANT_POSITION,
+          action.payload,
+        );
       }
       if (racingActions.toggleCurrentParticipantIsReady.match(action)) {
-        socketService.emit(SocketEvent.TOGGLE_CURRENT_PARTICIPANT_IS_READY, action.payload);
+        socketService.emit(
+          SocketEvent.TOGGLE_CURRENT_PARTICIPANT_IS_READY,
+          action.payload,
+        );
       }
       return next(action);
     };
