@@ -1,4 +1,4 @@
-export type { SyntheticEvent } from 'react';
+export type { SyntheticEvent, RefObject } from 'react';
 export type { Middleware, AsyncThunk } from '@reduxjs/toolkit';
 
 export * from './dispatch/dispatch.type';

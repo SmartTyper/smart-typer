@@ -12,7 +12,6 @@ type Props = {
 };
 
 const Avatar: FC<Props> = ({ size, name, src, round = true, className }) => {
-  console.log(src);
   const sizeInPx = sizeToPx[size];
 
   return (

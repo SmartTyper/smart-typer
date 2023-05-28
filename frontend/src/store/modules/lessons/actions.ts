@@ -14,7 +14,13 @@ import {
   IPaginationResponse,
 } from 'common/interface/interface';
 import { mapLessonToLessonWithSkillsStatistics } from 'helpers/helpers';
-import { CommonKey, FinishedLessonKey, PaginationKey } from 'common/enums/enums';
+import {
+  CommonKey,
+  CreatorType,
+  FinishedLessonKey,
+  LessonKey,
+  PaginationKey,
+} from 'common/enums/enums';
 
 const create = createAsyncThunk(
   ActionType.CREATE,
@@ -24,7 +30,14 @@ const create = createAsyncThunk(
   ): Promise<LessonWithSkillsStatistics> => {
     const { lessonApi: lessonApiService } = services;
     const lesson = await lessonApiService.create(payload);
-    dispatch(addLesson({ ...payload, id: lesson.id, bestSkill: null }));
+    dispatch(
+      addLesson({
+        ...payload,
+        id: lesson.id,
+        bestSkill: null,
+        creatorType: CreatorType.CURRENT_USER,
+      }),
+    );
     return mapLessonToLessonWithSkillsStatistics(lesson);
   },
 );
@@ -33,7 +46,10 @@ const addLesson = createAction(
   ActionType.ADD_LESSON,
   (
     payload: CreateLessonRequestDto &
-      Pick<LessonDto, CommonKey.ID | FinishedLessonKey.BEST_SKILL>,
+      Pick<
+        LessonDto,
+        CommonKey.ID | FinishedLessonKey.BEST_SKILL | LessonKey.CREATOR_TYPE
+      >,
   ) => ({
     payload,
   }),

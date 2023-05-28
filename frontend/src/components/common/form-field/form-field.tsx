@@ -1,7 +1,17 @@
-import { FC, FieldError, UseFormRegisterReturn } from 'common/types/types';
+import {
+  FC,
+  FieldError,
+  RefObject,
+  UseFormRegisterReturn,
+} from 'common/types/types';
 import { FormFieldLabel, FormFieldType } from 'common/enums/enums';
 import { RBForm } from 'components/external/external';
-import { Checkbox, HiddenInput, Input } from './components/components';
+import {
+  Checkbox,
+  FileSelector,
+  HiddenInput,
+  Input,
+} from './components/components';
 
 import styles from './styles.module.scss';
 import { clsx } from 'helpers/helpers';
@@ -17,6 +27,8 @@ type Props = {
   inputClassName?: string;
   value?: string;
   readOnly?: boolean;
+  ref?: RefObject<HTMLInputElement>;
+  hidden?: boolean;
 };
 
 const FormField: FC<Props> = ({
@@ -29,7 +41,9 @@ const FormField: FC<Props> = ({
   className,
   inputClassName,
   value,
+  ref,
   readOnly = false,
+  hidden = false,
 }) => {
   const renderFormField = (type: FormFieldType): JSX.Element => {
     switch (type) {
@@ -51,6 +65,17 @@ const FormField: FC<Props> = ({
             className={inputClassName}
             readOnly={readOnly}
             value={value}
+          />
+        );
+      case FormFieldType.FILE:
+        return (
+          <FileSelector
+            register={register}
+            hidden={hidden}
+            readOnly={readOnly}
+            value={value}
+            ref={ref}
+            className={inputClassName}
           />
         );
       default:

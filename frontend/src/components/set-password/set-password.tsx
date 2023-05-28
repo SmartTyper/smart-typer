@@ -1,4 +1,9 @@
-import { AppRoute, FormFieldLabel, FormFieldType } from 'common/enums/enums';
+import {
+  AppRoute,
+  FormFieldLabel,
+  FormFieldType,
+  SetPasswordKey,
+} from 'common/enums/enums';
 import { FC } from 'common/types/types';
 import { FormField, Sign } from 'components/common/common';
 import {
@@ -56,14 +61,14 @@ const SetPassword: FC = () => {
         label={FormFieldLabel.PASSWORD}
         type={FormFieldType.PASSWORD}
         placeholder="Enter your new password"
-        register={register('password')}
+        register={register(SetPasswordKey.PASSWORD)}
         error={errors.password}
       />
       <FormField
         label={FormFieldLabel.REPEAT_PASSWORD}
         type={FormFieldType.PASSWORD}
         placeholder="Repeat your new password"
-        register={register('passwordRepeat')}
+        register={register(SetPasswordKey.PASSWORD_REPEAT)}
         error={errors.passwordRepeat}
       />
     </Sign>

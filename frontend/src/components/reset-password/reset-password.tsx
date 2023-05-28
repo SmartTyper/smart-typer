@@ -1,6 +1,6 @@
 import { Sign, FormField } from 'components/common/common';
 import { resetPasswordSchema } from 'validation-schemas/validation-schemas';
-import { FormFieldLabel, FormFieldType } from 'common/enums/enums';
+import { FormFieldLabel, FormFieldType, UserKey } from 'common/enums/enums';
 import { FC, ResetPasswordRequestDto } from 'common/types/types';
 import { useForm, useDispatch, useSelector } from 'hooks/hooks';
 import { auth as authActions } from 'store/modules/actions';
@@ -38,7 +38,7 @@ const ResetPassword: FC = () => {
         label={FormFieldLabel.EMAIL}
         type={FormFieldType.EMAIL}
         placeholder="Enter your email"
-        register={register('email')}
+        register={register(UserKey.EMAIL)}
         error={errors.email}
       />
     </Sign>

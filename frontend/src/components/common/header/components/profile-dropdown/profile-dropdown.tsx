@@ -20,7 +20,7 @@ const ProfileDropdown: FC<Props> = ({
     <Dropdown links={links} buttons={buttons}>
       <UserLabel
         userName={userName}
-        avatarSize={AvatarSize.SMALL}
+        avatarSize={AvatarSize.MIDDLE}
         textColor={UserLabelColor.WHITE}
         avatarSrc={avatarSrc}
       />

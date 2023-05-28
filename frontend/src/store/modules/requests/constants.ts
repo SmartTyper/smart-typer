@@ -27,7 +27,7 @@ const REQUEST_ACTIONS_TYPES = [
   ProfileActionType.LOAD_USER,
   ProfileActionType.DELETE_AVATAR,
   ProfileActionType.UPDATE_AVATAR,
-  ProfileActionType.UPDATE_INFO,
+  ProfileActionType.UPDATE_PERSONAL_INFO,
 
   RacingActionType.LOAD_AVAILABLE_ROOMS,
   RacingActionType.CREATE_ROOM,

@@ -11,6 +11,7 @@ enum FormFieldLabel {
   HAS_EMAIL_NOTIFICATIONS = 'Email notifications',
   IS_SHOWN_IN_RATING = 'Show me in rating',
   IS_SOUND_TURNED_ON = 'Sound on',
+  AVATAR = 'Avatar',
 }
 
 export { FormFieldLabel };

@@ -14,3 +14,4 @@ export {
 export * from './google-url-key/google-url-key.enum';
 export * from './finished-lesson-key/finished-lesson-key.enum';
 export * from './participant-key/participant-key.enum';
+export * from './set-password-key/set-password-key.enum';

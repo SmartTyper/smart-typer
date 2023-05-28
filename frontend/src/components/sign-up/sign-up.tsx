@@ -1,4 +1,4 @@
-import { AppRoute, FormFieldLabel, FormFieldType } from 'common/enums/enums';
+import { AppRoute, FormFieldLabel, FormFieldType, UserKey } from 'common/enums/enums';
 import { FC, RegisterRequestDto } from 'common/types/types';
 import { FormField, Link, Sign } from 'components/common/common';
 import {
@@ -55,20 +55,20 @@ const SignUp: FC = () => {
         label={FormFieldLabel.NICKNAME}
         type={FormFieldType.TEXT}
         placeholder="Enter your nickname"
-        register={register('nickname')}
+        register={register(UserKey.NICKNAME)}
         error={errors.nickname}
       />
       <FormField
         label={FormFieldLabel.EMAIL}
         type={FormFieldType.EMAIL}
         placeholder="Enter your email"
-        register={register('email')}
+        register={register(UserKey.EMAIL)}
         error={errors.email}
       />
       <FormField
         label={FormFieldLabel.PASSWORD}
         type={FormFieldType.PASSWORD}
-        register={register('password')}
+        register={register(UserKey.PASSWORD)}
         placeholder="Enter your password"
         error={errors.password}
         note={
