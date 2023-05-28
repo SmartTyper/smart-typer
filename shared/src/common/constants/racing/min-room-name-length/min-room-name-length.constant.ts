@@ -1,0 +1,3 @@
+const MIN_ROOM_NAME_LENGTH = 3;
+
+export { MIN_ROOM_NAME_LENGTH };

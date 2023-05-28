@@ -14,27 +14,15 @@ const createLessonSchema = yup
     name: yup
       .string()
       .trim()
-      .min(
-        MIN_LESSON_NAME_LENGTH,
-        ValidationErrorMessage.LESSON_NAME_MIN_LENGTH,
-      )
-      .max(
-        MAX_LESSON_NAME_LENGTH,
-        ValidationErrorMessage.LESSON_NAME_MAX_LENGTH,
-      )
+      .min(MIN_LESSON_NAME_LENGTH)
+      .max(MAX_LESSON_NAME_LENGTH)
       .notOneOf(TEST_LESSON_NAMES, ValidationErrorMessage.INVALID_LESSON_NAME)
       .required(),
     content: yup
       .string()
       .trim()
-      .min(
-        MIN_LESSON_CONTENT_LENGTH,
-        ValidationErrorMessage.LESSON_CONTENT_MIN_LENGTH,
-      )
-      .max(
-        MAX_LESSON_CONTENT_LENGTH,
-        ValidationErrorMessage.LESSON_CONTENT_MAX_LENGTH,
-      )
+      .min(MIN_LESSON_CONTENT_LENGTH)
+      .max(MAX_LESSON_CONTENT_LENGTH)
       .required(),
     contentType: yup
       .string()

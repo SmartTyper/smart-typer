@@ -5,7 +5,7 @@ import {
   VoidAction,
   VoidCallback,
 } from 'common/types/types';
-import { roomSchema } from 'validation-schemas/validation-schemas';
+import { createRoomSchema } from 'validation-schemas/validation-schemas';
 import { FormField } from 'components/common/common';
 import { Modal } from 'components/common/common';
 import { useForm, useSelector } from 'hooks/hooks';
@@ -24,7 +24,7 @@ const CreateRoomModal: FC<Props> = ({ isVisible, onClose, onSubmit }) => {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<CreateRoomRequestDto>(roomSchema);
+  } = useForm<CreateRoomRequestDto>(createRoomSchema);
 
   return (
     <Modal

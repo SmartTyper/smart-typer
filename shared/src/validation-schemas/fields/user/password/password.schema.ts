@@ -8,8 +8,8 @@ import { passwordRegex } from 'validation-schemas/regex/regex';
 
 const passwordSchema = yup
   .string()
-  .min(MIN_PASSWORD_LENGTH, ValidationErrorMessage.PASSWORD_MIN_LENGTH)
-  .max(MAX_PASSWORD_LENGTH, ValidationErrorMessage.PASSWORD_MAX_LENGTH)
+  .min(MIN_PASSWORD_LENGTH)
+  .max(MAX_PASSWORD_LENGTH)
   .matches(passwordRegex, ValidationErrorMessage.PASSWORD_INCLUSIONS);
 
 export { passwordSchema };

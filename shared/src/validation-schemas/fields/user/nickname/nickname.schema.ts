@@ -9,8 +9,8 @@ import { nicknameRegex } from 'validation-schemas/regex/regex';
 const nicknameSchema = yup
   .string()
   .trim()
-  .min(MIN_NICKNAME_LENGTH, ValidationErrorMessage.NICKNAME_MIN_LENGTH)
-  .max(MAX_NICKNAME_LENGTH, ValidationErrorMessage.NICKNAME_MAX_LENGTH)
+  .min(MIN_NICKNAME_LENGTH)
+  .max(MAX_NICKNAME_LENGTH)
   .matches(nicknameRegex, ValidationErrorMessage.NICKNAME_INCLUSIONS);
 
 export { nicknameSchema };
