@@ -1,3 +1,0 @@
-const MIN_FULL_NAME_LENGTH = 5;
-
-export { MIN_FULL_NAME_LENGTH };

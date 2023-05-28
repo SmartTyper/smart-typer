@@ -6,7 +6,7 @@ import {
   logInSchema,
   resetPasswordSchema,
   setPasswordSchema,
-  refreshTokenSchema,
+  refreshTokensSchema,
   logInGoogleSchema,
 } from 'validation-schemas/validation-schemas';
 import { Abstract } from '../abstract/abstract.route';
@@ -59,13 +59,15 @@ class Auth extends Abstract {
 
     router.post(
       '/refresh',
-      this._getValidationMiddleware({ body: refreshTokenSchema }),
+      this._getValidationMiddleware({ body: refreshTokensSchema }),
       this._run((req) => this._tokenService.refreshTokens(req.body)),
     );
 
     router.post(
       '/log-out',
-      this._run((req:IRequestWithUser) => this._authService.logOut(req.userId)),
+      this._run((req: IRequestWithUser) =>
+        this._authService.logOut(req.userId),
+      ),
     );
 
     router.post(

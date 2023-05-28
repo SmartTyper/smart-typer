@@ -1,14 +1,18 @@
 import { yup } from 'dependencies/dependencies';
-
 import { ValidationErrorMessage } from 'common/enums/enums';
-import { passwordSchema } from 'validation-schemas/fields/fields';
+import {
+  emailSchema,
+  nicknameSchema,
+  passwordSchema,
+} from 'validation-schemas/fields/fields';
 
-const setPasswordSchema = yup
+const signUpSchema = yup
   .object()
   .shape({
+    nickname: nicknameSchema.required(),
+    email: emailSchema.required(),
     password: passwordSchema.required(),
-    token: yup.string().required(),
   })
   .noUnknown(true, ValidationErrorMessage.INVALID_KEYS_RECEIVED);
 
-export { setPasswordSchema };
+export { signUpSchema };

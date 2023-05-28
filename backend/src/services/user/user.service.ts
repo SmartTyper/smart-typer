@@ -107,7 +107,7 @@ class User {
   }
 
   public async patchById(
-    userId: number,
+    userId: UserDto['id'],
     data: Partial<Pick<UserDto, UserKey.NICKNAME | UserKey.EMAIL>>,
   ): Promise<UserDto> {
     if (data.email) {

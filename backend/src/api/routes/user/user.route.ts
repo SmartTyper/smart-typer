@@ -3,24 +3,25 @@ import { user as userService } from 'services/services';
 import { IRequestWithUser } from 'common/interfaces/interfaces';
 import { Abstract } from '../abstract/abstract.route';
 import { getFileMiddleware } from 'api/middlewares/middlewares';
-// import { getValidationMiddleware } from 'api/middlewares/middlewares';
+import { updatePersonalInfoSchema } from 'validation-schemas/validation-schemas';
+import { getValidationMiddleware } from 'api/middlewares/middlewares';
 
 type Constructor = {
   userService: typeof userService;
   getFileMiddleware: typeof getFileMiddleware;
-  // getValidationMiddleware: typeof getValidationMiddleware;
+  getValidationMiddleware: typeof getValidationMiddleware;
 };
 
 class User extends Abstract {
   private _userService: typeof userService;
   private _getFileMiddleware: typeof getFileMiddleware;
-  // private _getValidationMiddleware: typeof getValidationMiddleware;
+  private _getValidationMiddleware: typeof getValidationMiddleware;
 
   public constructor(params: Constructor) {
     super();
     this._userService = params.userService;
     this._getFileMiddleware = params.getFileMiddleware;
-    // this._getValidationMiddleware = params.getValidationMiddleware;
+    this._getValidationMiddleware = params.getValidationMiddleware;
   }
 
   public getRoutes(): Router {
@@ -42,6 +43,7 @@ class User extends Abstract {
 
     router.put(
       '/current',
+      this._getValidationMiddleware({ body: updatePersonalInfoSchema }),
       this._run((req: IRequestWithUser) =>
         this._userService.patchById(req.userId, req.body),
       ),

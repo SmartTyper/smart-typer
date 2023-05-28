@@ -1,9 +1,11 @@
 import { yup } from 'dependencies/dependencies';
-import { passwordSchema as baseSetPasswordSchema } from 'smart-typer-shared/validation-schemas/validation-schemas';
 import { ValidationErrorMessage } from 'common/enums/enums';
+import { passwordSchema } from 'validation-schemas/fields/fields';
 
-const setPasswordSchema = baseSetPasswordSchema
+const setPasswordSchema = yup
+  .object()
   .shape({
+    password: passwordSchema.required(),
     passwordRepeat: yup
       .string()
       .required()

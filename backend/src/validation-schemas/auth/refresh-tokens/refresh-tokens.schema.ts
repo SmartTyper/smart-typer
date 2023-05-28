@@ -1,14 +1,11 @@
 import { yup } from 'dependencies/dependencies';
-
 import { ValidationErrorMessage } from 'common/enums/enums';
-import { passwordSchema } from 'validation-schemas/fields/fields';
 
-const setPasswordSchema = yup
+const refreshTokensSchema = yup
   .object()
   .shape({
-    password: passwordSchema.required(),
-    token: yup.string().required(),
+    refreshToken: yup.string().required(),
   })
   .noUnknown(true, ValidationErrorMessage.INVALID_KEYS_RECEIVED);
 
-export { setPasswordSchema };
+export { refreshTokensSchema };

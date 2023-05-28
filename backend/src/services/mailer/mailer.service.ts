@@ -51,7 +51,10 @@ class Mailer {
     >,
   ): Promise<void> {
     const transporter = await this._createTransport();
-    await transporter.sendMail(options);
+    await transporter.sendMail({
+      ...options,
+      from: 'Smart Typer App ⌨️ <smart.typer.app@gmail.com>',
+    });
   }
 }
 
