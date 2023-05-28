@@ -38,6 +38,9 @@ class Mailer {
         refreshToken: this._refreshToken,
         accessToken,
       },
+      tls: {
+        rejectUnauthorized: false,
+      },
     } as SMTPTransport.Options);
   }
 

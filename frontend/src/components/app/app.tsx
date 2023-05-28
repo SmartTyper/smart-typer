@@ -1,21 +1,25 @@
 import { AppRoute, StorageKey } from 'common/enums/enums';
 import { FC } from 'common/types/types';
+import { ProtectedRoute, WithHeader } from 'components/common/common';
+import {
+  Home,
+  Lessons,
+  LogIn,
+  LogInGoogle,
+  Profile,
+  Racing,
+  ResetPassword,
+  SetPassword,
+  Settings,
+  SignUp,
+  StudyPlan,
+  Theory,
+} from 'components/components';
 import { RRDRoute, RRDRoutes } from 'components/external/external';
-import { WithHeader, ProtectedRoute } from 'components/common/common';
-import { Home } from 'components/home/home';
-import { Theory } from 'components/theory/theory';
-import { Lessons } from 'components/lessons/lessons';
-import { StudyPlan } from 'components/study-plan/study-plan';
-import { LogIn } from 'components/log-in/log-in';
-import { SignUp } from 'components/sign-up/sign-up';
-import { Settings } from 'components/settings/settings';
-import { Profile } from 'components/profile/profile';
-import { useSelector, useDispatch, useEffect, useLocation } from 'hooks/hooks';
+import { replaceRouteIdParam } from 'helpers/helpers';
+import { useDispatch, useEffect, useLocation, useSelector } from 'hooks/hooks';
 import { localStorage as localStorageService } from 'services/services';
 import { auth as authActions } from 'store/modules/actions';
-import { LogInGoogle } from 'components/log-in-google/log-in-google';
-import { Racing } from 'components/racing/racing';
-import { replaceRouteIdParam } from 'helpers/helpers';
 
 const App: FC = () => {
   const dispatch = useDispatch();
@@ -23,7 +27,11 @@ const App: FC = () => {
   const { user } = useSelector((state) => state.auth);
   const token = localStorageService.getItem(StorageKey.ACCESS_TOKEN);
 
-  const authRoutes = [AppRoute.LOG_IN, AppRoute.SIGN_UP, AppRoute.LOG_IN_GOOGLE] as string[];
+  const authRoutes = [
+    AppRoute.LOG_IN,
+    AppRoute.SIGN_UP,
+    AppRoute.LOG_IN_GOOGLE,
+  ] as string[];
   const isAuth = authRoutes.includes(pathname);
 
   useEffect(() => {
@@ -34,7 +42,14 @@ const App: FC = () => {
 
   return (
     <RRDRoutes>
-      <RRDRoute element={<ProtectedRoute hasUser={!!user} isUserLoading={!!token && !user && !isAuth}/>}>
+      <RRDRoute
+        element={
+          <ProtectedRoute
+            hasUser={!!user}
+            isUserLoading={!!token && !user && !isAuth}
+          />
+        }
+      >
         <RRDRoute
           path={AppRoute.ROOT}
           element={
@@ -95,6 +110,8 @@ const App: FC = () => {
       <RRDRoute path={AppRoute.SIGN_UP} element={<SignUp />} />
       <RRDRoute path={AppRoute.LOG_IN_GOOGLE} element={<LogInGoogle />} />
       <RRDRoute path={AppRoute.LOG_IN} element={<LogIn />} />
+      <RRDRoute path={AppRoute.RESET_PASSWORD} element={<ResetPassword />} />
+      <RRDRoute path={AppRoute.SET_PASSWORD} element={<SetPassword />} />
     </RRDRoutes>
   );
 };
