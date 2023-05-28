@@ -9,15 +9,24 @@ import {
 
 class ITS {
   public async BKT(payload: BktPayload): Promise<BktResult> {
-    return payload as unknown as BktResult;
+    const random = Math.floor(Math.random() * (5 - 1) + 1);
+    const skills = payload.map(({ skillId, pKnown }) => ({
+      skillId,
+      pKnown: pKnown + random,
+    }));
+    return skills;
   }
 
   public async AHP(payload: AhpPayload): Promise<AhpResult> {
-    return payload as unknown as AhpResult;
+    const random = Math.floor(Math.random() * payload.lessons.length);
+    const { lessonId } = payload.lessons[random];
+    return { lessonId };
   }
 
   public async IRT(payload: IrtPayload): Promise<IrtResult> {
-    return payload as unknown as IrtResult;
+    const random = Math.floor(Math.random() * (20 - 10) + 10);
+    const skills = payload.map(({ skillId }) => ({ skillId, pKnown: random }));
+    return skills;
   }
 }
 
