@@ -7,10 +7,13 @@ import {
   RoomRelationMappings,
   RoomKey,
   UserToRoomKey,
-  GameRoomKey,
 } from 'common/enums/enums';
 import { IRoomRecord, IUserToRoomRecord } from 'common/interfaces/interfaces';
-import { ParticipantsCount, RoomDto } from 'common/types/types';
+import {
+  CreateRoomResponseDto,
+  ParticipantsCount,
+  RoomDto,
+} from 'common/types/types';
 import { Room as RoomModel } from 'data/models/models';
 
 type Constructor = {
@@ -26,11 +29,12 @@ class Room {
 
   public async create(
     data: Pick<IRoomRecord, RoomKey.NAME | RoomKey.IS_PRIVATE>,
-  ): Promise<Omit<RoomDto, GameRoomKey.PARTICIPANTS>> {
-    return this._RoomModel
+  ): Promise<CreateRoomResponseDto> {
+    const { id, lessonId, name } = await this._RoomModel
       .query()
-      .insertAndFetch(data)
-      .castTo<Promise<Omit<RoomDto, GameRoomKey.PARTICIPANTS>>>();
+      .insertAndFetch(data);
+
+    return { id, lessonId, name };
   }
 
   public async createPersonal(): Promise<
