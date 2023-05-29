@@ -6,3 +6,4 @@ export * from './send-room-url-to-emails-request-dto/send-room-url-to-emails-req
 export * from './room-id-participant-id-dto/room-id-participant-id-dto.type';
 export * from './participant-id-dto/participant-id-dto.type';
 export * from './joke-dto/joke-dto.type';
+export * from './create-room-response-dto/create-room-response-dto.type';

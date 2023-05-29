@@ -29,6 +29,7 @@ import {
   UserDto,
 } from 'common/types/types';
 import { Lesson as LessonModel } from 'data/models/models';
+import { defineCreatorType } from 'helpers/helpers';
 
 type Constructor = {
   LessonModel: typeof LessonModel;
@@ -55,6 +56,18 @@ class Lesson {
       .select(...Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN)
       .findOne({ [CommonKey.ID]: lessonId })
       .execute();
+  }
+
+  public async deleteByIdAndOwnerId(
+    userId: UserDto[CommonKey.ID],
+    lessonId: LessonDto[CommonKey.ID],
+  ): Promise<Pick<LessonDto, CommonKey.ID> | undefined> {
+    return this._LessonModel
+      .query()
+      .deleteById(lessonId)
+      .where(LessonKey.CREATOR_ID, userId)
+      .returning([CommonKey.ID])
+      .castTo<Pick<LessonDto, CommonKey.ID> | undefined>();
   }
 
   public async getByIdWithSkills(
@@ -152,17 +165,10 @@ class Lesson {
       .castTo<any[]>();
 
     const mappedLessons = lessons.map(
-      ({ creatorId: _creatorId, finishedLesson, ...lesson }) => {
-        const creatorType =
-          userId === lesson.creatorId
-            ? CreatorType.CURRENT_USER
-            : lesson.creatorId
-              ? CreatorType.OTHER_USERS
-              : CreatorType.SYSTEM;
-
+      ({ creatorId, finishedLesson, ...lesson }) => {
         return {
           ...lesson,
-          creatorType,
+          creatorType: defineCreatorType({ userId, creatorId }),
           bestSkill: finishedLesson?.pop()?.skill?.name ?? null,
         };
       },
@@ -199,45 +205,48 @@ class Lesson {
         ...Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN,
         `${TableName.LESSONS}.${LessonKey.CONTENT_TYPE}`,
         `${TableName.LESSONS}.${LessonKey.CREATOR_ID}`,
-        `${LessonRelationMappings.BEST_SKILL}.${SkillKey.NAME}`,
       )
-      .where({
+      .joinRelated(LessonRelationMappings.STUDY_PLAN)
+      .where((builder) => {
+        if (areTestLessons) {
+          builder.whereIn(
+            `${TableName.LESSONS}.${LessonKey.NAME}`,
+            TEST_LESSON_NAMES,
+          );
+        } else {
+          builder.whereNotIn(
+            `${TableName.LESSONS}.${LessonKey.NAME}`,
+            TEST_LESSON_NAMES,
+          );
+        }
+      })
+      .andWhere({
         [`${LessonRelationMappings.STUDY_PLAN}.${UserToStudyPlanLessonKey.USER_ID}`]:
           userId,
       })
-      .andWhere((builder) => {
-        if (areTestLessons) {
-          builder.whereIn(LessonKey.NAME, TEST_LESSON_NAMES);
-        } else {
-          builder.whereNotIn(LessonKey.NAME, TEST_LESSON_NAMES);
-        }
-      })
       .withGraphJoined(
-        [
-          `${LessonRelationMappings.STUDY_PLAN}`,
-          `${LessonRelationMappings.BEST_SKILL}`,
-        ].join(),
+        `[ ${LessonRelationMappings.FINISHED_LESSON}.[${UserToFinishedLessonRelationMapping.SKILL}]]`,
+      )
+      .modifyGraph(
+        `${LessonRelationMappings.FINISHED_LESSON}.[${UserToFinishedLessonRelationMapping.SKILL}]`,
+        (builder) => builder.select(SkillKey.NAME),
       )
       .orderBy(
         `${LessonRelationMappings.STUDY_PLAN}.${UserToStudyPlanLessonKey.PRIORITY}`,
         RecordsSortOrder.ASC,
       )
-      .castTo<
-        (Omit<LessonDto, LessonKey.CREATOR_TYPE> &
-          Pick<ILessonRecord, LessonKey.CREATOR_ID>)[]
-      >()
-      .execute();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .castTo<any[]>();
 
-    const mappedLessons = lessons.map((lesson) => {
-      const creatorType =
-        userId === lesson.creatorId
-          ? CreatorType.CURRENT_USER
-          : lesson.creatorId
-            ? CreatorType.OTHER_USERS
-            : CreatorType.SYSTEM;
-
-      return { ...lesson, creatorType };
-    });
+    const mappedLessons = lessons.map(
+      ({ studyPlan: _studyPlan, creatorId, finishedLesson, ...lesson }) => {
+        return {
+          ...lesson,
+          creatorType: defineCreatorType({ userId, creatorId }),
+          bestSkill: finishedLesson?.pop()?.skill?.name ?? null,
+        };
+      },
+    );
 
     return mappedLessons;
   }

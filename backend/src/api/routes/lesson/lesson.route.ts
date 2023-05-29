@@ -24,6 +24,33 @@ class Lesson extends Abstract {
   public getRoutes(): Router {
     const router: Router = Router();
 
+    router.post(
+      '/',
+      this._getValidationMiddleware({ body: createLessonSchema }),
+      this._run((req: IRequestWithUser) => {
+        return this._lessonService.create(req.userId, req.body);
+      }),
+    );
+
+    router.get(
+      '/study-plan',
+      this._run((req: IRequestWithUser) => {
+        return this._lessonService.getStudyPlan(req.userId);
+      }),
+    );
+
+    router.post(
+      '/:lessonId/result',
+      this._run((req: IRequestWithUser) => {
+        const lessonId = Number(req.params.lessonId);
+        return this._lessonService.handleLessonResult(
+          req.userId,
+          lessonId,
+          req.body,
+        );
+      }),
+    );
+
     router.get(
       '/:lessonId',
       this._run((req) => {
@@ -32,12 +59,12 @@ class Lesson extends Abstract {
       }),
     );
 
-    router.post(
-      '/',
-      this._getValidationMiddleware({ body: createLessonSchema }),
-      this._run((req: IRequestWithUser) =>
-        this._lessonService.create(req.userId, req.body),
-      ),
+    router.delete(
+      '/:lessonId',
+      this._run((req: IRequestWithUser) => {
+        const lessonId = Number(req.params.lessonId);
+        return this._lessonService.deleteById(req.userId, lessonId);
+      }),
     );
 
     router.get(
@@ -53,27 +80,6 @@ class Lesson extends Abstract {
         );
       }),
     );
-
-    router.get(
-      '/study-plan',
-      this._run((req: IRequestWithUser) =>
-        this._lessonService.getStudyPlan(req.userId),
-      ),
-    );
-
-    router.post(
-      '/:lessonId/result',
-      this._run((req: IRequestWithUser) => {
-        const lessonId = Number(req.params.lessonId);
-        return this._lessonService.handleLessonResult(
-          req.userId,
-          lessonId,
-          req.body,
-        );
-      }),
-    );
-
-    // delete lesson
 
     return router;
   }

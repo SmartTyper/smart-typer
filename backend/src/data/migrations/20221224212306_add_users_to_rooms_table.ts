@@ -8,14 +8,20 @@ async function up(knex: Knex): Promise<void> {
       .references('id')
       .inTable('users')
       .unique()
-      .notNullable();
-    table.integer('current_room_id').references('id').inTable('rooms');
+      .notNullable()
+      .onDelete('CASCADE');
+    table
+      .integer('current_room_id')
+      .references('id')
+      .inTable('rooms')
+      .onDelete('CASCADE');
     table
       .integer('personal_room_id')
       .references('id')
       .inTable('rooms')
       .unique()
-      .notNullable();
+      .notNullable()
+      .onDelete('CASCADE');
     table.dateTime('created_at').notNullable().defaultTo(knex.fn.now());
     table.dateTime('updated_at').notNullable().defaultTo(knex.fn.now());
   });

@@ -51,7 +51,9 @@ class Lesson {
     this._statisticsService = params.statisticsService;
   }
 
-  public async getById(lessonId: number): Promise<LessonResponseDto> {
+  public async getById(
+    lessonId: LessonDto[CommonKey.ID],
+  ): Promise<LessonResponseDto> {
     const lesson = await this._lessonRepository.getById(lessonId);
 
     if (!lesson) {
@@ -61,6 +63,23 @@ class Lesson {
       });
     }
     return lesson;
+  }
+
+  public async deleteById(
+    userId: UserDto[CommonKey.ID],
+    lessonId: LessonDto[CommonKey.ID],
+  ): Promise<void> {
+    const deletedLessonId = await this._lessonRepository.deleteByIdAndOwnerId(
+      userId,
+      lessonId,
+    );
+
+    if (!deletedLessonId) {
+      throw new HttpError({
+        status: HttpCode.BAD_REQUEST,
+        message: HttpErrorMessage.NO_LESSON_WITH_SUCH_ID,
+      });
+    }
   }
 
   public async create(
