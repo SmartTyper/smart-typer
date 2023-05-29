@@ -7,6 +7,8 @@ import {
   RoomRelationMappings,
   RoomKey,
   UserToRoomKey,
+  TableName,
+  UserKey,
 } from 'common/enums/enums';
 import { IRoomRecord, IUserToRoomRecord } from 'common/interfaces/interfaces';
 import {
@@ -98,21 +100,23 @@ class Room {
   public async getAllAvailable(): Promise<RoomDto[]> {
     return this._RoomModel
       .query()
+      .select(
+        `${TableName.ROOMS}.${CommonKey.ID}`,
+        `${TableName.ROOMS}.${RoomKey.LESSON_ID}`,
+        `${TableName.ROOMS}.${RoomKey.NAME}`,
+      )
       .where(RoomKey.IS_PRIVATE, false)
       .andWhere(
-        this._RoomModel.query().count(`${RoomRelationMappings.PARTICIPANTS}`),
-        '<',
-        MAX_USERS_IN_ROOM,
+        this._RoomModel.knex().raw(`(
+          select count(*) from ${TableName.USERS_TO_ROOMS}
+          where ${TableName.USERS_TO_ROOMS}.current_room_id =
+          ${TableName.ROOMS}.${CommonKey.ID}) < ${MAX_USERS_IN_ROOM}`),
       )
       .withGraphJoined(`[${RoomRelationMappings.PARTICIPANTS}]`)
-      .returning([
-        `${CommonKey.ID}`,
-        `${RoomKey.LESSON_ID}`,
-        `${RoomKey.NAME}`,
-        `${RoomRelationMappings.PARTICIPANTS}`,
-      ])
-      .castTo<RoomDto[]>()
-      .execute();
+      .modifyGraph(RoomRelationMappings.PARTICIPANTS, (builder) =>
+        builder.select(CommonKey.ID, UserKey.NICKNAME, UserKey.PHOTO_URL),
+      )
+      .castTo<RoomDto[]>();
   }
 
   public async removeById(roomId: number): Promise<number> {
