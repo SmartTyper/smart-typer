@@ -24,9 +24,9 @@ class UserApi {
     return this._httpService.load(`${this._baseUrl}/current`);
   }
 
-  public async getProfileInfo(
-    userId: UserIdDto,
-  ): Promise<UserProfileInfoResponseDto> {
+  public async getProfileInfo({
+    userId,
+  }: UserIdDto): Promise<UserProfileInfoResponseDto> {
     return this._httpService.load(`${this._baseUrl}/${userId}`);
   }
 
@@ -47,7 +47,7 @@ class UserApi {
     return this._httpService.load(`${this._baseUrl}/current/avatar`, {
       method: HttpMethod.PUT,
       payload: fd,
-      contentType: RequestContentType.JSON, // check
+      contentType: RequestContentType.MULTIPART_FORM_DATA,
     });
   }
 

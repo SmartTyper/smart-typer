@@ -5,7 +5,7 @@ import { FC, UseFormRegisterReturn, FieldError } from 'common/types/types';
 type Props = {
   placeholder?: string;
   type: FormFieldType;
-  register?: UseFormRegisterReturn;
+  register?: Partial<UseFormRegisterReturn>;
   error?: FieldError;
   className?: string;
   value?: string;

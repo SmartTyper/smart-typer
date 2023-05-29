@@ -34,7 +34,7 @@ import {
 import { clsx, bytesToMegabytes } from 'helpers/helpers';
 import { notification as notificationService } from 'services/services';
 import { ValidationErrorMessage } from 'common/enums/enums';
-import { CropAvatar } from './components/components';
+import { CropAvatar, Statistics } from './components/components';
 
 import styles from './styles.module.scss';
 
@@ -46,6 +46,8 @@ const Profile: FC = () => {
   const {
     currentUserId,
     user,
+    rating,
+    statistics,
     isUserLoading,
     isPersonalInfoUpdateLoading,
     isAvatarUpdateLoading,
@@ -64,8 +66,8 @@ const Profile: FC = () => {
     isPersonalInfoUpdateLoading ||
     isAvatarUpdateLoading ||
     isAvatarDeleteLoading;
-  const { userId } = useParams();
-  const isCurrentUser = currentUserId === userId;
+  const { id: userId } = useParams();
+  const isCurrentUser = currentUserId === Number(userId);
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isCropModalVisible, setIsCropModalVisible] = useState(false);
@@ -76,21 +78,30 @@ const Profile: FC = () => {
     }
   }, [userId]);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    getValues,
-    setValue,
-  } = useForm<Omit<UserDto, CommonKey.ID>>(
-    updateUserInfoSchema,
-    _.omit(user ?? ({} as Omit<UserDto, CommonKey.ID>), CommonKey.ID),
-  );
+  const { watch, register, handleSubmit, formState, setValue } =
+    useForm<Omit<UserDto, CommonKey.ID>>(updateUserInfoSchema);
+
+  const fieldsValues = watch();
+  const { errors } = formState;
+  useEffect(() => {
+    if (user) {
+      const { email, nickname, photoUrl } = user;
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      setValue(UserKey.PHOTO_URL, photoUrl);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      setValue(UserKey.NICKNAME, nickname);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      setValue(UserKey.EMAIL, email);
+    }
+  }, [user]);
 
   const handleDeleteAvatar = (): void => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    setValue(UserKey.PHOTO_URL, null);
+    setValue(UserKey.PHOTO_URL, null, { shouldDirty: true, shouldTouch: true });
     setSelectedFile(null);
   };
 
@@ -98,16 +109,13 @@ const Profile: FC = () => {
     inputRef.current?.click();
   };
 
-  const handleSaveChanges = async (
+  const handleApplyChanges = async (
     data: Omit<UserDto, CommonKey.ID>,
   ): Promise<void> => {
-    if (!user) {
-      return;
-    }
     const changes: Partial<Omit<UserDto, CommonKey.ID>> = _.omitBy(
       data,
       (value, key) => {
-        return _.isEqual(value, user[key as keyof UserDto]);
+        return _.isEqual(value, (user as UserDto)[key as keyof UserDto]);
       },
     );
     if (changes.photoUrl && selectedFile) {
@@ -118,7 +126,7 @@ const Profile: FC = () => {
       dispatch(profileActions.deleteAvatar());
     }
     if (changes.email || changes.nickname) {
-      const personalInfo = _.omit(changes, 'photoUrl');
+      const personalInfo = _.omit(changes, UserKey.PHOTO_URL);
       dispatch(profileActions.updatePersonalInfo(personalInfo));
     }
   };
@@ -142,18 +150,25 @@ const Profile: FC = () => {
       setIsCropModalVisible(true);
     }
   };
+
   const handleCropModalClose = (): void => {
     if (inputRef.current) {
       inputRef.current.value = '';
     }
     setIsCropModalVisible(false);
   };
+
   const updateAvatar = async (
     croppedFile: File,
     croppedFileUrl: string,
   ): Promise<void> => {
     setSelectedFile(croppedFile);
-    setValue('photoUrl', croppedFileUrl);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    setValue(UserKey.PHOTO_URL, croppedFileUrl, {
+      shouldDirty: true,
+      shouldTouch: true,
+    });
     setIsCropModalVisible(false);
   };
 
@@ -165,78 +180,105 @@ const Profile: FC = () => {
     return <Spinner size={SpinnerSize.LARGE} />;
   }
 
-  const { nickname, photoUrl } = getValues();
+  if (!rating?.find((user) => user.id === Number(userId))) {
+    navigate(AppRoute.ROOT);
+  }
+
   return (
     <>
       <ContentWrapper
         size={ContentWrapperSize.MEDIUM}
-        className={styles.settings}
+        className={styles.profile}
       >
-        <h1>Customize your experience</h1>
+        <h1>
+          Personal info
+          {isCurrentUser && <span> — change your data</span>}
+        </h1>
         <RBForm className={styles.form}>
-          <FormField
-            label={FormFieldLabel.AVATAR}
-            type={FormFieldType.FILE}
-            register={register(UserKey.PHOTO_URL, {
-              onChange: handleFileSelected,
-            })}
-            error={errors.photoUrl}
-            note={
-              <span>
-                For best results use an image at least 128px in .jpg format
-              </span>
-            }
-            ref={inputRef}
-            hidden
-          />
-          <Avatar name={nickname} src={photoUrl} size={AvatarSize.LARGE} />
-          {isCurrentUser && (
-            <>
-              <Button
-                onClick={handleUploadAvatar}
-                isDisabled={!user}
-                isLoading={isAvatarUpdateLoading}
-                label="Upload"
-                className={clsx(styles.button, styles.uploadAvatarButton)}
-              />
-              {photoUrl && (
-                <Button
-                  onClick={handleDeleteAvatar}
-                  isDisabled={!user}
-                  isLoading={isAvatarUpdateLoading}
-                  label="Delete"
-                  className={clsx(styles.button, styles.deleteAvatarButton)}
-                />
-              )}
-            </>
-          )}
-          <span className={clsx(styles.uploadText, 'fs-6')}>
-            For best results use an image at least 128px in .jpg format
-          </span>
-          <FormField
-            label={FormFieldLabel.NICKNAME}
-            type={FormFieldType.TEXT}
-            register={register(UserKey.NICKNAME)}
-            error={errors.nickname}
-            readOnly={!isCurrentUser}
-          />
-          <FormField
-            label={FormFieldLabel.EMAIL}
-            type={FormFieldType.TEXT}
-            register={register(UserKey.EMAIL)}
-            error={errors.email}
-            readOnly={!isCurrentUser}
-          />
-          {isCurrentUser && (
-            <Button
-              onClick={handleSubmit(handleSaveChanges)}
-              isDisabled={!user}
-              isLoading={isApplyLoading}
-              label="Apply"
-              className={clsx(styles.button, styles.submitButton)}
+          <div className={styles.avatarField}>
+            <FormField
+              label={FormFieldLabel.AVATAR}
+              type={FormFieldType.FILE}
+              register={{
+                name: UserKey.PHOTO_URL,
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                onChange: handleFileSelected,
+              }}
+              error={errors.photoUrl}
+              note={
+                <>
+                  <span>* for best results use an image</span>
+                  <br />
+                  <span>at least 128px in .jpg format</span>
+                </>
+              }
+              hidden
+              inputRef={inputRef}
             />
-          )}
+            <Avatar
+              name={fieldsValues[UserKey.NICKNAME]}
+              src={fieldsValues[UserKey.PHOTO_URL]}
+              size={AvatarSize.LARGE}
+            />
+            {isCurrentUser && (
+              <>
+                <Button
+                  onClick={handleUploadAvatar}
+                  isLoading={isAvatarUpdateLoading}
+                  label="Upload"
+                  className={clsx(styles.button, styles.uploadAvatarButton)}
+                />
+                {fieldsValues[UserKey.PHOTO_URL] && (
+                  <Button
+                    onClick={handleDeleteAvatar}
+                    isLoading={isAvatarUpdateLoading}
+                    label="Delete"
+                    className={clsx(styles.button, styles.deleteAvatarButton)}
+                  />
+                )}
+              </>
+            )}
+          </div>
+          <div className={styles.personalInfoFields}>
+            <FormField
+              label={FormFieldLabel.NICKNAME}
+              type={FormFieldType.TEXT}
+              register={register(UserKey.NICKNAME)}
+              error={errors.nickname}
+              readOnly={!isCurrentUser}
+            />
+            <FormField
+              label={FormFieldLabel.EMAIL}
+              type={FormFieldType.TEXT}
+              register={register(UserKey.EMAIL)}
+              error={errors.email}
+              readOnly={!isCurrentUser}
+            />
+          </div>
+          <div className={styles.submitButtonContainer}>
+            {isCurrentUser && (
+              <Button
+                onClick={handleSubmit(handleApplyChanges)}
+                isLoading={isApplyLoading}
+                label="Apply"
+                className={clsx(styles.button, styles.submitButton)}
+              />
+            )}
+          </div>
         </RBForm>
+        <hr />
+        <h1>
+          Statistics
+          {isCurrentUser && <span> — track your progress</span>}
+        </h1>
+        <Statistics statistics={statistics} />
+
+        <hr />
+        <h1>
+          Rating
+          {isCurrentUser && <span> — compete with like-minded</span>}
+        </h1>
       </ContentWrapper>
       <CropAvatar
         isVisible={isCropModalVisible}

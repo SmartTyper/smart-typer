@@ -6,7 +6,7 @@ import { clsx } from 'helpers/helpers';
 import styles from './styles.module.scss';
 
 type Props = {
-  register?: UseFormRegisterReturn;
+  register?: Partial<UseFormRegisterReturn>;
   className?: string;
   value?: string;
   readOnly: boolean;

@@ -8,7 +8,7 @@ import styles from './styles.module.scss';
 
 type Props = {
   placeholder?: string;
-  register?: UseFormRegisterReturn;
+  register?: Partial<UseFormRegisterReturn>;
   error?: FieldError;
   className?: string;
   value?: string;

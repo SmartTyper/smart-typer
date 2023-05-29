@@ -18,6 +18,11 @@
   flex-wrap: wrap;
   padding: 0;
 
+  .suggestionCard:last-child {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .suggestionText {
     margin: 0;
     line-height: 1.6;

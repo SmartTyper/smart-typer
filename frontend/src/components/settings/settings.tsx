@@ -12,6 +12,7 @@ import { settings as settingsActions } from 'store/modules/actions';
 import { RBForm } from 'components/external/external';
 import { Card } from 'components/common/common';
 import { CardHeaderColor } from 'common/enums/enums';
+import { clsx } from 'helpers/helpers';
 
 import styles from './styles.module.scss';
 
@@ -54,13 +55,16 @@ const Settings: FC = () => {
       size={ContentWrapperSize.MEDIUM}
       className={styles.settings}
     >
-      <h1>Customize your experience</h1>
+      <h1>
+        Settings
+        <span> — customize your experience</span>
+      </h1>
       <RBForm className={styles.form}>
         <div className={styles.cards}>
           <Card
             title="Racing"
             color={CardHeaderColor.BLUE}
-            className={styles.card}
+            className={clsx(styles.racingCard, styles.card)}
             childrenContainerClassName={styles.racingCardFieldsContainer}
           >
             <FormField

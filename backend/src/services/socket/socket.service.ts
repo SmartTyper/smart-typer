@@ -10,7 +10,6 @@ class Socket {
   }
 
   public get io(): Server {
-    console.log(this);
     if (!this._io) {
       throw new Error(SocketErrorMessage.NO_SOCKET_SERVICE_PROVIDED);
     }

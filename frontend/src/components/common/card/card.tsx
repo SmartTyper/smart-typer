@@ -20,7 +20,7 @@ const Card: React.FC<Props> = ({
   children,
   childrenContainerClassName,
   numbered = false,
-  size = CardSize.SMALL,
+  size = CardSize.MEDIUM,
 }) => {
   return (
     <div

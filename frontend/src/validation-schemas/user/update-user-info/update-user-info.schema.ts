@@ -7,7 +7,7 @@ const updateUserInfoSchema = yup
   .shape({
     nickname: nicknameSchema.required(),
     email: emailSchema.required(),
-    photoUrl: yup.string(),
+    photoUrl: yup.string().nullable(true),
   })
   .noUnknown(true, ValidationErrorMessage.INVALID_KEYS_RECEIVED);
 

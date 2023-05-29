@@ -50,7 +50,9 @@ const Theory: FC = () => {
           <Card
             title="Warm-up"
             color={CardHeaderColor.YELLOW}
-            size={CardSize.MEDIUM}
+            size={CardSize.LARGE}
+            className={styles.suggestionCard}
+            numbered
           >
             <p className={styles.suggestionText}>
               Start your practice sessions with basic words and sentences. This
@@ -61,7 +63,9 @@ const Theory: FC = () => {
           <Card
             title="Gradual Progress"
             color={CardHeaderColor.ORANGE}
-            size={CardSize.MEDIUM}
+            size={CardSize.LARGE}
+            className={styles.suggestionCard}
+            numbered
           >
             <p className={styles.suggestionText}>
               Do not rush. Initially, focus more on accuracy than speed. Start
@@ -73,7 +77,9 @@ const Theory: FC = () => {
           <Card
             title="Regular Practice"
             color={CardHeaderColor.PINK}
-            size={CardSize.MEDIUM}
+            size={CardSize.LARGE}
+            className={styles.suggestionCard}
+            numbered
           >
             <p className={styles.suggestionText}>
               Regular practice is vital to improve muscle memory. Try to
@@ -85,7 +91,9 @@ const Theory: FC = () => {
           <Card
             title="Variety"
             color={CardHeaderColor.BLUE}
-            size={CardSize.MEDIUM}
+            size={CardSize.LARGE}
+            className={styles.suggestionCard}
+            numbered
           >
             <p className={styles.suggestionText}>
               Incorporate diverse exercises in your routine. Practice typing
@@ -97,7 +105,9 @@ const Theory: FC = () => {
           <Card
             title="Track Your Progress"
             color={CardHeaderColor.GREEN}
-            size={CardSize.MEDIUM}
+            size={CardSize.LARGE}
+            className={styles.suggestionCard}
+            numbered
           >
             <p className={styles.suggestionText}>
               Keep track of your typing speed and accuracy regularly. This will

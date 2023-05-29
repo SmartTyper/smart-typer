@@ -1,21 +1,25 @@
 @import 'src/assets/css/variables';
 
 .card {
-  width: 20vw;
+  position: relative;
   margin: 2rem 0;
-  padding: 2rem 2rem;
   overflow: hidden;
   background-color: white;
   border: 1px solid rgba($black, 0.25);
 
-  .large {
+  &.large {
     width: 27.5vw;
     padding: 2rem 1rem 1rem;
   }
 
-  .medium {
+  &.medium {
     width: 20vw;
     padding: 2rem 2rem;
+  }
+
+  &.small {
+    min-width: 12.5vw;
+    padding: 1rem 1rem;
   }
 
   &::before {
@@ -51,7 +55,6 @@
   }
 
   &.numbered {
-    position: relative;
     counter-increment: list;
 
     &.blue {
@@ -63,7 +66,7 @@
         );
       }
 
-      .suggestionTitle::before {
+      .title::before {
         background-color: $blue-accent;
       }
     }
@@ -77,7 +80,7 @@
         );
       }
 
-      .suggestionTitle::before {
+      .title::before {
         background-color: $green-accent;
       }
     }
@@ -91,7 +94,7 @@
         );
       }
 
-      .suggestionTitle::before {
+      .title::before {
         background-color: $orange-accent;
       }
     }
@@ -105,7 +108,7 @@
         );
       }
 
-      .suggestionTitle::before {
+      .title::before {
         background-color: $yellow-accent;
       }
     }
@@ -119,7 +122,7 @@
         );
       }
 
-      .suggestionTitle::before {
+      .title::before {
         background-color: $pink-accent;
       }
     }

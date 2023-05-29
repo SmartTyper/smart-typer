@@ -5,6 +5,7 @@ import { Button } from 'components/common/common';
 import { canvasToBlob, canvasToDataUrl } from 'helpers/helpers';
 import { CROPPED_IMAGE_TYPE } from 'common/constants/constants';
 import { Crop, CropData } from '../../common/types/types';
+import { useMemo } from 'react';
 
 type Props = {
   isVisible: boolean;
@@ -20,6 +21,10 @@ const CropAvatar: FC<Props> = ({ isVisible, file, onClose, updateAvatar }) => {
     aspect: 1,
   });
   const [image, setImage] = useState<HTMLImageElement | null>(null);
+
+  const src = useMemo(() => {
+    return file ? URL.createObjectURL(file) : '';
+  }, [(file as File)?.name]);
 
   const onCropChange = (newCrop: Crop): void => {
     setCrop(newCrop);
@@ -88,18 +93,17 @@ const CropAvatar: FC<Props> = ({ isVisible, file, onClose, updateAvatar }) => {
       </RBModal.Header>
       <RBModal.Body>
         <ReactCrop
-          src={URL.createObjectURL(file)}
+          src={src}
           onChange={onCropChange}
           crop={crop}
           keepSelection
           circularCrop
-          minHeight={128}
           onImageLoaded={onImageLoaded}
         />
       </RBModal.Body>
       <RBModal.Footer>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={onSave}>Save</Button>
+        <Button onClick={onClose} label="Cancel" />
+        <Button onClick={onSave} label="Save" />
       </RBModal.Footer>
     </RBModal>
   );

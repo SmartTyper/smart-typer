@@ -6,28 +6,49 @@
 
   .form {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-end;
-  }
+    justify-content: space-between;
 
-  .button {
-    height: 3.5rem;
-    width: 12rem;
-    font-size: $middle-font-size;
-    margin: 1rem 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: $white;
-
-    &.submitButton,
-    &.uploadAvatarButton {
-      background-color: $main-green;
+    .avatarField {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      align-items: center;
+      margin: 0 4rem 0 0;
     }
 
-    &.deleteAvatarButton {
-      background-color: $main-red;
+    .personalInfoFields {
+      display: flex;
+      flex-direction: column;
+      width: 40%;
+    }
+
+    .submitButtonContainer {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: end;
+      width: 20%;
+    }
+
+    .button {
+      height: 3.5rem;
+      width: 12rem;
+      font-size: $middle-font-size;
+      margin: 1rem 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: $white;
+
+      &.submitButton,
+      &.uploadAvatarButton {
+        background-color: $main-green;
+      }
+
+      &.deleteAvatarButton {
+        background-color: $main-red;
+        margin-top: 0;
+      }
     }
   }
 }

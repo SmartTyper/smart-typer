@@ -10,7 +10,7 @@ enum AppRoute {
   RACING = '/racing',
   ROOMS = '/rooms',
   ROOMS_$ID = '/rooms/:id',
-  USERS_$ID_PROFILE = 'users/:id/profile',
+  USERS_$ID_PROFILE = '/users/:id/profile',
   SETTINGS = '/settings',
   RESET_PASSWORD = '/reset-password',
   SET_PASSWORD = '/set-password',

@@ -1,1 +1,1 @@
-export * from './update-profile-info/update-profile-info.schema';
+export * from './update-user-info/update-user-info.schema';

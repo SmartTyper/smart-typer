@@ -7,7 +7,6 @@
   .form {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: flex-end;
 
     .cards {
@@ -19,7 +18,7 @@
       .card {
         margin: 2rem;
 
-        &:first-child {
+        &.racingCard {
           margin-left: 0;
         }
 

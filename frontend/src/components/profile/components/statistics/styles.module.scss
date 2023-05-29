@@ -1,0 +1,12 @@
+@import 'src/assets/css/variables';
+
+.statiscticsSection {
+  display: flex;
+  flex-direction: raw;
+  justify-content: space-between;
+
+  .statisticValue {
+    width: 100%;
+    text-align: center;
+  }
+}

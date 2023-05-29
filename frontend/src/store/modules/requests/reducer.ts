@@ -28,7 +28,6 @@ const { reducer } = createSlice({
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       .addMatcher(isAnyOf.apply(null, FINISHED_ACTIONS), (state, action) => {
-        console.log(action.type.split('/'));
         state[action.type.split('/').shift() as RequestActionType] = false;
       });
   },

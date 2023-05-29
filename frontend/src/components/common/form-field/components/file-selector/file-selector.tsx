@@ -9,12 +9,12 @@ import {
 
 type Props = {
   placeholder?: string;
-  register?: UseFormRegisterReturn;
+  register?: Partial<UseFormRegisterReturn>;
   error?: FieldError;
   className?: string;
   value?: string;
   readOnly: boolean;
-  ref?: RefObject<HTMLInputElement>;
+  inputRef?: RefObject<HTMLInputElement>;
   hidden?: boolean;
 };
 
@@ -26,7 +26,7 @@ const FileSelector: FC<Props> = ({
   readOnly,
   value,
   hidden,
-  ref,
+  inputRef,
 }) => (
   <RBForm.Control
     {...register}
@@ -37,7 +37,7 @@ const FileSelector: FC<Props> = ({
     readOnly={readOnly}
     value={value}
     hidden={hidden}
-    ref={ref}
+    ref={inputRef}
   />
 );
 

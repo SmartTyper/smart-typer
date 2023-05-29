@@ -16,7 +16,6 @@ import {
   Theory,
 } from 'components/components';
 import { RRDRoute, RRDRoutes } from 'components/external/external';
-import { replaceRouteIdParam } from 'helpers/helpers';
 import {
   useDispatch,
   useEffect,
@@ -54,8 +53,6 @@ const App: FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log(user);
-    console.log(isUserRequestLoading);
     setIsUserLoading(isUserRequestLoading);
   }, [isUserRequestLoading, user]);
 
@@ -107,7 +104,7 @@ const App: FC = () => {
           }
         />
         <RRDRoute
-          path={replaceRouteIdParam(AppRoute.USERS_$ID_PROFILE, user?.id)}
+          path={AppRoute.USERS_$ID_PROFILE}
           element={
             <WithHeader>
               <Profile />

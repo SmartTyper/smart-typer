@@ -19,7 +19,7 @@ import { clsx } from 'helpers/helpers';
 type Props = {
   label: FormFieldLabel;
   type: FormFieldType;
-  register?: UseFormRegisterReturn;
+  register?: Partial<UseFormRegisterReturn>;
   placeholder?: string;
   note?: string | JSX.Element;
   error?: FieldError;
@@ -27,7 +27,7 @@ type Props = {
   inputClassName?: string;
   value?: string;
   readOnly?: boolean;
-  ref?: RefObject<HTMLInputElement>;
+  inputRef?: RefObject<HTMLInputElement>;
   hidden?: boolean;
 };
 
@@ -41,7 +41,7 @@ const FormField: FC<Props> = ({
   className,
   inputClassName,
   value,
-  ref,
+  inputRef,
   readOnly = false,
   hidden = false,
 }) => {
@@ -74,7 +74,7 @@ const FormField: FC<Props> = ({
             hidden={hidden}
             readOnly={readOnly}
             value={value}
-            ref={ref}
+            inputRef={inputRef}
             className={inputClassName}
           />
         );
