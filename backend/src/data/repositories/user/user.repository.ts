@@ -286,23 +286,21 @@ class User {
         `${TableName.USERS}.${CommonKey.ID}`,
         `${TableName.USERS}.${UserKey.NICKNAME}`,
         `${TableName.USERS}.${UserKey.PHOTO_URL}`,
+        `${TableName.STATISTICS}.${StatisticsKey.AVERAGE_SPEED}`,
       )
-      .withGraphJoined(
-        `[${UserRelationMappings.STATISTICS},${UserRelationMappings.SETTINGS}]`,
-      )
+      .leftJoinRelated(UserRelationMappings.STATISTICS)
+      .withGraphJoined(`[${UserRelationMappings.SETTINGS}]`, {
+        joinOperation: 'innerJoin',
+      })
       .modifyGraph(UserRelationMappings.SETTINGS, (builder) =>
         builder.where(SettingsKey.IS_SHOWN_IN_RATING, true),
-      )
-      .modifyGraph(UserRelationMappings.STATISTICS, (builder) =>
-        builder.select(StatisticsKey.AVERAGE_SPEED),
       )
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .castTo<any[]>();
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const mappedRating = rating.map(({ statistics, settings, ...user }) => ({
+    const mappedRating = rating.map(({ settings, ...user }) => ({
       ...user,
-      averageSpeed: statistics.averageSpeed,
     }));
 
     return mappedRating;

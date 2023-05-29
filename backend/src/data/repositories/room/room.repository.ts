@@ -55,18 +55,20 @@ class Room {
   }
 
   public async getById(roomId: number): Promise<RoomDto | undefined> {
-    return this._RoomModel
+    const roomArr = await this._RoomModel
       .query()
-      .findOne({ [CommonKey.ID]: roomId })
+      .select(
+        `${TableName.ROOMS}.${CommonKey.ID}`,
+        `${TableName.ROOMS}.${RoomKey.LESSON_ID}`,
+        `${TableName.ROOMS}.${RoomKey.NAME}`,
+      )
+      .where(`${TableName.ROOMS}.${CommonKey.ID}`, roomId)
       .withGraphJoined(`[${RoomRelationMappings.PARTICIPANTS}]`)
-      .returning([
-        `${CommonKey.ID}`,
-        `${RoomKey.LESSON_ID}`,
-        `${RoomKey.NAME}`,
-        `${RoomRelationMappings.PARTICIPANTS}`,
-      ])
-      .castTo<RoomDto>()
-      .execute();
+      .modifyGraph(RoomRelationMappings.PARTICIPANTS, (builder) =>
+        builder.select(CommonKey.ID, UserKey.NICKNAME, UserKey.PHOTO_URL),
+      )
+      .castTo<RoomDto[]>();
+    return roomArr[0];
   }
 
   public async getParticipantsCountById(
