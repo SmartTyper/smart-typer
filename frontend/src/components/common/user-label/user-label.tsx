@@ -10,6 +10,8 @@ type Props = {
   avatarSize: AvatarSize;
   textColor?: UserLabelColor;
   avatarSrc: string | null;
+  bolderUserName?: boolean;
+  className?: string;
 };
 
 const UserLabel: FC<Props> = ({
@@ -17,15 +19,25 @@ const UserLabel: FC<Props> = ({
   avatarSrc,
   textColor = UserLabelColor.BLACK,
   avatarSize,
+  bolderUserName = false,
+  className,
 }) => (
   <div className={styles.avatarContainer}>
     <Avatar
       size={avatarSize}
       name={userName}
       src={avatarSrc}
-      className={styles.avatar}
+      className={clsx(styles.avatar, className)}
     />
-    <span className={clsx(styles.username, styles[textColor])}>{userName}</span>
+    <span
+      className={clsx(
+        styles.username,
+        styles[textColor],
+        bolderUserName && styles.bolder,
+      )}
+    >
+      {userName}
+    </span>
   </div>
 );
 

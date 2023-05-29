@@ -31,10 +31,10 @@ import {
   ContentWrapper,
   Button,
 } from 'components/common/common';
-import { clsx, bytesToMegabytes } from 'helpers/helpers';
+import { clsx, bytesToMegabytes, replaceRouteIdParam } from 'helpers/helpers';
 import { notification as notificationService } from 'services/services';
 import { ValidationErrorMessage } from 'common/enums/enums';
-import { CropAvatar, Statistics } from './components/components';
+import { CropAvatar, Statistics, Rating } from './components/components';
 
 import styles from './styles.module.scss';
 
@@ -158,7 +158,7 @@ const Profile: FC = () => {
     setIsCropModalVisible(false);
   };
 
-  const updateAvatar = async (
+  const handdleUpdateAvatar = async (
     croppedFile: File,
     croppedFileUrl: string,
   ): Promise<void> => {
@@ -170,6 +170,10 @@ const Profile: FC = () => {
       shouldTouch: true,
     });
     setIsCropModalVisible(false);
+  };
+
+  const handleRatingRecordClick = (userId: UserDto[CommonKey.ID]): void => {
+    navigate(replaceRouteIdParam(AppRoute.USERS_$ID_PROFILE, userId));
   };
 
   if (!userId) {
@@ -273,18 +277,18 @@ const Profile: FC = () => {
           {isCurrentUser && <span> — track your progress</span>}
         </h1>
         <Statistics statistics={statistics} />
-
         <hr />
         <h1>
           Rating
           {isCurrentUser && <span> — compete with like-minded</span>}
         </h1>
+        <Rating rating={rating} onRecordClick={handleRatingRecordClick} />
       </ContentWrapper>
       <CropAvatar
         isVisible={isCropModalVisible}
         file={selectedFile}
         onClose={handleCropModalClose}
-        updateAvatar={updateAvatar}
+        onUpdateAvatar={handdleUpdateAvatar}
       />
     </>
   );

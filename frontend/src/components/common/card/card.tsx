@@ -4,13 +4,14 @@ import { clsx } from 'helpers/helpers';
 import styles from './styles.module.scss';
 
 type Props = {
-  title: string;
+  title?: string;
   color: CardHeaderColor;
   className?: string;
   childrenContainerClassName?: string;
   children: JSX.Element | JSX.Element[];
   numbered?: boolean;
   size?: CardSize;
+  centeredTitle?: boolean;
 };
 
 const Card: React.FC<Props> = ({
@@ -21,6 +22,7 @@ const Card: React.FC<Props> = ({
   childrenContainerClassName,
   numbered = false,
   size = CardSize.MEDIUM,
+  centeredTitle = false,
 }) => {
   return (
     <div
@@ -32,7 +34,11 @@ const Card: React.FC<Props> = ({
         className,
       )}
     >
-      <h3 className={styles.title}>{title}</h3>
+      {!!title && (
+        <h3 className={clsx(styles.title, centeredTitle && styles.centered)}>
+          {title}
+        </h3>
+      )}
       <div className={clsx(childrenContainerClassName)}>{children}</div>
     </div>
   );

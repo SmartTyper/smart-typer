@@ -1,7 +1,7 @@
 @import 'src/assets/css/variables';
 
 .formField {
-  font-size: $form-field-font-size;
+  font-size: $middle-font-size;
   color: $dark-blue;
   display: flex;
   flex-direction: row-reverse;
@@ -26,7 +26,7 @@
   }
 
   .note {
-    font-size: $form-field-note-font-size;
+    font-size: $small-font-size;
   }
 
   .input {

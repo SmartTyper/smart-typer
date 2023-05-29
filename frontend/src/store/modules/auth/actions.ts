@@ -27,12 +27,18 @@ const logIn = createAsyncThunk(
     try {
       const { authApi: authApiService, localStorage: localStorageService } =
         services;
-      const { settings: settingsActions, lessons: lessonsActions } = actions;
+      const {
+        settings: settingsActions,
+        lessons: lessonsActions,
+        racing: racingActions,
+      } = actions;
       const userData = await authApiService.logIn(payload);
-      const { accessToken, refreshToken, settings, ...user } = userData;
+      const { accessToken, refreshToken, settings, personalRoom, ...user } =
+        userData;
       localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
       localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
       dispatch(settingsActions.setAll(settings));
+      dispatch(racingActions.setPersonalRoom(personalRoom));
       dispatch(
         lessonsActions.loadMoreLessons({ offset: DEFAULT_LESSONS_OFFSET }),
       );
@@ -67,12 +73,18 @@ const register = createAsyncThunk(
     try {
       const { authApi: authApiService, localStorage: localStorageService } =
         services;
-      const { settings: settingsActions, lessons: lessonsActions } = actions;
+      const {
+        settings: settingsActions,
+        lessons: lessonsActions,
+        racing: racingActions,
+      } = actions;
       const userData = await authApiService.register(payload);
-      const { accessToken, refreshToken, settings, ...user } = userData;
+      const { accessToken, refreshToken, settings, personalRoom, ...user } =
+        userData;
       localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
       localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
       dispatch(settingsActions.setAll(settings));
+      dispatch(racingActions.setPersonalRoom(personalRoom));
       dispatch(
         lessonsActions.loadMoreLessons({ offset: DEFAULT_LESSONS_OFFSET }),
       );
@@ -126,12 +138,18 @@ const logInGoogle = createAsyncThunk(
   ): Promise<UserDto> => {
     const { authApi: authApiService, localStorage: localStorageService } =
       services;
-    const { settings: settingsActions, lessons: lessonsActions } = actions;
+    const {
+      settings: settingsActions,
+      lessons: lessonsActions,
+      racing: racingActions,
+    } = actions;
     const userData = await authApiService.logInGoogle(payload);
-    const { accessToken, refreshToken, settings, ...user } = userData;
+    const { accessToken, refreshToken, settings, personalRoom, ...user } =
+      userData;
     localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
     localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
     dispatch(settingsActions.setAll(settings));
+    dispatch(racingActions.setPersonalRoom(personalRoom));
     dispatch(
       lessonsActions.loadMoreLessons({ offset: DEFAULT_LESSONS_OFFSET }),
     );
@@ -147,18 +165,25 @@ const loadCurrentUser = createAsyncThunk(
   ): Promise<UserDto | void> => {
     const { userApi: userApiService, localStorage: localStorageService } =
       services;
-    const { settings: settingsActions, lessons: lessonsActions } = actions;
+    const {
+      settings: settingsActions,
+      lessons: lessonsActions,
+      racing: racingActions,
+    } = actions;
     const accessToken = localStorageService.getItem(StorageKey.ACCESS_TOKEN);
     if (accessToken) {
+      const userData = await userApiService.getAuthInfo();
       const {
-        settings,
         accessToken: newAccessToken,
         refreshToken: newRefreshToken,
+        settings,
+        personalRoom,
         ...user
-      } = await userApiService.getAuthInfo();
+      } = userData;
       localStorageService.setItem(StorageKey.ACCESS_TOKEN, newAccessToken);
       localStorageService.setItem(StorageKey.REFRESH_TOKEN, newRefreshToken);
       dispatch(settingsActions.setAll(settings));
+      dispatch(racingActions.setPersonalRoom(personalRoom));
       dispatch(
         lessonsActions.loadMoreLessons({ offset: DEFAULT_LESSONS_OFFSET }),
       );
@@ -205,12 +230,18 @@ const setPassword = createAsyncThunk(
       authApi: authApiService,
       localStorage: localStorageService,
     } = services;
-    const { settings: settingsActions, lessons: lessonsActions } = actions;
+    const {
+      settings: settingsActions,
+      lessons: lessonsActions,
+      racing: racingActions,
+    } = actions;
     const userData = await authApiService.setPassword(payload);
-    const { accessToken, refreshToken, settings, ...user } = userData;
+    const { accessToken, refreshToken, settings, personalRoom, ...user } =
+      userData;
     localStorageService.setItem(StorageKey.ACCESS_TOKEN, accessToken);
     localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
     dispatch(settingsActions.setAll(settings));
+    dispatch(racingActions.setPersonalRoom(personalRoom));
     dispatch(
       lessonsActions.loadMoreLessons({ offset: DEFAULT_LESSONS_OFFSET }),
     );

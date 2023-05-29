@@ -132,9 +132,8 @@ const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl }) => {
               onClick={handleSend}
               className={styles.sendButton}
               isDisabled={isRoomUrlSending}
-            >
-              Send
-            </Button>
+              label="Send"
+            />
           </div>
         </div>
       </div>
