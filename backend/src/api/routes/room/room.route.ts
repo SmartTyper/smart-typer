@@ -39,7 +39,7 @@ class Room extends Abstract {
       }),
     );
 
-    // REMOVED participantId from body
+    // FIXED participantId from body
     router.post(
       '/:roomId/participants',
       this._run((req: IRequestWithUser) => {
@@ -49,12 +49,12 @@ class Room extends Abstract {
     );
 
     // /:roomId/participants
+    // FIXED ROUTE
     router.delete(
-      '/:roomId/participants/:participantId',
-      this._run((req) => {
+      '/:roomId/participants',
+      this._run((req: IRequestWithUser) => {
         const roomId = Number(req.params.roomId);
-        const participantId = Number(req.params.participantId);
-        return this._roomService.removeParticipant(roomId, participantId);
+        return this._roomService.removeParticipant(roomId, req.userId);
       }),
     );
 

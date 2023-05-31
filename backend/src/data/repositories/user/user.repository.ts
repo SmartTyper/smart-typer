@@ -225,17 +225,13 @@ class User {
 
   public async getById(
     userId: UserDto[CommonKey.ID],
-  ): Promise<RecordWithoutCommonDateKeys<IUserRecord> | undefined> {
+  ): Promise<
+    RecordWithoutCommonDateKeys<Omit<IUserRecord, UserKey.PASSWORD>> | undefined
+  > {
     return this._UserModel
       .query()
-      .findById(userId)
-      .returning([
-        CommonKey.ID,
-        UserKey.EMAIL,
-        UserKey.NICKNAME,
-        UserKey.PASSWORD,
-        UserKey.PHOTO_URL,
-      ]);
+      .select(CommonKey.ID, UserKey.EMAIL, UserKey.NICKNAME, UserKey.PHOTO_URL)
+      .findById(userId);
   }
 
   public async patchById(
@@ -280,7 +276,9 @@ class User {
       .castTo<Omit<UserProfileInfoResponseDto, ProfileInfoKey.RATING>>();
   }
 
-  public async getRating(currentUserId: UserDto[CommonKey.ID]): Promise<Rating> {
+  public async getRating(
+    currentUserId: UserDto[CommonKey.ID],
+  ): Promise<Rating> {
     const rating = await this._UserModel
       .query()
       .select(
@@ -312,11 +310,11 @@ class User {
   public async updateCurrentRoomByUserId(
     userId: UserDto[CommonKey.ID],
     roomId: RoomDto[CommonKey.ID] | null,
-  ): Promise<Promise<Omit<UserToRoom, UserToRoomKey.PERSONAL_ROOM_ID>>> {
+  ): Promise<Omit<UserToRoom, UserToRoomKey.PERSONAL_ROOM_ID>> {
     return this._UserModel
       .relatedQuery(UserRelationMappings.USER_TO_ROOMS)
-      .patch({ roomId })
-      .findOne({ userId })
+      .for(userId)
+      .patch({ [UserToRoomKey.CURRENT_ROOM_ID]: roomId })
       .returning([UserToRoomKey.USER_ID, UserToRoomKey.CURRENT_ROOM_ID])
       .castTo<Promise<Omit<UserToRoom, UserToRoomKey.PERSONAL_ROOM_ID>>>()
       .execute();
@@ -350,6 +348,17 @@ class User {
     );
 
     return Promise.all(updates);
+  }
+
+  public async getCurrentRoomId(
+    userId: UserDto[CommonKey.ID],
+  ): Promise<Pick<UserToRoom, UserToRoomKey.CURRENT_ROOM_ID>> {
+    return this._UserModel
+      .query()
+      .select(UserToRoomKey.CURRENT_ROOM_ID)
+      .innerJoinRelated(UserRelationMappings.USER_TO_ROOMS)
+      .findOne({ userId })
+      .castTo<Promise<Pick<UserToRoom, UserToRoomKey.CURRENT_ROOM_ID>>>();
   }
 }
 

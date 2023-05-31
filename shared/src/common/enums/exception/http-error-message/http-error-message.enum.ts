@@ -13,6 +13,8 @@ enum HttpErrorMessage {
   INVALID_LOG_IN_DATA = 'Incorrect email or password',
   INVALID_FILE_TYPE = 'Invalid file type',
   NO_FILE = 'No file was added',
+  USER_ALREADY_IN_ROOM = 'User already in room',
+  USER_NOT_IN_ROOM = 'User is not in this room',
 }
 
 export { HttpErrorMessage };

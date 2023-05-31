@@ -158,12 +158,14 @@ class User {
     };
   }
 
-  public async getById(userId: UserDto[CommonKey.ID]): Promise<UserDto> {
+  public async getById(
+    userId: UserDto[CommonKey.ID],
+  ): Promise<Omit<UserDto, UserKey.PASSWORD>> {
     const user = await this._userRepository.getById(userId);
     if (!user) {
       throw new HttpError({
         status: HttpCode.BAD_REQUEST,
-        message: HttpErrorMessage.INVALID_LOG_IN_DATA,
+        message: HttpErrorMessage.NO_USER_WITH_SUCH_ID,
       });
     }
     return user;
@@ -254,6 +256,12 @@ class User {
     payload: Omit<Skill, SkillKey.NAME>[],
   ): Promise<Omit<IUserToSkillRecord, UserToSkillKey.USER_ID>[]> {
     return this._userRepository.patchSkillLevelsByUserId(userId, payload);
+  }
+
+  public async getUserCurrentRoomId(
+    userId: UserDto[CommonKey.ID],
+  ): Promise<Pick<UserToRoom, UserToRoomKey.CURRENT_ROOM_ID>> {
+    return this._userRepository.getCurrentRoomId(userId);
   }
 }
 
