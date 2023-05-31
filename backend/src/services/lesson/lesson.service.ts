@@ -216,7 +216,13 @@ class Lesson {
 
     await this._statisticsService.updateByUserId(userId, newStatistics);
 
-    if (isLastTestLesson || !isTestLesson) {
+    const { priority, lessonId: lastStudyPlanLessonId } =
+      await this._lessonRepository.getLastStudyPlanLessonPriority(userId);
+
+    if (
+      (isLastTestLesson || !isTestLesson) &&
+      lastStudyPlanLessonId === lessonId
+    ) {
       const lastFinishedLessonIds =
         await this._lessonRepository.getLastNFinishedIds(userId, 5);
 
@@ -233,9 +239,6 @@ class Lesson {
       const { lessonId } = await this._itsService.AHP(
         nextStudyPlanLessonPayload,
       );
-
-      const { priority } =
-        await this._lessonRepository.getLastStudyPlanLessonPriority(userId);
 
       await this._lessonRepository.insertNewStudyPlanLesson(
         userId,

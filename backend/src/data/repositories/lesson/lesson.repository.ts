@@ -103,7 +103,11 @@ class Lesson {
         (builder) => builder.select(CommonKey.ID, SkillKey.NAME),
       )
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .castTo<any>();
+      .castTo<any>() ?? {};
+
+    if(!lessonToSkills){
+      return;
+    }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const mappedSkills = lessonToSkills.map(({ count, skill }: any) => ({
@@ -344,12 +348,13 @@ class Lesson {
   public getLastStudyPlanLessonPriority(
     userId: UserDto[CommonKey.ID],
   ): Promise<
-    Pick<IUserToStudyPlanLessonRecord, UserToStudyPlanLessonKey.PRIORITY>
+    Pick<IUserToStudyPlanLessonRecord, UserToStudyPlanLessonKey.PRIORITY | UserToStudyPlanLessonKey.LESSON_ID>
   > {
     return this._LessonModel
       .query()
       .select(
         `${LessonRelationMappings.STUDY_PLAN}.${UserToStudyPlanLessonKey.PRIORITY}`,
+        `${LessonRelationMappings.STUDY_PLAN}.${UserToStudyPlanLessonKey.LESSON_ID}`,
       )
       .innerJoinRelated(LessonRelationMappings.STUDY_PLAN)
       .orderBy(
@@ -358,7 +363,7 @@ class Lesson {
       )
       .findOne({ userId })
       .castTo<
-        Pick<IUserToStudyPlanLessonRecord, UserToStudyPlanLessonKey.PRIORITY>
+        Pick<IUserToStudyPlanLessonRecord, UserToStudyPlanLessonKey.PRIORITY| UserToStudyPlanLessonKey.LESSON_ID>
       >()
       .execute();
   }

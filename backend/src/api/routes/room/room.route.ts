@@ -39,7 +39,6 @@ class Room extends Abstract {
       }),
     );
 
-    // FIXED participantId from body
     router.post(
       '/:roomId/participants',
       this._run((req: IRequestWithUser) => {
@@ -48,8 +47,6 @@ class Room extends Abstract {
       }),
     );
 
-    // /:roomId/participants
-    // FIXED ROUTE
     router.delete(
       '/:roomId/participants',
       this._run((req: IRequestWithUser) => {
