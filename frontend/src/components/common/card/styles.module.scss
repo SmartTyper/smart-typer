@@ -48,10 +48,20 @@
     background: rgba($pink-accent, 0.2);
   }
 
+  &.green::before {
+    background: rgba($green-accent, 0.2);
+  }
+
   .title {
     display: flex;
     align-items: baseline;
     margin: 0 0 1rem;
+
+    &.centered {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+    }
   }
 
   &.numbered {

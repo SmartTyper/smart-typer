@@ -14,6 +14,7 @@ type Props = {
   isLoading?: boolean;
   isDisabled?: boolean;
   hasShadowOnHover?: boolean;
+  children?: JSX.Element | JSX.Element[];
 };
 
 const Button: FC<Props> = ({
@@ -25,6 +26,7 @@ const Button: FC<Props> = ({
   isLoading = false,
   isDisabled = false,
   hasShadowOnHover = true,
+  children,
 }) => {
   const handleClick: VoidCallback<SyntheticEvent> = (e) => {
     e.preventDefault();
@@ -47,6 +49,7 @@ const Button: FC<Props> = ({
         <>
           {iconName && <i className={clsx(iconName, iconClassName)}></i>}
           {label && <span>{label}</span>}
+          {children}
         </>
       )}
     </button>

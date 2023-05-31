@@ -5,6 +5,7 @@ import { Abstract } from '../abstract/abstract.route';
 import { getFileMiddleware } from 'api/middlewares/middlewares';
 import { updatePersonalInfoSchema } from 'validation-schemas/validation-schemas';
 import { getValidationMiddleware } from 'api/middlewares/middlewares';
+import { UserKey } from 'common/enums/enums';
 
 type Constructor = {
   userService: typeof userService;
@@ -37,7 +38,10 @@ class User extends Abstract {
     router.get(
       '/:userId',
       this._run((req: IRequestWithUser) =>
-        this._userService.getProfileInfoById(Number(req.params.userId)),
+        this._userService.getProfileInfoById(
+          Number(req.params.userId),
+          req.userId,
+        ),
       ),
     );
 
@@ -51,7 +55,7 @@ class User extends Abstract {
 
     router.put(
       '/current/avatar',
-      this._getFileMiddleware({ fileName: 'avatar' }),
+      this._getFileMiddleware({ fileName: UserKey.PHOTO_URL }),
       this._run((req: IRequestWithUser) =>
         this._userService.updateAvatar(req.userId, req.file),
       ),

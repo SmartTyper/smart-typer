@@ -25,10 +25,11 @@ const updateAvatar = createAsyncThunk(
   ActionType.UPDATE_AVATAR,
   async (
     payload: File,
-    { extra: { services } },
+    { dispatch, extra: { services, actions } },
   ): Promise<UpdateAvatarResponseDto[UserKey.PHOTO_URL]> => {
     const { userApi: userApiService } = services;
     const { photoUrl } = await userApiService.updateAvatar(payload);
+    dispatch(actions.auth.updateUser({ photoUrl }));
     return photoUrl;
   },
 );
@@ -49,9 +50,13 @@ const updatePersonalInfo = createAsyncThunk(
 
 const deleteAvatar = createAsyncThunk(
   ActionType.DELETE_AVATAR,
-  async (_: undefined, { extra: { services } }): Promise<void> => {
+  async (
+    _: undefined,
+    { dispatch, extra: { services, actions } },
+  ): Promise<void> => {
     const { userApi: userApiService } = services;
     await userApiService.deleteAvatar();
+    dispatch(actions.auth.updateUser({ photoUrl: null }));
   },
 );
 

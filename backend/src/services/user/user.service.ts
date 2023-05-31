@@ -14,7 +14,6 @@ import {
   CreateUserRequestDto,
   UserAuthInfoResponseDto,
   UserProfileInfoResponseDto,
-  TokensResponseDto,
   UpdateAvatarResponseDto,
   UserToRoom,
   Skill,
@@ -42,23 +41,18 @@ class User {
     this._s3Service = params.s3Service;
   }
 
-  private async _addPhotoUrlAndTokens(
-    user: Omit<UserAuthInfoResponseDto, keyof TokensResponseDto>,
-  ): Promise<UserAuthInfoResponseDto> {
-    const isGoogleUrl = user?.photoUrl?.match(/google/i);
+  private async _getSignedPhotoUrl(
+    photoUrl: UserDto[UserKey.PHOTO_URL],
+  ): Promise<UserDto[UserKey.PHOTO_URL]> {
+    const isGoogleUrl = photoUrl?.match(/google/i);
 
-    const photoUrl = !user.photoUrl
+    const signedPhotoUrl = !photoUrl
       ? null
       : isGoogleUrl
-        ? user.photoUrl
-        : await this._s3Service.getSignedUrl(user.photoUrl);
+        ? photoUrl
+        : await this._s3Service.getSignedUrl(photoUrl);
 
-    const tokens = await this._tokenService.getTokens(user.id);
-    return {
-      ...user,
-      ...tokens,
-      photoUrl,
-    };
+    return signedPhotoUrl;
   }
 
   public async getAuthInfoByEmail(
@@ -73,7 +67,9 @@ class User {
         message: HttpErrorMessage.NO_SUCH_EMAIL,
       });
     }
-    return this._addPhotoUrlAndTokens(user);
+    const photoUrl = await this._getSignedPhotoUrl(user.photoUrl);
+    const tokens = await this._tokenService.getTokens(user.id);
+    return { ...user, ...tokens, photoUrl };
   }
 
   public async getAuthInfoById(
@@ -88,7 +84,9 @@ class User {
         message: HttpErrorMessage.NO_USER_WITH_SUCH_ID,
       });
     }
-    return this._addPhotoUrlAndTokens(user);
+    const photoUrl = await this._getSignedPhotoUrl(user.photoUrl);
+    const tokens = await this._tokenService.getTokens(user.id);
+    return { ...user, ...tokens, photoUrl };
   }
 
   public async getByEmail(email: string): Promise<UserWithPassword> {
@@ -140,6 +138,7 @@ class User {
 
   public async getProfileInfoById(
     userId: UserDto[CommonKey.ID],
+    currentUserId: UserDto[CommonKey.ID],
   ): Promise<UserProfileInfoResponseDto> {
     const userWithStatistics = await this._userRepository.getByIdWithStatistics(
       userId,
@@ -150,10 +149,12 @@ class User {
         message: HttpErrorMessage.NO_USER_WITH_SUCH_ID,
       });
     }
-    const rating = await this._userRepository.getRating();
+    const rating = await this._userRepository.getRating(currentUserId);
+    const photoUrl = await this._getSignedPhotoUrl(userWithStatistics.photoUrl);
     return {
       ...userWithStatistics,
       rating,
+      photoUrl,
     };
   }
 

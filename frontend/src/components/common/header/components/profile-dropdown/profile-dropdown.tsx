@@ -23,6 +23,7 @@ const ProfileDropdown: FC<Props> = ({
         avatarSize={AvatarSize.MIDDLE}
         textColor={UserLabelColor.WHITE}
         avatarSrc={avatarSrc}
+        bolderUserName
       />
     </Dropdown>
   );

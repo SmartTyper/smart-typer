@@ -280,7 +280,7 @@ class User {
       .castTo<Omit<UserProfileInfoResponseDto, ProfileInfoKey.RATING>>();
   }
 
-  public async getRating(): Promise<Rating> {
+  public async getRating(currentUserId: UserDto[CommonKey.ID]): Promise<Rating> {
     const rating = await this._UserModel
       .query()
       .select(
@@ -294,7 +294,9 @@ class User {
         joinOperation: 'innerJoin',
       })
       .modifyGraph(UserRelationMappings.SETTINGS, (builder) =>
-        builder.where(SettingsKey.IS_SHOWN_IN_RATING, true),
+        builder
+          .where(SettingsKey.IS_SHOWN_IN_RATING, true)
+          .orWhere({ [SettingsKey.USER_ID]: currentUserId }),
       )
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .castTo<any[]>();

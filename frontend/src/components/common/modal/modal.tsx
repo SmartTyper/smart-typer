@@ -3,6 +3,8 @@ import { FC, ModalButton } from 'common/types/types';
 import { Button } from 'components/common/common';
 import { clsx } from 'helpers/helpers';
 
+import styles from './styles.module.scss';
+
 type Props = {
   children: JSX.Element | JSX.Element[];
   isVisible: boolean;
@@ -34,7 +36,7 @@ const Modal: FC<Props> = ({
     >
       {hasHeader && (
         <RBModal.Header closeButton>
-          <RBModal.Title className="fs-6">{title}</RBModal.Title>
+          <RBModal.Title className={styles.title}>{title}</RBModal.Title>
         </RBModal.Header>
       )}
       <RBModal.Body className="mx-0">{children}</RBModal.Body>
@@ -44,19 +46,17 @@ const Modal: FC<Props> = ({
             <Button
               onClick={cancelButton.onClick}
               isDisabled={cancelButton.isDisabled}
-              className="me-2"
-            >
-              {cancelButton.label}
-            </Button>
+              label={cancelButton.label}
+              className={clsx(styles.button, styles.cancelButton)}
+            />
           )}
           {submitButton && (
             <Button
               onClick={submitButton.onClick}
               isDisabled={submitButton.isDisabled}
-              className="me-2"
-            >
-              {submitButton.label}
-            </Button>
+              label={submitButton.label}
+              className={clsx(styles.button, styles.submitButton)}
+            />
           )}
         </RBModal.Footer>
       )}

@@ -1,7 +1,7 @@
-import { RBModal, ReactCrop } from 'components/external/external';
+import { ReactCrop } from 'components/external/external';
 import { useState } from 'hooks/hooks';
 import { FC, VoidAction } from 'common/types/types';
-import { Button } from 'components/common/common';
+import { Modal } from 'components/common/common';
 import { canvasToBlob, canvasToDataUrl } from 'helpers/helpers';
 import { CROPPED_IMAGE_TYPE } from 'common/constants/constants';
 import { Crop, CropData } from '../../common/types/types';
@@ -11,10 +11,15 @@ type Props = {
   isVisible: boolean;
   file: File | null;
   onClose: VoidAction;
-  updateAvatar: (croppedFile: File, croppedFileUrl: string) => void;
+  onUpdateAvatar: (croppedFile: File, croppedFileUrl: string) => void;
 };
 
-const CropAvatar: FC<Props> = ({ isVisible, file, onClose, updateAvatar }) => {
+const CropAvatar: FC<Props> = ({
+  isVisible,
+  file,
+  onClose,
+  onUpdateAvatar,
+}) => {
   const [crop, setCrop] = useState<Partial<Crop>>({
     unit: '%',
     height: 130,
@@ -60,7 +65,7 @@ const CropAvatar: FC<Props> = ({ isVisible, file, onClose, updateAvatar }) => {
     return canvas;
   };
 
-  const onSave = async (): Promise<void> => {
+  const handleSubmit = async (): Promise<void> => {
     const croppedPhoto = getCroppedPhoto(
       image as HTMLImageElement,
       crop as CropData,
@@ -73,7 +78,7 @@ const CropAvatar: FC<Props> = ({ isVisible, file, onClose, updateAvatar }) => {
     const croppedImageUrl = canvasToDataUrl(croppedPhoto);
 
     onClose();
-    updateAvatar(croppedImageFile, croppedImageUrl);
+    onUpdateAvatar(croppedImageFile, croppedImageUrl);
   };
 
   if (!file) {
@@ -81,31 +86,29 @@ const CropAvatar: FC<Props> = ({ isVisible, file, onClose, updateAvatar }) => {
   }
 
   return (
-    <RBModal
-      dialogClassName="w-25 rounded"
-      show={isVisible}
-      onHide={onClose}
-      backdrop="static"
-      keyboard={false}
+    <Modal
+      isVisible={isVisible}
+      submitButton={{
+        isDisabled: !src,
+        label: 'OK',
+        onClick: handleSubmit,
+      }}
+      cancelButton={{
+        isDisabled: !src,
+        label: 'Cancel',
+        onClick: onClose,
+      }}
+      title="Crop the avatar"
     >
-      <RBModal.Header closeButton>
-        <RBModal.Title>Crop the avatar</RBModal.Title>
-      </RBModal.Header>
-      <RBModal.Body>
-        <ReactCrop
-          src={src}
-          onChange={onCropChange}
-          crop={crop}
-          keepSelection
-          circularCrop
-          onImageLoaded={onImageLoaded}
-        />
-      </RBModal.Body>
-      <RBModal.Footer>
-        <Button onClick={onClose} label="Cancel" />
-        <Button onClick={onSave} label="Save" />
-      </RBModal.Footer>
-    </RBModal>
+      <ReactCrop
+        src={src}
+        onChange={onCropChange}
+        crop={crop}
+        keepSelection
+        circularCrop
+        onImageLoaded={onImageLoaded}
+      />
+    </Modal>
   );
 };
 

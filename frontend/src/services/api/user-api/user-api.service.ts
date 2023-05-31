@@ -42,12 +42,11 @@ class UserApi {
 
   public async updateAvatar(file: File): Promise<UpdateAvatarResponseDto> {
     const fd = new FormData();
-    fd.append('image', file, file.name);
+    fd.append(UserKey.PHOTO_URL, file, file.name);
 
     return this._httpService.load(`${this._baseUrl}/current/avatar`, {
       method: HttpMethod.PUT,
       payload: fd,
-      contentType: RequestContentType.MULTIPART_FORM_DATA,
     });
   }
 
