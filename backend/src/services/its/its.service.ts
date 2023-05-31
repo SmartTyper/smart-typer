@@ -9,11 +9,13 @@ import {
 
 class ITS {
   public async BKT(payload: BktPayload): Promise<BktResult> {
-    const random = Math.floor(Math.random() * (5 - 1) + 1);
-    const skills = payload.map(({ skillId, pKnown }) => ({
-      skillId,
-      pKnown: pKnown + random,
-    }));
+    const skills = payload.map(({ skillId, pKnown }) => {
+      const random = Math.floor(Math.random() * (5 - 1) + 1);
+      return {
+        skillId,
+        pKnown: pKnown + random,
+      };
+    });
     return skills;
   }
 
@@ -24,8 +26,10 @@ class ITS {
   }
 
   public async IRT(payload: IrtPayload): Promise<IrtResult> {
-    const random = Math.floor(Math.random() * (20 - 10) + 10);
-    const skills = payload.map(({ skillId }) => ({ skillId, pKnown: random }));
+    const skills = payload.map(({ skillId }) => {
+      const random = Math.floor(Math.random() * (20 - 10) + 10);
+      return { skillId, pKnown: random };
+    });
     return skills;
   }
 }

@@ -54,7 +54,9 @@ class Room {
     return { personalRoomId };
   }
 
-  public async getById(roomId: number): Promise<RoomDto | undefined> {
+  public async getById(
+    roomId: RoomDto[CommonKey.ID],
+  ): Promise<RoomDto | undefined> {
     const roomArr = await this._RoomModel
       .query()
       .select(
@@ -72,22 +74,19 @@ class Room {
   }
 
   public async getParticipantsCountById(
-    roomId: number,
+    roomId: RoomDto[CommonKey.ID],
   ): Promise<ParticipantsCount> {
-    return this._RoomModel
+    const count = await this._RoomModel
       .query()
       .count('*')
-      .where(CommonKey.ID, roomId)
-      .andWhereNot({
-        [`${RoomRelationMappings.USER_TO_CURRENT_ROOM}.${UserToRoomKey.USER_ID}`]:
-          null,
-      })
-      .withGraphJoined(`[${RoomRelationMappings.USER_TO_CURRENT_ROOM}]`)
-      .castTo<ParticipantsCount>();
+      .innerJoinRelated(RoomRelationMappings.USER_TO_CURRENT_ROOM)
+      .where(`${TableName.ROOMS}.${CommonKey.ID}`, roomId)
+      .castTo<ParticipantsCount[]>();
+    return count[0];
   }
 
   public async getOwnerIdByPersonalRoomId(
-    roomId: number,
+    roomId: RoomDto[CommonKey.ID],
   ): Promise<{ [UserToRoomKey.USER_ID]: number | null }> {
     return this._RoomModel
       .query()
@@ -121,7 +120,7 @@ class Room {
       .castTo<RoomDto[]>();
   }
 
-  public async removeById(roomId: number): Promise<number> {
+  public async removeById(roomId: RoomDto[CommonKey.ID]): Promise<number> {
     return this._RoomModel
       .query()
       .findById(roomId)

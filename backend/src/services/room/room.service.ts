@@ -1,12 +1,17 @@
 import { ENV, MAX_USERS_IN_ROOM } from 'common/constants/constants';
-import { HttpCode, HttpErrorMessage, SocketEvent } from 'common/enums/enums';
+import {
+  CommonKey,
+  HttpCode,
+  HttpErrorMessage,
+  SocketEvent,
+} from 'common/enums/enums';
 import {
   CreateRoomRequestDto,
   RoomDto,
-  ParticipantIdDto,
   SendRoomUrlToEmailsRequestDto,
   ShareRoomUrlDto,
   CreateRoomResponseDto,
+  UserDto,
 } from 'common/types/types';
 import { room as roomRepository } from 'data/repositories/repositories';
 import { HttpError } from 'exceptions/exceptions';
@@ -36,7 +41,7 @@ class Room {
     this._mailerService = params.mailerService;
   }
 
-  public async getById(roomId: number): Promise<RoomDto> {
+  public async getById(roomId: RoomDto[CommonKey.ID]): Promise<RoomDto> {
     const room = await this._roomRepository.getById(roomId);
 
     if (!room) {
@@ -63,7 +68,9 @@ class Room {
     return createdRoom;
   }
 
-  public async getShareUrl(roomId: number): Promise<ShareRoomUrlDto> {
+  public async getShareUrl(
+    roomId: RoomDto[CommonKey.ID],
+  ): Promise<ShareRoomUrlDto> {
     const room = await this._roomRepository.getById(roomId);
     if (!room) {
       throw new HttpError({
@@ -76,7 +83,7 @@ class Room {
   }
 
   public async sendShareUrlToEmails(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
     payload: SendRoomUrlToEmailsRequestDto,
   ): Promise<void> {
     const user = await this._userService.getById(userId);
@@ -95,13 +102,13 @@ class Room {
   }
 
   public async addParticipant(
-    roomId: number,
-    payload: ParticipantIdDto,
+    roomId: RoomDto[CommonKey.ID],
+    userId: UserDto[CommonKey.ID],
   ): Promise<void> {
-    const { participantId } = payload;
     const { count } =
       (await this._roomRepository.getParticipantsCountById(roomId)) ?? {};
 
+    console.log(count);
     if (!count && count !== 0) {
       throw new HttpError({
         status: HttpCode.NOT_FOUND,
@@ -117,17 +124,17 @@ class Room {
     const { userId: ownerId } =
       (await this._roomRepository.getOwnerIdByPersonalRoomId(roomId)) ?? {};
 
-    if (participantId !== ownerId && ownerId) {
+    if (userId !== ownerId && ownerId) {
       throw new HttpError({
         status: HttpCode.FORBIDDEN,
         message: HttpErrorMessage.JOIN_PERSONAL_ROOM,
       });
     }
 
-    await this._userService.updateCurrentRoomByUserId(participantId, roomId);
+    await this._userService.updateCurrentRoomByUserId(userId, roomId);
 
     const { email, ...participant } =
-      (await this._userService.getById(participantId)) ?? {};
+      (await this._userService.getById(userId)) ?? {};
 
     if (!email) {
       throw new HttpError({
@@ -142,7 +149,7 @@ class Room {
   }
 
   public async removeParticipant(
-    roomId: number,
+    roomId: RoomDto[CommonKey.ID],
     participantId: number,
   ): Promise<void> {
     const { count } =

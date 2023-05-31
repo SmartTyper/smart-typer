@@ -26,6 +26,7 @@ import {
   UserDto,
   UserWithPassword,
   UserToRoom,
+  RoomDto,
 } from 'common/types/types';
 import { User as UserModel } from 'data/models/models';
 import {
@@ -177,7 +178,7 @@ class User {
   }
 
   public async getByIdWithSettingsAndPersonalRoom(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
   ): Promise<
     Omit<UserAuthInfoResponseDto, keyof TokensResponseDto> | undefined
   > {
@@ -223,7 +224,7 @@ class User {
   }
 
   public async getById(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
   ): Promise<RecordWithoutCommonDateKeys<IUserRecord> | undefined> {
     return this._UserModel
       .query()
@@ -238,7 +239,7 @@ class User {
   }
 
   public async patchById(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
     data: Partial<Omit<UserWithPassword, CommonKey.ID>>,
   ): Promise<UserDto> {
     return this._UserModel
@@ -255,7 +256,7 @@ class User {
   }
 
   public async getByIdWithStatistics(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
   ): Promise<
     Omit<UserProfileInfoResponseDto, ProfileInfoKey.RATING> | undefined
   > {
@@ -307,8 +308,8 @@ class User {
   }
 
   public async updateCurrentRoomByUserId(
-    userId: number,
-    roomId: number | null,
+    userId: UserDto[CommonKey.ID],
+    roomId: RoomDto[CommonKey.ID] | null,
   ): Promise<Promise<Omit<UserToRoom, UserToRoomKey.PERSONAL_ROOM_ID>>> {
     return this._UserModel
       .relatedQuery(UserRelationMappings.USER_TO_ROOMS)
@@ -320,39 +321,33 @@ class User {
   }
 
   public async getCurrentSkillLevelsByUserId(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
   ): Promise<Omit<Skill, SkillKey.NAME>[] | undefined> {
     return this._UserModel
       .query()
       .select(
-        `${TableName.USERS_TO_SKILLS}.${UserToSkillKey.LEVEL}`,
-        `${TableName.USERS_TO_SKILLS}.${UserToSkillKey.SKILL_ID} as ${CommonKey.ID}`,
+        `${UserRelationMappings.USER_TO_SKILLS}.${UserToSkillKey.LEVEL} as ${UserToSkillKey.LEVEL}`,
+        `${UserRelationMappings.USER_TO_SKILLS}.${UserToSkillKey.SKILL_ID} as ${CommonKey.ID}`,
       )
-      .findById(userId)
-      .withGraphJoined(`[${UserRelationMappings.USER_TO_SKILLS}]`)
+      .where({ [`${TableName.USERS}.${CommonKey.ID}`]: userId })
+      .leftJoinRelated(UserRelationMappings.USER_TO_SKILLS)
       .castTo<Skill[]>();
   }
 
   public async patchSkillLevelsByUserId(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
     payload: Omit<Skill, SkillKey.NAME>[],
   ): Promise<Omit<IUserToSkillRecord, UserToSkillKey.USER_ID>[]> {
-    const options = {
-      noInsert: true,
-      relate: UserRelationMappings.USER_TO_SKILLS,
-    };
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    return this._UserModel
-      .query()
-      .upsertGraphAndFetch(
-        {
-          id: userId,
-          [UserRelationMappings.USER_TO_SKILLS]: payload,
-        },
-        options,
-      )
-      .returning([UserToSkillKey.SKILL_ID, UserToSkillKey.LEVEL]);
+    const updates = payload.map((entry) =>
+      this._UserModel
+        .relatedQuery(UserRelationMappings.USER_TO_SKILLS)
+        .for(userId)
+        .patch({ level: entry.level })
+        .where(UserToSkillKey.SKILL_ID, entry.id)
+        .castTo<Omit<IUserToSkillRecord, UserToSkillKey.USER_ID>>(),
+    );
+
+    return Promise.all(updates);
   }
 }
 

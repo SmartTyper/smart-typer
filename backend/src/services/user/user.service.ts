@@ -18,6 +18,7 @@ import {
   UpdateAvatarResponseDto,
   UserToRoom,
   Skill,
+  RoomDto,
 } from 'common/types/types';
 import { user as userRepository } from 'data/repositories/repositories';
 import { HttpError } from 'exceptions/exceptions';
@@ -76,7 +77,7 @@ class User {
   }
 
   public async getAuthInfoById(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
   ): Promise<UserAuthInfoResponseDto> {
     const user = await this._userRepository.getByIdWithSettingsAndPersonalRoom(
       userId,
@@ -131,14 +132,14 @@ class User {
   }
 
   public async updatePasswordById(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
     data: Pick<UserWithPassword, UserKey.PASSWORD>,
   ): Promise<UserDto> {
     return this._userRepository.patchById(userId, data);
   }
 
   public async getProfileInfoById(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
   ): Promise<UserProfileInfoResponseDto> {
     const userWithStatistics = await this._userRepository.getByIdWithStatistics(
       userId,
@@ -156,7 +157,7 @@ class User {
     };
   }
 
-  public async getById(userId: number): Promise<UserDto> {
+  public async getById(userId: UserDto[CommonKey.ID]): Promise<UserDto> {
     const user = await this._userRepository.getById(userId);
     if (!user) {
       throw new HttpError({
@@ -168,7 +169,7 @@ class User {
   }
 
   public async updateAvatar(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
     file?: Express.Multer.File,
   ): Promise<UpdateAvatarResponseDto> {
     if (!file) {
@@ -205,7 +206,7 @@ class User {
     return { photoUrl: newPhotoUrl };
   }
 
-  public async deleteAvatar(userId: number): Promise<void> {
+  public async deleteAvatar(userId: UserDto[CommonKey.ID]): Promise<void> {
     const userToUpdate = await this.getById(userId);
     if (!userToUpdate) {
       throw new HttpError({
@@ -225,14 +226,14 @@ class User {
   }
 
   public async updateCurrentRoomByUserId(
-    userId: number,
-    roomId: number | null,
+    userId: UserDto[CommonKey.ID],
+    roomId: RoomDto[CommonKey.ID] | null,
   ): Promise<Omit<UserToRoom, UserToRoomKey.PERSONAL_ROOM_ID>> {
     return this._userRepository.updateCurrentRoomByUserId(userId, roomId);
   }
 
   public async getCurrentSkillLevelsByUserId(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
   ): Promise<Omit<Skill, SkillKey.NAME>[]> {
     const currentSkillLevels =
       await this._userRepository.getCurrentSkillLevelsByUserId(userId);
@@ -248,7 +249,7 @@ class User {
   }
 
   public async updateSkillLevelsByUserId(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
     payload: Omit<Skill, SkillKey.NAME>[],
   ): Promise<Omit<IUserToSkillRecord, UserToSkillKey.USER_ID>[]> {
     return this._userRepository.patchSkillLevelsByUserId(userId, payload);

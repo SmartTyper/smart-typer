@@ -27,13 +27,10 @@ const mapLessonResultToSkillLevelsPayload = ({
       ...lesson.content.matchAll(new RegExp(name, 'gi')),
     ].map((result) => result.index as number);
 
-    const indexes =
-      name.length === 1
-        ? startIndexes
-        : startIndexes.reduce((indexes, index) => {
-          const nextIndexes = [...name].map((_, i) => i + (index as number));
-          return indexes.concat(nextIndexes);
-        }, [] as number[]);
+    const indexes = startIndexes.reduce((indexes, index) => {
+      const nextIndexes = [...name].map((_, i) => i + (index as number));
+      return indexes.concat(nextIndexes);
+    }, [] as number[]);
 
     const m = misclicks.filter(
       (value, i) => indexes.includes(i) && value,

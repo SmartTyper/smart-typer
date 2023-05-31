@@ -1,5 +1,5 @@
-import { HttpCode, HttpErrorMessage } from 'common/enums/enums';
-import { Statistics as StatisticsData } from 'common/types/types';
+import { CommonKey, HttpCode, HttpErrorMessage } from 'common/enums/enums';
+import { Statistics as StatisticsData, UserDto } from 'common/types/types';
 import { statistics as statisticsRepository } from 'data/repositories/repositories';
 import { HttpError } from 'exceptions/exceptions';
 
@@ -15,13 +15,15 @@ class Statistics {
   }
 
   public async updateByUserId(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
     payload: StatisticsData,
   ): Promise<StatisticsData> {
     return this._statisticsRepository.patchByUserId(userId, payload);
   }
 
-  public async getByUserId(userId: number): Promise<StatisticsData> {
+  public async getByUserId(
+    userId: UserDto[CommonKey.ID],
+  ): Promise<StatisticsData> {
     const statistics = await this._statisticsRepository.getByUserId(userId);
 
     if (!statistics) {

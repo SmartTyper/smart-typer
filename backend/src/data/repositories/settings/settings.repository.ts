@@ -1,8 +1,8 @@
-import { SettingsKey } from 'common/enums/enums';
+import { CommonKey, SettingsKey } from 'common/enums/enums';
 import { ISettingsRecord } from 'common/interfaces/interfaces';
 import { RecordWithoutCommonKeys } from 'common/types/types';
 import { Settings as SettingsModel } from 'data/models/models';
-import { SettingsDto } from 'smart-typer-shared/common/types/types';
+import { SettingsDto, UserDto } from 'smart-typer-shared/common/types/types';
 
 type Constructor = {
   SettingsModel: typeof SettingsModel;
@@ -16,7 +16,7 @@ class Settings {
   }
 
   public async patchByUserId(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
     payload: Partial<SettingsDto>,
   ): Promise<
     RecordWithoutCommonKeys<Omit<ISettingsRecord, SettingsKey.USER_ID>>
