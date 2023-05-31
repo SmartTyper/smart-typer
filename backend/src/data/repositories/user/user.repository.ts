@@ -128,7 +128,6 @@ class User {
       .findOne({ [UserKey.EMAIL]: email.toLowerCase() });
   }
 
-  // move constants to up level
   public async getByEmailWithSettingsAndPersonalRoom(
     email: string,
   ): Promise<
