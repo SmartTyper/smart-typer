@@ -32,7 +32,7 @@ class Token {
   }
 
   private _generateToken(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
     expiresIn: tokenExpirationTime,
   ): string {
     return this._jwt.sign({ userId }, this._secretKey, { expiresIn });
@@ -46,7 +46,7 @@ class Token {
     return jwt.decode(token, { json: true }) as Record<string, unknown>;
   }
 
-  public generateTokens(userId: number): TokensResponseDto {
+  public generateTokens(userId: UserDto[CommonKey.ID]): TokensResponseDto {
     return {
       accessToken: this._generateToken(
         userId,
@@ -59,7 +59,9 @@ class Token {
     };
   }
 
-  public async getTokens(userId: number): Promise<TokensResponseDto> {
+  public async getTokens(
+    userId: UserDto[CommonKey.ID],
+  ): Promise<TokensResponseDto> {
     const tokens = this.generateTokens(userId);
     await this._refreshTokenRepository.upsert({
       userId,

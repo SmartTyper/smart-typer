@@ -1,12 +1,17 @@
 import { ENV, MAX_USERS_IN_ROOM } from 'common/constants/constants';
-import { HttpCode, HttpErrorMessage, SocketEvent } from 'common/enums/enums';
+import {
+  CommonKey,
+  HttpCode,
+  HttpErrorMessage,
+  SocketEvent,
+} from 'common/enums/enums';
 import {
   CreateRoomRequestDto,
   RoomDto,
-  ParticipantIdDto,
   SendRoomUrlToEmailsRequestDto,
   ShareRoomUrlDto,
   CreateRoomResponseDto,
+  UserDto,
 } from 'common/types/types';
 import { room as roomRepository } from 'data/repositories/repositories';
 import { HttpError } from 'exceptions/exceptions';
@@ -36,7 +41,7 @@ class Room {
     this._mailerService = params.mailerService;
   }
 
-  public async getById(roomId: number): Promise<RoomDto> {
+  public async getById(roomId: RoomDto[CommonKey.ID]): Promise<RoomDto> {
     const room = await this._roomRepository.getById(roomId);
 
     if (!room) {
@@ -63,7 +68,9 @@ class Room {
     return createdRoom;
   }
 
-  public async getShareUrl(roomId: number): Promise<ShareRoomUrlDto> {
+  public async getShareUrl(
+    roomId: RoomDto[CommonKey.ID],
+  ): Promise<ShareRoomUrlDto> {
     const room = await this._roomRepository.getById(roomId);
     if (!room) {
       throw new HttpError({
@@ -76,7 +83,7 @@ class Room {
   }
 
   public async sendShareUrlToEmails(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
     payload: SendRoomUrlToEmailsRequestDto,
   ): Promise<void> {
     const user = await this._userService.getById(userId);
@@ -95,19 +102,38 @@ class Room {
   }
 
   public async addParticipant(
-    roomId: number,
-    payload: ParticipantIdDto,
+    roomId: RoomDto[CommonKey.ID],
+    userId: UserDto[CommonKey.ID],
   ): Promise<void> {
-    const { participantId } = payload;
-    const { count } =
-      (await this._roomRepository.getParticipantsCountById(roomId)) ?? {};
+    const { email, ...participant } =
+      (await this._userService.getById(userId)) ?? {};
+    if (!email) {
+      throw new HttpError({
+        status: HttpCode.NOT_FOUND,
+        message: HttpErrorMessage.NO_USER_WITH_SUCH_ID,
+      });
+    }
 
-    if (!count && count !== 0) {
+    const { currentRoomId } = await this._userService.getUserCurrentRoomId(
+      userId,
+    );
+    if (currentRoomId) {
+      throw new HttpError({
+        status: HttpCode.CONFLICT,
+        message: HttpErrorMessage.USER_ALREADY_IN_ROOM,
+      });
+    }
+
+    const { count, id: fetchedRoomId } =
+      (await this._roomRepository.getParticipantsCountById(roomId)) ?? {};
+    const participantsCount = Number(count);
+
+    if (!fetchedRoomId) {
       throw new HttpError({
         status: HttpCode.NOT_FOUND,
         message: HttpErrorMessage.NO_ROOM_WITH_SUCH_ID,
       });
-    } else if (count >= MAX_USERS_IN_ROOM) {
+    } else if (participantsCount >= MAX_USERS_IN_ROOM) {
       throw new HttpError({
         status: HttpCode.BAD_REQUEST,
         message: HttpErrorMessage.MAX_COUNT_OF_USERS,
@@ -117,24 +143,14 @@ class Room {
     const { userId: ownerId } =
       (await this._roomRepository.getOwnerIdByPersonalRoomId(roomId)) ?? {};
 
-    if (participantId !== ownerId && ownerId) {
+    if (userId !== ownerId && ownerId) {
       throw new HttpError({
         status: HttpCode.FORBIDDEN,
         message: HttpErrorMessage.JOIN_PERSONAL_ROOM,
       });
     }
 
-    await this._userService.updateCurrentRoomByUserId(participantId, roomId);
-
-    const { email, ...participant } =
-      (await this._userService.getById(participantId)) ?? {};
-
-    if (!email) {
-      throw new HttpError({
-        status: HttpCode.NOT_FOUND,
-        message: HttpErrorMessage.NO_USER_WITH_SUCH_ID,
-      });
-    }
+    await this._userService.updateCurrentRoomByUserId(userId, roomId);
 
     this._socketService.io
       .to(String(roomId))
@@ -142,13 +158,33 @@ class Room {
   }
 
   public async removeParticipant(
-    roomId: number,
-    participantId: number,
+    roomId: RoomDto[CommonKey.ID],
+    userId: number,
   ): Promise<void> {
-    const { count } =
-      (await this._roomRepository.getParticipantsCountById(roomId)) ?? {};
+    const { email, ...participant } =
+      (await this._userService.getById(userId)) ?? {};
+    if (!email) {
+      throw new HttpError({
+        status: HttpCode.NOT_FOUND,
+        message: HttpErrorMessage.NO_USER_WITH_SUCH_ID,
+      });
+    }
 
-    if (!count && count !== 0) {
+    const { currentRoomId } = await this._userService.getUserCurrentRoomId(
+      userId,
+    );
+    if (currentRoomId !== roomId) {
+      throw new HttpError({
+        status: HttpCode.CONFLICT,
+        message: HttpErrorMessage.USER_NOT_IN_ROOM,
+      });
+    }
+
+    const { count, id: fetchedRoomId } =
+      (await this._roomRepository.getParticipantsCountById(roomId)) ?? {};
+    const participantsCount = Number(count);
+
+    if (!fetchedRoomId) {
       throw new HttpError({
         status: HttpCode.NOT_FOUND,
         message: HttpErrorMessage.NO_ROOM_WITH_SUCH_ID,
@@ -158,13 +194,13 @@ class Room {
     const { userId: ownerId } =
       (await this._roomRepository.getOwnerIdByPersonalRoomId(roomId)) ?? {};
 
-    await this._userService.updateCurrentRoomByUserId(participantId, null);
+    await this._userService.updateCurrentRoomByUserId(userId, null);
 
     this._socketService.io
       .to(String(roomId))
-      .emit(SocketEvent.REMOVE_PARTICIPANT, { participantId });
+      .emit(SocketEvent.REMOVE_PARTICIPANT, { participantId: participant.id });
 
-    if (count === 1 && !ownerId) {
+    if (participantsCount === 1 && !ownerId) {
       this._socketService.io.emit(SocketEvent.DELETE_ROOM, { roomId });
       await this._roomRepository.removeById(roomId);
     }

@@ -90,8 +90,7 @@ const joinRoom = createAsyncThunk(
     const user = auth.user as UserDto;
     const { roomApi: roomApiService } = services;
     const { roomId } = payload;
-    const { id: participantId } = user;
-    await roomApiService.addParticipant({ roomId, participantId });
+    await roomApiService.addParticipant({ roomId });
     dispatch(addParticipant(user));
     return payload;
   },

@@ -15,6 +15,7 @@ import {
   SkillsStatisticsDto,
   Skill,
   UserDto,
+  FinishedLesson,
 } from 'common/types/types';
 import {
   its as itsService,
@@ -90,13 +91,13 @@ class Lesson {
   }
 
   public async getMore(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
     offset: number,
     limit: number,
     contentType?: ContentType,
     creatorType?: CreatorType,
   ): Promise<IPaginationResponse<LessonDto>> {
-    return this._lessonRepository.getLessons(
+    return this._lessonRepository.getPaginated(
       userId,
       offset,
       limit,
@@ -105,7 +106,9 @@ class Lesson {
     );
   }
 
-  public async getStudyPlan(userId: number): Promise<LessonDto[]> {
+  public async getStudyPlan(
+    userId: UserDto[CommonKey.ID],
+  ): Promise<LessonDto[]> {
     const areTestLessons = true;
     const testLessons = await this._lessonRepository.getStudyPlanByUserId(
       userId,
@@ -121,14 +124,36 @@ class Lesson {
     }
   }
 
+  private async _upsertFinishedLesson(
+    lessonId: LessonDto[CommonKey.ID],
+    payload: FinishedLesson,
+  ): Promise<void> {
+    const { userId, bestSkillId, averageSpeed } = payload;
+    const finishedLesson =
+      await this._lessonRepository.getFinishedByIdAndUserId(lessonId, userId);
+
+    if (finishedLesson) {
+      await this._lessonRepository.updateFinishedLesson(lessonId, {
+        userId,
+        bestSkillId,
+        averageSpeed,
+      });
+    } else {
+      await this._lessonRepository.insertFinishedLesson(lessonId, {
+        userId,
+        bestSkillId,
+        averageSpeed,
+      });
+    }
+  }
+
   public async handleLessonResult(
-    userId: number,
-    lessonId: number,
+    userId: UserDto[CommonKey.ID],
+    lessonId: LessonDto[CommonKey.ID],
     payload: SkillsStatisticsDto,
   ): Promise<void> {
     const { misclicks, timestamps } = payload;
     const lesson = await this._lessonRepository.getByIdWithSkills(lessonId);
-
     if (!lesson) {
       throw new HttpError({
         status: HttpCode.NOT_FOUND,
@@ -165,17 +190,20 @@ class Lesson {
       currentSkillLevels,
       resultSkillLevels,
     );
+
     const lessonAverageSpeed = calculateLessonAverageSpeed(
       lesson.content,
       timestamps,
     );
-    await this._lessonRepository.insertFinishedLesson(lessonId, {
+
+    await this._upsertFinishedLesson(lessonId, {
       userId,
       bestSkillId: lessonBestSkill,
       averageSpeed: lessonAverageSpeed,
     });
 
     const oldStatistics = await this._statisticsService.getByUserId(userId);
+
     const { averageSpeed, todayAverageSpeed } =
       await this._lessonRepository.getAverageSpeed(userId);
 
@@ -185,13 +213,21 @@ class Lesson {
       newStatistics: { averageSpeed, todayAverageSpeed },
       lessonAverageSpeed,
     });
+
     await this._statisticsService.updateByUserId(userId, newStatistics);
 
-    if (isLastTestLesson || !isTestLesson) {
+    const { priority, lessonId: lastStudyPlanLessonId } =
+      await this._lessonRepository.getLastStudyPlanLessonPriority(userId);
+
+    if (
+      (isLastTestLesson || !isTestLesson) &&
+      lastStudyPlanLessonId === lessonId
+    ) {
       const lastFinishedLessonIds =
         await this._lessonRepository.getLastNFinishedIds(userId, 5);
+
       const systemLessons =
-        await this._lessonRepository.getAllSystemWithSkills();
+        await this._lessonRepository.getSystemWithoutTestWithSkills();
 
       const nextStudyPlanLessonPayload = mapLessonsToNextStudyPlanLessonPayload(
         {
@@ -199,10 +235,16 @@ class Lesson {
           systemLessons,
         },
       );
+
       const { lessonId } = await this._itsService.AHP(
         nextStudyPlanLessonPayload,
       );
-      await this._lessonRepository.insertNewStudyPlanLesson(userId, lessonId);
+
+      await this._lessonRepository.insertNewStudyPlanLesson(
+        userId,
+        lessonId,
+        priority + 1,
+      );
     }
   }
 }

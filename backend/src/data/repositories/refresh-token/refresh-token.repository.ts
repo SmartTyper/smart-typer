@@ -1,6 +1,6 @@
-import { RefreshTokenKey } from 'common/enums/enums';
+import { CommonKey, RefreshTokenKey } from 'common/enums/enums';
 import { IRefreshTokenRecord } from 'common/interfaces/interfaces';
-import { RecordWithoutCommonKeys } from 'common/types/types';
+import { RecordWithoutCommonKeys, UserDto } from 'common/types/types';
 import { RefreshToken as RefreshTokenModel } from 'data/models/models';
 
 type Constructor = {
@@ -32,7 +32,7 @@ class RefreshToken {
     });
   }
 
-  public async removeByUserId(userId: number): Promise<number> {
+  public async removeByUserId(userId: UserDto[CommonKey.ID]): Promise<number> {
     return this._RefreshTokenModel.query().where({ userId }).delete();
   }
 }

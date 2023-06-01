@@ -39,22 +39,19 @@ class Room extends Abstract {
       }),
     );
 
-    // remove participantId from body
     router.post(
       '/:roomId/participants',
-      this._run((req) => {
+      this._run((req: IRequestWithUser) => {
         const roomId = Number(req.params.roomId);
-        return this._roomService.addParticipant(roomId, req.body);
+        return this._roomService.addParticipant(roomId, req.userId);
       }),
     );
 
-    // /:roomId/participants
     router.delete(
-      '/:roomId/participants/:participantId',
-      this._run((req) => {
+      '/:roomId/participants',
+      this._run((req: IRequestWithUser) => {
         const roomId = Number(req.params.roomId);
-        const participantId = Number(req.params.participantId);
-        return this._roomService.removeParticipant(roomId, participantId);
+        return this._roomService.removeParticipant(roomId, req.userId);
       }),
     );
 

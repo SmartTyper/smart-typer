@@ -1,8 +1,8 @@
-import { SettingsKey } from 'common/enums/enums';
+import { CommonKey, SettingsKey } from 'common/enums/enums';
 import { ISettingsRecord } from 'common/interfaces/interfaces';
 import { RecordWithoutCommonKeys } from 'common/types/types';
 import { Settings as SettingsModel } from 'data/models/models';
-import { SettingsDto } from 'smart-typer-shared/common/types/types';
+import { SettingsDto, UserDto } from 'smart-typer-shared/common/types/types';
 
 type Constructor = {
   SettingsModel: typeof SettingsModel;
@@ -16,15 +16,15 @@ class Settings {
   }
 
   public async patchByUserId(
-    userId: number,
-    payload: Partial<SettingsDto>,
+    userId: UserDto[CommonKey.ID],
+    data: Partial<SettingsDto>,
   ): Promise<
     RecordWithoutCommonKeys<Omit<ISettingsRecord, SettingsKey.USER_ID>>
   > {
     return this._SettingsModel
       .query()
       .findOne({ userId })
-      .patch(payload)
+      .patch(data)
       .returning([
         SettingsKey.COUNTDOWN_BEFORE_GAME,
         SettingsKey.GAME_TIME,

@@ -1,5 +1,5 @@
 type ParticipantsCount = {
-  count: number;
+  count: string;
 };
 
 export type { ParticipantsCount };

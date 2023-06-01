@@ -6,6 +6,7 @@ import {
   LessonKey,
   LessonRelationMappings,
   LessonToSkillKey,
+  LessonToSkillRelationMapping,
   RecordsSortOrder,
   SkillKey,
   StatisticsKey,
@@ -49,13 +50,27 @@ class Lesson {
   ];
 
   public async getById(
-    lessonId: number,
+    lessonId: LessonDto[CommonKey.ID],
   ): Promise<LessonResponseDto | undefined> {
     return this._LessonModel
       .query()
       .select(...Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN)
       .findOne({ [CommonKey.ID]: lessonId })
       .execute();
+  }
+
+  public async getFinishedByIdAndUserId(
+    lessonId: LessonDto[CommonKey.ID],
+    userId: UserDto[CommonKey.ID],
+  ): Promise<LessonResponseDto | undefined> {
+    return this._LessonModel
+      .query()
+      .select(`${LessonRelationMappings.FINISHED_LESSON}.*`)
+      .innerJoinRelated(LessonRelationMappings.FINISHED_LESSON)
+      .findOne({
+        [UserToFinishedLessonKey.LESSON_ID]: lessonId,
+        [UserToFinishedLessonKey.USER_ID]: userId,
+      });
   }
 
   public async deleteByIdAndOwnerId(
@@ -71,22 +86,40 @@ class Lesson {
   }
 
   public async getByIdWithSkills(
-    lessonId: number,
+    lessonId: LessonDto[CommonKey.ID],
   ): Promise<LessonWithSkills | undefined> {
-    return this._LessonModel
-      .query()
-      .select(
-        ...Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN,
-        `${LessonRelationMappings.SKILLS}.${CommonKey.ID}`,
-        `${LessonRelationMappings.SKILLS}.${SkillKey.NAME}`,
-        `${LessonRelationMappings.LESSON_TO_SKILLS}.${LessonToSkillKey.COUNT}`,
-      )
-      .findOne({ [CommonKey.ID]: lessonId })
-      .withGraphJoined(
-        `[${LessonRelationMappings.SKILLS}, ${LessonRelationMappings.LESSON_TO_SKILLS}]`,
-      )
-      .castTo<LessonWithSkills>()
-      .execute();
+    const { lessonToSkills, ...lesson } =
+      (await this._LessonModel
+        .query()
+        .select(...Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN)
+        .findOne({ [`${TableName.LESSONS}.${CommonKey.ID}`]: lessonId })
+        .withGraphJoined(
+          `[${LessonRelationMappings.LESSON_TO_SKILLS}.[${LessonToSkillRelationMapping.SKILL}]]`,
+        )
+        .modifyGraph(LessonRelationMappings.LESSON_TO_SKILLS, (builder) =>
+          builder.select(LessonToSkillKey.COUNT),
+        )
+        .modifyGraph(
+          `${LessonRelationMappings.LESSON_TO_SKILLS}.[${LessonToSkillRelationMapping.SKILL}]`,
+          (builder) => builder.select(CommonKey.ID, SkillKey.NAME),
+        )
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .castTo<any>()) ?? {};
+
+    if (!lessonToSkills) {
+      return;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const mappedSkills = lessonToSkills.map(({ count, skill }: any) => ({
+      count,
+      ...skill,
+    }));
+
+    return {
+      ...lesson,
+      skills: mappedSkills,
+    };
   }
 
   public async create(
@@ -124,8 +157,8 @@ class Lesson {
     return lesson;
   }
 
-  public async getLessons(
-    userId: number,
+  public async getPaginated(
+    userId: UserDto[CommonKey.ID],
     offset: number,
     limit: number,
     contentType?: ContentType,
@@ -196,7 +229,7 @@ class Lesson {
   }
 
   public async getStudyPlanByUserId(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
     areTestLessons = false,
   ): Promise<LessonDto[]> {
     const lessons = await this._LessonModel
@@ -252,39 +285,45 @@ class Lesson {
   }
 
   public async getAverageSpeed(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
   ): Promise<
     Pick<
       Statistics,
       StatisticsKey.AVERAGE_SPEED | StatisticsKey.TODAY_AVERAGE_SPEED
     >
   > {
-    const today = new Date().setHours(0, 0, 0, 0);
+    const today = new Date().toISOString().split('T')[0];
+
     return this._LessonModel
       .query()
-      .select([
+      .select(
         this._LessonModel
           .query()
+          .innerJoinRelated(LessonRelationMappings.FINISHED_LESSON)
           .where({
             [`${LessonRelationMappings.FINISHED_LESSON}.${UserToFinishedLessonKey.USER_ID}`]:
               userId,
           })
-          .withGraphJoined(`[${LessonRelationMappings.FINISHED_LESSON}]`)
-          .avg(
-            `${LessonRelationMappings.FINISHED_LESSON}.${UserToFinishedLessonKey.AVERAGE_SPEED}`,
-          )
+          .avg(UserToFinishedLessonKey.AVERAGE_SPEED)
           .as('averageSpeed'),
 
         this._LessonModel
           .query()
-          .where({ userId })
-          .andWhere(CommonKey.UPDATED_AT, '=', today)
-          .withGraphJoined(`[${LessonRelationMappings.FINISHED_LESSON}]`)
-          .avg(
-            `${LessonRelationMappings.FINISHED_LESSON}.${UserToFinishedLessonKey.AVERAGE_SPEED}`,
+          .innerJoinRelated(LessonRelationMappings.FINISHED_LESSON)
+          .where({
+            [`${LessonRelationMappings.FINISHED_LESSON}.${UserToFinishedLessonKey.USER_ID}`]:
+              userId,
+          })
+          .andWhere(
+            this._LessonModel.raw('??::date', [
+              `${LessonRelationMappings.FINISHED_LESSON}.${CommonKey.UPDATED_AT}`,
+            ]),
+            '=',
+            today,
           )
+          .avg(`${UserToFinishedLessonKey.AVERAGE_SPEED}`)
           .as('todayAverageSpeed'),
-      ])
+      )
       .first()
       .castTo<
         Pick<
@@ -295,58 +334,117 @@ class Lesson {
   }
 
   public insertNewStudyPlanLesson(
-    userId: number,
-    lessonId: number,
+    userId: UserDto[CommonKey.ID],
+    lessonId: LessonDto[CommonKey.ID],
+    priority: number,
   ): Promise<ILessonRecord> {
     return this._LessonModel
       .relatedQuery(LessonRelationMappings.STUDY_PLAN)
       .for(lessonId)
-      .insert(userId)
+      .insert({ userId, priority })
       .castTo<ILessonRecord>()
       .execute();
   }
 
-  public insertFinishedLesson(
-    lessonId: number,
-    payload: FinishedLesson,
-  ): Promise<ILessonRecord> {
-    return this._LessonModel
-      .relatedQuery(LessonRelationMappings.FINISHED_LESSON)
-      .for(lessonId)
-      .insert(payload)
-      .castTo<ILessonRecord>()
-      .execute();
-  }
-
-  public async getAllSystemWithSkills(): Promise<
-    Omit<LessonWithSkills, LessonKey.CONTENT | LessonKey.NAME>[]
+  public getLastStudyPlanLessonPriority(
+    userId: UserDto[CommonKey.ID],
+  ): Promise<
+    Pick<
+      IUserToStudyPlanLessonRecord,
+      UserToStudyPlanLessonKey.PRIORITY | UserToStudyPlanLessonKey.LESSON_ID
+    >
   > {
     return this._LessonModel
       .query()
       .select(
-        `${TableName.LESSONS}.${CommonKey.ID}`,
-
-        `${LessonRelationMappings.SKILLS}.${CommonKey.ID}`,
-        `${LessonRelationMappings.SKILLS}.${SkillKey.NAME}`,
-        `${LessonRelationMappings.LESSON_TO_SKILLS}.${LessonToSkillKey.COUNT}`,
+        `${LessonRelationMappings.STUDY_PLAN}.${UserToStudyPlanLessonKey.PRIORITY}`,
+        `${LessonRelationMappings.STUDY_PLAN}.${UserToStudyPlanLessonKey.LESSON_ID}`,
       )
-      .whereNull(LessonKey.CREATOR_ID)
-      .withGraphJoined(
-        `[${LessonRelationMappings.SKILLS}, ${LessonRelationMappings.LESSON_TO_SKILLS}]`,
+      .innerJoinRelated(LessonRelationMappings.STUDY_PLAN)
+      .orderBy(
+        `${LessonRelationMappings.STUDY_PLAN}.${UserToStudyPlanLessonKey.PRIORITY}`,
+        RecordsSortOrder.DESC,
       )
-      .castTo<LessonWithSkills[]>()
+      .findOne({ userId })
+      .castTo<
+        Pick<
+          IUserToStudyPlanLessonRecord,
+          UserToStudyPlanLessonKey.PRIORITY | UserToStudyPlanLessonKey.LESSON_ID
+        >
+      >()
       .execute();
   }
 
+  public insertFinishedLesson(
+    lessonId: LessonDto[CommonKey.ID],
+    data: FinishedLesson,
+  ): Promise<ILessonRecord> {
+    return this._LessonModel
+      .relatedQuery(LessonRelationMappings.FINISHED_LESSON)
+      .for(lessonId)
+      .insert(data)
+      .castTo<ILessonRecord>()
+      .execute();
+  }
+
+  public updateFinishedLesson(
+    lessonId: LessonDto[CommonKey.ID],
+    data: FinishedLesson,
+  ): Promise<ILessonRecord> {
+    return this._LessonModel
+      .relatedQuery(LessonRelationMappings.FINISHED_LESSON)
+      .for(lessonId)
+      .update(data)
+      .castTo<ILessonRecord>()
+      .execute();
+  }
+
+  public async getSystemWithoutTestWithSkills(): Promise<
+    Omit<LessonWithSkills, LessonKey.CONTENT | LessonKey.NAME>[]
+  > {
+    const lessons = await this._LessonModel
+      .query()
+      .select(...Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN)
+      .whereNull(LessonKey.CREATOR_ID)
+      .whereNotIn(`${TableName.LESSONS}.${LessonKey.NAME}`, TEST_LESSON_NAMES)
+      .withGraphJoined(
+        `[${LessonRelationMappings.LESSON_TO_SKILLS}.[${LessonToSkillRelationMapping.SKILL}]]`,
+      )
+      .modifyGraph(LessonRelationMappings.LESSON_TO_SKILLS, (builder) =>
+        builder.select(LessonToSkillKey.COUNT),
+      )
+      .modifyGraph(
+        `${LessonRelationMappings.LESSON_TO_SKILLS}.[${LessonToSkillRelationMapping.SKILL}]`,
+        (builder) => builder.select(CommonKey.ID, SkillKey.NAME),
+      );
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const mappedLessons = lessons.map(({ lessonToSkills, ...lesson }: any) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const mappedSkills = lessonToSkills.map(({ count, skill }: any) => ({
+        count,
+        ...skill,
+      }));
+      return {
+        ...lesson,
+        skills: mappedSkills,
+      };
+    });
+    return mappedLessons;
+  }
+
   public async getLastNFinishedIds(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
     n: number,
   ): Promise<Pick<LessonDto, CommonKey.ID>[]> {
     return this._LessonModel
       .query()
-      .select(CommonKey.ID)
-      .where({ userId })
-      .withGraphJoined(`[${LessonRelationMappings.FINISHED_LESSON}]`)
+      .select(`${TableName.LESSONS}.${CommonKey.ID}`)
+      .where({
+        [`${LessonRelationMappings.FINISHED_LESSON}.${UserToFinishedLessonKey.USER_ID}`]:
+          userId,
+      })
+      .innerJoinRelated(LessonRelationMappings.FINISHED_LESSON)
       .orderBy(
         `${LessonRelationMappings.FINISHED_LESSON}.${CommonKey.CREATED_AT}`,
         RecordsSortOrder.DESC,

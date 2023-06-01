@@ -12,7 +12,7 @@ const calculateLessonAverageSpeed = (
   const lessonDurationInMinutes =
     lessonDuration / MILLISECONDS_IN_SECOND / SECONDS_IN_MINUTE;
 
-  return lessonContent.length / lessonDurationInMinutes;
+  return lessonDurationInMinutes/lessonContent.length;
 };
 
 export { calculateLessonAverageSpeed };

@@ -26,6 +26,7 @@ import {
   UserDto,
   UserWithPassword,
   UserToRoom,
+  RoomDto,
 } from 'common/types/types';
 import { User as UserModel } from 'data/models/models';
 import {
@@ -127,7 +128,6 @@ class User {
       .findOne({ [UserKey.EMAIL]: email.toLowerCase() });
   }
 
-  // move constants to up level
   public async getByEmailWithSettingsAndPersonalRoom(
     email: string,
   ): Promise<
@@ -177,7 +177,7 @@ class User {
   }
 
   public async getByIdWithSettingsAndPersonalRoom(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
   ): Promise<
     Omit<UserAuthInfoResponseDto, keyof TokensResponseDto> | undefined
   > {
@@ -223,22 +223,18 @@ class User {
   }
 
   public async getById(
-    userId: number,
-  ): Promise<RecordWithoutCommonDateKeys<IUserRecord> | undefined> {
+    userId: UserDto[CommonKey.ID],
+  ): Promise<
+    RecordWithoutCommonDateKeys<Omit<IUserRecord, UserKey.PASSWORD>> | undefined
+  > {
     return this._UserModel
       .query()
-      .findById(userId)
-      .returning([
-        CommonKey.ID,
-        UserKey.EMAIL,
-        UserKey.NICKNAME,
-        UserKey.PASSWORD,
-        UserKey.PHOTO_URL,
-      ]);
+      .select(CommonKey.ID, UserKey.EMAIL, UserKey.NICKNAME, UserKey.PHOTO_URL)
+      .findById(userId);
   }
 
   public async patchById(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
     data: Partial<Omit<UserWithPassword, CommonKey.ID>>,
   ): Promise<UserDto> {
     return this._UserModel
@@ -255,7 +251,7 @@ class User {
   }
 
   public async getByIdWithStatistics(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
   ): Promise<
     Omit<UserProfileInfoResponseDto, ProfileInfoKey.RATING> | undefined
   > {
@@ -279,7 +275,7 @@ class User {
       .castTo<Omit<UserProfileInfoResponseDto, ProfileInfoKey.RATING>>();
   }
 
-  public async getRating(currentUserId: UserDto[CommonKey.ID]): Promise<Rating> {
+  public async getRating(userId: UserDto[CommonKey.ID]): Promise<Rating> {
     const rating = await this._UserModel
       .query()
       .select(
@@ -295,7 +291,7 @@ class User {
       .modifyGraph(UserRelationMappings.SETTINGS, (builder) =>
         builder
           .where(SettingsKey.IS_SHOWN_IN_RATING, true)
-          .orWhere({ [SettingsKey.USER_ID]: currentUserId }),
+          .orWhere({ [SettingsKey.USER_ID]: userId }),
       )
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .castTo<any[]>();
@@ -309,52 +305,57 @@ class User {
   }
 
   public async updateCurrentRoomByUserId(
-    userId: number,
-    roomId: number | null,
-  ): Promise<Promise<Omit<UserToRoom, UserToRoomKey.PERSONAL_ROOM_ID>>> {
+    userId: UserDto[CommonKey.ID],
+    roomId: RoomDto[CommonKey.ID] | null,
+  ): Promise<Omit<UserToRoom, UserToRoomKey.PERSONAL_ROOM_ID>> {
     return this._UserModel
       .relatedQuery(UserRelationMappings.USER_TO_ROOMS)
-      .patch({ roomId })
-      .findOne({ userId })
+      .for(userId)
+      .patch({ [UserToRoomKey.CURRENT_ROOM_ID]: roomId })
       .returning([UserToRoomKey.USER_ID, UserToRoomKey.CURRENT_ROOM_ID])
       .castTo<Promise<Omit<UserToRoom, UserToRoomKey.PERSONAL_ROOM_ID>>>()
       .execute();
   }
 
   public async getCurrentSkillLevelsByUserId(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
   ): Promise<Omit<Skill, SkillKey.NAME>[] | undefined> {
     return this._UserModel
       .query()
       .select(
-        `${TableName.USERS_TO_SKILLS}.${UserToSkillKey.LEVEL}`,
-        `${TableName.USERS_TO_SKILLS}.${UserToSkillKey.SKILL_ID} as ${CommonKey.ID}`,
+        `${UserRelationMappings.USER_TO_SKILLS}.${UserToSkillKey.LEVEL} as ${UserToSkillKey.LEVEL}`,
+        `${UserRelationMappings.USER_TO_SKILLS}.${UserToSkillKey.SKILL_ID} as ${CommonKey.ID}`,
       )
-      .findById(userId)
-      .withGraphJoined(`[${UserRelationMappings.USER_TO_SKILLS}]`)
+      .where({ [`${TableName.USERS}.${CommonKey.ID}`]: userId })
+      .leftJoinRelated(UserRelationMappings.USER_TO_SKILLS)
       .castTo<Skill[]>();
   }
 
   public async patchSkillLevelsByUserId(
-    userId: number,
-    payload: Omit<Skill, SkillKey.NAME>[],
+    userId: UserDto[CommonKey.ID],
+    data: Omit<Skill, SkillKey.NAME>[],
   ): Promise<Omit<IUserToSkillRecord, UserToSkillKey.USER_ID>[]> {
-    const options = {
-      noInsert: true,
-      relate: UserRelationMappings.USER_TO_SKILLS,
-    };
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    const updates = data.map((entry) =>
+      this._UserModel
+        .relatedQuery(UserRelationMappings.USER_TO_SKILLS)
+        .for(userId)
+        .patch({ level: entry.level })
+        .where(UserToSkillKey.SKILL_ID, entry.id)
+        .castTo<Omit<IUserToSkillRecord, UserToSkillKey.USER_ID>>(),
+    );
+
+    return Promise.all(updates);
+  }
+
+  public async getCurrentRoomId(
+    userId: UserDto[CommonKey.ID],
+  ): Promise<Pick<UserToRoom, UserToRoomKey.CURRENT_ROOM_ID>> {
     return this._UserModel
       .query()
-      .upsertGraphAndFetch(
-        {
-          id: userId,
-          [UserRelationMappings.USER_TO_SKILLS]: payload,
-        },
-        options,
-      )
-      .returning([UserToSkillKey.SKILL_ID, UserToSkillKey.LEVEL]);
+      .select(UserToRoomKey.CURRENT_ROOM_ID)
+      .innerJoinRelated(UserRelationMappings.USER_TO_ROOMS)
+      .findOne({ userId })
+      .castTo<Promise<Pick<UserToRoom, UserToRoomKey.CURRENT_ROOM_ID>>>();
   }
 }
 

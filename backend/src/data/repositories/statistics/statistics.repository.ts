@@ -1,8 +1,9 @@
-import { StatisticsKey } from 'common/enums/enums';
+import { CommonKey, StatisticsKey } from 'common/enums/enums';
 import { IStatisticsRecord } from 'common/interfaces/interfaces';
 import {
   RecordWithoutCommonKeys,
   Statistics as StatisticsData,
+  UserDto,
 } from 'common/types/types';
 import { Statistics as StatisticsModel } from 'data/models/models';
 
@@ -18,18 +19,20 @@ class Statistics {
   }
 
   public patchByUserId(
-    userId: number,
-    payload: StatisticsData,
+    userId: UserDto[CommonKey.ID],
+    data: StatisticsData,
   ): Promise<IStatisticsRecord> {
     return this._StatisticsModel
       .query()
       .findOne({ userId })
-      .patchAndFetch(payload)
+      .patch(data)
+      .returning('*')
+      .castTo<IStatisticsRecord>()
       .execute();
   }
 
   public getByUserId(
-    userId: number,
+    userId: UserDto[CommonKey.ID],
   ): Promise<
     | RecordWithoutCommonKeys<Omit<IStatisticsRecord, StatisticsKey.USER_ID>>
     | undefined

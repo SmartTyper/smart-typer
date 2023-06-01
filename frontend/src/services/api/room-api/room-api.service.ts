@@ -52,11 +52,11 @@ class RoomApi {
     });
   }
 
-  public async addParticipant(payload: RoomIdParticipantIdDto): Promise<void> {
-    const { roomId, participantId } = payload;
+  public async addParticipant(payload: RoomIdDto): Promise<void> {
+    const { roomId } = payload;
     return this._httpService.load(`${this._baseUrl}/${roomId}/participants`, {
       method: HttpMethod.POST,
-      payload: JSON.stringify({ participantId }),
+      payload: JSON.stringify(payload),
       contentType: RequestContentType.JSON,
     });
   }
@@ -64,13 +64,10 @@ class RoomApi {
   public async removeParticipant(
     payload: RoomIdParticipantIdDto,
   ): Promise<void> {
-    const { roomId, participantId } = payload;
-    return this._httpService.load(
-      `${this._baseUrl}/${roomId}/participants/${participantId}`,
-      {
-        method: HttpMethod.DELETE,
-      },
-    );
+    const { roomId } = payload;
+    return this._httpService.load(`${this._baseUrl}/${roomId}/participants`, {
+      method: HttpMethod.DELETE,
+    });
   }
 }
 
