@@ -119,6 +119,30 @@ const App: FC = () => {
             </WithHeader>
           }
         />
+        <RRDRoute
+          path={AppRoute.ROOMS}
+          element={
+            <WithHeader>
+              <Home />
+            </WithHeader>
+          }
+        />
+        <RRDRoute
+          path={AppRoute.ROOMS_$ID}
+          element={
+            <WithHeader>
+              <Home />
+            </WithHeader>
+          }
+        />
+        <RRDRoute
+          path={AppRoute.LESSON_$ID}
+          element={
+            <WithHeader>
+              <Home />
+            </WithHeader>
+          }
+        />
       </RRDRoute>
       <RRDRoute path={AppRoute.SIGN_UP} element={<SignUp />} />
       <RRDRoute path={AppRoute.LOG_IN_GOOGLE} element={<LogInGoogle />} />

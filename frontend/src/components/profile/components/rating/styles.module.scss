@@ -6,7 +6,7 @@
   font-weight: normal !important;
   overflow-y: auto;
   max-height: 90vh;
-  border: 1px solid rgba($black, 0.25);
+  border: $main-border;
   background-color: $white;
 
   .record {
@@ -22,7 +22,7 @@
     &:first-child {
       padding: 0 1rem;
       background: rgba($green-accent, 0.2);
-      border-bottom: 1px solid rgba($black, 0.25);
+      border-bottom: $main-border;
       width: 100%;
       margin: 0;
     }

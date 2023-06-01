@@ -1,23 +1,27 @@
 @import 'src/assets/css/variables';
 
-.title {
-  font-size: $large-font-size !important;
-}
+.modal {
+  padding: 0 1rem 1rem 1rem;
 
-.button {
-  font-size: $middle-font-size;
-  height: 3.5rem;
-  min-width: 7rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+  .title {
+    font-size: $large-font-size !important;
+  }
 
-.submitButton {
-  background-color: $main-green;
-  color: $white;
-}
+  .button {
+    font-size: $middle-font-size;
+    height: 3.5rem;
+    min-width: 7rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-.cancelButton {
-  border: 1px solid rgba($black, 0.25);
+  .submitButton {
+    background-color: $main-green;
+    color: $white;
+  }
+
+  .cancelButton {
+    border: $main-border;
+  }
 }

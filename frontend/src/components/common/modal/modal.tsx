@@ -1,5 +1,5 @@
 import { RBModal } from 'components/external/external';
-import { FC, ModalButton } from 'common/types/types';
+import { FC, ModalButton, VoidAction } from 'common/types/types';
 import { Button } from 'components/common/common';
 import { clsx } from 'helpers/helpers';
 
@@ -12,7 +12,8 @@ type Props = {
   cancelButton?: ModalButton;
   title?: string;
   className?: string;
-  // size
+  dialogClassName?: string;
+  onHide?: VoidAction;
 };
 
 const Modal: FC<Props> = ({
@@ -22,24 +23,27 @@ const Modal: FC<Props> = ({
   cancelButton,
   title,
   className,
+  dialogClassName,
+  onHide,
 }) => {
   const hasHeader = Boolean(title);
   const hasFooter = cancelButton || submitButton;
   return (
     <RBModal
-      className={clsx('d-flex align-items-center', className)}
-      dialogClassName="w-50 rounded"
+      contentClassName={clsx(className, styles.modal)}
+      dialogClassName={clsx(dialogClassName)}
       show={isVisible}
-      onHide={cancelButton?.onClick}
+      onHide={onHide ?? cancelButton?.onClick}
       backdrop="static"
       keyboard={false}
+      centered
     >
       {hasHeader && (
         <RBModal.Header closeButton>
           <RBModal.Title className={styles.title}>{title}</RBModal.Title>
         </RBModal.Header>
       )}
-      <RBModal.Body className="mx-0">{children}</RBModal.Body>
+      <RBModal.Body>{children}</RBModal.Body>
       {hasFooter && (
         <RBModal.Footer>
           {cancelButton && (

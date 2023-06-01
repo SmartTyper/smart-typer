@@ -24,7 +24,7 @@ const Theory: FC = () => {
         rewarding one, not just in terms of increased productivity, but also in
         how it shapes your interaction.
       </h2>
-      <img src={keyboardImg} className={styles.keyboardImage} />
+      <img src={keyboardImg} alt="correct fingers position" className={styles.keyboardImage} />
       <Block
         title="Swift and Stealthy Typing"
         imageSrc={typingOnTopOfTheWorldImg}
