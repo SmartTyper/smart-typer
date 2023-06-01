@@ -22,7 +22,7 @@ import {
 import { validateReactMultiEmail } from 'helpers/helpers';
 import { racing as racingActions } from 'store/modules/actions';
 
-import 'react-multi-email/style.css';
+import 'react-multi-email/dist/style.css';
 import styles from './styles.module.scss';
 
 type Props = {

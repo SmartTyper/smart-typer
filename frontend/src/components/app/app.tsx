@@ -9,6 +9,7 @@ import {
   Profile,
   Racing,
   ResetPassword,
+  Rooms,
   SetPassword,
   Settings,
   SignUp,
@@ -116,6 +117,30 @@ const App: FC = () => {
           element={
             <WithHeader>
               <Settings />
+            </WithHeader>
+          }
+        />
+        <RRDRoute
+          path={AppRoute.ROOMS}
+          element={
+            <WithHeader>
+              <Rooms />
+            </WithHeader>
+          }
+        />
+        <RRDRoute
+          path={AppRoute.ROOMS_$ID}
+          element={
+            <WithHeader>
+              <Home />
+            </WithHeader>
+          }
+        />
+        <RRDRoute
+          path={AppRoute.LESSON_$ID}
+          element={
+            <WithHeader>
+              <Home />
             </WithHeader>
           }
         />
