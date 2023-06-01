@@ -4,7 +4,7 @@ import { AppRoute } from 'common/enums/enums';
 
 type Props = {
   to: AppRoute;
-  children: JSX.Element;
+  children: JSX.Element | JSX.Element[];
   className?: string;
 };
 

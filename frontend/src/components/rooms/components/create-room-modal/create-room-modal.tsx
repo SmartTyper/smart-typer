@@ -1,4 +1,4 @@
-import { FormFieldLabel, FormFieldType } from 'common/enums/enums';
+import { FormFieldLabel, FormFieldType, RoomKey } from 'common/enums/enums';
 import {
   CreateRoomRequestDto,
   FC,
@@ -8,27 +8,28 @@ import {
 import { createRoomSchema } from 'validation-schemas/validation-schemas';
 import { FormField } from 'components/common/common';
 import { Modal } from 'components/common/common';
-import { useForm, useSelector } from 'hooks/hooks';
+import { useForm } from 'hooks/hooks';
+
+import styles from './styles.module.scss';
 
 type Props = {
   isVisible: boolean;
   onClose: VoidAction;
   onSubmit: VoidCallback<CreateRoomRequestDto>;
+  isSubmitting: boolean;
 };
 
-const CreateRoomModal: FC<Props> = ({ isVisible, onClose, onSubmit }) => {
-  const { racingCreateRoom: isSubmitting } = useSelector(
-    (state) => state.requests,
-  );
+const CreateRoomModal: FC<Props> = ({ isVisible, onClose, onSubmit, isSubmitting }) => {
   const {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<CreateRoomRequestDto>(createRoomSchema);
+  } = useForm<CreateRoomRequestDto>(createRoomSchema, {
+    [RoomKey.IS_PRIVATE]: false,
+  });
 
   return (
     <Modal
-      className="d-flex align-items-center"
       isVisible={isVisible}
       cancelButton={{
         label: 'Cancel',
@@ -41,17 +42,18 @@ const CreateRoomModal: FC<Props> = ({ isVisible, onClose, onSubmit }) => {
         onClick: handleSubmit(onSubmit),
       }}
       title="Create new room"
+      className={styles.createRoomModal}
     >
       <FormField
         label={FormFieldLabel.ROOM_NAME}
         type={FormFieldType.TEXT}
         placeholder="Enter room name"
-        register={register('name')}
+        register={register(RoomKey.NAME)}
         error={errors.name}
       />
       <FormField
         type={FormFieldType.CHECKBOX}
-        register={register('isPrivate')}
+        register={register(RoomKey.IS_PRIVATE)}
         label={FormFieldLabel.IS_PRIVATE}
       />
     </Modal>

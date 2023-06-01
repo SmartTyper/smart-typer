@@ -1,5 +1,24 @@
-.roomsPage {
-  height: calc(100vh - 60px);
+@import 'src/assets/css/variables';
+
+.rooms {
+  height: 100%;
   width: 100%;
-  background: url('../../assets/img/text.png');
+  padding: 3rem;
+
+  .titleContainer {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .createRoomButton {
+    height: 3.5rem;
+    width: 12rem;
+    font-size: $middle-font-size;
+    margin: 1rem 0;
+    background-color: $main-green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $white;
+  }
 }

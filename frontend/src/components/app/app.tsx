@@ -9,6 +9,7 @@ import {
   Profile,
   Racing,
   ResetPassword,
+  Rooms,
   SetPassword,
   Settings,
   SignUp,
@@ -123,7 +124,7 @@ const App: FC = () => {
           path={AppRoute.ROOMS}
           element={
             <WithHeader>
-              <Home />
+              <Rooms />
             </WithHeader>
           }
         />

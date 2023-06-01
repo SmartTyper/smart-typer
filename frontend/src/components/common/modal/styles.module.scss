@@ -24,4 +24,8 @@
   .cancelButton {
     border: $main-border;
   }
+
+  button:focus {
+    box-shadow: none !important;
+  }
 }
