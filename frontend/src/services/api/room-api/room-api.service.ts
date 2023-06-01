@@ -34,6 +34,7 @@ class RoomApi {
     return this._httpService.load(this._baseUrl, {
       method: HttpMethod.POST,
       payload: JSON.stringify(payload),
+      contentType: RequestContentType.JSON,
     });
   }
 
