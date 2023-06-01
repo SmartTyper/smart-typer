@@ -20,12 +20,12 @@ class Statistics {
 
   public patchByUserId(
     userId: UserDto[CommonKey.ID],
-    payload: StatisticsData,
+    data: StatisticsData,
   ): Promise<IStatisticsRecord> {
     return this._StatisticsModel
       .query()
       .findOne({ userId })
-      .patch(payload)
+      .patch(data)
       .returning('*')
       .castTo<IStatisticsRecord>()
       .execute();

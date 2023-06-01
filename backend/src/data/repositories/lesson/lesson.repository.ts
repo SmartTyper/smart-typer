@@ -88,24 +88,25 @@ class Lesson {
   public async getByIdWithSkills(
     lessonId: LessonDto[CommonKey.ID],
   ): Promise<LessonWithSkills | undefined> {
-    const { lessonToSkills, ...lesson } = await this._LessonModel
-      .query()
-      .select(...Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN)
-      .findOne({ [`${TableName.LESSONS}.${CommonKey.ID}`]: lessonId })
-      .withGraphJoined(
-        `[${LessonRelationMappings.LESSON_TO_SKILLS}.[${LessonToSkillRelationMapping.SKILL}]]`,
-      )
-      .modifyGraph(LessonRelationMappings.LESSON_TO_SKILLS, (builder) =>
-        builder.select(LessonToSkillKey.COUNT),
-      )
-      .modifyGraph(
-        `${LessonRelationMappings.LESSON_TO_SKILLS}.[${LessonToSkillRelationMapping.SKILL}]`,
-        (builder) => builder.select(CommonKey.ID, SkillKey.NAME),
-      )
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      .castTo<any>() ?? {};
+    const { lessonToSkills, ...lesson } =
+      (await this._LessonModel
+        .query()
+        .select(...Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN)
+        .findOne({ [`${TableName.LESSONS}.${CommonKey.ID}`]: lessonId })
+        .withGraphJoined(
+          `[${LessonRelationMappings.LESSON_TO_SKILLS}.[${LessonToSkillRelationMapping.SKILL}]]`,
+        )
+        .modifyGraph(LessonRelationMappings.LESSON_TO_SKILLS, (builder) =>
+          builder.select(LessonToSkillKey.COUNT),
+        )
+        .modifyGraph(
+          `${LessonRelationMappings.LESSON_TO_SKILLS}.[${LessonToSkillRelationMapping.SKILL}]`,
+          (builder) => builder.select(CommonKey.ID, SkillKey.NAME),
+        )
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .castTo<any>()) ?? {};
 
-    if(!lessonToSkills){
+    if (!lessonToSkills) {
       return;
     }
 
@@ -156,7 +157,7 @@ class Lesson {
     return lesson;
   }
 
-  public async getLessons(
+  public async getPaginated(
     userId: UserDto[CommonKey.ID],
     offset: number,
     limit: number,
@@ -348,7 +349,10 @@ class Lesson {
   public getLastStudyPlanLessonPriority(
     userId: UserDto[CommonKey.ID],
   ): Promise<
-    Pick<IUserToStudyPlanLessonRecord, UserToStudyPlanLessonKey.PRIORITY | UserToStudyPlanLessonKey.LESSON_ID>
+    Pick<
+      IUserToStudyPlanLessonRecord,
+      UserToStudyPlanLessonKey.PRIORITY | UserToStudyPlanLessonKey.LESSON_ID
+    >
   > {
     return this._LessonModel
       .query()
@@ -363,31 +367,34 @@ class Lesson {
       )
       .findOne({ userId })
       .castTo<
-        Pick<IUserToStudyPlanLessonRecord, UserToStudyPlanLessonKey.PRIORITY| UserToStudyPlanLessonKey.LESSON_ID>
+        Pick<
+          IUserToStudyPlanLessonRecord,
+          UserToStudyPlanLessonKey.PRIORITY | UserToStudyPlanLessonKey.LESSON_ID
+        >
       >()
       .execute();
   }
 
   public insertFinishedLesson(
     lessonId: LessonDto[CommonKey.ID],
-    payload: FinishedLesson,
+    data: FinishedLesson,
   ): Promise<ILessonRecord> {
     return this._LessonModel
       .relatedQuery(LessonRelationMappings.FINISHED_LESSON)
       .for(lessonId)
-      .insert(payload)
+      .insert(data)
       .castTo<ILessonRecord>()
       .execute();
   }
 
   public updateFinishedLesson(
     lessonId: LessonDto[CommonKey.ID],
-    payload: FinishedLesson,
+    data: FinishedLesson,
   ): Promise<ILessonRecord> {
     return this._LessonModel
       .relatedQuery(LessonRelationMappings.FINISHED_LESSON)
       .for(lessonId)
-      .update(payload)
+      .update(data)
       .castTo<ILessonRecord>()
       .execute();
   }

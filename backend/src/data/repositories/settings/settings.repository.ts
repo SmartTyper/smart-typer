@@ -17,14 +17,14 @@ class Settings {
 
   public async patchByUserId(
     userId: UserDto[CommonKey.ID],
-    payload: Partial<SettingsDto>,
+    data: Partial<SettingsDto>,
   ): Promise<
     RecordWithoutCommonKeys<Omit<ISettingsRecord, SettingsKey.USER_ID>>
   > {
     return this._SettingsModel
       .query()
       .findOne({ userId })
-      .patch(payload)
+      .patch(data)
       .returning([
         SettingsKey.COUNTDOWN_BEFORE_GAME,
         SettingsKey.GAME_TIME,

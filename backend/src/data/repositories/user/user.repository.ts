@@ -275,9 +275,7 @@ class User {
       .castTo<Omit<UserProfileInfoResponseDto, ProfileInfoKey.RATING>>();
   }
 
-  public async getRating(
-    currentUserId: UserDto[CommonKey.ID],
-  ): Promise<Rating> {
+  public async getRating(userId: UserDto[CommonKey.ID]): Promise<Rating> {
     const rating = await this._UserModel
       .query()
       .select(
@@ -293,7 +291,7 @@ class User {
       .modifyGraph(UserRelationMappings.SETTINGS, (builder) =>
         builder
           .where(SettingsKey.IS_SHOWN_IN_RATING, true)
-          .orWhere({ [SettingsKey.USER_ID]: currentUserId }),
+          .orWhere({ [SettingsKey.USER_ID]: userId }),
       )
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .castTo<any[]>();
@@ -335,9 +333,9 @@ class User {
 
   public async patchSkillLevelsByUserId(
     userId: UserDto[CommonKey.ID],
-    payload: Omit<Skill, SkillKey.NAME>[],
+    data: Omit<Skill, SkillKey.NAME>[],
   ): Promise<Omit<IUserToSkillRecord, UserToSkillKey.USER_ID>[]> {
-    const updates = payload.map((entry) =>
+    const updates = data.map((entry) =>
       this._UserModel
         .relatedQuery(UserRelationMappings.USER_TO_SKILLS)
         .for(userId)

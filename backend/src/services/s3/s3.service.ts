@@ -1,4 +1,3 @@
-// import fs from 'fs';
 import path from 'path';
 import mime from 'mime-types';
 import AWSs3, { DeleteObjectOutput, ManagedUpload } from 'aws-sdk/clients/s3';
@@ -52,8 +51,6 @@ class S3 {
     userId: UserDto[CommonKey.ID],
     file: Express.Multer.File,
   ): Promise<ManagedUpload.SendData> {
-    // const fileStream = fs.createReadStream(file.path);
-
     const fileName =
       userId + '.' + Date.now() + path.extname(file.originalname);
     const fileType = file.path ? mime.lookup(file.path) : file.mimetype;

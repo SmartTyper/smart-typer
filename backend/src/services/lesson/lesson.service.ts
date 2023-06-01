@@ -97,7 +97,7 @@ class Lesson {
     contentType?: ContentType,
     creatorType?: CreatorType,
   ): Promise<IPaginationResponse<LessonDto>> {
-    return this._lessonRepository.getLessons(
+    return this._lessonRepository.getPaginated(
       userId,
       offset,
       limit,
