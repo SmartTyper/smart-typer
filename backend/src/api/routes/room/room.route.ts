@@ -3,7 +3,10 @@ import { room as roomService } from 'services/services';
 import { Abstract } from '../abstract/abstract.route';
 import { IRequestWithUser } from 'common/interfaces/interfaces';
 import { getValidationMiddleware } from 'api/middlewares/middlewares';
-import { createRoomSchema } from 'validation-schemas/validation-schemas';
+import {
+  createRoomSchema,
+  sendShareRoomUrlSchema,
+} from 'validation-schemas/validation-schemas';
 
 type Constructor = {
   roomService: typeof roomService;
@@ -33,6 +36,7 @@ class Room extends Abstract {
 
     router.post(
       '/share-url',
+      this._getValidationMiddleware({ body: sendShareRoomUrlSchema }),
       this._run((req: IRequestWithUser) => {
         const userId = req.userId;
         return this._roomService.sendShareUrlToEmails(userId, req.body);

@@ -1,1 +1,4 @@
-export { createRoomSchema } from 'smart-typer-shared/validation-schemas/validation-schemas';
+export {
+  createRoomSchema,
+  sendShareRoomUrlSchema,
+} from 'smart-typer-shared/validation-schemas/validation-schemas';

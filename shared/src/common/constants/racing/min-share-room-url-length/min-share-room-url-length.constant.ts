@@ -1,0 +1,3 @@
+const MIN_SHARE_ROOM_URL_LENGTH = 20;
+
+export { MIN_SHARE_ROOM_URL_LENGTH };
