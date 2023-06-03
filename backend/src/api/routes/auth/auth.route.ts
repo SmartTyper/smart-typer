@@ -2,12 +2,12 @@ import { Router } from 'express';
 import { getValidationMiddleware } from 'api/middlewares/middlewares';
 import { auth as authService, token as tokenService } from 'services/services';
 import {
-  signUpSchema,
-  logInSchema,
-  resetPasswordSchema,
-  setPasswordSchema,
-  refreshTokensSchema,
-  logInGoogleSchema,
+  signUpBodySchema,
+  logInBodySchema,
+  resetPasswordBodySchema,
+  setPasswordBodySchema,
+  refreshTokensBodySchema,
+  logInGoogleBodySchema,
 } from 'validation-schemas/validation-schemas';
 import { Abstract } from '../abstract/abstract.route';
 import { IRequestWithUser } from 'common/interfaces/interfaces';
@@ -35,31 +35,31 @@ class Auth extends Abstract {
 
     router.post(
       '/register',
-      this._getValidationMiddleware({ body: signUpSchema }),
+      this._getValidationMiddleware({ body: signUpBodySchema }),
       this._run((req) => this._authService.register(req.body)),
     );
 
     router.post(
       '/log-in',
-      this._getValidationMiddleware({ body: logInSchema }),
+      this._getValidationMiddleware({ body: logInBodySchema }),
       this._run((req) => this._authService.logIn(req.body)),
     );
 
     router.post(
       '/reset-password',
-      this._getValidationMiddleware({ body: resetPasswordSchema }),
+      this._getValidationMiddleware({ body: resetPasswordBodySchema }),
       this._run((req) => this._authService.resetPassword(req.body)),
     );
 
     router.post(
       '/set-password',
-      this._getValidationMiddleware({ body: setPasswordSchema }),
+      this._getValidationMiddleware({ body: setPasswordBodySchema }),
       this._run((req) => this._authService.setPassword(req.body)),
     );
 
     router.post(
       '/refresh',
-      this._getValidationMiddleware({ body: refreshTokensSchema }),
+      this._getValidationMiddleware({ body: refreshTokensBodySchema }),
       this._run((req) => this._tokenService.refreshTokens(req.body)),
     );
 
@@ -72,7 +72,7 @@ class Auth extends Abstract {
 
     router.post(
       '/log-in/google',
-      this._getValidationMiddleware({ body: logInGoogleSchema }),
+      this._getValidationMiddleware({ body: logInGoogleBodySchema }),
       this._run((req) => this._authService.logInGoogle(req.body)),
     );
 

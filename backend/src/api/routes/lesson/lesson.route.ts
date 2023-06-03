@@ -4,7 +4,14 @@ import { Abstract } from '../abstract/abstract.route';
 import { IRequestWithUser } from 'common/interfaces/interfaces';
 import { ContentType, CreatorType } from 'common/enums/enums';
 import { getValidationMiddleware } from 'api/middlewares/middlewares';
-import { createLessonSchema } from 'validation-schemas/validation-schemas';
+import {
+  createLessonBodySchema,
+  deleteLessonParamsSchema,
+  getLessonParamsSchema,
+  handleLessonResultParamsSchema,
+  handleLessonResultBodySchema,
+  getMoreLessonsQuerySchema,
+} from 'validation-schemas/validation-schemas';
 
 type Constructor = {
   lessonService: typeof lessonService;
@@ -26,7 +33,7 @@ class Lesson extends Abstract {
 
     router.post(
       '/',
-      this._getValidationMiddleware({ body: createLessonSchema }),
+      this._getValidationMiddleware({ body: createLessonBodySchema }),
       this._run((req: IRequestWithUser) => {
         return this._lessonService.create(req.userId, req.body);
       }),
@@ -41,43 +48,46 @@ class Lesson extends Abstract {
 
     router.post(
       '/:lessonId/result',
+      this._getValidationMiddleware({
+        params: handleLessonResultParamsSchema,
+        body: handleLessonResultBodySchema,
+      }),
       this._run((req: IRequestWithUser) => {
         const lessonId = Number(req.params.lessonId);
-        return this._lessonService.handleLessonResult(
-          req.userId,
-          lessonId,
-          req.body,
-        );
+        return this._lessonService.handleResult(req.userId, lessonId, req.body);
       }),
     );
 
     router.get(
       '/:lessonId',
+      this._getValidationMiddleware({ params: getLessonParamsSchema }),
       this._run((req) => {
         const lessonId = Number(req.params.lessonId);
-        return this._lessonService.getById(lessonId);
+        return this._lessonService.get(lessonId);
       }),
     );
 
     router.delete(
       '/:lessonId',
+      this._getValidationMiddleware({ params: deleteLessonParamsSchema }),
       this._run((req: IRequestWithUser) => {
         const lessonId = Number(req.params.lessonId);
-        return this._lessonService.deleteById(req.userId, lessonId);
+        return this._lessonService.delete(req.userId, lessonId);
       }),
     );
 
     router.get(
       '/',
+      this._getValidationMiddleware({ query: getMoreLessonsQuerySchema }),
       this._run((req: IRequestWithUser) => {
         const { offset, limit, contentType, creatorType } = req.query;
-        return this._lessonService.getMore(
-          req.userId,
-          Number(offset),
-          Number(limit),
-          contentType as ContentType,
-          creatorType as CreatorType,
-        );
+        const payload = {
+          offset: Number(offset),
+          limit: Number(limit),
+          contentType: contentType ? (contentType as ContentType) : undefined,
+          creatorType: creatorType ? (contentType as CreatorType) : undefined,
+        };
+        return this._lessonService.getMore(req.userId, payload);
       }),
     );
 

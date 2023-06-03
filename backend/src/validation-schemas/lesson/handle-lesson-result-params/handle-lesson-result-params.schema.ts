@@ -1,11 +1,12 @@
 import { yup } from 'dependencies/dependencies';
 import { ValidationErrorMessage } from 'common/enums/enums';
+import { lessonIdSchema } from 'validation-schemas/fields/fields';
 
-const refreshTokensSchema = yup
+const handleLessonResultParamsSchema = yup
   .object()
   .shape({
-    refreshToken: yup.string().required(),
+    lessonId: lessonIdSchema.required(),
   })
   .noUnknown(true, ValidationErrorMessage.INVALID_KEYS_RECEIVED);
 
-export { refreshTokensSchema };
+export { handleLessonResultParamsSchema };

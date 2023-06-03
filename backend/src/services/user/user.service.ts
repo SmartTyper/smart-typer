@@ -56,7 +56,7 @@ class User {
   }
 
   public async getAuthInfoByEmail(
-    email: string,
+    email: UserDto[UserKey.EMAIL],
   ): Promise<UserAuthInfoResponseDto> {
     const user =
       await this._userRepository.getByEmailWithSettingsAndPersonalRoom(email);
@@ -72,7 +72,7 @@ class User {
     return { ...user, ...tokens, photoUrl };
   }
 
-  public async getAuthInfoById(
+  public async getAuthInfo(
     userId: UserDto[CommonKey.ID],
   ): Promise<UserAuthInfoResponseDto> {
     const user = await this._userRepository.getByIdWithSettingsAndPersonalRoom(
@@ -89,7 +89,9 @@ class User {
     return { ...user, ...tokens, photoUrl };
   }
 
-  public async getByEmail(email: string): Promise<UserWithPassword> {
+  public async getByEmail(
+    email: UserDto[UserKey.EMAIL],
+  ): Promise<UserWithPassword> {
     const user = await this._userRepository.getByEmail(email);
     if (!user) {
       throw new HttpError({
@@ -101,8 +103,8 @@ class User {
     return user;
   }
 
-  public create(data: CreateUserRequestDto): Promise<UserWithPassword> {
-    const { nickname, email, photoUrl, password } = data;
+  public create(payload: CreateUserRequestDto): Promise<UserWithPassword> {
+    const { nickname, email, photoUrl, password } = payload;
     const userData = {
       email,
       nickname,
@@ -112,12 +114,14 @@ class User {
     return this._userRepository.create(userData);
   }
 
-  public async patchById(
+  public async update(
     userId: UserDto[CommonKey.ID],
-    data: Partial<Pick<UserDto, UserKey.NICKNAME | UserKey.EMAIL>>,
+    payload: Partial<Pick<UserDto, UserKey.NICKNAME | UserKey.EMAIL>>,
   ): Promise<UserDto> {
-    if (data.email) {
-      const userWithEmail = await this._userRepository.getByEmail(data.email);
+    if (payload.email) {
+      const userWithEmail = await this._userRepository.getByEmail(
+        payload.email,
+      );
       if (userWithEmail) {
         throw new HttpError({
           status: HttpCode.CONFLICT,
@@ -125,17 +129,17 @@ class User {
         });
       }
     }
-    return this._userRepository.patchById(userId, data);
+    return this._userRepository.patchById(userId, payload);
   }
 
-  public async updatePasswordById(
+  public async updatePassword(
     userId: UserDto[CommonKey.ID],
-    data: Pick<UserWithPassword, UserKey.PASSWORD>,
+    payload: Pick<UserWithPassword, UserKey.PASSWORD>,
   ): Promise<UserDto> {
-    return this._userRepository.patchById(userId, data);
+    return this._userRepository.patchById(userId, payload);
   }
 
-  public async getProfileInfoById(
+  public async getProfileInfo(
     userId: UserDto[CommonKey.ID],
     currentUserId: UserDto[CommonKey.ID],
   ): Promise<UserProfileInfoResponseDto> {
@@ -157,7 +161,7 @@ class User {
     };
   }
 
-  public async getById(
+  public async get(
     userId: UserDto[CommonKey.ID],
   ): Promise<Omit<UserDto, UserKey.PASSWORD>> {
     const user = await this._userRepository.getById(userId);
@@ -181,7 +185,7 @@ class User {
       });
     }
 
-    const userToUpdate = await this.getById(userId);
+    const userToUpdate = await this.get(userId);
     if (!userToUpdate) {
       throw new HttpError({
         status: HttpCode.NOT_FOUND,
@@ -209,7 +213,7 @@ class User {
   }
 
   public async deleteAvatar(userId: UserDto[CommonKey.ID]): Promise<void> {
-    const userToUpdate = await this.getById(userId);
+    const userToUpdate = await this.get(userId);
     if (!userToUpdate) {
       throw new HttpError({
         status: HttpCode.NOT_FOUND,
@@ -227,14 +231,14 @@ class User {
     }
   }
 
-  public async updateCurrentRoomByUserId(
+  public async updateCurrentRoom(
     userId: UserDto[CommonKey.ID],
     roomId: RoomDto[CommonKey.ID] | null,
   ): Promise<Omit<UserToRoom, UserToRoomKey.PERSONAL_ROOM_ID>> {
     return this._userRepository.updateCurrentRoomByUserId(userId, roomId);
   }
 
-  public async getCurrentSkillLevelsByUserId(
+  public async getCurrentSkillLevels(
     userId: UserDto[CommonKey.ID],
   ): Promise<Omit<Skill, SkillKey.NAME>[]> {
     const currentSkillLevels =
@@ -250,14 +254,14 @@ class User {
     return currentSkillLevels;
   }
 
-  public async updateSkillLevelsByUserId(
+  public async updateSkillLevels(
     userId: UserDto[CommonKey.ID],
     payload: Omit<Skill, SkillKey.NAME>[],
   ): Promise<Omit<IUserToSkillRecord, UserToSkillKey.USER_ID>[]> {
     return this._userRepository.patchSkillLevelsByUserId(userId, payload);
   }
 
-  public async getUserCurrentRoomId(
+  public async getCurrentRoomId(
     userId: UserDto[CommonKey.ID],
   ): Promise<Pick<UserToRoom, UserToRoomKey.CURRENT_ROOM_ID>> {
     return this._userRepository.getCurrentRoomId(userId);

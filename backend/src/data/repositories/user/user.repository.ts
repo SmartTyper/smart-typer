@@ -114,7 +114,7 @@ class User {
   }
 
   public async getByEmail(
-    email: string,
+    email: UserDto[UserKey.EMAIL],
   ): Promise<RecordWithoutCommonDateKeys<IUserRecord> | undefined> {
     return this._UserModel
       .query()
@@ -129,7 +129,7 @@ class User {
   }
 
   public async getByEmailWithSettingsAndPersonalRoom(
-    email: string,
+    email: UserDto[UserKey.EMAIL],
   ): Promise<
     Omit<UserAuthInfoResponseDto, keyof TokensResponseDto> | undefined
   > {

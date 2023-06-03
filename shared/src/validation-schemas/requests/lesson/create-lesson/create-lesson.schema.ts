@@ -1,5 +1,5 @@
 import { yup } from 'dependencies/dependencies';
-import { ContentType, ValidationErrorMessage } from 'common/enums/enums';
+import { ValidationErrorMessage } from 'common/enums/enums';
 import {
   MAX_LESSON_CONTENT_LENGTH,
   MAX_LESSON_NAME_LENGTH,
@@ -7,6 +7,7 @@ import {
   MIN_LESSON_NAME_LENGTH,
   TEST_LESSON_NAMES,
 } from 'common/constants/constants';
+import { contentTypeSchema } from 'validation-schemas/fields/fields';
 
 const createLessonSchema = yup
   .object()
@@ -24,14 +25,7 @@ const createLessonSchema = yup
       .min(MIN_LESSON_CONTENT_LENGTH)
       .max(MAX_LESSON_CONTENT_LENGTH)
       .required(),
-    contentType: yup
-      .string()
-      .trim()
-      .oneOf(
-        Object.values(ContentType),
-        ValidationErrorMessage.INVALID_CONTENT_TYPE,
-      )
-      .required(),
+    contentType: contentTypeSchema.required(),
   })
   .noUnknown(true, ValidationErrorMessage.INVALID_KEYS_RECEIVED);
 

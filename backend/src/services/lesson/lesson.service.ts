@@ -1,13 +1,14 @@
 import { TEST_LESSON_NAMES } from 'common/constants/constants';
 import {
   CommonKey,
-  ContentType,
-  CreatorType,
   HttpCode,
   HttpErrorMessage,
   SkillKey,
 } from 'common/enums/enums';
-import { IPaginationResponse } from 'common/interfaces/interfaces';
+import {
+  IPaginationRequest,
+  IPaginationResponse,
+} from 'common/interfaces/interfaces';
 import {
   LessonDto,
   LessonResponseDto,
@@ -16,6 +17,7 @@ import {
   Skill,
   UserDto,
   FinishedLesson,
+  LessonFilters,
 } from 'common/types/types';
 import {
   its as itsService,
@@ -52,7 +54,7 @@ class Lesson {
     this._statisticsService = params.statisticsService;
   }
 
-  public async getById(
+  public async get(
     lessonId: LessonDto[CommonKey.ID],
   ): Promise<LessonResponseDto> {
     const lesson = await this._lessonRepository.getById(lessonId);
@@ -66,7 +68,7 @@ class Lesson {
     return lesson;
   }
 
-  public async deleteById(
+  public async delete(
     userId: UserDto[CommonKey.ID],
     lessonId: LessonDto[CommonKey.ID],
   ): Promise<void> {
@@ -92,18 +94,9 @@ class Lesson {
 
   public async getMore(
     userId: UserDto[CommonKey.ID],
-    offset: number,
-    limit: number,
-    contentType?: ContentType,
-    creatorType?: CreatorType,
+    payload: IPaginationRequest & LessonFilters,
   ): Promise<IPaginationResponse<LessonDto>> {
-    return this._lessonRepository.getPaginated(
-      userId,
-      offset,
-      limit,
-      contentType,
-      creatorType,
-    );
+    return this._lessonRepository.getPaginated(userId, payload);
   }
 
   public async getStudyPlan(
@@ -124,7 +117,7 @@ class Lesson {
     }
   }
 
-  private async _upsertFinishedLesson(
+  private async _upsertFinished(
     lessonId: LessonDto[CommonKey.ID],
     payload: FinishedLesson,
   ): Promise<void> {
@@ -133,13 +126,13 @@ class Lesson {
       await this._lessonRepository.getFinishedByIdAndUserId(lessonId, userId);
 
     if (finishedLesson) {
-      await this._lessonRepository.updateFinishedLesson(lessonId, {
+      await this._lessonRepository.updateFinished(lessonId, {
         userId,
         bestSkillId,
         averageSpeed,
       });
     } else {
-      await this._lessonRepository.insertFinishedLesson(lessonId, {
+      await this._lessonRepository.insertFinished(lessonId, {
         userId,
         bestSkillId,
         averageSpeed,
@@ -147,7 +140,7 @@ class Lesson {
     }
   }
 
-  public async handleLessonResult(
+  public async handleResult(
     userId: UserDto[CommonKey.ID],
     lessonId: LessonDto[CommonKey.ID],
     payload: SkillsStatisticsDto,
@@ -161,8 +154,9 @@ class Lesson {
       });
     }
 
-    const currentSkillLevels =
-      await this._userService.getCurrentSkillLevelsByUserId(userId);
+    const currentSkillLevels = await this._userService.getCurrentSkillLevels(
+      userId,
+    );
 
     const skillLevelsPayload = mapLessonResultToSkillLevelsPayload({
       lesson,
@@ -178,7 +172,7 @@ class Lesson {
       ? await this._itsService.IRT(skillLevelsPayload)
       : await this._itsService.BKT(skillLevelsPayload);
 
-    await this._userService.updateSkillLevelsByUserId(
+    await this._userService.updateSkillLevels(
       userId,
       resultSkillLevels.map((skill) => ({
         id: skill.skillId,
@@ -196,7 +190,7 @@ class Lesson {
       timestamps,
     );
 
-    await this._upsertFinishedLesson(lessonId, {
+    await this._upsertFinished(lessonId, {
       userId,
       bestSkillId: lessonBestSkill,
       averageSpeed: lessonAverageSpeed,
@@ -217,7 +211,7 @@ class Lesson {
     await this._statisticsService.updateByUserId(userId, newStatistics);
 
     const { priority, lessonId: lastStudyPlanLessonId } =
-      await this._lessonRepository.getLastStudyPlanLessonPriority(userId);
+      await this._lessonRepository.getLastStudyPlanItemPriority(userId);
 
     if (
       (isLastTestLesson || !isTestLesson) &&
@@ -240,7 +234,7 @@ class Lesson {
         nextStudyPlanLessonPayload,
       );
 
-      await this._lessonRepository.insertNewStudyPlanLesson(
+      await this._lessonRepository.insertNewStudyPlanItem(
         userId,
         lessonId,
         priority + 1,
