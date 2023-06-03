@@ -48,7 +48,6 @@ const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl }) => {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors },
   } = useForm<SendRoomUrlToEmailsRequestDto>(sendShareRoomUrlSchema, {
     [ShareUrlKey.URL]: shareRoomUrl,
   });
@@ -117,9 +116,7 @@ const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl }) => {
       <FormField
         label={FormFieldLabel.EMAILS}
         type={FormFieldType.CUSTOM}
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        error={errors.emails}
+        note={<span>* correctly entered emails will be highlighted grey color</span>}
       >
         <ReactMultiEmail
           placeholder="Enter emails which you want to send link to"

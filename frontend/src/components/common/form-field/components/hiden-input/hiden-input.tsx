@@ -30,7 +30,7 @@ const HiddenInput: FC<Props> = ({
   };
 
   return (
-    <RBInputGroup>
+    <RBInputGroup className={styles.hiddenInput}>
       <RBForm.Control
         {...register}
         type={isValueHidden ? FormFieldType.PASSWORD : FormFieldType.TEXT}

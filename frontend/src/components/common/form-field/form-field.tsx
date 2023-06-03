@@ -127,9 +127,12 @@ const FormField: FC<Props> = ({
       >
         {renderFormField(type)}
         {hasCopyButton && (
-          <Button onClick={handleCopy} className={styles.copyButton}>
-            <i className={isCopied ? 'bi bi-check2' : 'bi bi-clipboard'}></i>
-          </Button>
+          <Button
+            onClick={handleCopy}
+            className={styles.copyButton}
+            iconClassName={styles.copyIcon}
+            iconName={isCopied ? 'bi bi-check2' : 'bi bi-clipboard'}
+          />
         )}
       </div>
       {!!error && (
