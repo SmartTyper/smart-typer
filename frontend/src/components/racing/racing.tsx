@@ -1,5 +1,5 @@
 import { FC, RoomDto } from 'common/types/types';
-import { Modal, Link, Button } from 'components/common/common';
+import { Modal, Button } from 'components/common/common';
 import { AppRoute } from 'common/enums/enums';
 import { replaceRouteIdParam } from 'helpers/helpers';
 import { useSelector, useState } from 'hooks/hooks';
@@ -36,12 +36,16 @@ const Racing: FC = () => {
         dialogClassName={styles.racingModalDialog}
       >
         <div className={styles.modeCards}>
-          <Link to={replaceRouteIdParam(AppRoute.ROOMS_$ID, personalRoomId)}>
-            <ModeCard imageSrc={singlePlayerImg} title="Single-player" />
-          </Link>
-          <Link to={AppRoute.ROOMS}>
-            <ModeCard imageSrc={multiPlayerImg} title="Multi-player" />
-          </Link>
+          <ModeCard
+            imageSrc={singlePlayerImg}
+            title="Single-player"
+            to={replaceRouteIdParam(AppRoute.ROOMS_$ID, personalRoomId)}
+          />
+          <ModeCard
+            imageSrc={multiPlayerImg}
+            title="Multi-player"
+            to={AppRoute.ROOMS}
+          />
         </div>
       </Modal>
     </>

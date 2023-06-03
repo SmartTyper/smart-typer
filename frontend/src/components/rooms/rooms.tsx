@@ -37,7 +37,6 @@ const Rooms: FC = () => {
 
   const handleCreateRoomSubmit = (payload: CreateRoomRequestDto): void => {
     dispatch(racingActions.createRoom(payload));
-    setIsShareRoomModalVisible(false);
   };
 
   useEffect(() => {
@@ -46,6 +45,13 @@ const Rooms: FC = () => {
       dispatch(racingActions.resetAvailableRooms());
     };
   }, []);
+
+  useEffect(() => {
+    if (shareRoomUrl) {
+      setIsCreateRoomModalVisible(false);
+      setIsShareRoomModalVisible(true);
+    }
+  }, [shareRoomUrl]);
 
   return (
     <div className={styles.rooms}>
@@ -57,11 +63,14 @@ const Rooms: FC = () => {
           className={styles.createRoomButton}
         />
       </div>
-      {areRoomsLoading ? (
-        <Spinner size={SpinnerSize.LARGE} />
-      ) : (
-        rooms.map((room) => <RoomCard key={room.id} room={room} />)
-      )}
+      <div className={styles.roomCards}>
+        {areRoomsLoading ? (
+          <Spinner size={SpinnerSize.LARGE} />
+        ) : (
+          rooms.map((room) => <RoomCard key={room.id} room={room} />)
+        )}
+      </div>
+
       <CreateRoomModal
         isVisible={isCreateRoomModalVisible}
         onClose={handleToggleCreateRoomModalVisible}

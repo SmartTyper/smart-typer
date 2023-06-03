@@ -12,15 +12,12 @@ import {
   VoidCallback,
 } from 'common/types/types';
 import { clsx, replaceRouteIdParam } from 'helpers/helpers';
-import { useNavigate, useState, useDispatch, useSelector } from 'hooks/hooks';
+import { useNavigate, useDispatch, useSelector, useForm } from 'hooks/hooks';
 import { Button, FormField, Modal } from 'components/common/common';
-import {
-  RBForm,
-  RBInputGroup,
-  ReactMultiEmail,
-} from 'components/external/external';
+import { ReactMultiEmail } from 'components/external/external';
 import { validateReactMultiEmail } from 'helpers/helpers';
 import { racing as racingActions } from 'store/modules/actions';
+import { sendShareRoomUrlSchema } from 'validation-schemas/validation-schemas';
 
 import 'react-multi-email/dist/style.css';
 import styles from './styles.module.scss';
@@ -39,22 +36,17 @@ const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl }) => {
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [isCopied, setIsCopied] = useState(false);
-  const [emails, setEmails] = useState<Emails>([]);
 
-  const shareRoomId = Number(shareRoomUrl.split('/').pop());
+  const {
+    handleSubmit,
+    register: { onChange },
+    formState: { errors },
+  } = useForm<SendRoomUrlToEmailsRequestDto>(sendShareRoomUrlSchema, {
+    [ShareUrlKey.URL]: shareRoomUrl,
+  });
 
-  const handleSend = (): void => {
-    dispatch(
-      racingActions.sendRoomUrlToEmails({
-        emails,
-        shareRoomUrl,
-      }),
-    );
-  };
-
-  const handleEmailsInputChange = (emails: Emails): void => {
-    setEmails(emails);
+  const handleSend = (data: SendRoomUrlToEmailsRequestDto): void => {
+    dispatch(racingActions.sendRoomUrlToEmails(data));
   };
 
   const handleGetLabel = (
@@ -73,19 +65,14 @@ const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl }) => {
     );
   };
 
-  const handleCopy = (): void => {
-    navigator.clipboard.writeText(shareRoomUrl);
-    setIsCopied(true);
-  };
-
   const handleGoToCreatedRoom = (): void => {
+    const shareRoomId = Number(shareRoomUrl.split('/').pop());
     const route = replaceRouteIdParam(AppRoute.ROOMS_$ID, shareRoomId);
     navigate(route);
   };
 
   return (
     <Modal
-      className="d-flex align-items-center"
       isVisible={isVisible}
       cancelButton={{
         label: 'Cancel',
@@ -99,42 +86,30 @@ const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl }) => {
       }}
       title="Share room"
     >
-      <div className="d-flex flex-column align-items-center">
+      <FormField
+        value={shareRoomUrl}
+        label={FormFieldLabel.LINK_TO_SHARE}
+        readOnly
+        hasCopyButton
+        type={FormFieldType.TEXT}
+        className={styles.shareRoomUrlField}
+      />
+      <div className={clsx(styles.emailContainer)}>
+        <ReactMultiEmail
+          placeholder="Enter emails which you want to send link to"
+          emails={emails}
+          className={styles.emailsInput}
+          onChange={onChange}
+          validateEmail={validateReactMultiEmail}
+          getLabel={handleGetLabel}
+        />
         <div>
-          <RBForm.Label>Link</RBForm.Label>
-          <RBInputGroup className="mb-3" style={{ width: '30rem' }}>
-            <FormField
-              value={shareRoomUrl}
-              label={FormFieldLabel.LINK_TO_SHARE}
-              readOnly
-              type={FormFieldType.TEXT}
-            />
-            <Button onClick={handleCopy}>
-              <i
-                className={isCopied ? 'bi bi-check2' : 'bi bi-clipboard'}
-                style={{ color: 'white' }}
-              ></i>
-            </Button>
-          </RBInputGroup>
-        </div>
-        <div className={clsx(styles.emailContainer)}>
-          <RBForm.Label>Share by email</RBForm.Label>
-          <div className="d-flex flex-column align-items-center">
-            <ReactMultiEmail
-              placeholder="Enter emails which you want to send link to"
-              emails={emails}
-              className={styles.emailsInput}
-              onChange={handleEmailsInputChange}
-              validateEmail={validateReactMultiEmail}
-              getLabel={handleGetLabel}
-            />
-            <Button
-              onClick={handleSend}
-              className={styles.sendButton}
-              isDisabled={isRoomUrlSending}
-              label="Send"
-            />
-          </div>
+          <Button
+            onClick={handleSubmit(handleSend)}
+            className={styles.sendButton}
+            isDisabled={isRoomUrlSending}
+            label="Send"
+          />
         </div>
       </div>
     </Modal>

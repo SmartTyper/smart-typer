@@ -9,7 +9,7 @@ import {
 const sendShareRoomUrlSchema = yup
   .object()
   .shape({
-    shareRoomUrl: yup
+    url: yup
       .string()
       .trim()
       .min(MIN_SHARE_ROOM_URL_LENGTH)

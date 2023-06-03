@@ -1,27 +1,40 @@
 import { FC, RoomDto } from 'common/types/types';
 import { replaceRouteIdParam } from 'helpers/helpers';
 import { Avatar, Card, Link } from 'components/common/common';
-import { AppRoute, AvatarSize, CardHeaderColor } from 'common/enums/enums';
+import {
+  AppRoute,
+  AvatarSize,
+  CardHeaderColor,
+  CardSize,
+} from 'common/enums/enums';
 
-// import styles from './styles.module.scss';
+import styles from './styles.module.scss';
 
 type Props = {
   room: RoomDto;
 };
 
 const RoomCard: FC<Props> = ({ room: { id, participants, name } }) => (
-  <Card color={CardHeaderColor.GREEN} title={name} centeredTitle>
-    <Link to={replaceRouteIdParam(AppRoute.ROOMS_$ID, id)}>
+  <Link to={replaceRouteIdParam(AppRoute.ROOMS_$ID, id)}>
+    <Card
+      size={CardSize.NONE}
+      color={CardHeaderColor.GREEN}
+      title={name}
+      centeredTitle
+      className={styles.roomCard}
+      childrenContainerClassName={styles.avatarsContainer}
+    >
       {participants.map(({ id, nickname, photoUrl }) => (
         <Avatar
           size={AvatarSize.SMALL}
           src={photoUrl}
           name={nickname}
           key={id}
+          className={styles.avatar}
         ></Avatar>
       ))}
-    </Link>
-  </Card>
+    </Card>
+  </Link>
 );
 
 export { RoomCard };

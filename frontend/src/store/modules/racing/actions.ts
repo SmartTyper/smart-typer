@@ -135,8 +135,8 @@ const createRoom = createAsyncThunk(
     { dispatch, extra: { services } },
   ): Promise<void> => {
     const { roomApi: roomApiService } = services;
-    const { roomId } = await roomApiService.create(payload);
-    dispatch(loadShareRoomUrl({ roomId }));
+    const { id } = await roomApiService.create(payload);
+    dispatch(loadShareRoomUrl({ roomId: id }));
   },
 );
 

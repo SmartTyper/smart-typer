@@ -37,7 +37,7 @@ const CreateRoomModal: FC<Props> = ({ isVisible, onClose, onSubmit, isSubmitting
         onClick: onClose,
       }}
       submitButton={{
-        label: 'Submit',
+        label: 'Save',
         isDisabled: isSubmitting,
         onClick: handleSubmit(onSubmit),
       }}

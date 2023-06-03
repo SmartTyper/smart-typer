@@ -12,9 +12,11 @@ import {
   HiddenInput,
   Input,
 } from './components/components';
+import { useState } from 'hooks/hooks';
+import { clsx } from 'helpers/helpers';
+import { Button } from 'components/common/common';
 
 import styles from './styles.module.scss';
-import { clsx } from 'helpers/helpers';
 
 type Props = {
   label: FormFieldLabel;
@@ -29,6 +31,7 @@ type Props = {
   readOnly?: boolean;
   inputRef?: RefObject<HTMLInputElement>;
   hidden?: boolean;
+  hasCopyButton?: boolean;
 };
 
 const FormField: FC<Props> = ({
@@ -44,7 +47,17 @@ const FormField: FC<Props> = ({
   inputRef,
   readOnly = false,
   hidden = false,
+  hasCopyButton = false,
 }) => {
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleCopy = (): void => {
+    if (value) {
+      navigator.clipboard.writeText(value);
+      setIsCopied(true);
+    }
+  };
+
   const renderFormField = (type: FormFieldType): JSX.Element => {
     switch (type) {
       case FormFieldType.PASSWORD:
@@ -102,7 +115,14 @@ const FormField: FC<Props> = ({
       controlId={label}
     >
       <RBForm.Label className={styles.label}>{label}</RBForm.Label>
-      {renderFormField(type)}
+      <div className={clsx(styles.inputRow, hasCopyButton  && styles.withCopyButton)}>
+        {renderFormField(type)}
+        {hasCopyButton && (
+          <Button onClick={handleCopy} className={styles.copyButton}>
+            <i className={isCopied ? 'bi bi-check2' : 'bi bi-clipboard'}></i>
+          </Button>
+        )}
+      </div>
       {!!error && (
         <RBForm.Control.Feedback type="invalid">
           {error?.message}

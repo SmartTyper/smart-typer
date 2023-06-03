@@ -1,7 +1,4 @@
-.title {
-  font-size: 1.52rem;
-  line-height: 1.625;
-}
+@import 'src/assets/css/variables';
 
 .emailContainer {
   display: flex;
@@ -19,4 +16,16 @@
     width: 100%;
     font-size: 1.2rem;
   }
+}
+
+.sendButton {
+  font-size: $middle-font-size;
+  height: 3.5rem;
+  width: 7rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $main-green;
+  color: $white;
+  margin: 0 auto;
 }

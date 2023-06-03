@@ -1,4 +1,4 @@
-import { HttpMethod, RequestContentType } from 'common/enums/enums';
+import { CommonKey, HttpMethod, RequestContentType } from 'common/enums/enums';
 import {
   CreateRoomRequestDto,
   RoomDto,
@@ -30,7 +30,9 @@ class RoomApi {
     return this._httpService.load(this._baseUrl);
   }
 
-  public async create(payload: CreateRoomRequestDto): Promise<RoomIdDto> {
+  public async create(
+    payload: CreateRoomRequestDto,
+  ): Promise<Pick<RoomDto, CommonKey.ID>> {
     return this._httpService.load(this._baseUrl, {
       method: HttpMethod.POST,
       payload: JSON.stringify(payload),

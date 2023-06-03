@@ -93,11 +93,11 @@ class Room {
         message: HttpErrorMessage.NO_USER_WITH_SUCH_ID,
       });
     }
-    const { emails, shareRoomUrl } = payload;
+    const { emails, url } = payload;
     await this._mailerService.sendMail({
       to: emails,
       subject: `${user.nickname} shared an Key Racing room with you`,
-      text: shareRoomUrl,
+      text: url,
     });
   }
 

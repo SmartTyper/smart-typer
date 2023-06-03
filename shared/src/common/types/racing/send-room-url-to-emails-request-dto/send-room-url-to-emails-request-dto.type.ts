@@ -3,7 +3,7 @@ import { ShareRoomUrlDto } from '../racing';
 
 type SendRoomUrlToEmailsRequestDto = {
   emails: string[];
-  shareRoomUrl: ShareRoomUrlDto[ShareUrlKey.URL];
+  url: ShareRoomUrlDto[ShareUrlKey.URL];
 };
 
 export type { SendRoomUrlToEmailsRequestDto };

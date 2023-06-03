@@ -12,9 +12,51 @@
     margin: 0;
   }
 
+  .inputRow {
+    display: flex;
+
+    .input {
+      height: 3.5rem;
+      width: 100%;
+      display: flex;
+      align-items: baseline;
+      font-size: inherit;
+      color: $dark-blue;
+      background-color: $white;
+      border-radius: 0;
+
+      &:focus {
+        color: $dark-blue !important;
+        border-color: $main-green !important;
+        box-shadow: $input-shadow;
+        background-color: $white !important;
+      }
+    }
+
+    &.withCopyButton {
+      .input {
+        flex-grow: 1;
+      }
+
+      .copyButton {
+        background-color: $main-green;
+        color: $white;
+        height: 3.5rem;
+        width: 3.5rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+
   &.flexColumn {
     flex-direction: column;
     align-items: flex-start;
+
+    .inputRow {
+      width: 100%;
+    }
 
     .label {
       margin-bottom: 0.25rem;
@@ -27,22 +69,5 @@
 
   .note {
     font-size: $small-font-size;
-  }
-
-  .input {
-    height: 3.5rem;
-    width: 100%;
-    display: flex;
-    align-items: baseline;
-    font-size: inherit;
-    color: $dark-blue;
-    background-color: $white;
-
-    &:focus {
-      color: $dark-blue !important;
-      border-color: $main-green !important;
-      box-shadow: $input-shadow;
-      background-color: $white !important;
-    }
   }
 }

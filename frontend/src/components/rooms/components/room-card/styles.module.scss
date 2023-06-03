@@ -1,24 +1,22 @@
-.roomsContainer {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  grid-auto-rows: 19rem;
-  gap: 1.5rem;
-}
+@import 'src/assets/css/variables';
 
-@media (min-width: 576px) {
-  .roomsContainer {
-    grid-template-columns: repeat(2, 1fr);
+.roomCard {
+  width: 15vw;
+  height: 20vh;
+  padding: 3rem;
+
+  .avatarsContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+
+    .avatar:not(:first-child) {
+      margin-left: -1rem;
+    }
   }
-}
 
-@media (min-width: 992px) {
-  .roomsContainer {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (min-width: 1200px) {
-  .roomsContainer {
-    grid-template-columns: repeat(4, 1fr);
+  &:hover {
+    box-shadow: $button-shadow;
   }
 }
