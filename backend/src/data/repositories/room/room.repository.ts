@@ -1,7 +1,9 @@
 import {
   DEFAULT_PERSONAL_ROOM_NAME,
   MAX_USERS_IN_ROOM,
+  NO_USERS_IN_ROOM,
 } from 'common/constants/constants';
+import { NO_ROOM_OWNER } from 'common/constants/racing/no-room-owner/no-room-owner.constant';
 import {
   CommonKey,
   RoomRelationMappings,
@@ -126,13 +128,34 @@ class Room {
       .castTo<RoomDto[]>();
   }
 
-  public async removeById(roomId: RoomDto[CommonKey.ID]): Promise<number> {
+  public async removeById(
+    roomId: RoomDto[CommonKey.ID],
+  ): Promise<RoomDto[CommonKey.ID]> {
     return this._RoomModel
       .query()
       .findById(roomId)
       .delete()
       .returning([`${CommonKey.ID}`])
-      .castTo<number>();
+      .castTo<RoomDto[CommonKey.ID]>();
+  }
+
+  public async deleteCreatedBeforeTodayWithoutParticipants(): Promise<void> {
+    await this._RoomModel
+      .query()
+      .delete()
+      .where(
+        this._RoomModel.knex().raw(`(
+          select count(*) from ${TableName.USERS_TO_ROOMS}
+          where ${TableName.USERS_TO_ROOMS}.current_room_id =
+          ${TableName.ROOMS}.${CommonKey.ID}) = ${NO_USERS_IN_ROOM}`),
+      )
+      .andWhere(
+        this._RoomModel.knex().raw(`(
+          select count(*) from ${TableName.USERS_TO_ROOMS}
+          where ${TableName.USERS_TO_ROOMS}.personal_room_id =
+          ${TableName.ROOMS}.${CommonKey.ID}) = ${NO_ROOM_OWNER}`),
+      );
   }
 }
+
 export { Room };

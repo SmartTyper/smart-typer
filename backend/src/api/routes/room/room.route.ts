@@ -4,8 +4,12 @@ import { Abstract } from '../abstract/abstract.route';
 import { IRequestWithUser } from 'common/interfaces/interfaces';
 import { getValidationMiddleware } from 'api/middlewares/middlewares';
 import {
-  createRoomSchema,
-  sendShareRoomUrlSchema,
+  addRoomParticipantParamsSchema,
+  createRoomBodySchema,
+  getRoomParamsSchema,
+  getRoomShareUrlParamsSchema,
+  removeRoomParticipantParamsSchema,
+  sendShareRoomUrlBodySchema,
 } from 'validation-schemas/validation-schemas';
 
 type Constructor = {
@@ -28,6 +32,7 @@ class Room extends Abstract {
 
     router.get(
       '/:roomId/share-url',
+      this._getValidationMiddleware({ params: getRoomShareUrlParamsSchema }),
       this._run((req) => {
         const roomId = Number(req.params.roomId);
         return this._roomService.getShareUrl(roomId);
@@ -36,7 +41,7 @@ class Room extends Abstract {
 
     router.post(
       '/share-url',
-      this._getValidationMiddleware({ body: sendShareRoomUrlSchema }),
+      this._getValidationMiddleware({ body: sendShareRoomUrlBodySchema }),
       this._run((req: IRequestWithUser) => {
         const userId = req.userId;
         return this._roomService.sendShareUrlToEmails(userId, req.body);
@@ -45,6 +50,7 @@ class Room extends Abstract {
 
     router.post(
       '/:roomId/participants',
+      this._getValidationMiddleware({ params: addRoomParticipantParamsSchema }),
       this._run((req: IRequestWithUser) => {
         const roomId = Number(req.params.roomId);
         return this._roomService.addParticipant(roomId, req.userId);
@@ -53,6 +59,9 @@ class Room extends Abstract {
 
     router.delete(
       '/:roomId/participants',
+      this._getValidationMiddleware({
+        params: removeRoomParticipantParamsSchema,
+      }),
       this._run((req: IRequestWithUser) => {
         const roomId = Number(req.params.roomId);
         return this._roomService.removeParticipant(roomId, req.userId);
@@ -61,9 +70,10 @@ class Room extends Abstract {
 
     router.get(
       '/:roomId',
+      this._getValidationMiddleware({ params: getRoomParamsSchema }),
       this._run((req) => {
         const roomId = Number(req.params.roomId);
-        return this._roomService.getById(roomId);
+        return this._roomService.get(roomId);
       }),
     );
 
@@ -74,7 +84,7 @@ class Room extends Abstract {
 
     router.post(
       '/',
-      this._getValidationMiddleware({ body: createRoomSchema }),
+      this._getValidationMiddleware({ body: createRoomBodySchema }),
       this._run((req) => this._roomService.create(req.body)),
     );
 

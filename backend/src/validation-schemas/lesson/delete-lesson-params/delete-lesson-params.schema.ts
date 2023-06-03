@@ -1,11 +1,12 @@
 import { yup } from 'dependencies/dependencies';
 import { ValidationErrorMessage } from 'common/enums/enums';
+import { lessonIdSchema } from 'validation-schemas/fields/fields';
 
-const logInGoogleSchema = yup
+const deleteLessonParamsSchema = yup
   .object()
   .shape({
-    code: yup.string().required(),
+    lessonId: lessonIdSchema.required(),
   })
   .noUnknown(true, ValidationErrorMessage.INVALID_KEYS_RECEIVED);
 
-export { logInGoogleSchema };
+export { deleteLessonParamsSchema };

@@ -1,5 +1,4 @@
 import { ENV } from 'common/constants/constants';
-
 import {
   refreshToken as refreshTokenRepository,
   room as roomRepository,
@@ -8,14 +7,13 @@ import {
   lesson as lessonRepository,
   statistics as statisticsRepository,
 } from 'data/repositories/repositories';
-
 import { Auth } from './auth/auth.service';
 import { S3 } from './s3/s3.service';
 import { Settings } from './settings/settings.service';
 import { Token } from './token/token.service';
 import { User } from './user/user.service';
 import { Statistics } from './statistics/statistics.service';
-import { Axios } from './axios/axios';
+import { Axios } from './axios/axios.service';
 import { Hash } from './hash/hash.service';
 import { Joke } from './joke/joke.service';
 import { Logger } from './logger/logger.service';
@@ -25,6 +23,7 @@ import { Room } from './room/room.service';
 import { Socket } from './socket/socket.service';
 import { Lesson } from './lesson/lesson.service';
 import { ITS } from './its/its.service';
+import { Cron } from './cron/cron.service';
 
 const s3 = new S3({
   accessKeyId: ENV.S3.ACCESS_KEY_ID,
@@ -82,11 +81,14 @@ const auth = new Auth({
   appUrl: ENV.APP.URL,
 });
 
+const cron = new Cron();
+
 const room = new Room({
   roomRepository,
   socketService: socket,
   userService: user,
   mailerService: mailer,
+  cronService: cron,
 });
 
 const its = new ITS();
@@ -115,4 +117,5 @@ export {
   lesson,
   its,
   statistics,
+  cron,
 };

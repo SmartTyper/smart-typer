@@ -3,7 +3,10 @@ import { user as userService } from 'services/services';
 import { IRequestWithUser } from 'common/interfaces/interfaces';
 import { Abstract } from '../abstract/abstract.route';
 import { getFileMiddleware } from 'api/middlewares/middlewares';
-import { updatePersonalInfoSchema } from 'validation-schemas/validation-schemas';
+import {
+  updateUserPersonalInfoBodySchema,
+  getUserProfileInfoParamsSchema,
+} from 'validation-schemas/validation-schemas';
 import { getValidationMiddleware } from 'api/middlewares/middlewares';
 import { UserKey } from 'common/enums/enums';
 
@@ -31,25 +34,23 @@ class User extends Abstract {
     router.get(
       '/current',
       this._run((req: IRequestWithUser) =>
-        this._userService.getAuthInfoById(req.userId),
+        this._userService.getAuthInfo(req.userId),
       ),
     );
 
     router.get(
       '/:userId',
+      this._getValidationMiddleware({ params: getUserProfileInfoParamsSchema }),
       this._run((req: IRequestWithUser) =>
-        this._userService.getProfileInfoById(
-          Number(req.params.userId),
-          req.userId,
-        ),
+        this._userService.getProfileInfo(Number(req.params.userId), req.userId),
       ),
     );
 
     router.put(
       '/current',
-      this._getValidationMiddleware({ body: updatePersonalInfoSchema }),
+      this._getValidationMiddleware({ body: updateUserPersonalInfoBodySchema }),
       this._run((req: IRequestWithUser) =>
-        this._userService.patchById(req.userId, req.body),
+        this._userService.update(req.userId, req.body),
       ),
     );
 

@@ -3,7 +3,7 @@ import { settings as settingsService } from 'services/services';
 import { IRequestWithUser } from 'common/interfaces/interfaces';
 import { Abstract } from '../abstract/abstract.route';
 import { getValidationMiddleware } from 'api/middlewares/middlewares';
-import { updateSettingsSchema } from 'validation-schemas/validation-schemas';
+import { updateSettingsBodySchema } from 'validation-schemas/validation-schemas';
 
 type Constructor = {
   settingsService: typeof settingsService;
@@ -25,7 +25,7 @@ class Settings extends Abstract {
 
     router.put(
       '/',
-      this._getValidationMiddleware({ body: updateSettingsSchema }),
+      this._getValidationMiddleware({ body: updateSettingsBodySchema }),
       this._run((req: IRequestWithUser) =>
         this._settingsService.updateByUserId(req.userId, req.body),
       ),

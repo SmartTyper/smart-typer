@@ -1,1 +1,4 @@
-export type { IPaginationResponse } from 'smart-typer-shared/common/interface/interface';
+export type {
+  IPaginationRequest,
+  IPaginationResponse,
+} from 'smart-typer-shared/common/interface/interface';

@@ -16,7 +16,6 @@ import { HttpError } from 'exceptions/exceptions';
 
 type Constructor = {
   refreshTokenRepository: typeof refreshTokenRepository;
-  jwt?: typeof jwt;
   secretKey: string;
 };
 
@@ -27,7 +26,7 @@ class Token {
 
   public constructor(params: Constructor) {
     this._refreshTokenRepository = params.refreshTokenRepository;
-    this._jwt = params.jwt ?? jwt;
+    this._jwt = jwt;
     this._secretKey = params.secretKey;
   }
 

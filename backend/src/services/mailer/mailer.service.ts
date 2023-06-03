@@ -17,6 +17,7 @@ class Mailer {
   private _clientId: string;
   private _clientSecret: string;
   private _refreshToken: string;
+  private _nodemailer: typeof nodemailer;
 
   public constructor(params: Constructor) {
     this._oauth2Service = params.oauth2Service;
@@ -24,11 +25,12 @@ class Mailer {
     this._clientId = params.clientId;
     this._clientSecret = params.clientSecret;
     this._refreshToken = params.refreshToken;
+    this._nodemailer = nodemailer;
   }
 
   private async _createTransport(): Promise<nodemailer.Transporter> {
     const accessToken = await this._oauth2Service.getAccessToken();
-    return nodemailer.createTransport({
+    return this._nodemailer.createTransport({
       service: 'gmail',
       auth: {
         type: 'OAuth2',

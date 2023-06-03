@@ -1,8 +1,6 @@
 import { TEST_LESSON_NAMES } from 'common/constants/constants';
 import {
   CommonKey,
-  ContentType,
-  CreatorType,
   LessonKey,
   LessonRelationMappings,
   LessonToSkillKey,
@@ -17,6 +15,7 @@ import {
 } from 'common/enums/enums';
 import {
   ILessonRecord,
+  IPaginationRequest,
   IPaginationResponse,
   IUserToStudyPlanLessonRecord,
 } from 'common/interfaces/interfaces';
@@ -24,6 +23,7 @@ import {
   CreateLessonRequestDto,
   FinishedLesson,
   LessonDto,
+  LessonFilters,
   LessonResponseDto,
   LessonWithSkills,
   Statistics,
@@ -159,11 +159,9 @@ class Lesson {
 
   public async getPaginated(
     userId: UserDto[CommonKey.ID],
-    offset: number,
-    limit: number,
-    contentType?: ContentType,
-    creatorType?: CreatorType,
+    data: IPaginationRequest & LessonFilters,
   ): Promise<IPaginationResponse<LessonDto>> {
+    const { offset, limit, contentType, creatorType } = data;
     const lessons = await this._LessonModel
       .query()
       .select(
@@ -333,7 +331,7 @@ class Lesson {
       >();
   }
 
-  public insertNewStudyPlanLesson(
+  public insertNewStudyPlanItem(
     userId: UserDto[CommonKey.ID],
     lessonId: LessonDto[CommonKey.ID],
     priority: number,
@@ -346,7 +344,7 @@ class Lesson {
       .execute();
   }
 
-  public getLastStudyPlanLessonPriority(
+  public getLastStudyPlanItemPriority(
     userId: UserDto[CommonKey.ID],
   ): Promise<
     Pick<
@@ -375,7 +373,7 @@ class Lesson {
       .execute();
   }
 
-  public insertFinishedLesson(
+  public insertFinished(
     lessonId: LessonDto[CommonKey.ID],
     data: FinishedLesson,
   ): Promise<ILessonRecord> {
@@ -387,7 +385,7 @@ class Lesson {
       .execute();
   }
 
-  public updateFinishedLesson(
+  public updateFinished(
     lessonId: LessonDto[CommonKey.ID],
     data: FinishedLesson,
   ): Promise<ILessonRecord> {

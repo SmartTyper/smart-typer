@@ -18,6 +18,7 @@ type Constructor = {
 class S3 {
   private _s3: AWSs3;
   private _bucketName: string;
+  private _mime: typeof mime;
 
   public constructor(params: Constructor) {
     const { accessKeyId, secretAccessKey, bucketName, region } = params;
@@ -28,6 +29,7 @@ class S3 {
       region,
     });
     this._bucketName = bucketName;
+    this._mime = mime;
   }
 
   public async doesFileExistInS3(fileName: string): Promise<boolean> {
@@ -53,7 +55,7 @@ class S3 {
   ): Promise<ManagedUpload.SendData> {
     const fileName =
       userId + '.' + Date.now() + path.extname(file.originalname);
-    const fileType = file.path ? mime.lookup(file.path) : file.mimetype;
+    const fileType = file.path ? this._mime.lookup(file.path) : file.mimetype;
 
     if (!fileType) {
       throw new HttpError({
@@ -61,7 +63,7 @@ class S3 {
         message: HttpErrorMessage.INVALID_FILE_TYPE,
       });
     }
-    const type = mime.contentType(fileType);
+    const type = this._mime.contentType(fileType);
 
     const uploadParams = {
       Bucket: this._bucketName,

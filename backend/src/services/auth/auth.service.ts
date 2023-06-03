@@ -149,7 +149,7 @@ class Auth {
     const { userId } = this._tokenService.verifyToken(token);
 
     const hashedPassword = await this._hashService.hash(password);
-    const user = await this._userService.updatePasswordById(userId, {
+    const user = await this._userService.updatePassword(userId, {
       password: hashedPassword,
     });
     return this._userService.getAuthInfoByEmail(user.email);

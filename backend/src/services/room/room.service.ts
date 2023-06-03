@@ -1,4 +1,8 @@
-import { ENV, MAX_USERS_IN_ROOM } from 'common/constants/constants';
+import {
+  CRON_JOB_RULE,
+  ENV,
+  MAX_USERS_IN_ROOM,
+} from 'common/constants/constants';
 import {
   CommonKey,
   HttpCode,
@@ -19,6 +23,7 @@ import {
   socket as socketService,
   user as userService,
   mailer as mailerService,
+  cron as cronService,
 } from 'services/services';
 
 type Constructor = {
@@ -26,6 +31,7 @@ type Constructor = {
   socketService: typeof socketService;
   userService: typeof userService;
   mailerService: typeof mailerService;
+  cronService: typeof cronService;
 };
 
 class Room {
@@ -33,15 +39,28 @@ class Room {
   private _socketService: typeof socketService;
   private _userService: typeof userService;
   private _mailerService: typeof mailerService;
+  private _cronService: typeof cronService;
 
   public constructor(params: Constructor) {
     this._roomRepository = params.roomRepository;
     this._socketService = params.socketService;
     this._userService = params.userService;
     this._mailerService = params.mailerService;
+    this._cronService = params.cronService;
+    this._deleteUnused();
   }
 
-  public async getById(roomId: RoomDto[CommonKey.ID]): Promise<RoomDto> {
+  private async _deleteUnused(): Promise<void> {
+    this._cronService.scheduleJob({
+      rule: CRON_JOB_RULE,
+      callback:
+        this._roomRepository.deleteCreatedBeforeTodayWithoutParticipants.bind(
+          this._roomRepository,
+        ),
+    });
+  }
+
+  public async get(roomId: RoomDto[CommonKey.ID]): Promise<RoomDto> {
     const room = await this._roomRepository.getById(roomId);
 
     if (!room) {
@@ -86,7 +105,7 @@ class Room {
     userId: UserDto[CommonKey.ID],
     payload: SendRoomUrlToEmailsRequestDto,
   ): Promise<void> {
-    const user = await this._userService.getById(userId);
+    const user = await this._userService.get(userId);
     if (!user) {
       throw new HttpError({
         status: HttpCode.NOT_FOUND,
@@ -105,18 +124,8 @@ class Room {
     roomId: RoomDto[CommonKey.ID],
     userId: UserDto[CommonKey.ID],
   ): Promise<void> {
-    const { email, ...participant } =
-      (await this._userService.getById(userId)) ?? {};
-    if (!email) {
-      throw new HttpError({
-        status: HttpCode.NOT_FOUND,
-        message: HttpErrorMessage.NO_USER_WITH_SUCH_ID,
-      });
-    }
-
-    const { currentRoomId } = await this._userService.getUserCurrentRoomId(
-      userId,
-    );
+    const user = await this._userService.get(userId);
+    const { currentRoomId } = await this._userService.getCurrentRoomId(userId);
     if (currentRoomId) {
       throw new HttpError({
         status: HttpCode.CONFLICT,
@@ -150,8 +159,13 @@ class Room {
       });
     }
 
-    await this._userService.updateCurrentRoomByUserId(userId, roomId);
+    await this._userService.updateCurrentRoom(userId, roomId);
 
+    const participant = {
+      id: user.id,
+      nickname: user.nickname,
+      photoUrl: user.photoUrl,
+    };
     this._socketService.io
       .to(String(roomId))
       .emit(SocketEvent.ADD_PARTICIPANT, participant);
@@ -161,18 +175,9 @@ class Room {
     roomId: RoomDto[CommonKey.ID],
     userId: number,
   ): Promise<void> {
-    const { email, ...participant } =
-      (await this._userService.getById(userId)) ?? {};
-    if (!email) {
-      throw new HttpError({
-        status: HttpCode.NOT_FOUND,
-        message: HttpErrorMessage.NO_USER_WITH_SUCH_ID,
-      });
-    }
+    const participant = await this._userService.get(userId);
 
-    const { currentRoomId } = await this._userService.getUserCurrentRoomId(
-      userId,
-    );
+    const { currentRoomId } = await this._userService.getCurrentRoomId(userId);
     if (currentRoomId !== roomId) {
       throw new HttpError({
         status: HttpCode.CONFLICT,
@@ -194,7 +199,7 @@ class Room {
     const { userId: ownerId } =
       (await this._roomRepository.getOwnerIdByPersonalRoomId(roomId)) ?? {};
 
-    await this._userService.updateCurrentRoomByUserId(userId, null);
+    await this._userService.updateCurrentRoom(userId, null);
 
     this._socketService.io
       .to(String(roomId))
