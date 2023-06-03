@@ -11,8 +11,14 @@ import {
   VoidAction,
   VoidCallback,
 } from 'common/types/types';
-import { replaceRouteIdParam } from 'helpers/helpers';
-import { useNavigate, useDispatch, useSelector, useForm } from 'hooks/hooks';
+import { clsx, replaceRouteIdParam } from 'helpers/helpers';
+import {
+  useNavigate,
+  useDispatch,
+  useSelector,
+  useForm,
+  useState,
+} from 'hooks/hooks';
 import { Button, FormField, Modal } from 'components/common/common';
 import { ReactMultiEmail } from 'components/external/external';
 import { validateReactMultiEmail } from 'helpers/helpers';
@@ -31,6 +37,7 @@ type Props = {
 type Emails = SendRoomUrlToEmailsRequestDto[ShareUrlKey.EMAILS];
 
 const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl }) => {
+  const [emailsInputFocused, setEmailsInputFocused] = useState(false);
   const { racingSendRoomUrlToEmails: isRoomUrlSending } = useSelector(
     (state) => state.requests,
   );
@@ -59,7 +66,7 @@ const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl }) => {
   ): JSX.Element => {
     const onClick = (): void => removeEmail(index);
     return (
-      <div data-tag key={index}>
+      <div data-tag key={index} className={styles.email}>
         {email}
         <span data-tag-handle onClick={onClick}>
           x
@@ -75,7 +82,13 @@ const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl }) => {
   };
 
   const handleEmailsInputChange = (emails: Emails): void => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     setValue(ShareUrlKey.EMAILS, emails);
+  };
+
+  const handleToggleEmailsInputFocus = (): void => {
+    setEmailsInputFocused((prev) => !prev);
   };
 
   return (
@@ -111,10 +124,12 @@ const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl }) => {
         <ReactMultiEmail
           placeholder="Enter emails which you want to send link to"
           emails={emails}
-          className={styles.emailsInput}
+          className={clsx(styles.emailsInput, emailsInputFocused && styles.focused)}
           onChange={handleEmailsInputChange}
           validateEmail={validateReactMultiEmail}
           getLabel={handleGetLabel}
+          onFocus={handleToggleEmailsInputFocus}
+          onBlur={handleToggleEmailsInputFocus}
         />
       </FormField>
       <Button
