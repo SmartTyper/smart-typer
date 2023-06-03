@@ -26,6 +26,7 @@ import {
   LessonFilters,
   LessonResponseDto,
   LessonWithSkills,
+  LessonWithSkillsAndContentType,
   Statistics,
   UserDto,
 } from 'common/types/types';
@@ -398,11 +399,14 @@ class Lesson {
   }
 
   public async getSystemWithoutTestWithSkills(): Promise<
-    Omit<LessonWithSkills, LessonKey.CONTENT | LessonKey.NAME>[]
+    LessonWithSkillsAndContentType[]
   > {
     const lessons = await this._LessonModel
       .query()
-      .select(...Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN)
+      .select(
+        ...Lesson.DEFAULT_LESSON_COLUMNS_TO_RETURN,
+        `${TableName.LESSONS}.${LessonKey.CONTENT_TYPE}`,
+      )
       .whereNull(LessonKey.CREATOR_ID)
       .whereNotIn(`${TableName.LESSONS}.${LessonKey.NAME}`, TEST_LESSON_NAMES)
       .withGraphJoined(

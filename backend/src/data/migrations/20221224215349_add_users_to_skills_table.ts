@@ -15,7 +15,7 @@ async function up(knex: Knex): Promise<void> {
       .inTable('users')
       .notNullable()
       .onDelete('CASCADE');
-    table.integer('level').notNullable().defaultTo(0);
+    table.double('level', 3, 2).notNullable().defaultTo(0);
     table.dateTime('created_at').notNullable().defaultTo(knex.fn.now());
     table.dateTime('updated_at').notNullable().defaultTo(knex.fn.now());
   });
