@@ -1,5 +1,9 @@
 import { StatisticsKey } from 'common/enums/enums';
 import { Statistics } from 'common/types/types';
+import {
+  MILLISECONDS_IN_SECOND,
+  SECONDS_IN_MINUTE,
+} from 'smart-typer-shared/common/constants/constants';
 
 type CalculateStatisticsArgs = {
   oldStatistics: Statistics;
@@ -39,22 +43,24 @@ const calculateStatistics = ({
   const lessonDuration =
     ([...timestamps].pop() as number) - ([...timestamps].shift() as number);
 
-  const totalTime = oldTotalTime + lessonDuration;
-  const todayTime = oldTodayTime + lessonDuration;
+  const lessonDurationInMin =
+    lessonDuration / MILLISECONDS_IN_SECOND / SECONDS_IN_MINUTE;
+  const totalTime = oldTotalTime + lessonDurationInMin;
+  const todayTime = oldTodayTime + lessonDurationInMin;
   const totalLessons = oldTotalLessons + 1;
   const todayLessons = oldTodayLessons + 1;
   const topSpeed = Math.max(lessonAverageSpeed, oldTopSpeed);
   const todayTopSpeed = Math.max(lessonAverageSpeed, oldTodayTopSpeed);
 
   return {
-    totalTime: newTotalTime ?? totalTime,
-    todayTime: newTodayTime ?? todayTime,
+    totalTime: Math.floor(newTotalTime ?? totalTime),
+    todayTime: Math.floor(newTodayTime ?? todayTime),
     totalLessons: newTotalLessons ?? totalLessons,
     todayLessons: newTodayLessons ?? todayLessons,
-    topSpeed: newTopSpeed ?? topSpeed,
-    todayTopSpeed: newTodayTopSpeed ?? todayTopSpeed,
-    averageSpeed: newAverageSpeed ?? oldAverageSpeed,
-    todayAverageSpeed: newTodayAverageSpeed ?? oldTodayAverageSpeed,
+    topSpeed: Math.floor(newTopSpeed ?? topSpeed),
+    todayTopSpeed: Math.floor(newTodayTopSpeed ?? todayTopSpeed),
+    averageSpeed: Math.floor(newAverageSpeed ?? oldAverageSpeed),
+    todayAverageSpeed: Math.floor(newTodayAverageSpeed ?? oldTodayAverageSpeed),
   };
 };
 
