@@ -1,4 +1,9 @@
 import {
+  ahp as ahpAlgorithm,
+  bkt as bktAlgorithm,
+  irt as irtAlgorithm,
+} from 'smart-typer-its/algorithms/algorithms';
+import {
   BktPayload,
   BktResult,
   IrtPayload,
@@ -8,29 +13,16 @@ import {
 } from 'common/types/types';
 
 class ITS {
-  public async BKT(payload: BktPayload): Promise<BktResult> {
-    const skills = payload.map(({ skillId, pKnown }) => {
-      const random = Math.floor(Math.random() * (5 - 1) + 1);
-      return {
-        skillId,
-        pKnown: pKnown + random,
-      };
-    });
-    return skills;
+  public async bkt(payload: BktPayload): Promise<BktResult> {
+    return bktAlgorithm(payload);
   }
 
-  public async AHP(payload: AhpPayload): Promise<AhpResult> {
-    const random = Math.floor(Math.random() * payload.lessons.length);
-    const { lessonId } = payload.lessons[random];
-    return { lessonId };
+  public async ahp(payload: AhpPayload): Promise<AhpResult> {
+    return ahpAlgorithm(payload);
   }
 
-  public async IRT(payload: IrtPayload): Promise<IrtResult> {
-    const skills = payload.map(({ skillId }) => {
-      const random = Math.floor(Math.random() * (20 - 10) + 10);
-      return { skillId, pKnown: random };
-    });
-    return skills;
+  public async irt(payload: IrtPayload): Promise<IrtResult> {
+    return irtAlgorithm(payload);
   }
 }
 
