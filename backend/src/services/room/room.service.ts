@@ -1,4 +1,8 @@
-import { ENV, MAX_USERS_IN_ROOM } from 'common/constants/constants';
+import {
+  CRON_JOB_RULE,
+  ENV,
+  MAX_USERS_IN_ROOM,
+} from 'common/constants/constants';
 import {
   CommonKey,
   HttpCode,
@@ -19,6 +23,7 @@ import {
   socket as socketService,
   user as userService,
   mailer as mailerService,
+  cron as cronService,
 } from 'services/services';
 
 type Constructor = {
@@ -26,6 +31,7 @@ type Constructor = {
   socketService: typeof socketService;
   userService: typeof userService;
   mailerService: typeof mailerService;
+  cronService: typeof cronService;
 };
 
 class Room {
@@ -33,12 +39,25 @@ class Room {
   private _socketService: typeof socketService;
   private _userService: typeof userService;
   private _mailerService: typeof mailerService;
+  private _cronService: typeof cronService;
 
   public constructor(params: Constructor) {
     this._roomRepository = params.roomRepository;
     this._socketService = params.socketService;
     this._userService = params.userService;
     this._mailerService = params.mailerService;
+    this._cronService = params.cronService;
+    this._deleteUnused();
+  }
+
+  private async _deleteUnused(): Promise<void> {
+    this._cronService.scheduleJob({
+      rule: CRON_JOB_RULE,
+      callback:
+        this._roomRepository.deleteCreatedBeforeTodayWithoutParticipants.bind(
+          this._roomRepository,
+        ),
+    });
   }
 
   public async getById(roomId: RoomDto[CommonKey.ID]): Promise<RoomDto> {

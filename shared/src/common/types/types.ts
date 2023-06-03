@@ -10,3 +10,4 @@ export * from './rating/rating.type';
 export * from './lesson/lesson';
 export * from './study-plan/study-plan';
 export * from './its/its';
+export * from './function/function';
