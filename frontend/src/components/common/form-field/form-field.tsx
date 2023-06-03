@@ -32,6 +32,7 @@ type Props = {
   inputRef?: RefObject<HTMLInputElement>;
   hidden?: boolean;
   hasCopyButton?: boolean;
+  children?: JXS.Element;
 };
 
 const FormField: FC<Props> = ({
@@ -45,6 +46,7 @@ const FormField: FC<Props> = ({
   inputClassName,
   value,
   inputRef,
+  children,
   readOnly = false,
   hidden = false,
   hasCopyButton = false,
@@ -91,6 +93,8 @@ const FormField: FC<Props> = ({
             className={inputClassName}
           />
         );
+      case FormFieldType.CUSTOM:
+        return children;
       default:
         return (
           <Input
@@ -115,7 +119,12 @@ const FormField: FC<Props> = ({
       controlId={label}
     >
       <RBForm.Label className={styles.label}>{label}</RBForm.Label>
-      <div className={clsx(styles.inputRow, hasCopyButton  && styles.withCopyButton)}>
+      <div
+        className={clsx(
+          styles.inputRow,
+          hasCopyButton && styles.withCopyButton,
+        )}
+      >
         {renderFormField(type)}
         {hasCopyButton && (
           <Button onClick={handleCopy} className={styles.copyButton}>

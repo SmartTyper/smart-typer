@@ -6,6 +6,7 @@ enum FormFieldType {
   CHECKBOX = 'checkbox',
   SLIDER = 'slider',
   FILE = 'file',
+  CUSTOM = 'custom',
 }
 
 export { FormFieldType };

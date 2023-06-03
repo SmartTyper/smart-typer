@@ -11,7 +11,7 @@ import {
   VoidAction,
   VoidCallback,
 } from 'common/types/types';
-import { clsx, replaceRouteIdParam } from 'helpers/helpers';
+import { replaceRouteIdParam } from 'helpers/helpers';
 import { useNavigate, useDispatch, useSelector, useForm } from 'hooks/hooks';
 import { Button, FormField, Modal } from 'components/common/common';
 import { ReactMultiEmail } from 'components/external/external';
@@ -39,11 +39,14 @@ const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl }) => {
 
   const {
     handleSubmit,
-    register: { onChange },
+    setValue,
+    watch,
     formState: { errors },
   } = useForm<SendRoomUrlToEmailsRequestDto>(sendShareRoomUrlSchema, {
     [ShareUrlKey.URL]: shareRoomUrl,
   });
+
+  const emails = watch(ShareUrlKey.EMAILS);
 
   const handleSend = (data: SendRoomUrlToEmailsRequestDto): void => {
     dispatch(racingActions.sendRoomUrlToEmails(data));
@@ -71,6 +74,10 @@ const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl }) => {
     navigate(route);
   };
 
+  const handleEmailsInputChange = (emails: Emails): void => {
+    setValue(ShareUrlKey.EMAILS, emails);
+  };
+
   return (
     <Modal
       isVisible={isVisible}
@@ -94,24 +101,28 @@ const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl }) => {
         type={FormFieldType.TEXT}
         className={styles.shareRoomUrlField}
       />
-      <div className={clsx(styles.emailContainer)}>
+      <FormField
+        label={FormFieldLabel.EMAILS}
+        type={FormFieldType.CUSTOM}
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        error={errors.emails}
+      >
         <ReactMultiEmail
           placeholder="Enter emails which you want to send link to"
           emails={emails}
           className={styles.emailsInput}
-          onChange={onChange}
+          onChange={handleEmailsInputChange}
           validateEmail={validateReactMultiEmail}
           getLabel={handleGetLabel}
         />
-        <div>
-          <Button
-            onClick={handleSubmit(handleSend)}
-            className={styles.sendButton}
-            isDisabled={isRoomUrlSending}
-            label="Send"
-          />
-        </div>
-      </div>
+      </FormField>
+      <Button
+        onClick={handleSubmit(handleSend)}
+        className={styles.sendButton}
+        isDisabled={isRoomUrlSending}
+        label="Send"
+      />
     </Modal>
   );
 };

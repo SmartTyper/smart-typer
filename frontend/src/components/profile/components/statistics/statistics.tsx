@@ -40,7 +40,7 @@ const Statistics: FC<Props> = ({ statistics }) => {
           <p className={styles.statisticValue}>{totalLessons}</p>
         </Card>
         <Card
-          title="Top speed (wpm)"
+          title="Top speed (spm)"
           color={CardHeaderColor.BLUE}
           size={CardSize.SMALL}
           centeredTitle
@@ -48,7 +48,7 @@ const Statistics: FC<Props> = ({ statistics }) => {
           <p className={styles.statisticValue}>{topSpeed}</p>
         </Card>
         <Card
-          title="Average speed (wpm)"
+          title="Average speed (spm)"
           color={CardHeaderColor.PINK}
           size={CardSize.SMALL}
           centeredTitle
@@ -75,7 +75,7 @@ const Statistics: FC<Props> = ({ statistics }) => {
           <p className={styles.statisticValue}>{todayLessons}</p>
         </Card>
         <Card
-          title="Top speed (wpm)"
+          title="Top speed (spm)"
           color={CardHeaderColor.BLUE}
           size={CardSize.SMALL}
           centeredTitle
@@ -83,7 +83,7 @@ const Statistics: FC<Props> = ({ statistics }) => {
           <p className={styles.statisticValue}>{todayTopSpeed}</p>
         </Card>
         <Card
-          title="Average speed (wpm)"
+          title="Average speed (spm)"
           color={CardHeaderColor.PINK}
           size={CardSize.SMALL}
           centeredTitle

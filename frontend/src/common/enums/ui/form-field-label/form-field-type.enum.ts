@@ -6,6 +6,7 @@ enum FormFieldLabel {
   ROOM_NAME = 'Room name',
   IS_PRIVATE = 'Is private',
   LINK_TO_SHARE = 'Link to share',
+  EMAILS = 'Emails',
   GAME_TIME = 'Game time',
   COUNTDOWN_BEFORE_GAME = 'Countdown before game',
   HAS_EMAIL_NOTIFICATIONS = 'Email notifications',
