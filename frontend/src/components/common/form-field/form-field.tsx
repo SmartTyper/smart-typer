@@ -32,7 +32,7 @@ type Props = {
   inputRef?: RefObject<HTMLInputElement>;
   hidden?: boolean;
   hasCopyButton?: boolean;
-  children?: JXS.Element;
+  children?: JSX.Element;
 };
 
 const FormField: FC<Props> = ({
@@ -60,7 +60,7 @@ const FormField: FC<Props> = ({
     }
   };
 
-  const renderFormField = (type: FormFieldType): JSX.Element => {
+  const renderFormField = (type: FormFieldType): JSX.Element | null => {
     switch (type) {
       case FormFieldType.PASSWORD:
         return (
@@ -94,7 +94,7 @@ const FormField: FC<Props> = ({
           />
         );
       case FormFieldType.CUSTOM:
-        return children;
+        return children ?? null;
       default:
         return (
           <Input
@@ -127,9 +127,12 @@ const FormField: FC<Props> = ({
       >
         {renderFormField(type)}
         {hasCopyButton && (
-          <Button onClick={handleCopy} className={styles.copyButton}>
-            <i className={isCopied ? 'bi bi-check2' : 'bi bi-clipboard'}></i>
-          </Button>
+          <Button
+            onClick={handleCopy}
+            className={styles.copyButton}
+            iconClassName={styles.copyIcon}
+            iconName={isCopied ? 'bi bi-check2' : 'bi bi-clipboard'}
+          />
         )}
       </div>
       {!!error && (

@@ -1,20 +1,24 @@
 @import 'src/assets/css/variables';
 
-.emailContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 30rem;
+.sendButton {
+  width: 10rem;
+  margin-top: 1rem;
+}
 
-  .sendButton {
-    width: 10rem;
-    margin-top: 1rem;
-  }
+.email {
+  font-size: $middle-font-size !important;
+  color: $dark-blue !important;
+  background-color: $light-grey !important;
+}
 
-  .emailsInput {
-    height: 10rem;
-    width: 100%;
-    font-size: 1.2rem;
+.emailsInput {
+  border: $main-border;
+  border-radius: 0;
+
+  &.focused {
+    color: $dark-blue !important;
+    border-color: $main-green !important;
+    box-shadow: $input-shadow;
   }
 }
 
