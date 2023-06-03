@@ -116,7 +116,7 @@ const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl }) => {
       <FormField
         label={FormFieldLabel.EMAILS}
         type={FormFieldType.CUSTOM}
-        note={<span>* correctly entered emails will be highlighted grey color</span>}
+        note={<span>* correctly entered emails are greyed out</span>}
       >
         <ReactMultiEmail
           placeholder="Enter emails which you want to send link to"
