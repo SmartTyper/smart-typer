@@ -169,8 +169,8 @@ class Lesson {
     const isLastTestLesson = lesson.name === [...TEST_LESSON_NAMES].pop();
 
     const resultSkillLevels = isTestLesson
-      ? await this._itsService.IRT(skillLevelsPayload)
-      : await this._itsService.BKT(skillLevelsPayload);
+      ? await this._itsService.irt(skillLevelsPayload)
+      : await this._itsService.bkt(skillLevelsPayload);
 
     await this._userService.updateSkillLevels(
       userId,
@@ -227,10 +227,11 @@ class Lesson {
         {
           lastFinishedLessons: lastFinishedLessonIds,
           systemLessons,
+          skillLevels: currentSkillLevels,
         },
       );
 
-      const { lessonId } = await this._itsService.AHP(
+      const { lessonId } = await this._itsService.ahp(
         nextStudyPlanLessonPayload,
       );
 

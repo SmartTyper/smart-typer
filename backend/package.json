@@ -54,6 +54,7 @@
     "pg": "8.7.3",
     "pino": "7.0.0-rc.1",
     "smart-typer-shared": "file:../shared/build",
+    "smart-typer-its": "file:../its/build",
     "socket.io": "4.1.3"
   }
 }

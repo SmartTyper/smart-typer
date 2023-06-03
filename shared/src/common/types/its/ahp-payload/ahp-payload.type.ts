@@ -1,16 +1,22 @@
 type AhpPayload = {
-  lessons: Lesson[];
+  lessons: AhpLesson[];
   lastFinishedLessonIds: number[];
+  skillLevels: AhpSkillLevels[];
 };
 
-type CountInLesson = {
+type SkillCountInLesson = {
   skillId: number;
   count: number;
 };
 
-type Lesson = {
+type AhpLesson = {
   lessonId: number;
-  skillsCountInLesson: CountInLesson[];
+  skillsCountInLesson: SkillCountInLesson[];
+};
+
+type AhpSkillLevels = {
+  id: number;
+  level: number;
 };
 
 export type { AhpPayload };
