@@ -16,7 +16,9 @@ type Lessons = {
 const calculateAlternativePairwiseComparisonMatrix = (
   lessons: Lessons,
 ): PairwiseComparisonMatrix => {
-  const matrix = [] as PairwiseComparisonMatrix;
+  const matrix = new Array(lessons.length).fill(
+    new Array(lessons.length).fill(0),
+  ) as PairwiseComparisonMatrix;
 
   for (let i = 0; i < lessons.length; i++) {
     const firstLesson = lessons[i];
@@ -26,13 +28,17 @@ const calculateAlternativePairwiseComparisonMatrix = (
     );
     for (let j = 0; j < lessons.length; j++) {
       const secondLesson = lessons[i];
-      const secondPriorityCoefficient = calculatePriorityCoefficient(
-        secondLesson.level,
-        secondLesson.contentType,
-      );
-      matrix[i][j] =
-        (firstLesson.count * firstPriorityCoefficient) /
-        (secondLesson.count / secondPriorityCoefficient);
+      if (secondLesson.count === 0) {
+        matrix[i][j] = 0;
+      } else {
+        const secondPriorityCoefficient = calculatePriorityCoefficient(
+          secondLesson.level,
+          secondLesson.contentType,
+        );
+        matrix[i][j] =
+          (firstLesson.count * firstPriorityCoefficient) /
+          (secondLesson.count / secondPriorityCoefficient);
+      }
     }
   }
 

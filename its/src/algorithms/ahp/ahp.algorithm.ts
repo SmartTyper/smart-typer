@@ -1,7 +1,9 @@
 import math from 'mathjs';
 import { AhpPayload, AhpResult } from 'common/types/types';
 import {
+  calculateAcceptableAlternatives,
   calculateAlternativePairwiseComparisonMatrices,
+  calculateBayesianLocalPriorities,
   calculateCriterionPairwiseComparisonMatrix,
   calculateGlobalPriorities,
   calculateLocalPriorities,
@@ -35,27 +37,66 @@ const ahp = (payload: AhpPayload): AhpResult => {
     criterionLocalPriorities,
     transposedAlternativeLocalPriorityMatrix,
   );
+  const globalPrioritiesWithIds = globalPriorities
+    .map((value, index) => ({
+      value,
+      lessonId: lessons[index].lessonId,
+    }))
+    .sort((a, b) => a.value - b.value);
 
-  const bestLessonIndex = globalPriorities.reduce(
-    (indexOfMaxValue, value, indexOfValue) =>
-      value > globalPriorities[indexOfMaxValue]
-        ? indexOfValue
-        : indexOfMaxValue,
-    0,
-  );
-
+  const bestLesson = [...globalPrioritiesWithIds].pop()!;
   const hasAcceptableAdvantage = checkAcceptableAdvantage(
-    globalPriorities,
-    bestLessonIndex,
+    globalPrioritiesWithIds,
   );
-
   if (hasAcceptableAdvantage) {
-    const { lessonId } = lessons[bestLessonIndex];
-
+    const { lessonId } = bestLesson;
     return { lessonId };
   }
 
-  //
+  const acceptableAlternatives = calculateAcceptableAlternatives(
+    globalPrioritiesWithIds,
+  );
+
+  const acceptableLocalPriorityMatrix = transposedAlternativeLocalPriorityMatrix
+    .map((row, index) => ({
+      row,
+      lessonId: lessons[index].lessonId,
+    }))
+    .filter(({ lessonId }) =>
+      acceptableAlternatives.find((priority) => priority.lessonId === lessonId),
+    )
+    .map(({ row }) => row);
+
+  const criterionLocalPrioritiesWithIds = criterionLocalPriorities
+    .map((value, index) => ({
+      value,
+      skillId: skillLevels[index].skillId,
+    }))
+    .sort((a, b) => a.value - b.value);
+
+  const lastFinishedLessons = lessons.filter(({ lessonId }) =>
+    lastFinishedLessonIds.includes(lessonId),
+  );
+
+  const bayesianCriterionLocalPriorities = calculateBayesianLocalPriorities(
+    criterionLocalPrioritiesWithIds,
+    lastFinishedLessons,
+  );
+
+  const bayesianGlobalPriorities = calculateGlobalPriorities(
+    bayesianCriterionLocalPriorities,
+    acceptableLocalPriorityMatrix,
+  );
+  const bayesianGlobalPrioritiesWithIds = bayesianGlobalPriorities
+    .map((value, index) => ({
+      value,
+      lessonId: lessons[index].lessonId,
+    }))
+    .sort((a, b) => a.value - b.value);
+
+  const bayesianBestLesson = [...bayesianGlobalPrioritiesWithIds].pop()!;
+  const { lessonId } = bayesianBestLesson;
+  return { lessonId };
 };
 
 export { ahp };

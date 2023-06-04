@@ -1,5 +1,5 @@
 {
-  "name": "shared",
+  "name": "its",
   "private": true,
   "version": "0.0.1",
   "engines": {
@@ -13,6 +13,7 @@
     "build": "npm run build:ts && cp package.json package-lock.json build"
   },
   "devDependencies": {
+    "@types/mathjs": "9.4.2",
     "tsc-alias": "1.8.2",
     "typescript": "4.3.5"
   },

@@ -17,7 +17,7 @@ const testLessonsData = [
   },
   {
     name: 'System Test Lesson 3',
-    content_type: 'words',
+    content_type: 'sentences',
     content:
       // eslint-disable-next-line
       "Establishing meaningful relationships demands dedication, understanding, sympathy, and unwavering commitment. Frustrations occasionally surface, especially during conflicting situations. Consequently, nurturing connections requires frequent communication, patience, resilience, and considerable tolerance. In business environments, administrators must constantly cultivate innovation. Motivating employees stimulates productivity, essentially enhancing corporate performance. Nevertheless, obtaining equilibrium between employee satisfaction and enterprise objectives entails strategic management techniques. Simultaneously, educational institutions should emphasize comprehensive learning approaches. Methodologies involving interactive learning often facilitate cognitive development. Conversely, conventional teaching methods might stagnate students' curiosity, deterring intellectual growth. Therefore, progressive education policies can ultimately augment societal development. Meanwhile, technological advancements continue revolutionizing various industries. Artificial intelligence, blockchain technology, and cloud computing have drastically transformed business landscapes. Unquestionably, technological evolution will persistently facilitate human advancement, redefining our everyday experiences. The above examples illustrate the importance of complex words in enhancing clarity, detail, and depth in written content.",

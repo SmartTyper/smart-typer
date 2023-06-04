@@ -17,9 +17,10 @@ const calculateAlternativePairwiseComparisonMatrices = (
       ({ lessonId, contentType, skillsCountInLesson }) => ({
         lessonId,
         contentType,
-        count: skillsCountInLesson.find(
-          (skillCount) => skillCount.skillId === skillLevel.skillId,
-        )!.count,
+        count:
+          skillsCountInLesson.find(
+            (skillCount) => skillCount.skillId === skillLevel.skillId,
+          )?.count ?? 0,
         level: skillLevel.level,
       }),
     );
