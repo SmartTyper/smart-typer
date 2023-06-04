@@ -4,7 +4,7 @@ const calculatePriorityCoefficient = (
   level: number,
   contentType: ContentType,
 ): number => {
-  if (level <= 50) {
+  if (level <= 0.5) {
     switch (contentType) {
       case ContentType.SYMBOLS:
         return 3;
@@ -13,7 +13,7 @@ const calculatePriorityCoefficient = (
       case ContentType.SENTENCES:
         return 1;
     }
-  } else if (level <= 75) {
+  } else if (level <= 0.75) {
     switch (contentType) {
       case ContentType.SYMBOLS:
         return 1;

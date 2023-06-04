@@ -10,3 +10,6 @@ export * from './calculate-global-priorities/calculate-global-priorities.helper'
 export * from './check-acceptable-advantage/check-acceptable-advantage.helper';
 export * from './calculate-acceptable-alternatives/calculate-acceptable-alternatives.helper';
 export * from './calculate-bayesian-local-priorities/calculate-bayesian-local-priorities.helper';
+export * from './calculate-similarity-criterion/calculate-similarity-criterion.helper';
+export * from './check-consistency-index/check-consistency-index.helper';
+export * from './calculate-lambda-max/calculate-lambda-max.helper';

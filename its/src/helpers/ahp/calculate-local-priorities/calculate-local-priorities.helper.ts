@@ -1,4 +1,4 @@
-import math from 'mathjs';
+import * as math from 'mathjs';
 import { PairwiseComparisonMatrix, PrioritiesVector } from 'common/types/types';
 
 const calculateLocalPriorities = (

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { its, lesson as lessonService } from 'services/services';
+import { lesson as lessonService } from 'services/services';
 import { Abstract } from '../abstract/abstract.route';
 import { IRequestWithUser } from 'common/interfaces/interfaces';
 import { ContentType, CreatorType } from 'common/enums/enums';
@@ -30,13 +30,6 @@ class Lesson extends Abstract {
 
   public getRoutes(): Router {
     const router: Router = Router();
-
-    router.get(
-      '/debug',
-      this._run(() => {
-        return its.ahpTest();
-      }),
-    );
 
     router.post(
       '/',

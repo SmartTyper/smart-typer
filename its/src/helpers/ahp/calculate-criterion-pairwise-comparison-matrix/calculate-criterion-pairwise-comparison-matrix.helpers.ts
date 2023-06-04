@@ -3,9 +3,9 @@ import { AhpSkillLevel, PairwiseComparisonMatrix } from 'common/types/types';
 const calculateCriterionPairwiseComparisonMatrix = (
   skills: AhpSkillLevel[],
 ): PairwiseComparisonMatrix => {
-  const matrix = new Array(skills.length).fill(
-    new Array(skills.length).fill(0),
-  ) as PairwiseComparisonMatrix;
+  const matrix = new Array(skills.length)
+    .fill(0)
+    .map(() => new Array(skills.length).fill(0)) as PairwiseComparisonMatrix;
 
   for (let i = 0; i < skills.length; i++) {
     const firstSkillLevel = skills[i].level;
