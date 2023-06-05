@@ -44,13 +44,10 @@ const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const {
-    handleSubmit,
-    setValue,
-    watch,
-  } = useForm<SendRoomUrlToEmailsRequestDto>(sendShareRoomUrlSchema, {
-    [ShareUrlKey.URL]: shareRoomUrl,
-  });
+  const { handleSubmit, setValue, watch } =
+    useForm<SendRoomUrlToEmailsRequestDto>(sendShareRoomUrlSchema, {
+      [ShareUrlKey.URL]: shareRoomUrl,
+    });
 
   const emails = watch(ShareUrlKey.EMAILS);
 
@@ -81,9 +78,7 @@ const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl }) => {
   };
 
   const handleEmailsInputChange = (emails: Emails): void => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    setValue(ShareUrlKey.EMAILS, emails);
+    setValue(ShareUrlKey.EMAILS as keyof SendRoomUrlToEmailsRequestDto, emails);
   };
 
   const handleToggleEmailsInputFocus = (): void => {
@@ -121,7 +116,10 @@ const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl }) => {
         <ReactMultiEmail
           placeholder="Enter emails which you want to send link to"
           emails={emails}
-          className={clsx(styles.emailsInput, emailsInputFocused && styles.focused)}
+          className={clsx(
+            styles.emailsInput,
+            emailsInputFocused && styles.focused,
+          )}
           onChange={handleEmailsInputChange}
           validateEmail={validateReactMultiEmail}
           getLabel={handleGetLabel}
