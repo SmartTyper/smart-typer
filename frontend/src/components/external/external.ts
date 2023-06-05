@@ -5,6 +5,8 @@ import ReactSelect from 'react-select';
 import ReactInfiniteScroll from 'react-infinite-scroll-component';
 import 'react-image-crop/dist/ReactCrop.css';
 
+export { Bar as RCBar } from 'react-chartjs-2';
+
 export {
   Dropdown as RBDropdown,
   Spinner as RBSpinner,

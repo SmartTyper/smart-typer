@@ -86,22 +86,17 @@ const Profile: FC = () => {
   useEffect(() => {
     if (user) {
       const { email, nickname, photoUrl } = user;
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      setValue(UserKey.PHOTO_URL, photoUrl);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      setValue(UserKey.NICKNAME, nickname);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      setValue(UserKey.EMAIL, email);
+      setValue(UserKey.PHOTO_URL as keyof UserDto, photoUrl);
+      setValue(UserKey.NICKNAME as keyof UserDto, nickname);
+      setValue(UserKey.EMAIL as keyof UserDto, email);
     }
   }, [user]);
 
   const handleDeleteAvatar = (): void => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    setValue(UserKey.PHOTO_URL, null, { shouldDirty: true, shouldTouch: true });
+    setValue(UserKey.PHOTO_URL as keyof UserDto, null, {
+      shouldDirty: true,
+      shouldTouch: true,
+    });
     setSelectedFile(null);
   };
 
@@ -158,14 +153,12 @@ const Profile: FC = () => {
     setIsCropModalVisible(false);
   };
 
-  const handdleUpdateAvatar = async (
+  const handleUpdateAvatar = async (
     croppedFile: File,
     croppedFileUrl: string,
   ): Promise<void> => {
     setSelectedFile(croppedFile);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    setValue(UserKey.PHOTO_URL, croppedFileUrl, {
+    setValue(UserKey.PHOTO_URL as keyof UserDto, croppedFileUrl, {
       shouldDirty: true,
       shouldTouch: true,
     });
@@ -288,7 +281,7 @@ const Profile: FC = () => {
         isVisible={isCropModalVisible}
         file={selectedFile}
         onClose={handleCropModalClose}
-        onUpdateAvatar={handdleUpdateAvatar}
+        onUpdateAvatar={handleUpdateAvatar}
       />
     </>
   );

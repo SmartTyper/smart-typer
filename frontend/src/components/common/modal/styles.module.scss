@@ -1,33 +1,37 @@
 @import 'src/assets/css/variables';
 
-.modal {
-  padding: 0 1rem 1rem 1rem;
-  border-radius: 0 !important;
-  margin: 0 auto;
+.dialog {
+  max-width: none !important;
 
-  .title {
-    font-size: $large-font-size !important;
-  }
+  .modal {
+    padding: 0 1rem 1rem 1rem;
+    border-radius: 0 !important;
+    margin: 0 auto;
 
-  .button {
-    font-size: $middle-font-size;
-    height: 3.5rem;
-    min-width: 7rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+    .title {
+      font-size: $large-font-size !important;
+    }
 
-  .submitButton {
-    background-color: $main-green;
-    color: $white;
-  }
+    .button {
+      font-size: $middle-font-size;
+      height: 3.5rem;
+      min-width: 7rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-  .cancelButton {
-    border: $main-border;
-  }
+    .submitButton {
+      background-color: $main-green;
+      color: $white;
+    }
 
-  button:focus {
-    box-shadow: none !important;
+    .cancelButton {
+      border: $main-border;
+    }
+
+    button:focus {
+      box-shadow: none !important;
+    }
   }
 }

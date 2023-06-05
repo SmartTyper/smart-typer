@@ -1,14 +1,14 @@
-import { CommonKey, LessonKey, SkillKey } from 'common/enums/enums';
+import { CommonKey, SkillKey } from 'common/enums/enums';
 import {
   AhpPayload,
   LessonDto,
-  LessonWithSkills,
+  LessonWithSkillsAndContentType,
   Skill,
 } from 'common/types/types';
 
 type MapLessonsToNextStudyPlanLessonPayload = {
   lastFinishedLessons: Pick<LessonDto, CommonKey.ID>[];
-  systemLessons: Omit<LessonWithSkills, LessonKey.CONTENT | LessonKey.NAME>[];
+  systemLessons: LessonWithSkillsAndContentType[];
   skillLevels: Omit<Skill, SkillKey.NAME>[];
 };
 
@@ -24,9 +24,14 @@ const mapLessonsToNextStudyPlanLessonPayload = ({
       skillId: skill.id,
       count: skill.count,
     })),
+    contentType: systemLesson.contentType,
+  }));
+  const mappedSkillLevels = skillLevels.map(({ id, level }) => ({
+    skillId: id,
+    level,
   }));
 
-  return { lastFinishedLessonIds, lessons, skillLevels };
+  return { lastFinishedLessonIds, lessons, skillLevels: mappedSkillLevels };
 };
 
 export { mapLessonsToNextStudyPlanLessonPayload };

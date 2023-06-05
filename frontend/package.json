@@ -16,6 +16,7 @@
   "dependencies": {
     "@hookform/resolvers": "3.1.0",
     "@reduxjs/toolkit": "1.8.3",
+    "ar.js": "2.0.8",
     "bootstrap": "5.2.3",
     "clsx": "1.2.1",
     "lodash": "4.17.21",
@@ -23,6 +24,7 @@
     "react": "18.2.0",
     "react-avatar": "5.0.3",
     "react-bootstrap": "2.5.0",
+    "react-chartjs-2": "5.2.0",
     "react-dom": "18.2.0",
     "react-google-button": "0.7.2",
     "react-hook-form": "7.43.9",

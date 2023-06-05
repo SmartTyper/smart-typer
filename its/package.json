@@ -1,5 +1,5 @@
 {
-  "name": "shared",
+  "name": "its",
   "private": true,
   "version": "0.0.1",
   "engines": {
@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "lodash": "4.17.21",
+    "mathjs": "11.8.0",
     "smart-typer-shared": "file:../shared/build"
   }
 }

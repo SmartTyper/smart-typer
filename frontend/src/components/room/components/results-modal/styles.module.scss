@@ -1,11 +1,33 @@
-.modalBody {
-  height: 25rem;
+.resultsModal {
+  width: 40vw !important;
 
-  .chart {
-    width: 65%;
-  }
+  .modalBody {
+    font-size: 1.5rem !important;
+    display: flex;
+    align-items: center;
+    height: 25rem;
+    width: 100%;
 
-  .participantsRating {
-    width: 35%;
+    .chart {
+      width: 70%;
+    }
+
+    .participantsRating {
+      width: 30%;
+
+      .participantsProfiles {
+        display: flex;
+        align-items: center;
+        margin: 1rem 0;
+
+        .ratingNumeration {
+          margin: 0 1rem;
+        }
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
   }
 }
