@@ -16,7 +16,6 @@ import {
 import { HttpError } from 'exceptions/exceptions';
 import { ActionType } from './action-type';
 import { handleExternalError } from 'helpers/helpers';
-import { DEFAULT_LESSONS_OFFSET } from 'common/constants/constants';
 
 const logIn = createAsyncThunk(
   ActionType.LOG_IN,
@@ -39,9 +38,7 @@ const logIn = createAsyncThunk(
       localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
       dispatch(settingsActions.setAll(settings));
       dispatch(racingActions.setPersonalRoom(personalRoom));
-      dispatch(
-        lessonsActions.loadMoreLessons({ offset: DEFAULT_LESSONS_OFFSET }),
-      );
+      dispatch(lessonsActions.loadLessons());
       return user;
     } catch (error) {
       const isHttpError = error instanceof HttpError;
@@ -85,9 +82,7 @@ const register = createAsyncThunk(
       localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
       dispatch(settingsActions.setAll(settings));
       dispatch(racingActions.setPersonalRoom(personalRoom));
-      dispatch(
-        lessonsActions.loadMoreLessons({ offset: DEFAULT_LESSONS_OFFSET }),
-      );
+      dispatch(lessonsActions.loadLessons());
       return user;
     } catch (error) {
       const isHttpError = error instanceof HttpError;
@@ -150,9 +145,7 @@ const logInGoogle = createAsyncThunk(
     localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
     dispatch(settingsActions.setAll(settings));
     dispatch(racingActions.setPersonalRoom(personalRoom));
-    dispatch(
-      lessonsActions.loadMoreLessons({ offset: DEFAULT_LESSONS_OFFSET }),
-    );
+    dispatch(lessonsActions.loadLessons());
     return user;
   },
 );
@@ -184,9 +177,7 @@ const loadCurrentUser = createAsyncThunk(
       localStorageService.setItem(StorageKey.REFRESH_TOKEN, newRefreshToken);
       dispatch(settingsActions.setAll(settings));
       dispatch(racingActions.setPersonalRoom(personalRoom));
-      dispatch(
-        lessonsActions.loadMoreLessons({ offset: DEFAULT_LESSONS_OFFSET }),
-      );
+      dispatch(lessonsActions.loadLessons());
       return user;
     }
   },
@@ -242,9 +233,7 @@ const setPassword = createAsyncThunk(
     localStorageService.setItem(StorageKey.REFRESH_TOKEN, refreshToken);
     dispatch(settingsActions.setAll(settings));
     dispatch(racingActions.setPersonalRoom(personalRoom));
-    dispatch(
-      lessonsActions.loadMoreLessons({ offset: DEFAULT_LESSONS_OFFSET }),
-    );
+    dispatch(lessonsActions.loadLessons());
     notificationService.success(NotificationMessage.NEW_PASSWORD_SAVED);
     return user;
   },

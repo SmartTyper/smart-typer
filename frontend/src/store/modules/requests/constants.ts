@@ -41,7 +41,9 @@ const REQUEST_ACTIONS_TYPES = [
   LessonsActionType.DELETE,
   LessonsActionType.LOAD_CURRENT,
   LessonsActionType.LOAD_MORE_LESSONS,
+  LessonsActionType.LOAD_LESSONS,
   LessonsActionType.LOAD_STUDY_PLAN,
+  LessonsActionType.SEND_LESSON_RESULT,
 ] as const;
 
 const actions = {

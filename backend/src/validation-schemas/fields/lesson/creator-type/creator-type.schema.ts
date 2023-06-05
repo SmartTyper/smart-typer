@@ -1,11 +1,11 @@
 import { yup } from 'dependencies/dependencies';
-import { ContentType, ValidationErrorMessage } from 'common/enums/enums';
+import { CreatorType, ValidationErrorMessage } from 'common/enums/enums';
 
 const creatorTypeSchema = yup
   .string()
   .trim()
   .oneOf(
-    Object.values(ContentType),
+    Object.values(CreatorType),
     ValidationErrorMessage.INVALID_CONTENT_TYPE,
   );
 

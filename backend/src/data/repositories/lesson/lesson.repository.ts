@@ -1,6 +1,7 @@
 import { TEST_LESSON_NAMES } from 'common/constants/constants';
 import {
   CommonKey,
+  CreatorType,
   LessonKey,
   LessonRelationMappings,
   LessonToSkillKey,
@@ -175,8 +176,12 @@ class Lesson {
         }
       })
       .andWhere((builder) => {
-        if (creatorType) {
-          builder.where({ creatorType });
+        if (creatorType === CreatorType.SYSTEM) {
+          builder.whereNull(LessonKey.CREATOR_ID);
+        } else if (creatorType === CreatorType.OTHER_USERS) {
+          builder.whereNot({ [LessonKey.CREATOR_ID]: userId });
+        } else if (creatorType === CreatorType.CURRENT_USER) {
+          builder.where({ [LessonKey.CREATOR_ID]: userId });
         }
       })
       .withGraphJoined(

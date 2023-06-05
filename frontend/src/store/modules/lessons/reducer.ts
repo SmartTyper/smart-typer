@@ -25,9 +25,11 @@ const { reducer } = createSlice({
     const {
       create,
       loadMoreLessons,
+      loadLessons,
       addLesson,
       loadCurrent,
       resetAll,
+      resetStudyPlan,
       loadStudyPlan,
       resetCurrent,
       addMisclick,
@@ -41,6 +43,10 @@ const { reducer } = createSlice({
         state.lessons = [...state.lessons, ...action.payload.data];
         state.allLessonsCount = action.payload.count;
       })
+      .addCase(loadLessons.fulfilled, (state, action) => {
+        state.lessons = action.payload.data;
+        state.allLessonsCount = action.payload.count;
+      })
       .addCase(resetAll, (state) => {
         Object.assign(state, initialState);
       })
@@ -49,6 +55,9 @@ const { reducer } = createSlice({
       })
       .addCase(resetCurrent, (state) => {
         state.currentLesson = null;
+      })
+      .addCase(resetStudyPlan, (state) => {
+        state.studyPlan = [];
       })
       .addCase(addMisclick, (state, action) => {
         const index = action.payload;

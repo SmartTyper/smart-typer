@@ -1,0 +1,35 @@
+@import 'src/assets/css/variables';
+
+.label {
+  font-size: $small-font-size;
+  border-radius: 2.5rem;
+  padding: 0 0.5rem;
+
+  &.blue {
+    background: $blue-accent;
+  }
+
+  &.orange {
+    background: $orange-accent;
+  }
+
+  &.yellow {
+    background: $yellow-accent;
+  }
+
+  &.pink {
+    background: $pink-accent;
+  }
+
+  &.green {
+    background: $green-accent;
+  }
+
+  &.violet {
+    background: $violet-accent;
+  }
+
+  &.grey {
+    background: $main-grey;
+  }
+}

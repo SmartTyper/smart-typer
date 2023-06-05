@@ -3,8 +3,6 @@ env:
 
 root: true
 
-parser: '@typescript-eslint/parser'
-
 parserOptions:
   sourceType: module
   project: ./tsconfig.json
@@ -57,3 +55,5 @@ rules:
     - allowSingleExtends: true
   '@typescript-eslint/no-explicit-any':
     - error
+  '@typescript-eslint/no-non-null-assertion':
+      - off

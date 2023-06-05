@@ -14,11 +14,19 @@ type Props = {
   room: RoomDto;
 };
 
+const BRIGHT_COLORS = [
+  CardHeaderColor.BRIGHT_GREEN,
+  CardHeaderColor.BRIGHT_BLUE,
+  CardHeaderColor.BRIGHT_ORANGE,
+  CardHeaderColor.BRIGHT_PINK,
+  CardHeaderColor.BRIGHT_YELLOW,
+];
+
 const RoomCard: FC<Props> = ({ room: { id, participants, name } }) => (
   <Link to={replaceRouteIdParam(AppRoute.ROOMS_$ID, id)}>
     <Card
       size={CardSize.NONE}
-      color={CardHeaderColor.GREEN}
+      color={BRIGHT_COLORS[Math.floor(Math.random() * BRIGHT_COLORS.length)]}
       title={name}
       centeredTitle
       className={styles.roomCard}

@@ -6,6 +6,8 @@
   overflow: hidden;
   background-color: white;
   border: $main-border;
+  display: flex;
+  flex-direction: column;
 
   &.large {
     width: 27.5vw;
@@ -50,6 +52,30 @@
 
   &.green::before {
     background: rgba($green-accent, 0.2);
+  }
+
+  &.bright-blue::before {
+    background: $blue-accent;
+  }
+
+  &.bright-orange::before {
+    background: $orange-accent;
+  }
+
+  &.bright-yellow::before {
+    background: $yellow-accent;
+  }
+
+  &.bright-pink::before {
+    background: $pink-accent;
+  }
+
+  &.bright-green::before {
+    background: $green-accent;
+  }
+
+  &.grey::before {
+    background: $main-grey;
   }
 
   .title {
@@ -134,6 +160,20 @@
 
       .title::before {
         background-color: $pink-accent;
+      }
+    }
+
+    &.grey {
+      &::before {
+        background: linear-gradient(
+          to right,
+          $main-grey 20%,
+          rgba($main-grey, 0.2) 20%
+        );
+      }
+
+      .title::before {
+        background-color: $main-grey;
       }
     }
 

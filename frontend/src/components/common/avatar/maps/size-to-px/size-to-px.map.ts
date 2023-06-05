@@ -1,9 +1,9 @@
 import { AvatarSize } from 'common/enums/enums';
 
-const sizeToPx = {
+const SizeToPx = {
   [AvatarSize.SMALL]: '35',
   [AvatarSize.MIDDLE]: '43',
   [AvatarSize.LARGE]: '150',
 };
 
-export { sizeToPx };
+export { SizeToPx };

@@ -8,7 +8,7 @@ import {
   LessonResult,
   LessonWithSkillsStatistics,
 } from 'common/types/types';
-import { LESSONS_AMOUNT_FOR_ONE_REQUEST } from 'common/constants/constants';
+import { DEFAULT_LESSONS_OFFSET, LESSONS_AMOUNT_FOR_ONE_REQUEST } from 'common/constants/constants';
 import {
   IPaginationRequest,
   IPaginationResponse,
@@ -55,6 +55,23 @@ const addLesson = createAction(
   }),
 );
 
+const loadLessons = createAsyncThunk(
+  ActionType.LOAD_LESSONS,
+  async (
+    payload:  LessonFilters | undefined,
+    { extra: { services } },
+  ): Promise<IPaginationResponse<LessonDto>> => {
+    const { lessonApi: lessonApiService } = services;
+
+    const result = await lessonApiService.getMore({
+      limit: LESSONS_AMOUNT_FOR_ONE_REQUEST,
+      offset: DEFAULT_LESSONS_OFFSET,
+      ...payload,
+    });
+    return result;
+  },
+);
+
 const loadMoreLessons = createAsyncThunk(
   ActionType.LOAD_MORE_LESSONS,
   async (
@@ -94,6 +111,8 @@ const loadStudyPlan = createAsyncThunk(
 
 const resetAll = createAction(ActionType.RESET_ALL);
 
+const resetStudyPlan = createAction(ActionType.RESET_STUDY_PLAN);
+
 const resetCurrent = createAction(ActionType.RESET_CURRENT_LESSON);
 
 const addMisclick = createAction(
@@ -108,15 +127,20 @@ const addTimestamp = createAction(
 
 const sendLessonResult = createAsyncThunk(
   ActionType.SEND_LESSON_RESULT,
-  async (payload: LessonResult, { extra: { services } }): Promise<void> => {
+  async (
+    payload: LessonResult,
+    { dispatch, extra: { services } },
+  ): Promise<void> => {
     const { lessonApi: lessonApiService } = services;
     await lessonApiService.sendLessonResult(payload);
+    dispatch(loadStudyPlan);
   },
 );
 
 const actions = {
   create,
   loadMoreLessons,
+  loadLessons,
   loadCurrent,
   addLesson,
   resetAll,
@@ -124,7 +148,7 @@ const actions = {
   resetCurrent,
   addMisclick,
   addTimestamp,
-
+  resetStudyPlan,
   sendLessonResult,
 };
 

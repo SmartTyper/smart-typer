@@ -15,7 +15,6 @@ import { clsx, replaceRouteIdParam } from 'helpers/helpers';
 import {
   useNavigate,
   useDispatch,
-  useSelector,
   useForm,
   useState,
 } from 'hooks/hooks';
@@ -32,15 +31,13 @@ type Props = {
   isVisible: boolean;
   onClose: VoidAction;
   shareRoomUrl: ShareRoomUrlDto[ShareUrlKey.URL];
+  isRoomUrlSending: boolean;
 };
 
 type Emails = SendRoomUrlToEmailsRequestDto[ShareUrlKey.EMAILS];
 
-const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl }) => {
+const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl, isRoomUrlSending }) => {
   const [emailsInputFocused, setEmailsInputFocused] = useState(false);
-  const { racingSendRoomUrlToEmails: isRoomUrlSending } = useSelector(
-    (state) => state.requests,
-  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

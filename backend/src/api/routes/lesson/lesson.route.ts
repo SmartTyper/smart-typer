@@ -85,7 +85,7 @@ class Lesson extends Abstract {
           offset: Number(offset),
           limit: Number(limit),
           contentType: contentType ? (contentType as ContentType) : undefined,
-          creatorType: creatorType ? (contentType as CreatorType) : undefined,
+          creatorType: creatorType ? (creatorType as CreatorType) : undefined,
         };
         return this._lessonService.getMore(req.userId, payload);
       }),

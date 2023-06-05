@@ -1,37 +1,31 @@
-// import { DEFAULT_LESSONS_OFFSET } from 'common/constants/constants';
-// import { IPaginationRequest } from 'common/interface/interface';
-// import { CreateLessonRequestDto, FC, LessonFilters } from 'common/types/types';
-// import { Button } from 'components/common/common';
-// import { ReactSelect, ReactInfiniteScroll } from 'components/external/external';
-// import { useDispatch, useSelector, useState } from 'hooks/hooks';
-// import { lessons as lessonsActions } from 'store/modules/actions';
-
+import { ContentType, CreatorType } from 'common/enums/enums';
+import { IOption } from 'common/interface/interface';
 import { FC } from 'common/types/types';
+import { LessonCard } from 'components/common/common';
+import { ReactSelect } from 'components/external/external';
+import { useDispatch, useEffect, useSelector, useState } from 'hooks/hooks';
+import { lessons as lessonsActions } from 'store/modules/actions';
+import {
+  CONTENT_TYPE_OPTIONS,
+  CREATOR_TYPE_OPTIONS,
+} from './common/constants/constants';
+import { getFiltersParams } from './helpers/helpers';
 
 const Lessons: FC = () => {
-  // const { lessons, allLessonsCount } = useSelector((state) => state.lessons);
+  const { lessons } = useSelector(({ lessons }) => ({
+    lessons: lessons.lessons,
+    allLessonsCount: lessons.allLessonsCount,
+  }));
 
-  // const contentTypeOptions = [
-  //   { value: null, label: 'All' },
-  //   { value: 'symbols', label: 'Symbols' },
-  //   { value: 'words', label: 'Words' },
-  //   { value: 'sentences', label: 'Sentences' },
-  // ];
+  const dispatch = useDispatch();
 
-  // const creatorTypeOptions = [
-  //   { value: null, label: 'All' },
-  //   { value: 'currentUser', label: 'Me' },
-  //   { value: 'otherUsers', label: 'Users' },
-  //   { value: 'system', label: 'System' },
-  // ];
-  // const dispatch = useDispatch();
+  const [contentTypeFilter, setContentTypeFilter] = useState<
+    IOption<ContentType>
+  >([...CONTENT_TYPE_OPTIONS].shift()!);
+  const [creatorTypeFilter, setCreatorTypeFilter] = useState<
+    IOption<CreatorType>
+  >([...CREATOR_TYPE_OPTIONS].shift()!);
 
-  // const [selectedContentTypeOption, setSelectedContentTypeOption] = useState(
-  //   contentTypeOptions[0],
-  // );
-  // const [selectedCreatorTypeOption, setSelectedCreatorTypeOption] = useState(
-  //   creatorTypeOptions[0],
-  // );
   // const [isCreateLessonModalVisible, setIsCreateLessonModalVisible] =
   //   useState(false);
 
@@ -44,47 +38,67 @@ const Lessons: FC = () => {
   //   setIsCreateLessonModalVisible(true);
   // };
 
-  // const handleLoadMoreLessons = (loadFromStart = false): void => {
-  //   const params = {} as Pick<IPaginationRequest, 'offset'> & LessonFilters;
-
-  //   if (selectedContentTypeOption.value) {
-  //     params.contentType =
-  //       selectedContentTypeOption.value as LessonFilters['contentType'];
-  //   }
-  //   if (selectedCreatorTypeOption.value) {
-  //     params.creatorType =
-  //       selectedCreatorTypeOption.value as LessonFilters['creatorType'];
-  //   }
+  // const handleLoadMorePersonalLessons = (loadFromStart = false): void => {
+  //   const params = getFiltersParams(
+  //     selectedContentTypeOption,
+  //     selectedCreatorTypeOption,
+  //   ) as Pick<IPaginationRequest, PaginationKey.OFFSET> & LessonFilters;
   //   params.offset = loadFromStart ? DEFAULT_LESSONS_OFFSET : lessons.length;
 
   //   dispatch(lessonsActions.loadMoreLessons(params));
   // };
 
-  // const handleContentTypeFilter = (selectedOption): void => {
-  //   setSelectedContentTypeOption(selectedOption);
-  //   handleLoadMoreLessons(true);
+  // const handleLoadMoreOthersLessons = (loadFromStart = false): void => {
+  //   const params = getFiltersParams(
+  //     selectedContentTypeOption,
+  //     selectedCreatorTypeOption,
+  //   ) as Pick<IPaginationRequest, PaginationKey.OFFSET> & LessonFilters;
+  //   params.offset = loadFromStart ? DEFAULT_LESSONS_OFFSET : lessons.length;
+
+  //   dispatch(lessonsActions.loadMoreLessons(params));
   // };
 
-  // const handleCreatorTypeFilter = (selectedOption): void => {
-  //   setSelectedCreatorTypeOption(selectedOption);
-  //   handleLoadMoreLessons(true);
-  // };
+  const handleLoadFilteredLessons = (): void => {
+    const params = getFiltersParams(contentTypeFilter, creatorTypeFilter);
+    dispatch(lessonsActions.loadLessons(params));
+  };
+
+  const handleContentTypeFilter = (
+    selectedOption: IOption<ContentType> | null,
+  ): void => {
+    if (selectedOption) {
+      setContentTypeFilter(selectedOption);
+    }
+  };
+
+  const handleCreatorTypeFilter = (
+    selectedOption: IOption<CreatorType> | null,
+  ): void => {
+    if (selectedOption) {
+      setCreatorTypeFilter(selectedOption);
+    }
+  };
+
+  useEffect(() => {
+    handleLoadFilteredLessons();
+  }, [contentTypeFilter, creatorTypeFilter]);
 
   return (
     <div>
-      {/* <ReactSelect
-        options={contentTypeOptions}
-        isMulti
-        value={selectedContentTypeOption}
+      <ReactSelect
+        options={CONTENT_TYPE_OPTIONS}
+        value={contentTypeFilter}
         onChange={handleContentTypeFilter}
       />
       <ReactSelect
-        options={creatorTypeOptions}
-        isMulti
-        value={selectedCreatorTypeOption}
+        options={CREATOR_TYPE_OPTIONS}
+        value={creatorTypeFilter}
         onChange={handleCreatorTypeFilter}
       />
-      <Button
+      {lessons.map((lesson) => (
+        <LessonCard key={lesson.id} lesson={lesson} />
+      ))}
+      {/* <Button
         label="Create lesson"
         onClick={handleToggleCreateLessonModalVisible}
       ></Button>
@@ -93,10 +107,10 @@ const Lessons: FC = () => {
         onClose={handleToggleCreateLessonModalVisible}
         onSubmit={handleCreateLessonSubmit}
         // isSubmitButtonLoading
-      />
-      <ReactInfiniteScroll
+      /> */}
+      {/* <ReactInfiniteScroll
         dataLength={lessons.length}
-        next={handleLoadMoreLessons}
+        next={handleLoadMorePersonalLessons}
         hasMore={lessons.length < allLessonsCount}
         loader={<h4>Loading...</h4>}
         endMessage={
@@ -105,13 +119,8 @@ const Lessons: FC = () => {
           </p>
         }
       >
-        {lessons.map(({ name, contentType, creatorType, content }, i) => (
-          <div key={i}>
-            <div>{name}</div>
-            <div>{contentType}</div>
-            <div>{creatorType}</div>
-            <div>{content}</div>
-          </div>
+        {lessons.map((lesson) => (
+          <LessonCard key={lesson.id} lesson={lesson} />
         ))}
       </ReactInfiniteScroll> */}
     </div>

@@ -13,14 +13,19 @@ import styles from './styles.module.scss';
 
 const Rooms: FC = () => {
   const dispatch = useDispatch();
-  const { shareRoomUrl, rooms, areRoomsLoading, isRoomCreating } = useSelector(
-    ({ racing, requests }) => ({
-      rooms: racing.availableRooms,
-      shareRoomUrl: racing.shareRoomUrl,
-      areRoomsLoading: requests.racingLoadAvailableRooms,
-      isRoomCreating: requests.racingCreateRoom,
-    }),
-  );
+  const {
+    shareRoomUrl,
+    rooms,
+    areRoomsLoading,
+    isRoomCreating,
+    isRoomUrlSending,
+  } = useSelector(({ racing, requests }) => ({
+    rooms: racing.availableRooms,
+    shareRoomUrl: racing.shareRoomUrl,
+    areRoomsLoading: requests.racingLoadAvailableRooms,
+    isRoomCreating: requests.racingCreateRoom,
+    isRoomUrlSending: requests.racingSendRoomUrlToEmails,
+  }));
 
   const [isCreateRoomModalVisible, setIsCreateRoomModalVisible] =
     useState(false);
@@ -56,21 +61,22 @@ const Rooms: FC = () => {
   return (
     <div className={styles.rooms}>
       <div className={styles.titleContainer}>
-        <h1>Select the room</h1>
+        <h1>Select the room to compete with like-minded</h1>
         <Button
           label="Create room"
           onClick={handleToggleCreateRoomModalVisible}
           className={styles.createRoomButton}
         />
       </div>
-      <div className={styles.roomCards}>
-        {areRoomsLoading ? (
-          <Spinner size={SpinnerSize.LARGE} />
-        ) : (
-          rooms.map((room) => <RoomCard key={room.id} room={room} />)
-        )}
-      </div>
-
+      {areRoomsLoading ? (
+        <Spinner size={SpinnerSize.LARGE} />
+      ) : (
+        <div className={styles.roomCards}>
+          {rooms.map((room) => (
+            <RoomCard key={room.id} room={room} />
+          ))}
+        </div>
+      )}
       <CreateRoomModal
         isVisible={isCreateRoomModalVisible}
         onClose={handleToggleCreateRoomModalVisible}
@@ -82,6 +88,7 @@ const Rooms: FC = () => {
           isVisible={isShareRoomModalVisible}
           onClose={handleShareRoomCancel}
           shareRoomUrl={shareRoomUrl}
+          isRoomUrlSending={isRoomUrlSending}
         />
       )}
     </div>
