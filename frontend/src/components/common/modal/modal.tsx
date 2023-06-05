@@ -30,8 +30,8 @@ const Modal: FC<Props> = ({
   const hasFooter = cancelButton || submitButton;
   return (
     <RBModal
-      contentClassName={clsx(className, styles.modal)}
-      dialogClassName={clsx(dialogClassName)}
+      contentClassName={clsx(styles.modal, className)}
+      dialogClassName={clsx(styles.dialog, dialogClassName)}
       show={isVisible}
       onHide={onHide ?? cancelButton?.onClick}
       backdrop="static"

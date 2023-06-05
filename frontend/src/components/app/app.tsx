@@ -15,6 +15,7 @@ import {
   SignUp,
   StudyPlan,
   Theory,
+  Room,
 } from 'components/components';
 import { RRDRoute, RRDRoutes } from 'components/external/external';
 import {
@@ -132,7 +133,7 @@ const App: FC = () => {
           path={AppRoute.ROOMS_$ID}
           element={
             <WithHeader>
-              <Home />
+              <Room />
             </WithHeader>
           }
         />

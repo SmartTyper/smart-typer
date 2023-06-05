@@ -11,3 +11,4 @@ export { SignUp } from 'components/sign-up/sign-up';
 export { StudyPlan } from 'components/study-plan/study-plan';
 export { Theory } from 'components/theory/theory';
 export { Rooms } from './rooms/rooms';
+export { Room } from './room/room';

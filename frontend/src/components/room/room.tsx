@@ -21,11 +21,39 @@
 // import { racing as racingActions } from 'store/modules/actions';
 
 import { FC } from 'common/types/types';
+import {
+  useDispatch,
+  useEffect,
+  useParams,
+  useSelector,
+  useState,
+} from 'hooks/hooks';
+import { ResultsModal } from './components/components';
+import { mapParticipantsToRating } from './helpers/helpers';
+import { racing as racingActions } from 'store/modules/actions';
 
 // import commentatorImage from 'assets/img/commentator.gif';
 // import styles from './styles.module.scss';
 
 const Room: FC = () => {
+  const { participants } = useSelector(({ racing }) => ({
+    participants: racing.currentRoom?.participants,
+    // user: auth.user,
+  }));
+
+  const [isResultsModalVisible, setIsResultsModalVisible] = useState(true);
+
+  const handleResultsCancel = (): void => {
+    setIsResultsModalVisible(false);
+  };
+  const dispatch = useDispatch();
+  const { id: roomId } = useParams();
+
+  useEffect(() => {
+    if (roomId) {
+      dispatch(racingActions.loadCurrentRoom({ roomId: Number(roomId) }));
+    }
+  }, []);
   // const { user, currentRoom, isLoadCurrentRoomFailed, isSoundTurnedOn } =
   //   useSelector(({ racing, auth, settings }) => ({
   //     user: auth.user,
@@ -273,7 +301,15 @@ const Room: FC = () => {
   //   };
   // }, []);
 
-  return <div></div>;
+  console.log(participants);
+
+  return participants ? (
+    <ResultsModal
+      participantsRating={mapParticipantsToRating(participants)}
+      isVisible={isResultsModalVisible}
+      onClose={handleResultsCancel}
+    ></ResultsModal>
+  ) : null;
   /* <div
       className={styles.container}
       onKeyDown={handleKeyDown}
