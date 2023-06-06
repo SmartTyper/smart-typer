@@ -1,7 +1,7 @@
-import { ContentType, CreatorType } from 'common/enums/enums';
+import { AlphabetLetter, ContentType, CreatorType } from 'common/enums/enums';
 import { IOption } from 'common/interface/interface';
 import { FC } from 'common/types/types';
-import { LessonCard } from 'components/common/common';
+import { ArMarkerModal, LessonCard } from 'components/common/common';
 import { ReactSelect } from 'components/external/external';
 import { useDispatch, useEffect, useSelector, useState } from 'hooks/hooks';
 import { lessons as lessonsActions } from 'store/modules/actions';
@@ -84,21 +84,29 @@ const Lessons: FC = () => {
   }, [contentTypeFilter, creatorTypeFilter]);
 
   return (
-    <div>
-      <ReactSelect
-        options={CONTENT_TYPE_OPTIONS}
-        value={contentTypeFilter}
-        onChange={handleContentTypeFilter}
+    <>
+      <ArMarkerModal
+        onClose={(): void => {
+          console.log();
+        }}
+        isVisible
+        bestSkillSymbol={AlphabetLetter.A}
       />
-      <ReactSelect
-        options={CREATOR_TYPE_OPTIONS}
-        value={creatorTypeFilter}
-        onChange={handleCreatorTypeFilter}
-      />
-      {lessons.map((lesson) => (
-        <LessonCard key={lesson.id} lesson={lesson} />
-      ))}
-      {/* <Button
+      <div>
+        <ReactSelect
+          options={CONTENT_TYPE_OPTIONS}
+          value={contentTypeFilter}
+          onChange={handleContentTypeFilter}
+        />
+        <ReactSelect
+          options={CREATOR_TYPE_OPTIONS}
+          value={creatorTypeFilter}
+          onChange={handleCreatorTypeFilter}
+        />
+        {lessons.map((lesson) => (
+          <LessonCard key={lesson.id} lesson={lesson} />
+        ))}
+        {/* <Button
         label="Create lesson"
         onClick={handleToggleCreateLessonModalVisible}
       ></Button>
@@ -108,7 +116,7 @@ const Lessons: FC = () => {
         onSubmit={handleCreateLessonSubmit}
         // isSubmitButtonLoading
       /> */}
-      {/* <ReactInfiniteScroll
+        {/* <ReactInfiniteScroll
         dataLength={lessons.length}
         next={handleLoadMorePersonalLessons}
         hasMore={lessons.length < allLessonsCount}
@@ -123,7 +131,8 @@ const Lessons: FC = () => {
           <LessonCard key={lesson.id} lesson={lesson} />
         ))}
       </ReactInfiniteScroll> */}
-    </div>
+      </div>
+    </>
   );
 };
 

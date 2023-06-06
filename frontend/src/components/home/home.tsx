@@ -1,8 +1,9 @@
+import { FC } from 'common/types/types';
 import laptopImg from 'assets/img/laptop.png';
 import typingImg from 'assets/img/typing.gif';
 import styles from './styles.module.scss';
 
-const Home: React.FC = () => (
+const Home: FC = () => (
   <div className={styles.home}>
     <div className={styles.imgContainer}>
       <img src={laptopImg} alt="laptop" className={styles.laptop} />

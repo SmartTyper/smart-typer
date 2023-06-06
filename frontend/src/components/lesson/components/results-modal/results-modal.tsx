@@ -1,5 +1,5 @@
 import { Modal, Card } from 'components/common/common';
-import { LessonDisplayedResult, VoidAction } from 'common/types/types';
+import { FC, LessonDisplayedResult, VoidAction } from 'common/types/types';
 import { CardHeaderColor, CardSize } from 'common/enums/enums';
 
 import styles from './styles.module.scss';
@@ -10,11 +10,7 @@ type Props = {
   onClose: VoidAction;
 };
 
-const ResultsModal: React.FC<Props> = ({
-  lessonResult,
-  isVisible,
-  onClose,
-}) => {
+const ResultsModal: FC<Props> = ({ lessonResult, isVisible, onClose }) => {
   const {
     averageSpeed,
     totalSymbols,

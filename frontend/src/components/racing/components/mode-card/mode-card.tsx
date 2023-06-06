@@ -1,3 +1,4 @@
+import { FC } from 'common/types/types';
 import { AppRoute } from 'common/enums/enums';
 import { Link } from 'components/common/common';
 
@@ -9,7 +10,7 @@ type Props = {
   to: AppRoute;
 };
 
-const ModeCard: React.FC<Props> = ({ title, imageSrc, to }) => {
+const ModeCard: FC<Props> = ({ title, imageSrc, to }) => {
   return (
     <Link to={to}>
       <div className={styles.modeCard}>

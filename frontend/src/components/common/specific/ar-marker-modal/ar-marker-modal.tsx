@@ -1,5 +1,5 @@
 import { Modal } from 'components/common/common';
-import { VoidAction } from 'common/types/types';
+import { FC, VoidAction } from 'common/types/types';
 import { AlphabetLetter } from 'common/enums/enums';
 import { skillSymbolToArMarker } from 'common/maps/maps';
 
@@ -11,17 +11,13 @@ type Props = {
   onClose: VoidAction;
 };
 
-const ResultsModal: React.FC<Props> = ({
-  bestSkillSymbol,
-  isVisible,
-  onClose,
-}) => {
+const ArMarkerModal: FC<Props> = ({ bestSkillSymbol, isVisible, onClose }) => {
   const arMarker = skillSymbolToArMarker[bestSkillSymbol];
   return (
     <Modal
       isVisible={isVisible}
       onHide={onClose}
-      title="Game results"
+      title="Scan this marker via AR-compatible device "
       className={styles.resultsModal}
     >
       <div className={styles.modalBody}>
@@ -31,4 +27,4 @@ const ResultsModal: React.FC<Props> = ({
   );
 };
 
-export { ResultsModal };
+export { ArMarkerModal };

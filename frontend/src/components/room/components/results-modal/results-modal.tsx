@@ -10,7 +10,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Modal, UserLabel } from 'components/common/common';
-import { Rating, VoidAction } from 'common/types/types';
+import { FC, Rating, VoidAction } from 'common/types/types';
 import { AvatarSize } from 'common/enums/enums';
 
 import styles from './styles.module.scss';
@@ -31,7 +31,7 @@ type Props = {
   onClose: VoidAction;
 };
 
-const ResultsModal: React.FC<Props> = ({
+const ResultsModal: FC<Props> = ({
   participantsRating,
   isVisible,
   onClose,
