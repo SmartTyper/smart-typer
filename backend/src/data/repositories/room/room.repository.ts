@@ -145,14 +145,17 @@ class Room {
       .delete()
       .where(
         this._RoomModel.knex().raw(`(
-          select count(*) from ${TableName.USERS_TO_ROOMS}
-          where ${TableName.USERS_TO_ROOMS}.current_room_id =
-          ${TableName.ROOMS}.${CommonKey.ID}) = ${NO_USERS_IN_ROOM}`),
+          SELECT count(*)
+          FROM ${TableName.USERS_TO_ROOMS}
+          WHERE ${TableName.USERS_TO_ROOMS}.current_room_id =
+          ${TableName.ROOMS}.${CommonKey.ID}) = ${NO_USERS_IN_ROOM}
+          AND ${TableName.ROOMS}.${CommonKey.CREATED_AT}::date < CURRENT_DATE`),
       )
       .andWhere(
         this._RoomModel.knex().raw(`(
-          select count(*) from ${TableName.USERS_TO_ROOMS}
-          where ${TableName.USERS_TO_ROOMS}.personal_room_id =
+          SELECT count(*)
+          FROM ${TableName.USERS_TO_ROOMS}
+          WHERE ${TableName.USERS_TO_ROOMS}.personal_room_id =
           ${TableName.ROOMS}.${CommonKey.ID}) = ${NO_ROOM_OWNER}`),
       );
   }
