@@ -91,7 +91,9 @@ class Token {
     }
   }
 
-  public async getUserIdByToken(token: string): Promise<number | undefined> {
+  public async getUserIdByToken(
+    token: string,
+  ): Promise<UserDto[CommonKey.ID] | undefined> {
     const record = await this._refreshTokenRepository.getByToken(token);
     if (!record) return;
     return record.userId;

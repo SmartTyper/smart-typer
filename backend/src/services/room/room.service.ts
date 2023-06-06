@@ -173,7 +173,7 @@ class Room {
 
   public async removeParticipant(
     roomId: RoomDto[CommonKey.ID],
-    userId: number,
+    userId: UserDto[CommonKey.ID],
   ): Promise<void> {
     const participant = await this._userService.get(userId);
 
