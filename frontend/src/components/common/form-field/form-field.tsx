@@ -11,6 +11,7 @@ import {
   FileSelector,
   HiddenInput,
   Input,
+  Textarea,
 } from './components/components';
 import { useState } from 'hooks/hooks';
 import { clsx } from 'helpers/helpers';
@@ -95,6 +96,18 @@ const FormField: FC<Props> = ({
         );
       case FormFieldType.CUSTOM:
         return children ?? null;
+      case FormFieldType.TEXTAREA:
+        return (
+          <Textarea
+            placeholder={placeholder}
+            type={type}
+            register={register}
+            error={error}
+            className={clsx(styles.input, inputClassName)}
+            readOnly={readOnly}
+            value={value}
+          />
+        );
       default:
         return (
           <Input
@@ -109,6 +122,7 @@ const FormField: FC<Props> = ({
         );
     }
   };
+
   return (
     <RBForm.Group
       className={clsx(
@@ -136,7 +150,7 @@ const FormField: FC<Props> = ({
         )}
       </div>
       {!!error && (
-        <RBForm.Control.Feedback type="invalid">
+        <RBForm.Control.Feedback type="invalid" className={styles.error}>
           {error?.message}
         </RBForm.Control.Feedback>
       )}

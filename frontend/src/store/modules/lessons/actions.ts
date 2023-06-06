@@ -8,7 +8,10 @@ import {
   LessonResult,
   LessonWithSkillsStatistics,
 } from 'common/types/types';
-import { DEFAULT_LESSONS_OFFSET, LESSONS_AMOUNT_FOR_ONE_REQUEST } from 'common/constants/constants';
+import {
+  DEFAULT_LESSONS_OFFSET,
+  LESSONS_AMOUNT_FOR_ONE_REQUEST,
+} from 'common/constants/constants';
 import {
   IPaginationRequest,
   IPaginationResponse,
@@ -58,7 +61,7 @@ const addLesson = createAction(
 const loadLessons = createAsyncThunk(
   ActionType.LOAD_LESSONS,
   async (
-    payload:  LessonFilters | undefined,
+    payload: LessonFilters | undefined,
     { extra: { services } },
   ): Promise<IPaginationResponse<LessonDto>> => {
     const { lessonApi: lessonApiService } = services;
@@ -68,6 +71,7 @@ const loadLessons = createAsyncThunk(
       offset: DEFAULT_LESSONS_OFFSET,
       ...payload,
     });
+    console.log(result);
     return result;
   },
 );

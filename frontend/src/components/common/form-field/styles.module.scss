@@ -27,6 +27,11 @@
       border-radius: 0;
       border: $main-border;
 
+      &::placeholder {
+        color: $dark-grey;
+        font-size: $middle-font-size;
+      }
+
       &:focus {
         color: $dark-blue !important;
         border-color: $main-green !important;
@@ -49,7 +54,7 @@
         justify-content: center;
         align-items: center;
 
-        .copyIcon{
+        .copyIcon {
           font-size: $middle-icon-font-size;
         }
       }
@@ -63,7 +68,7 @@
     .inputRow {
       width: 100%;
 
-      .input{
+      .input {
         width: auto;
         flex-grow: 1;
       }
@@ -80,5 +85,9 @@
 
   .note {
     font-size: $small-font-size;
+  }
+
+  .error {
+    display: block;
   }
 }
