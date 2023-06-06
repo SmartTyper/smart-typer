@@ -1,5 +1,12 @@
 export type { SyntheticEvent, RefObject } from 'react';
 export type { Middleware, AsyncThunk } from '@reduxjs/toolkit';
+export type { CSSObject } from '@emotion/serialize';
+export type {
+  ControlProps,
+  StylesConfig,
+  SingleValue,
+  OptionProps,
+} from 'react-select';
 
 export * from './dispatch/dispatch.type';
 export * from './root-state/root-state.type';

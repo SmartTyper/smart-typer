@@ -1,8 +1,12 @@
-import { ContentType, CreatorType } from 'common/enums/enums';
-import { IOption } from 'common/interface/interface';
-import { FC } from 'common/types/types';
-import { LessonCard } from 'components/common/common';
-import { ReactSelect } from 'components/external/external';
+import {
+  ContentType,
+  CreatorType,
+  PaginationKey,
+  SpinnerSize,
+} from 'common/enums/enums';
+import { IOption, IPaginationRequest } from 'common/interface/interface';
+import { CreateLessonRequestDto, FC, LessonFilters } from 'common/types/types';
+import { Button, LessonCard, Select, Spinner } from 'components/common/common';
 import { useDispatch, useEffect, useSelector, useState } from 'hooks/hooks';
 import { lessons as lessonsActions } from 'store/modules/actions';
 import {
@@ -10,12 +14,21 @@ import {
   CREATOR_TYPE_OPTIONS,
 } from './common/constants/constants';
 import { getFiltersParams } from './helpers/helpers';
+import { CategoryWrapper, CreateLessonModal } from './components/components';
+import { ReactInfiniteScroll } from 'components/external/external';
+
+import styles from './styles.module.scss';
+
+const FIRST_ARR_ELEM_INDEX = 0;
 
 const Lessons: FC = () => {
-  const { lessons } = useSelector(({ lessons }) => ({
-    lessons: lessons.lessons,
-    allLessonsCount: lessons.allLessonsCount,
-  }));
+  const { lessons, isLessonCreating, allLessonsCount } = useSelector(
+    ({ lessons, requests }) => ({
+      lessons: lessons.lessons,
+      allLessonsCount: lessons.allLessonsCount,
+      isLessonCreating: requests.lessonsCreate,
+    }),
+  );
 
   const dispatch = useDispatch();
 
@@ -26,103 +39,92 @@ const Lessons: FC = () => {
     IOption<CreatorType>
   >([...CREATOR_TYPE_OPTIONS].shift()!);
 
-  // const [isCreateLessonModalVisible, setIsCreateLessonModalVisible] =
-  //   useState(false);
+  const areFiltersSet = !!(contentTypeFilter.value || creatorTypeFilter.value);
 
-  // const handleToggleCreateLessonModalVisible = (): void => {
-  //   setIsCreateLessonModalVisible((prev: boolean) => !prev);
-  // };
+  const [isCreateLessonModalVisible, setIsCreateLessonModalVisible] =
+    useState(false);
 
-  // const handleCreateLessonSubmit = (payload: CreateLessonRequestDto): void => {
-  //   dispatch(lessonsActions.create(payload));
-  //   setIsCreateLessonModalVisible(true);
-  // };
+  const handleToggleCreateLessonModalVisible = (): void => {
+    setIsCreateLessonModalVisible((prev: boolean) => !prev);
+  };
 
-  // const handleLoadMorePersonalLessons = (loadFromStart = false): void => {
-  //   const params = getFiltersParams(
-  //     selectedContentTypeOption,
-  //     selectedCreatorTypeOption,
-  //   ) as Pick<IPaginationRequest, PaginationKey.OFFSET> & LessonFilters;
-  //   params.offset = loadFromStart ? DEFAULT_LESSONS_OFFSET : lessons.length;
+  const handleCreateLessonSubmit = (payload: CreateLessonRequestDto): void => {
+    dispatch(lessonsActions.create(payload));
+    setIsCreateLessonModalVisible(false);
+  };
 
-  //   dispatch(lessonsActions.loadMoreLessons(params));
-  // };
+  const handleLoadMoreLessons = (): void => {
+    const params = getFiltersParams(
+      contentTypeFilter,
+      creatorTypeFilter,
+    ) as Pick<IPaginationRequest, PaginationKey.OFFSET> & LessonFilters;
+    params.offset = lessons.length;
 
-  // const handleLoadMoreOthersLessons = (loadFromStart = false): void => {
-  //   const params = getFiltersParams(
-  //     selectedContentTypeOption,
-  //     selectedCreatorTypeOption,
-  //   ) as Pick<IPaginationRequest, PaginationKey.OFFSET> & LessonFilters;
-  //   params.offset = loadFromStart ? DEFAULT_LESSONS_OFFSET : lessons.length;
-
-  //   dispatch(lessonsActions.loadMoreLessons(params));
-  // };
+    dispatch(lessonsActions.loadMoreLessons(params));
+  };
 
   const handleLoadFilteredLessons = (): void => {
     const params = getFiltersParams(contentTypeFilter, creatorTypeFilter);
     dispatch(lessonsActions.loadLessons(params));
   };
 
-  const handleContentTypeFilter = (
-    selectedOption: IOption<ContentType> | null,
-  ): void => {
-    if (selectedOption) {
-      setContentTypeFilter(selectedOption);
-    }
-  };
-
-  const handleCreatorTypeFilter = (
-    selectedOption: IOption<CreatorType> | null,
-  ): void => {
-    if (selectedOption) {
-      setCreatorTypeFilter(selectedOption);
-    }
-  };
-
   useEffect(() => {
     handleLoadFilteredLessons();
   }, [contentTypeFilter, creatorTypeFilter]);
 
+  console.log(lessons.length, allLessonsCount);
+
   return (
     <div>
-      <ReactSelect
+      <Select<ContentType>
         options={CONTENT_TYPE_OPTIONS}
         value={contentTypeFilter}
-        onChange={handleContentTypeFilter}
+        onChange={setContentTypeFilter}
       />
-      <ReactSelect
+      <Select<CreatorType>
         options={CREATOR_TYPE_OPTIONS}
         value={creatorTypeFilter}
-        onChange={handleCreatorTypeFilter}
+        onChange={setCreatorTypeFilter}
       />
-      {lessons.map((lesson) => (
-        <LessonCard key={lesson.id} lesson={lesson} />
-      ))}
-      {/* <Button
+      <Button
         label="Create lesson"
         onClick={handleToggleCreateLessonModalVisible}
+        className={styles.createLessonButton}
       ></Button>
+      <ReactInfiniteScroll
+        dataLength={lessons.length}
+        next={handleLoadMoreLessons}
+        hasMore={lessons.length < allLessonsCount}
+        loader={
+          <div className={styles.spinnerContainer}>
+            <Spinner size={SpinnerSize.SMALL} isCentered={false} />
+          </div>
+        }
+      >
+        {areFiltersSet
+          ? lessons.map((lesson) => (
+            <LessonCard key={lesson.id} lesson={lesson} />
+          ))
+          : lessons.map((lesson, i, lessons) => (
+            <CategoryWrapper
+              key={lesson.id}
+              currentLessonCreatorType={lesson.creatorType}
+              prevLessonCreatorType={
+                i !== FIRST_ARR_ELEM_INDEX
+                  ? lessons[i - 1].creatorType
+                  : undefined
+              }
+            >
+              <LessonCard lesson={lesson} />
+            </CategoryWrapper>
+          ))}
+      </ReactInfiniteScroll>
       <CreateLessonModal
         isVisible={isCreateLessonModalVisible}
         onClose={handleToggleCreateLessonModalVisible}
         onSubmit={handleCreateLessonSubmit}
-        // isSubmitButtonLoading
-      /> */}
-      {/* <ReactInfiniteScroll
-        dataLength={lessons.length}
-        next={handleLoadMorePersonalLessons}
-        hasMore={lessons.length < allLessonsCount}
-        loader={<h4>Loading...</h4>}
-        endMessage={
-          <p style={{ textAlign: 'center' }}>
-            <b>Yay! You have seen it all</b>
-          </p>
-        }
-      >
-        {lessons.map((lesson) => (
-          <LessonCard key={lesson.id} lesson={lesson} />
-        ))}
-      </ReactInfiniteScroll> */}
+        isSubmitting={isLessonCreating}
+      />
     </div>
   );
 };

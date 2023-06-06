@@ -195,7 +195,8 @@ class Lesson {
         `${LessonRelationMappings.FINISHED_LESSON}.[${UserToFinishedLessonRelationMapping.SKILL}]`,
         (builder) => builder.select(SkillKey.NAME),
       )
-      .orderBy(`${TableName.LESSONS}.${CommonKey.ID}`, RecordsSortOrder.ASC)
+      .orderByRaw(`CASE WHEN creator_id = ${userId} THEN 0 ELSE 1 END`)
+      .orderBy(`${TableName.LESSONS}.${CommonKey.CREATED_AT}`, RecordsSortOrder.ASC)
       .offset(offset)
       .limit(limit)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

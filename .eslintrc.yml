@@ -57,3 +57,5 @@ rules:
     - error
   '@typescript-eslint/no-non-null-assertion':
     - off
+  '@typescript-eslint/no-unnecessary-type-constraint':
+    - off

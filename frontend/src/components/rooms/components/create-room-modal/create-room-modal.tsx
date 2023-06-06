@@ -19,14 +19,26 @@ type Props = {
   isSubmitting: boolean;
 };
 
-const CreateRoomModal: FC<Props> = ({ isVisible, onClose, onSubmit, isSubmitting }) => {
+const CreateRoomModal: FC<Props> = ({
+  isVisible,
+  onClose,
+  onSubmit,
+  isSubmitting,
+}) => {
   const {
     handleSubmit,
     register,
     formState: { errors },
+    reset,
   } = useForm<CreateRoomRequestDto>(createRoomSchema, {
+    [RoomKey.NAME]: '',
     [RoomKey.IS_PRIVATE]: false,
   });
+
+  const handleClose = (): void => {
+    reset();
+    onClose();
+  };
 
   return (
     <Modal
@@ -34,7 +46,7 @@ const CreateRoomModal: FC<Props> = ({ isVisible, onClose, onSubmit, isSubmitting
       cancelButton={{
         label: 'Cancel',
         isDisabled: isSubmitting,
-        onClick: onClose,
+        onClick: handleClose,
       }}
       submitButton={{
         label: 'Save',

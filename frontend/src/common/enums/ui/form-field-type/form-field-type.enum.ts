@@ -7,6 +7,7 @@ enum FormFieldType {
   SLIDER = 'slider',
   FILE = 'file',
   CUSTOM = 'custom',
+  TEXTAREA = 'textarea',
 }
 
 export { FormFieldType };

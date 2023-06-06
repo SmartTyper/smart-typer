@@ -13,3 +13,4 @@ export * from './user-label/user-label';
 export * from './card/card';
 export * from './label/label';
 export * from './specific/specific';
+export * from './select/select';
