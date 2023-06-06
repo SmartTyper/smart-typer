@@ -196,7 +196,10 @@ class Lesson {
         (builder) => builder.select(SkillKey.NAME),
       )
       .orderByRaw(`CASE WHEN creator_id = ${userId} THEN 0 ELSE 1 END`)
-      .orderBy(`${TableName.LESSONS}.${CommonKey.CREATED_AT}`, RecordsSortOrder.ASC)
+      .orderBy(
+        `${TableName.LESSONS}.${CommonKey.CREATED_AT}`,
+        RecordsSortOrder.ASC,
+      )
       .offset(offset)
       .limit(limit)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -212,7 +215,23 @@ class Lesson {
       },
     );
 
-    const count = await this._LessonModel.query().resultSize();
+    const count = await this._LessonModel
+      .query()
+      .where((builder) => {
+        if (contentType) {
+          builder.where({ contentType });
+        }
+      })
+      .andWhere((builder) => {
+        if (creatorType === CreatorType.SYSTEM) {
+          builder.whereNull(LessonKey.CREATOR_ID);
+        } else if (creatorType === CreatorType.OTHER_USERS) {
+          builder.whereNot({ [LessonKey.CREATOR_ID]: userId });
+        } else if (creatorType === CreatorType.CURRENT_USER) {
+          builder.where({ [LessonKey.CREATOR_ID]: userId });
+        }
+      })
+      .resultSize();
 
     return {
       data: mappedLessons,

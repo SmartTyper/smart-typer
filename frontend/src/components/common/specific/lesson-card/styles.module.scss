@@ -1,28 +1,38 @@
 @import 'src/assets/css/variables';
 
 .lessonCard {
-  height: 24vh;
+  height: 23vh;
   padding: 2rem 1.5rem 1.5rem 1.5rem;
+  .cardContentContainer {
+    flex: 1;
 
-  .content {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    -webkit-box-orient: vertical;
-    margin: 0 0 1rem;
-  }
-
-  .cardFooter {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .labels {
+    .cardContent {
       display: flex;
+      flex-direction: column;
+      height: 100%;
 
-      .label:not(:last-child) {
-        margin-right: 0.5rem;
+      .content {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        line-clamp: 4;
+        -webkit-box-orient: vertical;
+        margin: 0 0 1rem;
+        flex: 1;
+      }
+
+      .cardFooter {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .labels {
+          display: flex;
+
+          .label:not(:last-child) {
+            margin-right: 0.5rem;
+          }
+        }
       }
     }
   }

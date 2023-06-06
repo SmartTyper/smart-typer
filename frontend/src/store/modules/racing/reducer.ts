@@ -1,7 +1,7 @@
 import { ReducerName, ShareUrlKey } from 'common/enums/enums';
 import { GameRoom, RoomDto, ShareRoomUrlDto } from 'common/types/types';
 import { createSlice, isAnyOf } from 'store/external/external';
-import { actions } from './actions';
+import { racing as racingActions } from './actions';
 
 type State = {
   personalRoom: RoomDto | null;
@@ -45,7 +45,7 @@ const { reducer } = createSlice({
       increaseCurrentParticipantPosition,
       toggleCurrentParticipantIsReady,
       resetAvailableRooms,
-    } = actions;
+    } = racingActions;
     builder
       .addCase(setPersonalRoom, (state, action) => {
         state.personalRoom = action.payload;

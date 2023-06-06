@@ -1,7 +1,7 @@
-import { ReducerName } from 'common/enums/enums';
+import { CreatorType, ReducerName } from 'common/enums/enums';
 import { LessonDto, LessonWithSkillsStatistics } from 'common/types/types';
 import { createSlice, isAnyOf } from 'store/external/external';
-import { actions } from './actions';
+import { lessons as lessonsActions } from './actions';
 
 type State = {
   currentLesson: LessonWithSkillsStatistics | null;
@@ -34,10 +34,17 @@ const { reducer } = createSlice({
       resetCurrent,
       addMisclick,
       addTimestamp,
-    } = actions;
+    } = lessonsActions;
     builder
       .addCase(addLesson, (state, action) => {
-        state.lessons = [...state.lessons, action.payload];
+        const newLessonIndex = state.lessons.filter(
+          ({ creatorType }) => creatorType === CreatorType.CURRENT_USER,
+        ).length;
+        state.lessons = [
+          ...state.lessons.slice(0, newLessonIndex),
+          action.payload,
+          ...state.lessons.slice(newLessonIndex),
+        ];
       })
       .addCase(loadMoreLessons.fulfilled, (state, action) => {
         state.lessons = [...state.lessons, ...action.payload.data];

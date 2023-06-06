@@ -1,12 +1,20 @@
 import {
   ContentType,
   CreatorType,
+  FormFieldLabel,
+  FormFieldType,
   PaginationKey,
   SpinnerSize,
 } from 'common/enums/enums';
 import { IOption, IPaginationRequest } from 'common/interface/interface';
 import { CreateLessonRequestDto, FC, LessonFilters } from 'common/types/types';
-import { Button, LessonCard, Select, Spinner } from 'components/common/common';
+import {
+  Button,
+  FormField,
+  LessonCard,
+  Select,
+  Spinner,
+} from 'components/common/common';
 import { useDispatch, useEffect, useSelector, useState } from 'hooks/hooks';
 import { lessons as lessonsActions } from 'store/modules/actions';
 import {
@@ -75,22 +83,36 @@ const Lessons: FC = () => {
   console.log(lessons.length, allLessonsCount);
 
   return (
-    <div>
-      <Select<ContentType>
-        options={CONTENT_TYPE_OPTIONS}
-        value={contentTypeFilter}
-        onChange={setContentTypeFilter}
-      />
-      <Select<CreatorType>
-        options={CREATOR_TYPE_OPTIONS}
-        value={creatorTypeFilter}
-        onChange={setCreatorTypeFilter}
-      />
-      <Button
-        label="Create lesson"
-        onClick={handleToggleCreateLessonModalVisible}
-        className={styles.createLessonButton}
-      ></Button>
+    <div className={styles.lessons}>
+      <div className={styles.actions}>
+        <FormField
+          label={FormFieldLabel.CONTENT_TYPE}
+          type={FormFieldType.CUSTOM}
+          className={styles.filter}
+        >
+          <Select<ContentType>
+            options={CONTENT_TYPE_OPTIONS}
+            value={contentTypeFilter}
+            onChange={setContentTypeFilter}
+          />
+        </FormField>
+        <FormField
+          label={FormFieldLabel.CREATOR_TYPE}
+          type={FormFieldType.CUSTOM}
+          className={styles.filter}
+        >
+          <Select<CreatorType>
+            options={CREATOR_TYPE_OPTIONS}
+            value={creatorTypeFilter}
+            onChange={setCreatorTypeFilter}
+          />
+        </FormField>
+        <Button
+          label="Create lesson"
+          onClick={handleToggleCreateLessonModalVisible}
+          className={styles.createLessonButton}
+        ></Button>
+      </div>
       <ReactInfiniteScroll
         dataLength={lessons.length}
         next={handleLoadMoreLessons}
@@ -100,24 +122,27 @@ const Lessons: FC = () => {
             <Spinner size={SpinnerSize.SMALL} isCentered={false} />
           </div>
         }
+        className={styles.infiniteScroll}
       >
-        {areFiltersSet
-          ? lessons.map((lesson) => (
-            <LessonCard key={lesson.id} lesson={lesson} />
-          ))
-          : lessons.map((lesson, i, lessons) => (
-            <CategoryWrapper
-              key={lesson.id}
-              currentLessonCreatorType={lesson.creatorType}
-              prevLessonCreatorType={
-                i !== FIRST_ARR_ELEM_INDEX
-                  ? lessons[i - 1].creatorType
-                  : undefined
-              }
-            >
-              <LessonCard lesson={lesson} />
-            </CategoryWrapper>
-          ))}
+        <div className={styles.lessonCards}>
+          {areFiltersSet
+            ? lessons.map((lesson) => (
+              <LessonCard key={lesson.id} lesson={lesson} />
+            ))
+            : lessons.map((lesson, i, lessons) => (
+              <CategoryWrapper
+                key={lesson.id}
+                currentLessonCreatorType={lesson.creatorType}
+                prevLessonCreatorType={
+                  i !== FIRST_ARR_ELEM_INDEX
+                    ? lessons[i - 1].creatorType
+                    : undefined
+                }
+              >
+                <LessonCard lesson={lesson} />
+              </CategoryWrapper>
+            ))}
+        </div>
       </ReactInfiniteScroll>
       <CreateLessonModal
         isVisible={isCreateLessonModalVisible}

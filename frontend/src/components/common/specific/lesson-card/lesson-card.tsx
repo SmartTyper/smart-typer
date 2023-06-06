@@ -2,6 +2,7 @@ import { FC, LessonDto } from 'common/types/types';
 import { clsx, replaceRouteIdParam } from 'helpers/helpers';
 import { Card, Label, Link, Spinner } from 'components/common/common';
 import {
+  AlphabetLetter,
   AppRoute,
   CardHeaderColor,
   CardSize,
@@ -11,6 +12,7 @@ import {
 import {
   ContentTypeToLabelColor,
   CreatorTypeToLabelColor,
+  skillSymbolToArMarker,
 } from 'common/maps/maps';
 
 import styles from './styles.module.scss';
@@ -55,11 +57,12 @@ const LessonCard: FC<Props> = ({
         centeredTitle
         className={clsx(styles.lessonCard, isDisabled && styles.disabled)}
         numbered={isStudyPlan}
+        childrenContainerClassName={styles.cardContentContainer}
       >
         {isGenerating ? (
           <Spinner size={SpinnerSize.LARGE} isCentered={false} />
         ) : (
-          <>
+          <div className={styles.cardContent}>
             <span className={styles.content}>{content}</span>
             <div className={styles.cardFooter}>
               <div className={styles.labels}>
@@ -82,9 +85,19 @@ const LessonCard: FC<Props> = ({
                   className={styles.label}
                 />
               </div>
-              {bestSkill}
+              {!!bestSkill && (
+                <div className={styles.bestSkillMarkers}>
+                  {[...bestSkill].map((symbol) => (
+                    <img
+                      key={symbol}
+                      src={skillSymbolToArMarker[symbol as AlphabetLetter]}
+                      alt="AR marker"
+                    />
+                  ))}
+                </div>
+              )}
             </div>
-          </>
+          </div>
         )}
       </Card>
     );

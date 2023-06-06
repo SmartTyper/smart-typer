@@ -35,11 +35,9 @@ const StudyPlan: FC = () => {
           {studyPlanLessons.map((lesson) => (
             <LessonCard key={lesson.id} lesson={lesson} isStudyPlan />
           ))}
-          <LessonCard
-            key='next'
-            isGenerating={!isNextLessonGenerating}
-            isStudyPlan
-          />
+          {isNextLessonGenerating && (
+            <LessonCard key="next" isGenerating isStudyPlan />
+          )}
         </ol>
       )}
     </div>

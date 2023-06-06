@@ -1,36 +1,49 @@
 @import 'src/assets/css/variables';
 
-.rooms {
+.lessons {
   height: 100%;
   width: 100%;
   padding: 3rem;
 
-  .titleContainer {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .roomCards {
+  .actions {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(12.5vw, 1fr));
-    gap: 0.75rem 3rem;
+    grid-template-columns: 1fr 1fr 4fr;
+    justify-items: end;
+    align-items: center;
+    gap: 3rem;
+
+    .filter {
+      width: 100%;
+    }
   }
-}
 
-.createLessonButton {
-  height: 3.5rem;
-  width: 12rem;
-  font-size: $middle-font-size;
-  margin: 1rem 0;
-  background-color: $main-green;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: $white;
-}
+  .createLessonButton {
+    height: 3.5rem;
+    width: 12rem;
+    font-size: $middle-font-size;
+    margin: 1rem 0;
+    background-color: $main-green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $white;
+  }
 
-.spinnerContainer {
-  display: flex;
-  width: 100%;
-  justify-content: center;
+  .spinnerContainer {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .infiniteScroll {
+    overflow: unset !important;
+
+    .lessonCards {
+      width: 100%;
+      align-items: end;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(15vw, 1fr));
+      gap: 0.75rem 3rem;
+    }
+  }
 }

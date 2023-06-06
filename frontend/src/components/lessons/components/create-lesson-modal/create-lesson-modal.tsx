@@ -44,6 +44,7 @@ const CreateLessonModal: FC<Props> = ({
   } = useForm<CreateLessonRequestDto>(createLessonSchema, {
     [LessonKey.NAME]: '',
     [LessonKey.CONTENT]: '',
+    [LessonKey.CONTENT_TYPE]: ContentType.SYMBOLS,
   });
 
   const contentType = watch(LessonKey.CONTENT_TYPE);
@@ -76,11 +77,11 @@ const CreateLessonModal: FC<Props> = ({
         isDisabled: isSubmitting,
         onClick: handleSubmit(onSubmit),
       }}
-      title="Create new room"
+      title="Create new lesson"
       className={styles.createRoomModal}
     >
       <FormField
-        label={FormFieldLabel.ROOM_NAME}
+        label={FormFieldLabel.LESSON_NAME}
         type={FormFieldType.TEXT}
         placeholder="Enter lesson name"
         register={register(LessonKey.NAME)}
