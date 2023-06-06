@@ -1,5 +1,6 @@
 import { ImageAlignment } from 'components/theory/common/enums/enums';
 import styles from './styles.module.scss';
+import { FC } from 'common/types/types';
 
 type Props = {
   title: string;
@@ -9,7 +10,7 @@ type Props = {
   children?: JSX.Element | JSX.Element[];
 };
 
-const Block: React.FC<Props> = ({
+const Block: FC<Props> = ({
   children,
   title,
   text,

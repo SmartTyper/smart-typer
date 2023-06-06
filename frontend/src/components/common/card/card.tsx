@@ -1,3 +1,4 @@
+import { FC } from 'common/types/types';
 import { CardHeaderColor, CardSize } from 'common/enums/enums';
 import { clsx } from 'helpers/helpers';
 
@@ -14,7 +15,7 @@ type Props = {
   centeredTitle?: boolean;
 };
 
-const Card: React.FC<Props> = ({
+const Card: FC<Props> = ({
   color,
   title,
   className,

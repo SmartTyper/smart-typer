@@ -1,4 +1,5 @@
 import {
+  AlphabetLetter,
   ContentType,
   CreatorType,
   FormFieldLabel,
@@ -11,6 +12,7 @@ import { CreateLessonRequestDto, FC, LessonFilters } from 'common/types/types';
 import {
   Button,
   FormField,
+  ArMarkerModal,
   LessonCard,
   Select,
   Spinner,
@@ -149,6 +151,13 @@ const Lessons: FC = () => {
         onClose={handleToggleCreateLessonModalVisible}
         onSubmit={handleCreateLessonSubmit}
         isSubmitting={isLessonCreating}
+      />
+      <ArMarkerModal
+        onClose={(): void => {
+          console.log();
+        }}
+        isVisible
+        bestSkillSymbol={AlphabetLetter.A}
       />
     </div>
   );

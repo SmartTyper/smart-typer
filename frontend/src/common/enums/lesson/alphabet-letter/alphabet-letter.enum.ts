@@ -18,6 +18,7 @@ enum AlphabetLetter {
   Q = 'q',
   R = 'r',
   S = 's',
+  T = 't',
   U = 'u',
   V = 'v',
   W = 'w',
