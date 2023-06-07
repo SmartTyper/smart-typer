@@ -2,8 +2,8 @@
   "name": "frontend",
   "private": true,
   "engines": {
-    "node": ">= 18",
-    "npm": ">= 9"
+    "node": ">=16 <17",
+    "npm": ">=8 <9"
   },
   "scripts": {
     "lint:ts": "npx eslint src --ext ts,tsx",

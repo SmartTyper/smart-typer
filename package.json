@@ -2,8 +2,8 @@
   "name": "smart-typer",
   "private": "true",
   "engines": {
-    "node": ">= 18",
-    "npm": ">= 9"
+    "node": ">=16 <17",
+    "npm": ">=8 <9"
   },
   "scripts": {
     "move:deploy": "mv backend/build . && mv backend/node_modules build && mv frontend/build/* build/public",
