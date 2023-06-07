@@ -9,10 +9,10 @@ const DEFAULT_ENV_CONFIG: Knex.Config<ConfigPropType> = {
   client: ENV.DB.CLIENT,
   connection: {
     connectionString: ENV.DB.URL,
-    ssl: {
-      rejectUnauthorized: true,
-      ca: ENV.DB.SSL,
-    },
+    // ssl: {
+    //   rejectUnauthorized: true,
+    //   ca: ENV.DB.SSL,
+    // },
   },
   pool: {
     min: ENV.DB.POOL_MIN,

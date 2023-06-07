@@ -45,6 +45,15 @@ class Lessons {
     },
   );
 
+  public delete = createAsyncThunk(
+    ActionType.DELETE,
+    async (payload: LessonIdDto, { extra: { services } }): Promise<LessonIdDto> => {
+      const { lessonApi: lessonApiService } = services;
+      await lessonApiService.delete(payload);
+      return payload;
+    },
+  );
+
   public addLesson = createAction(
     ActionType.ADD_LESSON,
     (

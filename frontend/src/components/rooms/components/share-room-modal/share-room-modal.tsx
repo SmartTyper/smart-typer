@@ -96,6 +96,7 @@ const ShareRoomModal: FC<Props> = ({ isVisible, onClose, shareRoomUrl, isRoomUrl
         onClick: handleGoToCreatedRoom,
       }}
       title="Share room"
+      className={styles.shareRoomModal}
     >
       <FormField
         value={shareRoomUrl}

@@ -46,6 +46,11 @@ const { reducer } = createSlice({
           ...state.lessons.slice(newLessonIndex),
         ];
       })
+      .addCase(lessonsActions.delete.fulfilled, (state, action) => {
+        state.lessons = state.lessons.filter(
+          ({ id }) => id !== action.payload.lessonId,
+        );
+      })
       .addCase(loadMoreLessons.fulfilled, (state, action) => {
         state.lessons = [...state.lessons, ...action.payload.data];
         state.allLessonsCount = action.payload.count;

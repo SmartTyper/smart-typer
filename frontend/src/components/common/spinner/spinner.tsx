@@ -18,7 +18,7 @@ const Spinner: FC<Props> = ({ size, isCentered = true }) => {
     <div className={clsx(styles.spinner, isCentered && styles.centered)}>
       <RBSpinner
         animation="border"
-        variant="secondary"
+        variant="dark"
         role="status"
         style={{ width: sizeInRem, height: sizeInRem }}
       />

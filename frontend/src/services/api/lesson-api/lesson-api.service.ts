@@ -35,6 +35,12 @@ class LessonApi {
     });
   }
 
+  public async delete({ lessonId }: LessonIdDto): Promise<void> {
+    return this._httpService.load(`${this._baseUrl}/${lessonId}`, {
+      method: HttpMethod.DELETE,
+    });
+  }
+
   public async get(payload: LessonIdDto): Promise<LessonResponseDto> {
     const { lessonId } = payload;
     return this._httpService.load(`${this._baseUrl}/${lessonId}`);

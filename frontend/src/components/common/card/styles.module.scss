@@ -78,15 +78,29 @@
     background: $main-grey;
   }
 
-  .title {
+  .cardHeader {
     display: flex;
-    align-items: baseline;
-    margin: 0 0 1rem;
 
-    &.centered {
+    .removeButton {
+      border-radius: 50%;
+
+      .removeIcon {
+        font-size: $middle-icon-font-size;
+        color: $main-red;
+      }
+    }
+
+    .title {
+      flex: 1;
       display: flex;
-      justify-content: center;
-      text-align: center;
+      align-items: baseline;
+      margin: 0 0 1rem;
+
+      &.centered {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+      }
     }
   }
 

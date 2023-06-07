@@ -23,10 +23,14 @@
       top: 30vh;
       height: 10vh;
     }
+
+    @media only screen and (max-width: $width-tablet) {
+      display: none;
+    }
   }
 
   .arButton {
-    position: absolute;
+    position: fixed;
     left: 0;
     bottom: 0;
     z-index: 2;
@@ -38,6 +42,12 @@
     &:hover {
       box-shadow: none;
     }
+
+    @media only screen and (max-width: $width-tablet) {
+      position: relative;
+      left: unset;
+      bottom: unset;
+    }
   }
 
   .label {
@@ -46,5 +56,13 @@
     font-weight: 600;
     color: $dark-blue;
     text-align: center;
+
+    @media only screen and (max-width: $width-tablet) {
+      display: none;
+    }
+  }
+
+  @media only screen and (max-width: $width-tablet) {
+    height: 100vh;
   }
 }

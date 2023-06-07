@@ -44,7 +44,7 @@ const Button: FC<Props> = ({
       onClick={isDisabled ? undefined : handleClick}
     >
       {isLoading ? (
-        <Spinner size={SpinnerSize.SMALL} />
+        <Spinner size={SpinnerSize.SMALL} isCentered={false}/>
       ) : (
         <>
           {iconName && <i className={clsx(iconName, iconClassName)}></i>}

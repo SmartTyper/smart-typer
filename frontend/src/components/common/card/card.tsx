@@ -1,6 +1,7 @@
-import { FC } from 'common/types/types';
+import { FC, VoidAction } from 'common/types/types';
 import { CardHeaderColor, CardSize } from 'common/enums/enums';
 import { clsx } from 'helpers/helpers';
+import { Button } from 'components/common/common';
 
 import styles from './styles.module.scss';
 
@@ -13,6 +14,7 @@ type Props = {
   numbered?: boolean;
   size?: CardSize;
   centeredTitle?: boolean;
+  onRemove?: VoidAction;
 };
 
 const Card: FC<Props> = ({
@@ -21,6 +23,7 @@ const Card: FC<Props> = ({
   className,
   children,
   childrenContainerClassName,
+  onRemove,
   numbered = false,
   size = CardSize.MEDIUM,
   centeredTitle = false,
@@ -35,11 +38,21 @@ const Card: FC<Props> = ({
         className,
       )}
     >
-      {!!title && (
-        <h3 className={clsx(styles.title, centeredTitle && styles.centered)}>
-          {title}
-        </h3>
-      )}
+      <div className={styles.cardHeader}>
+        {!!title && (
+          <h3 className={clsx(styles.title, centeredTitle && styles.centered)}>
+            {title}
+          </h3>
+        )}
+        {onRemove && (
+          <Button
+            onClick={onRemove}
+            iconName="bi bi-trash3"
+            className={styles.removeButton}
+            iconClassName={styles.removeIcon}
+          />
+        )}
+      </div>
       <div className={clsx(childrenContainerClassName)}>{children}</div>
     </div>
   );

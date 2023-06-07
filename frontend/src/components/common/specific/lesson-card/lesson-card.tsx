@@ -6,6 +6,8 @@ import {
   AppRoute,
   CardHeaderColor,
   CardSize,
+  CommonKey,
+  CreatorType,
   LabelColor,
   SpinnerSize,
 } from 'common/enums/enums';
@@ -22,11 +24,13 @@ type Props = {
   isStudyPlan?: boolean;
   isGenerating?: boolean;
   onArMarkerClick: VoidCallback<AlphabetLetter>;
+  onDeleteLesson?: VoidCallback<LessonDto[CommonKey.ID]>;
 };
 
 const LessonCard: FC<Props> = ({
   lesson,
   onArMarkerClick,
+  onDeleteLesson,
   isStudyPlan = false,
   isGenerating = false,
 }) => {
@@ -36,6 +40,15 @@ const LessonCard: FC<Props> = ({
     return (): void => {
       onArMarkerClick(arMarkerSymbol);
     };
+  };
+
+  const handleDeleteLesson = (
+    lessonId: LessonDto[CommonKey.ID],
+    creatorType: CreatorType,
+  ): VoidAction | undefined => {
+    return onDeleteLesson && creatorType === CreatorType.CURRENT_USER
+      ? (): void => onDeleteLesson(lessonId)
+      : undefined;
   };
 
   const renderCard = (isDisabled = false): JSX.Element => {
@@ -55,7 +68,7 @@ const LessonCard: FC<Props> = ({
       );
     }
 
-    const { name, contentType, creatorType, content, bestSkill } =
+    const { id, name, contentType, creatorType, content, bestSkill } =
       lesson as LessonDto;
     return (
       <Card
@@ -66,6 +79,7 @@ const LessonCard: FC<Props> = ({
         className={clsx(styles.lessonCard, isDisabled && styles.disabled)}
         numbered={isStudyPlan}
         childrenContainerClassName={styles.cardContentContainer}
+        onRemove={handleDeleteLesson(id, creatorType)}
       >
         {isGenerating ? (
           <Spinner size={SpinnerSize.LARGE} isCentered={false} />

@@ -1,5 +1,6 @@
 import {
   AlphabetLetter,
+  CommonKey,
   ContentType,
   CreatorType,
   FormFieldLabel,
@@ -8,7 +9,12 @@ import {
   SpinnerSize,
 } from 'common/enums/enums';
 import { IOption, IPaginationRequest } from 'common/interface/interface';
-import { CreateLessonRequestDto, FC, LessonFilters } from 'common/types/types';
+import {
+  CreateLessonRequestDto,
+  FC,
+  LessonDto,
+  LessonFilters,
+} from 'common/types/types';
 import {
   Button,
   FormField,
@@ -85,6 +91,10 @@ const Lessons: FC = () => {
     dispatch(lessonsActions.loadLessons(params));
   };
 
+  const handleDeleteLesson = (lessonId: LessonDto[CommonKey.ID]): void => {
+    dispatch(lessonsActions.delete({ lessonId }));
+  };
+
   useEffect(() => {
     handleLoadFilteredLessons();
   }, [contentTypeFilter, creatorTypeFilter]);
@@ -138,6 +148,7 @@ const Lessons: FC = () => {
                 key={lesson.id}
                 lesson={lesson}
                 onArMarkerClick={setArMarkerSymbol}
+                onDeleteLesson={handleDeleteLesson}
               />
             ))
             : lessons.map((lesson, i, lessons) => (
@@ -153,6 +164,7 @@ const Lessons: FC = () => {
                 <LessonCard
                   lesson={lesson}
                   onArMarkerClick={setArMarkerSymbol}
+                  onDeleteLesson={handleDeleteLesson}
                 />
               </CategoryWrapper>
             ))}
