@@ -34,6 +34,8 @@ const REQUEST_ACTIONS_TYPES = [
   RacingActionType.SEND_ROOM_URL_TO_EMAILS,
   RacingActionType.SET_CURRENT_ROOM,
   RacingActionType.LOAD_SHARE_ROOM_URL,
+  RacingActionType.ADD_LESSON_ID,
+  RacingActionType.REMOVE_LESSON_ID,
 
   SettingsActionType.UPDATE,
 
