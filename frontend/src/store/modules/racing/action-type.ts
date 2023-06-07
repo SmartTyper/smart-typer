@@ -13,6 +13,8 @@ enum ActionType {
   SET_COMMENTATOR_TEXT = 'racingSetCommentatorText',
   ADD_PARTICIPANT = 'racingAddParticipant',
   REMOVE_PARTICIPANT = 'racingRemoveParticipant',
+  ADD_LESSON_ID = 'racingAddLessonId',
+  REMOVE_LESSON_ID = 'racingRemoveLessonId',
   RESET_IS_LOAD_CURRENT_ROOM_FAILED = 'racingResetIsLoadCurrentRoomFailed',
   TOGGLE_IS_GAME_STARTED = 'racingToggleIsGameStarted',
   TOGGLE_PARTICIPANT_IS_READY = 'racingToggleParticipantIsReady',

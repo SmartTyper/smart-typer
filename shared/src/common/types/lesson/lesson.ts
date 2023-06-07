@@ -4,3 +4,4 @@ export * from './lesson-id-dto/lesson-id-dto.type';
 export * from './lesson-filters/lesson-filters.type';
 export * from './skills-statistics-dto/skills-statistics-dto.type';
 export * from './lesson-response-dto/lesson-response-dto.type';
+export * from './required-lesson-id-dto/required-lesson-id-dto.type';

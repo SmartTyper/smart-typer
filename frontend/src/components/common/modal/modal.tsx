@@ -6,7 +6,7 @@ import { clsx } from 'helpers/helpers';
 import styles from './styles.module.scss';
 
 type Props = {
-  children: JSX.Element | JSX.Element[];
+  children: JSX.Element | JSX.Element[] | null;
   isVisible: boolean;
   submitButton?: ModalButton;
   cancelButton?: ModalButton;

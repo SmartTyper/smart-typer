@@ -1,7 +1,7 @@
 import { ReducerName } from 'common/enums/enums';
 import { Rating, Statistics, UserDto } from 'common/types/types';
 import { createSlice } from 'store/external/external';
-import { actions } from './actions';
+import { profile as profileActions } from './actions';
 
 type State = {
   user: UserDto | null;
@@ -21,7 +21,7 @@ const { reducer } = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     const { loadUser, resetAll, deleteAvatar, updatePersonalInfo, updateAvatar } =
-      actions;
+    profileActions;
     builder
       .addCase(loadUser.fulfilled, (state, action) => {
         const { statistics, rating, ...user } = action.payload;

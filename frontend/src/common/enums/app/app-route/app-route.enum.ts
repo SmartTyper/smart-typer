@@ -14,6 +14,7 @@ enum AppRoute {
   SETTINGS = '/settings',
   RESET_PASSWORD = '/reset-password',
   SET_PASSWORD = '/set-password',
+  AR_CAMERA = '/ar-camera',
 }
 
 export { AppRoute };

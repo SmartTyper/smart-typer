@@ -220,7 +220,23 @@ class Lesson {
       },
     );
 
-    const count = await this._LessonModel.query().resultSize();
+    const count = await this._LessonModel
+      .query()
+      .where((builder) => {
+        if (contentType) {
+          builder.where({ contentType });
+        }
+      })
+      .andWhere((builder) => {
+        if (creatorType === CreatorType.SYSTEM) {
+          builder.whereNull(LessonKey.CREATOR_ID);
+        } else if (creatorType === CreatorType.OTHER_USERS) {
+          builder.whereNot({ [LessonKey.CREATOR_ID]: userId });
+        } else if (creatorType === CreatorType.CURRENT_USER) {
+          builder.where({ [LessonKey.CREATOR_ID]: userId });
+        }
+      })
+      .resultSize();
 
     return {
       data: mappedLessons,

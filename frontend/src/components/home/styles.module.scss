@@ -24,11 +24,17 @@
     }
   }
 
-  .label {
-    font-size: 6rem;
-    line-height: 6rem;
-    font-weight: 600;
-    color: $dark-blue;
-    text-align: center;
+  .labelContainer {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    justify-items: start;
+
+    .label {
+      font-size: 6rem;
+      line-height: 6rem;
+      font-weight: 600;
+      color: $dark-blue;
+      text-align: center;
+    }
   }
 }

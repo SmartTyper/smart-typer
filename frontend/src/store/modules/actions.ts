@@ -1,5 +1,5 @@
-export { actions as auth } from './auth/actions';
-export { actions as profile } from './profile/actions';
-export { actions as settings } from './settings/actions';
-export { actions as racing } from './racing/actions';
-export { actions as lessons } from './lessons/actions';
+export { auth } from './auth/actions';
+export { profile } from './profile/actions';
+export { settings } from './settings/actions';
+export { racing } from './racing/actions';
+export { lessons } from './lessons/actions';

@@ -1,7 +1,7 @@
 import { ReducerName, ShareUrlKey } from 'common/enums/enums';
 import { GameRoom, RoomDto, ShareRoomUrlDto } from 'common/types/types';
 import { createSlice, isAnyOf } from 'store/external/external';
-import { actions } from './actions';
+import { racing as racingActions } from './actions';
 
 type State = {
   personalRoom: RoomDto | null;
@@ -45,7 +45,9 @@ const { reducer } = createSlice({
       increaseCurrentParticipantPosition,
       toggleCurrentParticipantIsReady,
       resetAvailableRooms,
-    } = actions;
+      addLessonId,
+      removeLessonId,
+    } = racingActions;
     builder
       .addCase(setPersonalRoom, (state, action) => {
         state.personalRoom = action.payload;
@@ -72,6 +74,16 @@ const { reducer } = createSlice({
       })
       .addCase(setCurrentRoom.fulfilled, (state, action) => {
         state.currentRoom = action.payload;
+      })
+      .addCase(addLessonId.fulfilled, (state, action) => {
+        if (state.currentRoom) {
+          state.currentRoom.lessonId = action.payload.lessonId;
+        }
+      })
+      .addCase(removeLessonId.fulfilled, (state, action) => {
+        if (state.currentRoom) {
+          state.currentRoom.lessonId = action.payload.lessonId;
+        }
       })
       .addCase(loadCurrentRoom.rejected, (state) => {
         state.isLoadCurrentRoomFailed = true;

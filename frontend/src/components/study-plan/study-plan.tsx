@@ -1,7 +1,7 @@
-import { SpinnerSize } from 'common/enums/enums';
+import { AlphabetLetter, SpinnerSize } from 'common/enums/enums';
 import { FC } from 'common/types/types';
-import { Spinner, LessonCard } from 'components/common/common';
-import { useDispatch, useEffect, useSelector } from 'hooks/hooks';
+import { Spinner, LessonCard, ArMarkerModal } from 'components/common/common';
+import { useDispatch, useEffect, useSelector, useState } from 'hooks/hooks';
 import { lessons as lessonsActions } from 'store/modules/actions';
 
 import styles from './styles.module.scss';
@@ -18,6 +18,14 @@ const StudyPlan: FC = () => {
     isNextLessonGenerating: requests.lessonSendLessonResult,
   }));
 
+  const [arMarkerSymbol, setArMarkerSymbol] = useState<AlphabetLetter | null>(
+    null,
+  );
+
+  const handleCloseArModal = (): void => {
+    setArMarkerSymbol(null);
+  };
+
   useEffect(() => {
     dispatch(lessonsActions.loadStudyPlan());
     return (): void => {
@@ -33,15 +41,28 @@ const StudyPlan: FC = () => {
       ) : (
         <ol className={styles.lessonCards} role="list">
           {studyPlanLessons.map((lesson) => (
-            <LessonCard key={lesson.id} lesson={lesson} isStudyPlan />
+            <LessonCard
+              key={lesson.id}
+              lesson={lesson}
+              isStudyPlan
+              onArMarkerClick={setArMarkerSymbol}
+            />
           ))}
-          <LessonCard
-            key='next'
-            isGenerating={!isNextLessonGenerating}
-            isStudyPlan
-          />
+          {isNextLessonGenerating && (
+            <LessonCard
+              key="next"
+              isGenerating
+              isStudyPlan
+              onArMarkerClick={setArMarkerSymbol}
+            />
+          )}
         </ol>
       )}
+      <ArMarkerModal
+        onClose={handleCloseArModal}
+        isVisible={!!arMarkerSymbol}
+        bestSkillSymbol={arMarkerSymbol}
+      />
     </div>
   );
 };
