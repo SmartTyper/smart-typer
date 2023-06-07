@@ -3,6 +3,7 @@ import {
   CommonKey,
   HttpCode,
   HttpErrorMessage,
+  RoomKey,
   SkillKey,
 } from 'common/enums/enums';
 import {
@@ -18,6 +19,7 @@ import {
   UserDto,
   FinishedLesson,
   LessonFilters,
+  RoomDto,
 } from 'common/types/types';
 import {
   its as itsService,
@@ -241,6 +243,12 @@ class Lesson {
         priority + 1,
       );
     }
+  }
+
+  public async getRandomSystemIdWithoutTest(): Promise<
+    NonNullable<Pick<RoomDto, RoomKey.LESSON_ID>>
+  > {
+    return this._lessonRepository.getRandomSystemIdWithoutTest();
   }
 }
 

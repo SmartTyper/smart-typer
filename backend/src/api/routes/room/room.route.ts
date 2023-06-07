@@ -4,10 +4,12 @@ import { Abstract } from '../abstract/abstract.route';
 import { IRequestWithUser } from 'common/interfaces/interfaces';
 import { getValidationMiddleware } from 'api/middlewares/middlewares';
 import {
+  addRoomLessonIdParamsSchema,
   addRoomParticipantParamsSchema,
   createRoomBodySchema,
   getRoomParamsSchema,
   getRoomShareUrlParamsSchema,
+  removeRoomLessonIdParamsSchema,
   removeRoomParticipantParamsSchema,
   sendShareRoomUrlBodySchema,
 } from 'validation-schemas/validation-schemas';
@@ -65,6 +67,24 @@ class Room extends Abstract {
       this._run((req: IRequestWithUser) => {
         const roomId = Number(req.params.roomId);
         return this._roomService.removeParticipant(roomId, req.userId);
+      }),
+    );
+
+    router.post(
+      '/:roomId/lesson',
+      this._getValidationMiddleware({ params: addRoomLessonIdParamsSchema }),
+      this._run((req) => {
+        const roomId = Number(req.params.roomId);
+        return this._roomService.addLessonId(roomId);
+      }),
+    );
+
+    router.delete(
+      '/:roomId/lesson',
+      this._getValidationMiddleware({ params: removeRoomLessonIdParamsSchema }),
+      this._run((req) => {
+        const roomId = Number(req.params.roomId);
+        return this._roomService.removeLessonId(roomId);
       }),
     );
 

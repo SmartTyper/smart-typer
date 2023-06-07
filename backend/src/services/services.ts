@@ -83,14 +83,6 @@ const auth = new Auth({
 
 const cron = new Cron();
 
-const room = new Room({
-  roomRepository,
-  socketService: socket,
-  userService: user,
-  mailerService: mailer,
-  cronService: cron,
-});
-
 const its = new ITS();
 
 const lesson = new Lesson({
@@ -98,6 +90,15 @@ const lesson = new Lesson({
   itsService: its,
   userService: user,
   statisticsService: statistics,
+});
+
+const room = new Room({
+  roomRepository,
+  socketService: socket,
+  userService: user,
+  mailerService: mailer,
+  cronService: cron,
+  lessonService: lesson,
 });
 
 export {

@@ -1,4 +1,7 @@
-import { TEST_LESSON_NAMES } from 'common/constants/constants';
+import {
+  RANDOM_LESSON_COUNT,
+  TEST_LESSON_NAMES,
+} from 'common/constants/constants';
 import {
   CommonKey,
   CreatorType,
@@ -7,6 +10,7 @@ import {
   LessonToSkillKey,
   LessonToSkillRelationMapping,
   RecordsSortOrder,
+  RoomKey,
   SkillKey,
   StatisticsKey,
   TableName,
@@ -28,6 +32,7 @@ import {
   LessonResponseDto,
   LessonWithSkills,
   LessonWithSkillsAndContentType,
+  RoomDto,
   Statistics,
   UserDto,
 } from 'common/types/types';
@@ -196,7 +201,10 @@ class Lesson {
         (builder) => builder.select(SkillKey.NAME),
       )
       .orderByRaw(`CASE WHEN creator_id = ${userId} THEN 0 ELSE 1 END`)
-      .orderBy(`${TableName.LESSONS}.${CommonKey.CREATED_AT}`, RecordsSortOrder.ASC)
+      .orderBy(
+        `${TableName.LESSONS}.${CommonKey.CREATED_AT}`,
+        RecordsSortOrder.ASC,
+      )
       .offset(offset)
       .limit(limit)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -458,6 +466,20 @@ class Lesson {
         RecordsSortOrder.DESC,
       )
       .limit(n);
+  }
+
+  public async getRandomSystemIdWithoutTest(): Promise<
+    NonNullable<Pick<RoomDto, RoomKey.LESSON_ID>>
+  > {
+    return this._LessonModel
+      .query()
+      .select(`${CommonKey.ID} as ${RoomKey.LESSON_ID}`)
+      .whereNull(LessonKey.CREATOR_ID)
+      .whereNotIn(LessonKey.NAME, TEST_LESSON_NAMES)
+      .orderByRaw('random()')
+      .limit(RANDOM_LESSON_COUNT)
+      .first()
+      .castTo<NonNullable<Pick<RoomDto, RoomKey.LESSON_ID>>>();
   }
 }
 export { Lesson };

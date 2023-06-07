@@ -15,6 +15,7 @@ import {
 import { IRoomRecord, IUserToRoomRecord } from 'common/interfaces/interfaces';
 import {
   CreateRoomResponseDto,
+  LessonDto,
   ParticipantsCount,
   RoomDto,
 } from 'common/types/types';
@@ -158,6 +159,17 @@ class Room {
           WHERE ${TableName.USERS_TO_ROOMS}.personal_room_id =
           ${TableName.ROOMS}.${CommonKey.ID}) = ${NO_ROOM_OWNER}`),
       );
+  }
+
+  public async updateLessonId(
+    roomId: RoomDto[CommonKey.ID],
+    lessonId: LessonDto[CommonKey.ID] | null,
+  ): Promise<NonNullable<Pick<RoomDto, RoomKey.LESSON_ID>>> {
+    return this._RoomModel
+      .query()
+      .update({ lessonId })
+      .findOne({ [CommonKey.ID]: roomId })
+      .returning([RoomKey.LESSON_ID]);
   }
 }
 

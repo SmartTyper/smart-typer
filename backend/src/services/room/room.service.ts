@@ -7,6 +7,7 @@ import {
   CommonKey,
   HttpCode,
   HttpErrorMessage,
+  RoomKey,
   SocketEvent,
 } from 'common/enums/enums';
 import {
@@ -24,6 +25,7 @@ import {
   user as userService,
   mailer as mailerService,
   cron as cronService,
+  lesson as lessonService,
 } from 'services/services';
 
 type Constructor = {
@@ -32,12 +34,14 @@ type Constructor = {
   userService: typeof userService;
   mailerService: typeof mailerService;
   cronService: typeof cronService;
+  lessonService: typeof lessonService;
 };
 
 class Room {
   private _roomRepository: typeof roomRepository;
   private _socketService: typeof socketService;
   private _userService: typeof userService;
+  private _lessonService: typeof lessonService;
   private _mailerService: typeof mailerService;
   private _cronService: typeof cronService;
 
@@ -47,6 +51,7 @@ class Room {
     this._userService = params.userService;
     this._mailerService = params.mailerService;
     this._cronService = params.cronService;
+    this._lessonService = params.lessonService;
     this._deleteUnused();
   }
 
@@ -209,6 +214,43 @@ class Room {
       this._socketService.io.emit(SocketEvent.DELETE_ROOM, { roomId });
       await this._roomRepository.removeById(roomId);
     }
+  }
+
+  public async addLessonId(
+    roomId: RoomDto[CommonKey.ID],
+  ): Promise<NonNullable<Pick<RoomDto, RoomKey.LESSON_ID>>> {
+    const room = await this._roomRepository.getById(roomId);
+    if (!room) {
+      throw new HttpError({
+        status: HttpCode.NOT_FOUND,
+        message: HttpErrorMessage.NO_ROOM_WITH_SUCH_ID,
+      });
+    }
+    if (room.lessonId) {
+      return { lessonId: room.lessonId };
+    }
+
+    const { lessonId } =
+      await this._lessonService.getRandomSystemIdWithoutTest();
+
+    console.log({ lessonId });
+
+    return this._roomRepository.updateLessonId(roomId, lessonId as number);
+  }
+
+  public async removeLessonId(roomId: RoomDto[CommonKey.ID]): Promise<void> {
+    const room = await this._roomRepository.getById(roomId);
+    if (!room) {
+      throw new HttpError({
+        status: HttpCode.NOT_FOUND,
+        message: HttpErrorMessage.NO_ROOM_WITH_SUCH_ID,
+      });
+    }
+    if (!room.lessonId) {
+      return;
+    }
+
+    await this._roomRepository.updateLessonId(roomId, null);
   }
 }
 

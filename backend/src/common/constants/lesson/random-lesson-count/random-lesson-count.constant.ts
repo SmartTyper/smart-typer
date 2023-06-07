@@ -1,0 +1,3 @@
+const RANDOM_LESSON_COUNT = 1;
+
+export { RANDOM_LESSON_COUNT };
