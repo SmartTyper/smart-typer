@@ -10,6 +10,7 @@ const {
   DB_POOL_MIN,
   DB_POOL_MAX,
   DB_CLIENT,
+  DB_SSL,
   SECRET_KEY,
   AWS_ACCESS_KEY,
   AWS_SECRET_KEY,
@@ -37,6 +38,7 @@ const ENV = {
     POOL_MIN: Number(DB_POOL_MIN),
     POOL_MAX: Number(DB_POOL_MAX),
     CLIENT: DB_CLIENT,
+    SSL: DB_SSL ?? '',
   },
   S3: {
     ACCESS_KEY_ID: AWS_ACCESS_KEY ?? '',

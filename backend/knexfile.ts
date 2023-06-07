@@ -7,7 +7,13 @@ type ConfigPropType = Record<string, unknown>;
 
 const DEFAULT_ENV_CONFIG: Knex.Config<ConfigPropType> = {
   client: ENV.DB.CLIENT,
-  connection: ENV.DB.URL,
+  connection: {
+    connectionString: ENV.DB.URL,
+    ssl: {
+      rejectUnauthorized: true,
+      ca: ENV.DB.SSL,
+    },
+  },
   pool: {
     min: ENV.DB.POOL_MIN,
     max: ENV.DB.POOL_MAX,
