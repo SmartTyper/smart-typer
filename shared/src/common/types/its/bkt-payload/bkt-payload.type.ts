@@ -1,9 +1,5 @@
-type BktPayload = {
-  m: number;
-  n: number;
-  t: number;
-  pKnown: number;
-  skillId: number;
-}[];
+import { SkillLessonStatistics } from 'common/types/types';
+
+type BktPayload = SkillLessonStatistics[];
 
 export type { BktPayload };

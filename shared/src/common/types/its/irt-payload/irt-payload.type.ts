@@ -1,9 +1,9 @@
+import { LessonKey } from 'common/enums/enums';
+import { LessonDto, SkillLessonStatistics } from 'common/types/types';
+
 type IrtPayload = {
-  m: number;
-  n: number;
-  t: number;
-  pKnown: number;
-  skillId: number;
-}[];
+  skills: SkillLessonStatistics[];
+  lessonName: LessonDto[LessonKey.NAME];
+};
 
 export type { IrtPayload };

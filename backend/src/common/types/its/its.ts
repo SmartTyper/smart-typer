@@ -5,4 +5,5 @@ export type {
   IrtResult,
   AhpPayload,
   AhpResult,
+  SkillLessonStatistics,
 } from 'smart-typer-shared/common/types/types';

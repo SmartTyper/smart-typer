@@ -1,11 +1,29 @@
 import { IrtPayload, IrtResult } from 'common/types/types';
+import {
+  calculateKnownProbabilityForLesson,
+  calculateWillLearnProbability,
+  calculateKnownProbability,
+} from 'helpers/helpers';
 
 const irt = (payload: IrtPayload): IrtResult => {
-  const skills = payload.map(({ skillId }) => {
-    const random = Math.floor(Math.random() * (20 - 10) + 10);
-    return { skillId, pKnown: random };
+  const { skills, lessonName } = payload;
+  const skillsWillLearnProbability = calculateWillLearnProbability(skills);
+  const skillsKnownProbabilityForLesson = calculateKnownProbabilityForLesson({
+    skills: skillsWillLearnProbability,
+    lessonName,
   });
-  return skills;
+  const skillsKnownProbabilities = skills.map(({ skillId, pKnown }) => {
+    const { pKnownLesson } = skillsKnownProbabilityForLesson.find(
+      (skill) => skill.skillId === skillId,
+    )!;
+    return {
+      skillId,
+      pKnown,
+      pKnownLesson,
+    };
+  });
+  const result = calculateKnownProbability(skillsKnownProbabilities);
+  return result;
 };
 
 export { irt };

@@ -1,9 +1,8 @@
 import { SkillKey } from 'common/enums/enums';
 import {
-  BktPayload,
-  IrtPayload,
   LessonWithSkills,
   Skill,
+  SkillLessonStatistics,
 } from 'common/types/types';
 
 type MapLessonResultItsPayload = {
@@ -18,7 +17,7 @@ const mapLessonResultToSkillLevelsPayload = ({
   misclicks,
   timestamps,
   currentSkillLevels,
-}: MapLessonResultItsPayload): BktPayload & IrtPayload => {
+}: MapLessonResultItsPayload): SkillLessonStatistics[] => {
   return lesson.skills.map(({ id, name, count }) => {
     const pKnown = currentSkillLevels.find((skill) => id === skill.id)
       ?.level as number;

@@ -170,7 +170,10 @@ class Lesson {
     const isLastTestLesson = lesson.name === [...TEST_LESSON_NAMES].pop();
 
     const resultSkillLevels = isTestLesson
-      ? await this._itsService.irt(skillLevelsPayload)
+      ? await this._itsService.irt({
+        skills: skillLevelsPayload,
+        lessonName: lesson.name,
+      })
       : await this._itsService.bkt(skillLevelsPayload);
 
     await this._userService.updateSkillLevels(
