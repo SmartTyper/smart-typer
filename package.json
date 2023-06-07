@@ -23,7 +23,7 @@
     "install:its": "cd its && npm install --production=false",
     "install:frontend": "cd frontend && npm install --production=false",
     "install:backend": "cd backend && npm install --production=false",
-    "install:all": "npm install && npm run install:its && npm run build:its && npm run install:shared && npm run build:shared && npm run install:frontend && npm run install:backend",
+    "install:all": "npm install && npm run install:shared && npm run build:shared && npm run install:its && npm run build:its && npm run install:frontend && npm run install:backend",
     "build:shared": "cd shared && npm run build",
     "build:its": "cd its && npm run build",
     "build:frontend": "cd frontend && npm run build",
