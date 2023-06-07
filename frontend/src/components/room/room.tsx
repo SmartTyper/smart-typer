@@ -36,24 +36,7 @@ import { racing as racingActions } from 'store/modules/actions';
 // import styles from './styles.module.scss';
 
 const Room: FC = () => {
-  const { participants } = useSelector(({ racing }) => ({
-    participants: racing.currentRoom?.participants,
-    // user: auth.user,
-  }));
 
-  const [isResultsModalVisible, setIsResultsModalVisible] = useState(true);
-
-  const handleResultsCancel = (): void => {
-    setIsResultsModalVisible(false);
-  };
-  const dispatch = useDispatch();
-  const { id: roomId } = useParams();
-
-  useEffect(() => {
-    if (roomId) {
-      dispatch(racingActions.loadCurrentRoom({ roomId: Number(roomId) }));
-    }
-  }, []);
   // const { user, currentRoom, isLoadCurrentRoomFailed, isSoundTurnedOn } =
   //   useSelector(({ racing, auth, settings }) => ({
   //     user: auth.user,
@@ -85,6 +68,12 @@ const Room: FC = () => {
   // const [timerBeforeGameValue, setTimerBeforeGameValue] = useState(
   //   countdownBeforeGame ?? defaultCountdownBeforeGame,
   // );
+
+  const [isResultsModalVisible, setIsResultsModalVisible] = useState(true);
+
+  const handleResultsCancel = (): void => {
+    setIsResultsModalVisible(false);
+  };
 
   // const dispatch = useDispatch();
   // const navigate = useNavigate();

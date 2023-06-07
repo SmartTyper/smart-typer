@@ -1,4 +1,4 @@
-export type { SyntheticEvent, RefObject } from 'react';
+export type { SyntheticEvent, RefObject, MutableRefObject, KeyboardEvent } from 'react';
 export type { Middleware, AsyncThunk } from '@reduxjs/toolkit';
 export type { CSSObject } from '@emotion/serialize';
 export type {
