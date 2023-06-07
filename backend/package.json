@@ -15,7 +15,7 @@
     "lint": "npm run lint:ts",
     "start:dev": "nodemon --exec ts-node --files -r tsconfig-paths/register ./src/server.ts",
     "start": "node ./src/server.js",
-    "build:ts": "tsc && tscpaths -p tsconfig.json --src . --out build",
+    "build:ts": "tsc && tsc-alias -p tsconfig.json",
     "build:copy": "cp -r package.json package-lock.json public build",
     "build": "npm run build:ts && npm run build:copy"
   },
@@ -55,6 +55,7 @@
     "smart-typer-its": "file:../its/build",
     "smart-typer-shared": "file:../shared/build",
     "socket.io": "4.1.3",
+    "tsc-alias": "^1.8.6",
     "tscpaths": "^0.0.9"
   }
 }

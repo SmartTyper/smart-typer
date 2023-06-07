@@ -1,1 +1,1 @@
-export * as yup from 'yup';
+export * from './yup/yup.dependency';

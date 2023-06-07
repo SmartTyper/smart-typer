@@ -28,7 +28,7 @@ const Button: FC<Props> = ({
   hasShadowOnHover = true,
   children,
 }) => {
-  const handleClick: VoidCallback<SyntheticEvent> = (e) => {
+  const handleClick = (e: SyntheticEvent): void => {
     e.preventDefault();
     onClick(e);
   };

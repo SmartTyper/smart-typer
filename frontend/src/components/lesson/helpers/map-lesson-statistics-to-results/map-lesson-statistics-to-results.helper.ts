@@ -14,7 +14,7 @@ const mapLessonStatisticsToResults = (
   const { content, misclicks, timestamps } = lesson;
   const totalTime = [...timestamps].pop()! - [...timestamps].shift()!;
   const totalSymbols = content.length;
-  const misclickSymbols = misclicks.map((symbol) => !symbol).length;
+  const misclickSymbols = misclicks.filter(Boolean).length;
   const correctSymbols = totalSymbols - misclickSymbols;
   const averageSpeed = Math.round(
     totalSymbols / (totalTime / MILLISECONDS_IN_SECOND / SECONDS_IN_MINUTE),
