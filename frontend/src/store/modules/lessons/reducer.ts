@@ -8,6 +8,7 @@ type State = {
   lessons: LessonDto[];
   allLessonsCount: number;
   studyPlan: LessonDto[];
+  isLoadCurrentLessonFailed: boolean;
 };
 
 const initialState: State = {
@@ -15,6 +16,7 @@ const initialState: State = {
   lessons: [],
   allLessonsCount: 0,
   studyPlan: [],
+  isLoadCurrentLessonFailed: false,
 };
 
 const { reducer } = createSlice({
@@ -34,6 +36,7 @@ const { reducer } = createSlice({
       resetCurrent,
       addMisclick,
       addTimestamp,
+      resetIsLoadCurrentLessonFailed,
     } = lessonsActions;
     builder
       .addCase(addLesson, (state, action) => {
@@ -64,6 +67,12 @@ const { reducer } = createSlice({
       })
       .addCase(loadStudyPlan.fulfilled, (state, action) => {
         state.studyPlan = action.payload;
+      })
+      .addCase(loadCurrent.rejected, (state) => {
+        state.isLoadCurrentLessonFailed = true;
+      })
+      .addCase(resetIsLoadCurrentLessonFailed, (state) => {
+        state.isLoadCurrentLessonFailed = false;
       })
       .addCase(resetCurrent, (state) => {
         state.currentLesson = null;

@@ -59,11 +59,9 @@ const Room: FC = () => {
   const [isResultsModalVisible, setIsResultsModalVisible] = useState(false);
 
   const handleLeaveRoom = async (): Promise<void> => {
-    if (roomId) {
-      dispatch(racingActions.leaveRoom({ roomId, participantId: userId }));
-      dispatch(racingActions.resetAll());
-      navigate(AppRoute.ROOT);
-    }
+    dispatch(racingActions.leaveRoom({ roomId, participantId: userId }));
+    dispatch(racingActions.resetAll());
+    navigate(-1);
   };
 
   const handleIncreasePosition = (): void => {
@@ -108,6 +106,10 @@ const Room: FC = () => {
     }
   };
 
+  const handleTypingStart = (): void => {
+    lessonsActions.addTimestamp(Date.now());
+  };
+
   const handleLoadCommentatorText = (
     gameTimerValue?: number,
     quatre?: number,
@@ -126,7 +128,7 @@ const Room: FC = () => {
 
   const handleResults = (): void => {
     setIsResultsModalVisible(true);
-    // todo userApi.updateRecord((position as number) / spentTime);
+    lessonsActions.sendLessonResult();
   };
 
   const handleCloseResultsModal = async (): Promise<void> => {
@@ -138,20 +140,7 @@ const Room: FC = () => {
     dispatch(racingActions.removeLessonId({ roomId }));
   };
 
-  useEffect(() => {
-    if (roomId) {
-      dispatch(racingActions.loadCurrentRoom({ roomId }));
-    }
-  }, [roomId]);
-
-  useEffect(() => {
-    if (isLoadCurrentRoomFailed) {
-      dispatch(racingActions.resetIsLoadCurrentRoomFailed());
-      navigate(AppRoute.ROOMS);
-    }
-  }, [isLoadCurrentRoomFailed]);
-
-  useEffect(() => {
+  const handleCommentatorTextChange = (): void => {
     if (!commentatorText) {
       return;
     }
@@ -167,13 +156,22 @@ const Room: FC = () => {
         speechSynthesis.speak(utterance);
       });
     }
-  }, [commentatorText]);
+  };
 
   useEffect(() => {
-    if (allParticipantsAreReady) {
-      lessonsActions.addTimestamp(Date.now());
+    if (roomId) {
+      dispatch(racingActions.loadCurrentRoom({ roomId }));
     }
-  }, [allParticipantsAreReady]);
+  }, [roomId]);
+
+  useEffect(() => {
+    if (isLoadCurrentRoomFailed) {
+      dispatch(racingActions.resetIsLoadCurrentRoomFailed());
+      navigate(AppRoute.ROOMS);
+    }
+  }, [isLoadCurrentRoomFailed]);
+
+  useEffect(handleCommentatorTextChange, [commentatorText]);
 
   useEffect(() => {
     return (): void => {
@@ -211,6 +209,8 @@ const Room: FC = () => {
             lessonContent={lesson?.content}
             gameTime={gameTime!}
             countdownBeforeGame={countdownBeforeGame!}
+            isSoundTurnedOn={isSoundTurnedOn}
+            onTypingStart={handleTypingStart}
             onLoadCommentatorText={handleLoadCommentatorText}
             onIncreasePosition={handleIncreasePosition}
             onPreservePosition={handlePreservePosition}
@@ -234,14 +234,12 @@ const Room: FC = () => {
               <img src={commentatorImage} />
             </div>
           </div>
+          <ResultsModal
+            participantsRating={mapParticipantsToRating(participants!)}
+            isVisible={isResultsModalVisible}
+            onClose={handleCloseResultsModal}
+          ></ResultsModal>
         </>
-      )}
-      {!!participants && (
-        <ResultsModal
-          participantsRating={mapParticipantsToRating(participants)}
-          isVisible={isResultsModalVisible}
-          onClose={handleCloseResultsModal}
-        ></ResultsModal>
       )}
     </div>
   );

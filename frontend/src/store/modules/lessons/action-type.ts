@@ -12,6 +12,7 @@ enum ActionType {
   ADD_MISCLICK = 'lessonAddMisclick',
   ADD_TIMESTAMP = 'lessonAddTimestamp',
   SEND_LESSON_RESULT = 'lessonSendLessonResult',
+  RESET_IS_LOAD_CURRENT_LESSON_FAILED = 'lessonsResetIsLoadCurrentLessonFailed',
 }
 
 export { ActionType };

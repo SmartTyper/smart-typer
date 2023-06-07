@@ -26,6 +26,8 @@ type Props = {
   onResults: VoidAction;
   onIncreasePosition: VoidAction;
   onPreservePosition: VoidAction;
+  onTypingStart: VoidAction;
+  isSoundTurnedOn: SettingsDto[SettingsKey.IS_SOUND_TURNED_ON];
   onUserFinishedGame?: (
     participantId: UserDto[CommonKey.ID],
     spentTime: number,
@@ -44,9 +46,11 @@ const TypingCanvas: FC<Props> = ({
   lessonContent,
   gameTime,
   countdownBeforeGame,
+  isSoundTurnedOn,
   onLoadCommentatorText,
   onIncreasePosition,
   onPreservePosition,
+  onTypingStart,
   onUserFinishedGame,
   onResults,
   onToggleIsReady = VOID_ACTION,
@@ -86,14 +90,18 @@ const TypingCanvas: FC<Props> = ({
   const handleDecreaseTimerBeforeGameValue = (): void => {
     if (timerBeforeTypingValue) {
       setGameTimerValue(timerBeforeTypingValue - 1);
-      playClockTick();
+      if (isSoundTurnedOn) {
+        playClockTick();
+      }
     }
   };
 
   const handleDecreaseGameTimerValue = (): void => {
     if (gameTimerValue) {
       setGameTimerValue(gameTimerValue - 1);
-      playClockTick();
+      if (isSoundTurnedOn) {
+        playClockTick();
+      }
     }
   };
 
@@ -113,7 +121,9 @@ const TypingCanvas: FC<Props> = ({
       onIncreasePosition();
     } else if (key !== 'Shift') {
       onPreservePosition();
-      playError();
+      if (isSoundTurnedOn) {
+        playError();
+      }
     }
   };
 
@@ -159,7 +169,9 @@ const TypingCanvas: FC<Props> = ({
       if (onLoadCommentatorText) {
         onLoadCommentatorText();
       }
-      playClockTick();
+      if (isSoundTurnedOn) {
+        playClockTick();
+      }
       setTimer(
         countdownBeforeGame as number,
         handleDecreaseTimerBeforeGameValue,
@@ -167,7 +179,9 @@ const TypingCanvas: FC<Props> = ({
       return;
     }
     if (!isStarted && spentTime) {
-      playClockRing();
+      if (isSoundTurnedOn) {
+        playClockRing();
+      }
       handleResetTimerValues();
       onResults();
     }
@@ -175,9 +189,14 @@ const TypingCanvas: FC<Props> = ({
 
   const handleTimerBeforeTypingChange = (): void => {
     if (!timerBeforeTypingValue && isStarted) {
-      playClockRing();
+      onTypingStart();
+      if (isSoundTurnedOn) {
+        playClockRing();
+      }
       pageRef.current.focus();
-      playClockTick();
+      if (isSoundTurnedOn) {
+        playClockTick();
+      }
       setTimer(gameTime as number, handleDecreaseGameTimerValue);
     }
   };

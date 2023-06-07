@@ -158,6 +158,10 @@ class Lessons {
       dispatch(this.loadStudyPlan);
     },
   );
+
+  public resetIsLoadCurrentLessonFailed = createAction(
+    ActionType.RESET_IS_LOAD_CURRENT_LESSON_FAILED,
+  );
 }
 
 const lessons = new Lessons();
