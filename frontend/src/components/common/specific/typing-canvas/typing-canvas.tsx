@@ -11,7 +11,6 @@ import {
   SettingsDto,
   UserDto,
   KeyboardEvent,
-  VoidCallback,
   VoidAction,
 } from 'common/types/types';
 import { Button } from 'components/common/common';
@@ -24,14 +23,18 @@ import styles from './styles.module.scss';
 type Props = {
   participants: Participant[];
   currentUserId: UserDto[CommonKey.ID];
-  onUserFinishedGame: VoidCallback<UserDto[CommonKey.ID]>;
   onResults: VoidAction;
+  onIncreasePosition: VoidAction;
+  onPreservePosition: VoidAction;
+  onUserFinishedGame?: (
+    participantId: UserDto[CommonKey.ID],
+    spentTime: number,
+  ) => void;
   isGameMode?: boolean;
   lessonContent?: string;
   gameTime?: SettingsDto[SettingsKey.GAME_TIME];
   countdownBeforeGame?: SettingsDto[SettingsKey.GAME_TIME];
   onLoadCommentatorText?: (gameTimerValue?: number, quatre?: number) => void;
-  onIncreasePosition: VoidCallback<UserDto[CommonKey.ID]>;
   onToggleIsReady?: VoidAction;
 };
 
@@ -43,6 +46,7 @@ const TypingCanvas: FC<Props> = ({
   countdownBeforeGame,
   onLoadCommentatorText,
   onIncreasePosition,
+  onPreservePosition,
   onUserFinishedGame,
   onResults,
   onToggleIsReady = VOID_ACTION,
@@ -106,8 +110,9 @@ const TypingCanvas: FC<Props> = ({
     const nextSymbol = (lessonContent as string)[currentParticipant?.position];
     const isRightSymbol = key === nextSymbol;
     if (isRightSymbol) {
-      onIncreasePosition(currentUserId);
+      onIncreasePosition();
     } else if (key !== 'Shift') {
+      onPreservePosition();
       playError();
     }
   };
@@ -133,9 +138,16 @@ const TypingCanvas: FC<Props> = ({
       const { length } = lessonContent;
       participants.forEach((participant) => {
         const participantTypedAllText = participant.position === length;
-        const participantSpentSomeTime = !!participant.spentTime;
-        if (participantTypedAllText && participantSpentSomeTime) {
-          onUserFinishedGame(participant.id);
+        const participantNotSetSpentTime = !participant.spentTime;
+        if (
+          participantTypedAllText &&
+          participantNotSetSpentTime &&
+          onUserFinishedGame
+        ) {
+          onUserFinishedGame(
+            participant.id,
+            gameTimerInitialValue! - gameTimerValue!,
+          );
         }
       });
     }
@@ -175,7 +187,10 @@ const TypingCanvas: FC<Props> = ({
       (participants as Participant[]).forEach((participant) => {
         const hadFinishGameBeforeDeadline = participant.spentTime;
         if (!hadFinishGameBeforeDeadline) {
-          onUserFinishedGame(participant.id);
+          onUserFinishedGame!(
+            participant.id,
+            gameTimerInitialValue! - gameTimerValue!,
+          );
         }
       });
     }
@@ -196,6 +211,7 @@ const TypingCanvas: FC<Props> = ({
   return (
     <div
       ref={pageRef}
+      tabIndex={0}
       onKeyDown={handleKeyDown}
       className={clsx(
         'd-flex flex-column justify-content-center align-items-center shadow',

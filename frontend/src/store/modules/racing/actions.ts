@@ -4,6 +4,7 @@ import {
   GameRoomKey,
   NotificationMessage,
   ParticipantKey,
+  RoomKey,
   ShareUrlKey,
   UserKey,
 } from 'common/enums/enums';
@@ -13,6 +14,7 @@ import {
   GameRoomWithOptionalFields,
   Participant,
   ParticipantIdDto,
+  RequiredLessonIdDto,
   RoomDto,
   RoomIdDto,
   RoomIdParticipantIdDto,
@@ -220,6 +222,35 @@ class Racing {
         currentRoom?.participants,
       );
       return { commentatorText };
+    },
+  );
+
+  public addLessonId = createAsyncThunk(
+    ActionType.ADD_LESSON_ID,
+    async (
+      payload: RoomIdDto,
+      { dispatch, extra: { services, actions } },
+    ): Promise<RequiredLessonIdDto> => {
+      const { roomApi: roomApiService } = services;
+      const { lessons: lessonsActions } = actions;
+      const { lessonId } = await roomApiService.addLessonId(payload);
+      dispatch(lessonsActions.loadCurrent({ lessonId }));
+      return { lessonId };
+    },
+  );
+
+  public removeLessonId = createAsyncThunk(
+    ActionType.REMOVE_LESSON_ID,
+    async (
+      payload: RoomIdDto,
+      { dispatch, extra: { services, actions } },
+    ): Promise<Pick<RoomDto, RoomKey.LESSON_ID>> => {
+      const { roomApi: roomApiService } = services;
+      const { lessons: lessonsActions } = actions;
+      const { lessonId } = await roomApiService.removeLessonId(payload);
+      dispatch(lessonsActions.sendLessonResult());
+      dispatch(lessonsActions.resetCurrent());
+      return { lessonId };
     },
   );
 

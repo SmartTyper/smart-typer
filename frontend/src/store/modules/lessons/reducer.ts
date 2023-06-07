@@ -67,7 +67,7 @@ const { reducer } = createSlice({
         state.studyPlan = [];
       })
       .addCase(addMisclick, (state, action) => {
-        const index = action.payload;
+        const index = action.payload - 1;
         if (state.currentLesson) {
           state.currentLesson.misclicks.splice(index, 0, true);
         }

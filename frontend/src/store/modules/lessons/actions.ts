@@ -5,7 +5,6 @@ import {
   LessonDto,
   LessonFilters,
   LessonIdDto,
-  LessonResult,
   LessonWithSkillsStatistics,
 } from 'common/types/types';
 import {
@@ -45,7 +44,7 @@ class Lessons {
       return mapLessonToLessonWithSkillsStatistics(lesson);
     },
   );
-  
+
   public addLesson = createAction(
     ActionType.ADD_LESSON,
     (
@@ -58,7 +57,7 @@ class Lessons {
       payload,
     }),
   );
-  
+
   public loadLessons = createAsyncThunk(
     ActionType.LOAD_LESSONS,
     async (
@@ -66,7 +65,7 @@ class Lessons {
       { extra: { services } },
     ): Promise<IPaginationResponse<LessonDto>> => {
       const { lessonApi: lessonApiService } = services;
-  
+
       const result = await lessonApiService.getMore({
         limit: LESSONS_AMOUNT_FOR_ONE_REQUEST,
         offset: DEFAULT_LESSONS_OFFSET,
@@ -76,7 +75,7 @@ class Lessons {
       return result;
     },
   );
-  
+
   public loadMoreLessons = createAsyncThunk(
     ActionType.LOAD_MORE_LESSONS,
     async (
@@ -84,7 +83,7 @@ class Lessons {
       { extra: { services } },
     ): Promise<IPaginationResponse<LessonDto>> => {
       const { lessonApi: lessonApiService } = services;
-  
+
       const result = await lessonApiService.getMore({
         limit: LESSONS_AMOUNT_FOR_ONE_REQUEST,
         ...payload,
@@ -92,7 +91,7 @@ class Lessons {
       return result;
     },
   );
-  
+
   public loadCurrent = createAsyncThunk(
     ActionType.LOAD_CURRENT,
     async (
@@ -104,7 +103,7 @@ class Lessons {
       return mapLessonToLessonWithSkillsStatistics(lesson);
     },
   );
-  
+
   public loadStudyPlan = createAsyncThunk(
     ActionType.LOAD_STUDY_PLAN,
     async (_: undefined, { extra: { services } }): Promise<LessonDto[]> => {
@@ -113,31 +112,40 @@ class Lessons {
       return studyPlan;
     },
   );
-  
+
   public resetAll = createAction(ActionType.RESET_ALL);
-  
+
   public resetStudyPlan = createAction(ActionType.RESET_STUDY_PLAN);
-  
+
   public resetCurrent = createAction(ActionType.RESET_CURRENT_LESSON);
-  
+
   public addMisclick = createAction(
     ActionType.ADD_MISCLICK,
-    (charIndex: number) => ({ payload: charIndex }),
+    (position: number) => ({ payload: position }),
   );
-  
+
   public addTimestamp = createAction(
     ActionType.ADD_TIMESTAMP,
     (timestamp: number) => ({ payload: timestamp }),
   );
-  
+
   public sendLessonResult = createAsyncThunk(
     ActionType.SEND_LESSON_RESULT,
     async (
-      payload: LessonResult,
-      { dispatch, extra: { services } },
+      _: undefined,
+      { getState, dispatch, extra: { services } },
     ): Promise<void> => {
       const { lessonApi: lessonApiService } = services;
-      await lessonApiService.sendLessonResult(payload);
+      const {
+        lessons: { currentLesson },
+      } = getState();
+      const { id, misclicks, timestamps } =
+        currentLesson as LessonWithSkillsStatistics;
+      await lessonApiService.sendLessonResult({
+        lessonId: id,
+        misclicks,
+        timestamps,
+      });
       dispatch(this.loadStudyPlan);
     },
   );

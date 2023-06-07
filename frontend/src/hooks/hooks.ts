@@ -1,5 +1,5 @@
 import useSound from 'use-sound';
-export { useState, useEffect, useRef } from 'react';
+export { useState, useEffect, useRef, useMemo } from 'react';
 export {
   useLocation,
   useNavigate,

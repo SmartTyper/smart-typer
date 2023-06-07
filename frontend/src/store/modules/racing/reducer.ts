@@ -45,6 +45,8 @@ const { reducer } = createSlice({
       increaseCurrentParticipantPosition,
       toggleCurrentParticipantIsReady,
       resetAvailableRooms,
+      addLessonId,
+      removeLessonId,
     } = racingActions;
     builder
       .addCase(setPersonalRoom, (state, action) => {
@@ -72,6 +74,16 @@ const { reducer } = createSlice({
       })
       .addCase(setCurrentRoom.fulfilled, (state, action) => {
         state.currentRoom = action.payload;
+      })
+      .addCase(addLessonId.fulfilled, (state, action) => {
+        if (state.currentRoom) {
+          state.currentRoom.lessonId = action.payload.lessonId;
+        }
+      })
+      .addCase(removeLessonId.fulfilled, (state, action) => {
+        if (state.currentRoom) {
+          state.currentRoom.lessonId = action.payload.lessonId;
+        }
       })
       .addCase(loadCurrentRoom.rejected, (state) => {
         state.isLoadCurrentRoomFailed = true;

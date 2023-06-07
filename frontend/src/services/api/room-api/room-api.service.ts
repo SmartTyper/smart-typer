@@ -1,9 +1,14 @@
-import { CommonKey, HttpMethod, RequestContentType } from 'common/enums/enums';
+import {
+  CommonKey,
+  HttpMethod,
+  RequestContentType,
+  RoomKey,
+} from 'common/enums/enums';
 import {
   CreateRoomRequestDto,
+  RequiredLessonIdDto,
   RoomDto,
   RoomIdDto,
-  RoomIdParticipantIdDto,
   SendRoomUrlToEmailsRequestDto,
   ShareRoomUrlDto,
 } from 'common/types/types';
@@ -65,10 +70,28 @@ class RoomApi {
   }
 
   public async removeParticipant(
-    payload: RoomIdParticipantIdDto,
+    payload: RoomIdDto,
   ): Promise<void> {
     const { roomId } = payload;
     return this._httpService.load(`${this._baseUrl}/${roomId}/participants`, {
+      method: HttpMethod.DELETE,
+    });
+  }
+
+  public async addLessonId(
+    payload: RoomIdDto,
+  ): Promise<RequiredLessonIdDto> {
+    const { roomId } = payload;
+    return this._httpService.load(`${this._baseUrl}/${roomId}/lesson`, {
+      method: HttpMethod.POST,
+    });
+  }
+
+  public async removeLessonId(
+    payload: RoomIdDto,
+  ): Promise<Pick<RoomDto, RoomKey.LESSON_ID>> {
+    const { roomId } = payload;
+    return this._httpService.load(`${this._baseUrl}/${roomId}/lesson`, {
       method: HttpMethod.DELETE,
     });
   }
