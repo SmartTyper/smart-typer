@@ -80,9 +80,9 @@ const { reducer } = createSlice({
           state.currentRoom.lessonId = action.payload.lessonId;
         }
       })
-      .addCase(removeLessonId.fulfilled, (state, action) => {
+      .addCase(removeLessonId.fulfilled, (state) => {
         if (state.currentRoom) {
-          state.currentRoom.lessonId = action.payload.lessonId;
+          state.currentRoom.lessonId = null;
         }
       })
       .addCase(loadCurrentRoom.rejected, (state) => {

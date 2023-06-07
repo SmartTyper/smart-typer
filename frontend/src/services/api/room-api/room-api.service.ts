@@ -2,7 +2,6 @@ import {
   CommonKey,
   HttpMethod,
   RequestContentType,
-  RoomKey,
 } from 'common/enums/enums';
 import {
   CreateRoomRequestDto,
@@ -89,7 +88,7 @@ class RoomApi {
 
   public async removeLessonId(
     payload: RoomIdDto,
-  ): Promise<Pick<RoomDto, RoomKey.LESSON_ID>> {
+  ): Promise<void> {
     const { roomId } = payload;
     return this._httpService.load(`${this._baseUrl}/${roomId}/lesson`, {
       method: HttpMethod.DELETE,

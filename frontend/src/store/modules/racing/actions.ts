@@ -4,7 +4,6 @@ import {
   GameRoomKey,
   NotificationMessage,
   ParticipantKey,
-  RoomKey,
   ShareUrlKey,
   UserKey,
 } from 'common/enums/enums';
@@ -244,13 +243,12 @@ class Racing {
     async (
       payload: RoomIdDto,
       { dispatch, extra: { services, actions } },
-    ): Promise<Pick<RoomDto, RoomKey.LESSON_ID>> => {
+    ): Promise<void> => {
       const { roomApi: roomApiService } = services;
       const { lessons: lessonsActions } = actions;
-      const { lessonId } = await roomApiService.removeLessonId(payload);
+      await roomApiService.removeLessonId(payload);
       dispatch(lessonsActions.sendLessonResult());
       dispatch(lessonsActions.resetCurrent());
-      return { lessonId };
     },
   );
 
