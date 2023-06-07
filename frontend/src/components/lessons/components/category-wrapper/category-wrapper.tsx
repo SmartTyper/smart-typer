@@ -21,7 +21,9 @@ const CategoryWrapper: FC<Props> = ({
       prevLessonCreatorType === CreatorType.CURRENT_USER);
   const categoryTitle = !prevLessonCreatorType ? 'Personal' : 'Others';
   return (
-    <div className={clsx(needToRenderCategoryTitle && styles.lessonCardWithTitle)}>
+    <div
+      className={clsx(needToRenderCategoryTitle && styles.lessonCardWithTitle)}
+    >
       {needToRenderCategoryTitle && <h1>{categoryTitle}</h1>}
       {children}
     </div>

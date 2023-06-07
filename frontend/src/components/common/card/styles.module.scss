@@ -93,6 +93,19 @@
   &.numbered {
     counter-increment: list;
 
+    .title::before {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 0 0 auto;
+      margin-right: 1rem;
+      width: 3rem;
+      height: 3rem;
+      content: counter(list);
+      padding: 1rem;
+      border-radius: 50%;
+    }
+
     &.blue {
       &::before {
         background: linear-gradient(
@@ -175,19 +188,6 @@
       .title::before {
         background-color: $main-grey;
       }
-    }
-
-    .title::before {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex: 0 0 auto;
-      margin-right: 1rem;
-      width: 3rem;
-      height: 3rem;
-      content: counter(list);
-      padding: 1rem;
-      border-radius: 50%;
     }
   }
 }

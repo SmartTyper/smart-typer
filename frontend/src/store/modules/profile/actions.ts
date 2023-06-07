@@ -19,9 +19,9 @@ class Profile {
       return userApiService.getProfileInfo(payload);
     },
   );
-  
+
   public resetAll = createAction(ActionType.RESET_ALL);
-  
+
   public updateAvatar = createAsyncThunk(
     ActionType.UPDATE_AVATAR,
     async (
@@ -34,7 +34,7 @@ class Profile {
       return photoUrl;
     },
   );
-  
+
   public updatePersonalInfo = createAsyncThunk(
     ActionType.UPDATE_PERSONAL_INFO,
     async (
@@ -48,7 +48,7 @@ class Profile {
       return payload;
     },
   );
-  
+
   public deleteAvatar = createAsyncThunk(
     ActionType.DELETE_AVATAR,
     async (

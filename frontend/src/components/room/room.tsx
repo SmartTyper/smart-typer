@@ -1,10 +1,6 @@
 import { Button, TypingCanvas, Spinner } from 'components/common/common';
 import { VOICE_URI } from 'common/constants/constants';
-import {
-  AppRoute,
-  CommentatorEvent,
-  SpinnerSize,
-} from 'common/enums/enums';
+import { AppRoute, CommentatorEvent, SpinnerSize } from 'common/enums/enums';
 import { clsx } from 'helpers/helpers';
 import { FC, UserDto } from 'common/types/types';
 import {
@@ -17,7 +13,10 @@ import {
   useState,
 } from 'hooks/hooks';
 import { Participant, ResultsModal } from './components/components';
-import { racing as racingActions, lessons as lessonsActions } from 'store/modules/actions';
+import {
+  racing as racingActions,
+  lessons as lessonsActions,
+} from 'store/modules/actions';
 import { mapParticipantsToRating } from './helpers/helpers';
 
 import commentatorImage from 'assets/img/commentator.gif';
@@ -74,7 +73,7 @@ const Room: FC = () => {
         roomId,
       }),
     );
-    
+
     lessonsActions.addTimestamp(Date.now());
   };
 
@@ -171,7 +170,7 @@ const Room: FC = () => {
   }, [commentatorText]);
 
   useEffect(() => {
-    if(allParticipantsAreReady){
+    if (allParticipantsAreReady) {
       lessonsActions.addTimestamp(Date.now());
     }
   }, [allParticipantsAreReady]);

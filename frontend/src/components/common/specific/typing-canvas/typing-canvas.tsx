@@ -72,13 +72,13 @@ const TypingCanvas: FC<Props> = ({
     (participant) => participant.id === currentUserId,
   );
 
-  const [playError] = useSound('../../../../assets/sounds/error.mp3', {
+  const [playError] = useSound('../../../../assets/sound/error.mp3', {
     volume: 0.25,
   });
-  const [playClockTick] = useSound('../../../../assets/sounds/clock-tick.mp3', {
+  const [playClockTick] = useSound('../../../../assets/sound/clock-tick.mp3', {
     volume: 0.25,
   });
-  const [playClockRing] = useSound('../../../../assets/sounds/clock-ring.mp3', {
+  const [playClockRing] = useSound('../../../../assets/sound/clock-ring.mp3', {
     volume: 0.25,
   });
   const pageRef = useRef() as MutableRefObject<HTMLDivElement>;
