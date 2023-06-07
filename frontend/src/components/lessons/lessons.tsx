@@ -53,9 +53,16 @@ const Lessons: FC = () => {
 
   const [isCreateLessonModalVisible, setIsCreateLessonModalVisible] =
     useState(false);
+  const [arMarkerSymbol, setArMarkerSymbol] = useState<AlphabetLetter | null>(
+    null,
+  );
 
   const handleToggleCreateLessonModalVisible = (): void => {
     setIsCreateLessonModalVisible((prev: boolean) => !prev);
+  };
+
+  const handleCloseArModal = (): void => {
+    setArMarkerSymbol(null);
   };
 
   const handleCreateLessonSubmit = (payload: CreateLessonRequestDto): void => {
@@ -81,8 +88,6 @@ const Lessons: FC = () => {
   useEffect(() => {
     handleLoadFilteredLessons();
   }, [contentTypeFilter, creatorTypeFilter]);
-
-  console.log(lessons.length, allLessonsCount);
 
   return (
     <div className={styles.lessons}>
@@ -129,7 +134,11 @@ const Lessons: FC = () => {
         <div className={styles.lessonCards}>
           {areFiltersSet
             ? lessons.map((lesson) => (
-              <LessonCard key={lesson.id} lesson={lesson} />
+              <LessonCard
+                key={lesson.id}
+                lesson={lesson}
+                onArMarkerClick={setArMarkerSymbol}
+              />
             ))
             : lessons.map((lesson, i, lessons) => (
               <CategoryWrapper
@@ -141,7 +150,10 @@ const Lessons: FC = () => {
                     : undefined
                 }
               >
-                <LessonCard lesson={lesson} />
+                <LessonCard
+                  lesson={lesson}
+                  onArMarkerClick={setArMarkerSymbol}
+                />
               </CategoryWrapper>
             ))}
         </div>
@@ -153,11 +165,9 @@ const Lessons: FC = () => {
         isSubmitting={isLessonCreating}
       />
       <ArMarkerModal
-        onClose={(): void => {
-          console.log();
-        }}
-        isVisible
-        bestSkillSymbol={AlphabetLetter.A}
+        onClose={handleCloseArModal}
+        isVisible={!!arMarkerSymbol}
+        bestSkillSymbol={arMarkerSymbol}
       />
     </div>
   );

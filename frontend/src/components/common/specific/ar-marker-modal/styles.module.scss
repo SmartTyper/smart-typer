@@ -1,24 +1,8 @@
 .resultsModal {
-  width: 35vw !important;
+  width: 40vw !important;
 
-  .modalBody {
-    font-size: 1.5rem !important;
-
-    .cardsContainer {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      flex-wrap: wrap;
-
-      .card {
-        width: 15vw;
-        max-height: 20vh;
-
-        .statisticValue {
-          width: 100%;
-          text-align: center;
-        }
-      }
-    }
+  .markerContainer {
+    width: 80%;
+    margin: 0 auto;
   }
 }

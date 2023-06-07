@@ -1,6 +1,6 @@
-import { FC, LessonDto } from 'common/types/types';
+import { FC, LessonDto, VoidAction, VoidCallback } from 'common/types/types';
 import { clsx, replaceRouteIdParam } from 'helpers/helpers';
-import { Card, Label, Link, Spinner } from 'components/common/common';
+import { Card, Label, Link, Spinner, Button } from 'components/common/common';
 import {
   AlphabetLetter,
   AppRoute,
@@ -21,14 +21,22 @@ type Props = {
   lesson?: LessonDto;
   isStudyPlan?: boolean;
   isGenerating?: boolean;
+  onArMarkerClick: VoidCallback<AlphabetLetter>;
 };
 
 const LessonCard: FC<Props> = ({
   lesson,
+  onArMarkerClick,
   isStudyPlan = false,
   isGenerating = false,
 }) => {
   const { id, bestSkill } = lesson ?? {};
+
+  const handleArMarkerClick = (arMarkerSymbol: AlphabetLetter): VoidAction => {
+    return (): void => {
+      onArMarkerClick(arMarkerSymbol);
+    };
+  };
 
   const renderCard = (isDisabled = false): JSX.Element => {
     if (isGenerating) {
@@ -88,11 +96,17 @@ const LessonCard: FC<Props> = ({
               {!!bestSkill && (
                 <div className={styles.bestSkillMarkers}>
                   {[...bestSkill].map((symbol) => (
-                    <img
+                    <Button
+                      onClick={handleArMarkerClick(symbol as AlphabetLetter)}
                       key={symbol}
-                      src={skillSymbolToArMarker[symbol as AlphabetLetter]}
-                      alt="AR marker"
-                    />
+                      className={styles.arMarkerButton}
+                    >
+                      <img
+                        src={skillSymbolToArMarker[symbol as AlphabetLetter]}
+                        alt="AR marker"
+                        className={styles.arMarker}
+                      />
+                    </Button>
                   ))}
                 </div>
               )}

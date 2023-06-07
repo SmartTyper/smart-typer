@@ -6,13 +6,12 @@ import { skillSymbolToArMarker } from 'common/maps/maps';
 import styles from './styles.module.scss';
 
 type Props = {
-  bestSkillSymbol: AlphabetLetter;
+  bestSkillSymbol: AlphabetLetter | null;
   isVisible: boolean;
   onClose: VoidAction;
 };
 
 const ArMarkerModal: FC<Props> = ({ bestSkillSymbol, isVisible, onClose }) => {
-  const arMarker = skillSymbolToArMarker[bestSkillSymbol];
   return (
     <Modal
       isVisible={isVisible}
@@ -20,9 +19,14 @@ const ArMarkerModal: FC<Props> = ({ bestSkillSymbol, isVisible, onClose }) => {
       title="Scan this marker via AR-compatible device "
       className={styles.resultsModal}
     >
-      <div className={styles.modalBody}>
-        <img src={arMarker} alt={bestSkillSymbol} />
-      </div>
+      {bestSkillSymbol ? (
+        <div className={styles.markerContainer}>
+          <img
+            src={skillSymbolToArMarker[bestSkillSymbol]}
+            alt={bestSkillSymbol}
+          />
+        </div>
+      ) : null}
     </Modal>
   );
 };
