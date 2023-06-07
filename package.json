@@ -6,7 +6,7 @@
     "npm": ">=8 <9"
   },
   "scripts": {
-    "move:deploy": "mv backend/build . && mv frontend/build/* build/public && rm build/public/.gitKeep && cp backend/node_modules build ",
+    "move:deploy": "mv backend/build . && mv frontend/build/* build/public && cp backend/node_modules build ",
     "lint:editorconfig": "editorconfig-checker",
     "lint:fs": "ls-lint",
     "lint:shared:ts": "cd shared && npm run lint:ts",
