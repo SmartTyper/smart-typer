@@ -1,5 +1,5 @@
+import { CommonKey, SkillKey } from 'common/enums/enums';
 import { BktResult, IrtResult, Skill } from 'common/types/types';
-import { CommonKey, SkillKey } from 'smart-typer-shared';
 
 const calculateLessonBestSkill = (
   currentSkillLevels: Omit<Skill, SkillKey.NAME>[],

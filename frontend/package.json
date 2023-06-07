@@ -14,7 +14,7 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "@emotion/serialize": "^1.1.2",
+    "@emotion/serialize": "1.1.2",
     "@hookform/resolvers": "3.1.0",
     "@reduxjs/toolkit": "1.8.3",
     "ar.js": "2.0.8",

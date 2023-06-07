@@ -4,7 +4,8 @@ import {
 } from 'services/services';
 import { JokeDto } from 'common/types/types';
 import { JOKE_API_REQUEST_ENDPOINT } from 'common/constants/constants';
-import { HttpCode, HttpError, HttpErrorMessage } from 'smart-typer-shared';
+import { HttpError } from 'exceptions/exceptions';
+import { HttpCode, HttpErrorMessage } from 'common/enums/enums';
 
 type Constructor = {
   axiosService: typeof axiosService;

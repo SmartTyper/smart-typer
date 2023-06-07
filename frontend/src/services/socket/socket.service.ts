@@ -1,5 +1,5 @@
+import { SocketEvent } from 'common/enums/enums';
 import { VoidCallback } from 'common/types/types';
-import { SocketEvent } from 'smart-typer-shared';
 import { io, Socket as SocketClient } from 'socket.io-client';
 
 class Socket {

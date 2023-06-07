@@ -5,8 +5,8 @@ import {
   UserProfileInfoResponseDto,
   UpdateAvatarResponseDto,
 } from 'common/types/types';
+import { UserKey } from 'common/enums/enums';
 import { ActionType } from './action-type';
-import { UserKey } from 'smart-typer-shared';
 
 class Profile {
   public loadUser = createAsyncThunk(
