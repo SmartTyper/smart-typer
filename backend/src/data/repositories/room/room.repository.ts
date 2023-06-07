@@ -17,6 +17,7 @@ import {
   CreateRoomResponseDto,
   LessonDto,
   ParticipantsCount,
+  RequiredLessonIdDto,
   RoomDto,
 } from 'common/types/types';
 import { Room as RoomModel } from 'data/models/models';
@@ -164,12 +165,13 @@ class Room {
   public async updateLessonId(
     roomId: RoomDto[CommonKey.ID],
     lessonId: LessonDto[CommonKey.ID] | null,
-  ): Promise<NonNullable<Pick<RoomDto, RoomKey.LESSON_ID>>> {
+  ): Promise<RequiredLessonIdDto> {
     return this._RoomModel
       .query()
       .update({ lessonId })
       .findOne({ [CommonKey.ID]: roomId })
-      .returning([RoomKey.LESSON_ID]);
+      .returning([RoomKey.LESSON_ID])
+      .castTo<RequiredLessonIdDto>();
   }
 }
 

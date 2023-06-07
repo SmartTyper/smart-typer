@@ -7,7 +7,6 @@ import {
   CommonKey,
   HttpCode,
   HttpErrorMessage,
-  RoomKey,
   SocketEvent,
 } from 'common/enums/enums';
 import {
@@ -17,6 +16,7 @@ import {
   ShareRoomUrlDto,
   CreateRoomResponseDto,
   UserDto,
+  RequiredLessonIdDto,
 } from 'common/types/types';
 import { room as roomRepository } from 'data/repositories/repositories';
 import { HttpError } from 'exceptions/exceptions';
@@ -218,7 +218,7 @@ class Room {
 
   public async addLessonId(
     roomId: RoomDto[CommonKey.ID],
-  ): Promise<NonNullable<Pick<RoomDto, RoomKey.LESSON_ID>>> {
+  ): Promise<RequiredLessonIdDto> {
     const room = await this._roomRepository.getById(roomId);
     if (!room) {
       throw new HttpError({

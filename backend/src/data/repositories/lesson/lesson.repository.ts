@@ -32,7 +32,7 @@ import {
   LessonResponseDto,
   LessonWithSkills,
   LessonWithSkillsAndContentType,
-  RoomDto,
+  RequiredLessonIdDto,
   Statistics,
   UserDto,
 } from 'common/types/types';
@@ -484,9 +484,7 @@ class Lesson {
       .limit(n);
   }
 
-  public async getRandomSystemIdWithoutTest(): Promise<
-    NonNullable<Pick<RoomDto, RoomKey.LESSON_ID>>
-  > {
+  public async getRandomSystemIdWithoutTest(): Promise<RequiredLessonIdDto> {
     return this._LessonModel
       .query()
       .select(`${CommonKey.ID} as ${RoomKey.LESSON_ID}`)
@@ -495,7 +493,7 @@ class Lesson {
       .orderByRaw('random()')
       .limit(RANDOM_LESSON_COUNT)
       .first()
-      .castTo<NonNullable<Pick<RoomDto, RoomKey.LESSON_ID>>>();
+      .castTo<RequiredLessonIdDto>();
   }
 }
 export { Lesson };
