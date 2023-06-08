@@ -79,12 +79,12 @@ const Lesson: FC = () => {
   }, [isLoadCurrentRoomFailed]);
 
   return (
-    <div className={styles.container}>
+    <div>
       {!currentLesson ? (
         <Spinner size={SpinnerSize.LARGE} />
       ) : (
         <>
-          <div className={clsx('d-flex flex-column', styles.info)}>
+          <div>
             <h1>{name}</h1>
           </div>
           <TypingCanvas
