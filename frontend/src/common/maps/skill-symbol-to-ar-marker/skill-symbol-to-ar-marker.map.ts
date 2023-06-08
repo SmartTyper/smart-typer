@@ -1,5 +1,5 @@
 import aMarker from 'assets/img/ar-markers/a.png';
-import hiroMarker from 'assets/img/ar-markers/hiro.jpg';
+import bMarker from 'assets/img/ar-markers/b.png';
 import cMarker from 'assets/img/ar-markers/c.png';
 import dMarker from 'assets/img/ar-markers/d.png';
 import eMarker from 'assets/img/ar-markers/e.png';
@@ -28,7 +28,7 @@ import { AlphabetLetter } from 'common/enums/enums';
 
 const skillSymbolToArMarker: Record<AlphabetLetter, typeof aMarker> = {
   [AlphabetLetter.A]: aMarker,
-  [AlphabetLetter.B]: hiroMarker,
+  [AlphabetLetter.B]: bMarker,
   [AlphabetLetter.C]: cMarker,
   [AlphabetLetter.D]: dMarker,
   [AlphabetLetter.E]: eMarker,
