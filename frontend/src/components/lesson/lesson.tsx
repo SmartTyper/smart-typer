@@ -13,7 +13,6 @@ import {
 import { ResultsModal } from './components/components';
 import { lessons as lessonsActions } from 'store/modules/actions';
 
-import styles from './styles.module.scss';
 import { mapLessonStatisticsToResults } from './helpers/helpers';
 
 const Lesson: FC = () => {
