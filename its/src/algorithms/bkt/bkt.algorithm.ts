@@ -8,8 +8,11 @@ import {
 
 const bkt = (payload: BktPayload): BktResult => {
   const skillsWillLearnProbability = calculateWillLearnProbability(payload);
+
   const skillsPGuess = calculateGuessProbability(payload);
+
   const skillsPSlip = calculateSlipProbability(payload);
+
   const skillsWillLearnAndKnowProbability = payload.map((skill) => {
     const { pWillLearn } = skillsWillLearnProbability.find(
       ({ skillId }) => skill.skillId === skillId,
@@ -21,6 +24,7 @@ const bkt = (payload: BktPayload): BktResult => {
     skillsPGuess,
     skillsPSlip,
   });
+
   const result = skillsLearnedProbability.map(({ skillId, pLearned }) => ({
     skillId,
     pKnown: pLearned,

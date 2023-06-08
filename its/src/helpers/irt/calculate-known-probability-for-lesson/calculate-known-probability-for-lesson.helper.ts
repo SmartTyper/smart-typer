@@ -18,8 +18,8 @@ const calculateKnownProbabilityForLesson = ({
   return skills.map(({ skillId, pWillLearn }) => {
     const complexity = calculateLessonComplexity(lessonName);
     const knowledgeLevel = solveEquation(
-      `(e^(x - ${complexity}))/(1+e^(x - ${complexity})) - ${pWillLearn}`,
-      `e^(x - ${complexity}))/(1+e^(x - ${complexity})`,
+      `e^(x - ${complexity})/(1+e^(x - ${complexity})) - ${pWillLearn}`,
+      `e^(x - ${complexity})/(1+e^(x - ${complexity}))`,
     );
     const pKnownLesson = knowledgeLevel
       ? knowledgeLevel / 5 + 0.5

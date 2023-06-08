@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import math from 'mathjs';
+import * as math from 'mathjs';
 
 const solveEquation = (
   equation: string,
