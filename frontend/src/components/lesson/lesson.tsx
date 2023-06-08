@@ -11,9 +11,8 @@ import {
   useState,
 } from 'hooks/hooks';
 import { ResultsModal } from './components/components';
-import {  lessons as lessonsActions } from 'store/modules/actions';
+import { lessons as lessonsActions } from 'store/modules/actions';
 
-import commentatorImage from 'assets/img/commentator.gif';
 import styles from './styles.module.scss';
 import { mapLessonStatisticsToResults } from './helpers/helpers';
 
@@ -27,6 +26,8 @@ const Lesson: FC = () => {
       currentLesson: lessons.currentLesson,
     }));
 
+  const { name, content } = currentLesson ?? {};
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -35,15 +36,11 @@ const Lesson: FC = () => {
   const userId = (user as UserDto).id;
 
   const [isResultsModalVisible, setIsResultsModalVisible] = useState(false);
+  const [position, setPosition] = useState(0);
+  const [spentTime, setSpentTime] = useState(0);
 
   const handleIncreasePosition = (): void => {
-    dispatch(
-      racingActions.increaseCurrentParticipantPosition({
-        participantId: userId,
-        roomId,
-      }),
-    );
-
+    setPosition(position + 1);
     lessonsActions.addTimestamp(Date.now());
   };
 
@@ -53,6 +50,10 @@ const Lesson: FC = () => {
 
   const handleTypingStart = (): void => {
     lessonsActions.addTimestamp(Date.now());
+  };
+
+  const handleUserFinishedGame = (spentTime: number): void => {
+    setSpentTime(spentTime);
   };
 
   const handleResults = (): void => {
@@ -88,31 +89,17 @@ const Lesson: FC = () => {
             <h1>{name}</h1>
           </div>
           <TypingCanvas
-            participants={participants!}
+            participants={[{ position, id: userId, spentTime }]}
             currentUserId={userId}
             lessonContent={content}
             isSoundTurnedOn={isSoundTurnedOn}
             onTypingStart={handleTypingStart}
+            onUserFinishedGame={handleUserFinishedGame}
             onIncreasePosition={handleIncreasePosition}
             onPreservePosition={handlePreservePosition}
             onResults={handleResults}
             isGameMode
           />
-          <div className={clsx('d-flex flex-column', styles.commentator)}>
-            <div className={styles.speechBubble}>
-              {(commentatorText as string).split('\n').map((line) => {
-                return (
-                  <>
-                    {line}
-                    <br />
-                  </>
-                );
-              })}
-            </div>
-            <div className="d-flex justify-content-end align-self-end">
-              <img src={commentatorImage} />
-            </div>
-          </div>
           <ResultsModal
             lessonResult={mapLessonStatisticsToResults(currentLesson)}
             isVisible={isResultsModalVisible}

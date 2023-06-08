@@ -79,9 +79,9 @@ const Room: FC = () => {
     lessonsActions.addMisclick(currentParticipant!.position);
   };
 
-  const handleUserFinishedGame = (
-    participantId: number,
+  const handleParticipantFinishedGame = (
     spentTime: number,
+    participantId: number,
   ): void => {
     dispatch(racingActions.toggleParticipantIsReady({ participantId }));
     dispatch(
@@ -214,7 +214,7 @@ const Room: FC = () => {
             onLoadCommentatorText={handleLoadCommentatorText}
             onIncreasePosition={handleIncreasePosition}
             onPreservePosition={handlePreservePosition}
-            onUserFinishedGame={handleUserFinishedGame}
+            onUserFinishedGame={handleParticipantFinishedGame}
             onResults={handleResults}
             onToggleIsReady={handleToggleIsReady}
             isGameMode
