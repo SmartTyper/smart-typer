@@ -1,6 +1,5 @@
 import { TypingCanvas, Spinner } from 'components/common/common';
 import { AppRoute, SpinnerSize } from 'common/enums/enums';
-import { clsx } from 'helpers/helpers';
 import { FC, UserDto } from 'common/types/types';
 import {
   useParams,
