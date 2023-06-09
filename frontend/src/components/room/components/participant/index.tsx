@@ -1,15 +1,15 @@
-// import ProgressBar from 'react-bootstrap/ProgressBar';
-// import { IParticipant } from 'common/interfaces';
-// import { DEFAULT_PARTICIPANT } from 'common/constants/game';
-// import { Profile } from 'components/common';
-// import { getAllowedClasses } from 'common/helpers';
-// import styles from './styles.module.scss';
-
+import { DEFAULT_PARTICIPANT } from 'common/constants/constants';
+import { UserLabel } from 'components/common/common';
 import { FC, Participant as ParticipantType } from 'common/types/types';
+import { RBProgressBar } from 'components/external/external';
+import { AvatarSize } from 'common/enums/enums';
+import { clsx } from 'helpers/helpers';
+
+import styles from './styles.module.scss';
 
 type Props = {
   participant: ParticipantType;
-  textLength: number;
+  textLength?: number;
   isCurrentParticipant: boolean;
 };
 
@@ -18,35 +18,32 @@ const Participant: FC<Props> = ({
   textLength,
   isCurrentParticipant,
 }) => {
-  console.log(participant, textLength, isCurrentParticipant);
+  const { isReady, nickname, photoUrl, position } = participant;
   return (
-    <div className="d-flex flex-column my-3">
-      {/* <div className="d-flex my-2">
+    <div className={styles.participant}>
+      <div className={styles.mainInfo}>
         <div
-          className={getAllowedClasses(
-            'rounded-circle',
-            participant.isReady ? 'bg-success' : 'bg-danger',
-            styles.readyIndicator,
+          className={clsx(
+            isReady ? styles.ready : styles.notReady,
+            styles.readyStatusIndicator,
           )}
         />
-        <Profile
-          userName={participant.fullName}
-          userAvatar={participant.photoUrl ?? ''}
-          textSize="fs-6"
-          avatarSize="28"
-          textColor="text-dark"
+        <UserLabel
+          userName={nickname}
+          avatarSrc={photoUrl}
+          avatarSize={AvatarSize.SMALL}
         />
         {isCurrentParticipant && <span>{' (you)'}</span>}
       </div>
-      <ProgressBar
+      <RBProgressBar
         animated
         now={
-          (participant.position / textLength) * 100 ||
-          DEFAULT_PARTICIPANT.position
+          textLength
+            ? (position / textLength) * 100
+            : DEFAULT_PARTICIPANT.position
         }
-        className="border border-success"
-        variant="success"
-      /> */}
+        className={styles.progressBar}
+      />
     </div>
   );
 };

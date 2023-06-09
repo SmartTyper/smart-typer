@@ -7,13 +7,12 @@
   border-radius: 2px;
 
   &.light {
-    box-shadow: $white-sheet-light-shadow;
+    box-shadow: $content-wrapper-light-shadow;
   }
 
   &.strong {
-    box-shadow: $white-sheet-strong-shadow;
+    box-shadow: $content-wrapper-strong-shadow;
   }
-
 
   &.small {
     width: 40%;

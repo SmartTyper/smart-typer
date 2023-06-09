@@ -1,11 +1,13 @@
-import { VoidAction } from 'common/types/types';
+import { VoidCallback } from 'common/types/types';
 import { MILLISECONDS_IN_SECOND } from 'common/constants/constants';
 
-const setTimer = (upperBound: number, action: VoidAction): void => {
+const setTimer = (upperBound: number, action: VoidCallback<number>): void => {
   let counter = upperBound;
+  console.log({ upperBound });
   const timerIncreaser = (): void => {
-    action();
     counter--;
+    action(counter);
+    console.log({ counter });
     if (counter <= 0) {
       clearInterval(timer);
     }

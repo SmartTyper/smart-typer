@@ -80,7 +80,7 @@ class Lessons {
         offset: DEFAULT_LESSONS_OFFSET,
         ...payload,
       });
-      console.log(result);
+  
       return result;
     },
   );

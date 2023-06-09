@@ -11,8 +11,10 @@ import {
 } from 'hooks/hooks';
 import { ResultsModal } from './components/components';
 import { lessons as lessonsActions } from 'store/modules/actions';
-
 import { mapLessonStatisticsToResults } from './helpers/helpers';
+
+import styles from './styles.module.scss';
+import { useCallback } from 'react';
 
 const Lesson: FC = () => {
   const { user, isLoadCurrentRoomFailed, isSoundTurnedOn, currentLesson } =
@@ -24,13 +26,13 @@ const Lesson: FC = () => {
       currentLesson: lessons.currentLesson,
     }));
 
-  const { name, content } = currentLesson ?? {};
+  const { name, content, timestamps } = currentLesson ?? {};
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const params = useParams();
-  const lessonId = Number(params.lessonId);
+  const lessonId = Number(params.id);
   const userId = (user as UserDto).id;
 
   const [isResultsModalVisible, setIsResultsModalVisible] = useState(false);
@@ -50,9 +52,10 @@ const Lesson: FC = () => {
     lessonsActions.addTimestamp(Date.now());
   };
 
-  const handleUserFinishedGame = (spentTime: number): void => {
-    setSpentTime(spentTime);
-  };
+  const handleUserFinishedLesson = useCallback((): void => {
+    console.log(timestamps);
+    setSpentTime([...timestamps!].pop()! - [...timestamps!].shift()!);
+  }, [timestamps]);
 
   const handleResults = (): void => {
     setIsResultsModalVisible(true);
@@ -77,13 +80,14 @@ const Lesson: FC = () => {
     }
   }, [isLoadCurrentRoomFailed]);
 
+  console.log(spentTime);
   return (
-    <div>
+    <div className={styles.lesson}>
       {!currentLesson ? (
         <Spinner size={SpinnerSize.LARGE} />
       ) : (
         <>
-          <div>
+          <div className={styles.info}>
             <h1>{name}</h1>
           </div>
           <TypingCanvas
@@ -92,11 +96,10 @@ const Lesson: FC = () => {
             lessonContent={content}
             isSoundTurnedOn={isSoundTurnedOn}
             onTypingStart={handleTypingStart}
-            onUserFinishedGame={handleUserFinishedGame}
+            onUserFinishedLesson={handleUserFinishedLesson}
             onIncreasePosition={handleIncreasePosition}
             onPreservePosition={handlePreservePosition}
             onResults={handleResults}
-            isGameMode
           />
           <ResultsModal
             lessonResult={mapLessonStatisticsToResults(currentLesson)}

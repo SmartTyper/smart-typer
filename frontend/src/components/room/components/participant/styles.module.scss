@@ -1,4 +1,37 @@
-.readyIndicator {
-  width: 10px;
-  height: 10px;
+@import 'src/assets/css/variables';
+
+.participant{
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0;
+
+  .mainInfo{
+    display: flex;
+    margin: 0.75rem 0;
+
+    .readyStatusIndicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+  
+      &.ready {
+        background-color: $main-green;;
+      }
+  
+      &.notReady {
+        background-color: $main-red;
+      }
+    }
+  }
+
+ 
+
+  .progressBar{
+    border: 1px solid $main-green;
+    div {
+      background-color: $main-green;
+    }
+  }
 }
+
+

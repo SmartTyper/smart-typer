@@ -233,8 +233,6 @@ class Room {
     const { lessonId } =
       await this._lessonService.getRandomSystemIdWithoutTest();
 
-    console.log({ lessonId });
-
     return this._roomRepository.updateLessonId(roomId, lessonId as number);
   }
 
