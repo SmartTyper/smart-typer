@@ -138,9 +138,7 @@ class Lessons {
 
   public addTimestamp = createAction(
     ActionType.ADD_TIMESTAMP,
-    (timestamp: number) => {
-      return { payload: timestamp };
-    },
+    (timestamp: number) => ({ payload: timestamp }),
   );
 
   public sendLessonResult = createAsyncThunk(
