@@ -35,7 +35,8 @@ class LessonApi {
     });
   }
 
-  public async delete({ lessonId }: LessonIdDto): Promise<void> {
+  public async delete(payload: LessonIdDto): Promise<void> {
+    const { lessonId } = payload;
     return this._httpService.load(`${this._baseUrl}/${lessonId}`, {
       method: HttpMethod.DELETE,
     });

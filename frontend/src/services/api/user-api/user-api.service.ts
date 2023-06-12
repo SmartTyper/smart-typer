@@ -24,9 +24,10 @@ class UserApi {
     return this._httpService.load(`${this._baseUrl}/current`);
   }
 
-  public async getProfileInfo({
-    userId,
-  }: UserIdDto): Promise<UserProfileInfoResponseDto> {
+  public async getProfileInfo(
+    payload: UserIdDto,
+  ): Promise<UserProfileInfoResponseDto> {
+    const { userId } = payload;
     return this._httpService.load(`${this._baseUrl}/${userId}`);
   }
 
