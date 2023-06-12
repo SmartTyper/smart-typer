@@ -90,15 +90,21 @@ const TypingCanvas: FC<Props> = ({
 
   const { position, spentTime, isReady } = currentParticipant ?? {};
 
-  const [playError] = useSound('../../../../assets/sound/error.mp3', {
+  const [playError] = useSound(`${process.env.PUBLIC_URL}/sound/error.mp3`, {
     volume: 0.25,
   });
-  const [playClockTick] = useSound('../../../../assets/sound/clock-tick.mp3', {
-    volume: 0.25,
-  });
-  const [playClockRing] = useSound('../../../../assets/sound/clock-ring.mp3', {
-    volume: 0.25,
-  });
+  const [playClockTick] = useSound(
+    `${process.env.PUBLIC_URL}/sound/clock-tick.mp3`,
+    {
+      volume: 0.25,
+    },
+  );
+  const [playClockRing] = useSound(
+    `${process.env.PUBLIC_URL}/sound/clock-ring.mp3`,
+    {
+      volume: 0.25,
+    },
+  );
   const pageRef = useRef() as MutableRefObject<HTMLDivElement>;
 
   const handleDecreaseTimerBeforeGameValue = (timerValue: number): void => {

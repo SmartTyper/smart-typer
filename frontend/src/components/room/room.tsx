@@ -1,6 +1,6 @@
 import { Button, TypingCanvas, Spinner } from 'components/common/common';
 import { VOICE_URI } from 'common/constants/constants';
-import { AppRoute, CommentatorEvent, SpinnerSize } from 'common/enums/enums';
+import { CommentatorEvent, SpinnerSize } from 'common/enums/enums';
 import { FC, UserDto } from 'common/types/types';
 import {
   useParams,
@@ -58,9 +58,9 @@ const Room: FC = () => {
   const [isResultsModalVisible, setIsResultsModalVisible] = useState(false);
 
   const handleLeaveRoom = async (): Promise<void> => {
-    dispatch(racingActions.leaveRoom({ roomId, participantId: userId }));
-    dispatch(racingActions.resetAll());
     navigate(-1);
+    dispatch(racingActions.leaveRoom({ roomId, participantId: userId }));
+    dispatch(racingActions.resetAllExceptPersonal());
   };
 
   const handleIncreasePosition = (): void => {
@@ -128,9 +128,6 @@ const Room: FC = () => {
   };
 
   const handleCloseResultsModal = async (): Promise<void> => {
-    if (!currentRoom) {
-      return;
-    }
     setIsResultsModalVisible(false);
     dispatch(racingActions.resetCurrentRoomToDefault());
     dispatch(racingActions.removeLessonId({ roomId }));
@@ -162,8 +159,8 @@ const Room: FC = () => {
 
   useEffect(() => {
     if (isLoadCurrentRoomFailed) {
+      navigate(-1);
       dispatch(racingActions.resetIsLoadCurrentRoomFailed());
-      navigate(AppRoute.ROOMS);
     }
   }, [isLoadCurrentRoomFailed]);
 
@@ -195,7 +192,7 @@ const Room: FC = () => {
                 participant={participant}
                 key={participant.id}
                 textLength={content?.length}
-                isCurrentParticipant={participant.id === currentParticipant?.id}
+                isCurrentUser={participant.id === currentParticipant?.id}
               />
             ))}
           </div>
@@ -218,12 +215,12 @@ const Room: FC = () => {
           />
           <div className={styles.commentator}>
             <div className={styles.speechBubble}>
-              {(commentatorText as string).split('\n').map((line) => {
+              {(commentatorText as string).split('\n').map((line, i) => {
                 return (
-                  <>
+                  <span key={i}>
                     {line}
                     <br />
-                  </>
+                  </span>
                 );
               })}
             </div>

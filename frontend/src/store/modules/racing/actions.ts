@@ -264,6 +264,10 @@ class Racing {
 
   public resetAll = createAction(ActionType.RESET_ALL);
 
+  public resetAllExceptPersonal = createAction(
+    ActionType.RESET_ALL_EXCEPT_PERSONAL,
+  );
+
   public resetCurrentRoomToDefault = createAsyncThunk(
     ActionType.RESET_CURRENT_ROOM_TO_DEFAULT,
     async (_: undefined, { getState }): Promise<void | GameRoom> => {

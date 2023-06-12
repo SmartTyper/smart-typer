@@ -14,7 +14,7 @@ type Options = {
 };
 
 const getSocketMiddleware = ({ socketService }: Options): Middleware => {
-  return ({ dispatch }) => {
+  return ({ dispatch, getState }) => {
     socketService.on(SocketEvent.CREATE_ROOM, (payload: RoomDto) => {
       dispatch(racingActions.addRoomToAvailableRooms(payload));
     });
@@ -22,28 +22,40 @@ const getSocketMiddleware = ({ socketService }: Options): Middleware => {
     socketService.on(
       SocketEvent.ADD_PARTICIPANT,
       (payload: Omit<UserDto, UserKey.EMAIL>) => {
-        dispatch(racingActions.addParticipant(payload));
+        const currentUserId = getState().auth.user.id;
+        if (currentUserId !== payload.id) {
+          dispatch(racingActions.addParticipant(payload));
+        }
       },
     );
 
     socketService.on(
       SocketEvent.REMOVE_PARTICIPANT,
       (payload: ParticipantIdDto) => {
-        dispatch(racingActions.removeParticipant(payload));
+        const currentUserId = getState().auth.user.id;
+        if (currentUserId !== payload.participantId) {
+          dispatch(racingActions.removeParticipant(payload));
+        }
       },
     );
 
     socketService.on(
       SocketEvent.TOGGLE_PARTICIPANT_IS_READY,
       (payload: ParticipantIdDto) => {
-        dispatch(racingActions.toggleParticipantIsReady(payload));
+        const currentUserId = getState().auth.user.id;
+        if (currentUserId !== payload.participantId) {
+          dispatch(racingActions.toggleParticipantIsReady(payload));
+        }
       },
     );
 
     socketService.on(
       SocketEvent.INCREASE_PARTICIPANT_POSITION,
       (payload: ParticipantIdDto) => {
-        dispatch(racingActions.increaseParticipantPosition(payload));
+        const currentUserId = getState().auth.user.id;
+        if (currentUserId !== payload.participantId) {
+          dispatch(racingActions.increaseParticipantPosition(payload));
+        }
       },
     );
 

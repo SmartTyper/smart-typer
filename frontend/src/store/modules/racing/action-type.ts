@@ -23,6 +23,7 @@ enum ActionType {
   INCREASE_CURRENT_PARTICIPANT_POSITION = 'racingIncreaseCurrentParticipantPosition',
   TOGGLE_CURRENT_PARTICIPANT_IS_READY = 'racingToggleCurrentParticipantIsReady',
   RESET_ALL = 'racingResetAll',
+  RESET_ALL_EXCEPT_PERSONAL = 'racingResetAllExceptPersonal',
   RESET_AVAILABLE_ROOMS = 'racingResetResetAvailableRooms',
   RESET_CURRENT_ROOM_TO_DEFAULT = 'racingResetCurrentRoomToDefault',
   JOIN_ROOM = 'racingJoinRoom',

@@ -14,7 +14,6 @@ import {
   RoomDto,
   SendRoomUrlToEmailsRequestDto,
   ShareRoomUrlDto,
-  CreateRoomResponseDto,
   UserDto,
   RequiredLessonIdDto,
 } from 'common/types/types';
@@ -81,9 +80,7 @@ class Room {
     return this._roomRepository.getAllAvailable();
   }
 
-  public async create(
-    payload: CreateRoomRequestDto,
-  ): Promise<CreateRoomResponseDto> {
+  public async create(payload: CreateRoomRequestDto): Promise<RoomDto> {
     const createdRoom = await this._roomRepository.create(payload);
 
     if (!payload.isPrivate) {

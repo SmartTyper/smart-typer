@@ -14,7 +14,6 @@ import {
 } from 'common/enums/enums';
 import { IRoomRecord, IUserToRoomRecord } from 'common/interfaces/interfaces';
 import {
-  CreateRoomResponseDto,
   LessonDto,
   ParticipantsCount,
   RequiredLessonIdDto,
@@ -35,12 +34,13 @@ class Room {
 
   public async create(
     data: Pick<IRoomRecord, RoomKey.NAME | RoomKey.IS_PRIVATE>,
-  ): Promise<CreateRoomResponseDto> {
+  ): Promise<RoomDto> {
     const { id, lessonId, name } = await this._RoomModel
       .query()
-      .insertAndFetch(data);
+      .insertAndFetch(data)
+      .castTo<RoomDto>();
 
-    return { id, lessonId, name };
+    return { id, lessonId, name, participants: [] };
   }
 
   public async createPersonal(): Promise<

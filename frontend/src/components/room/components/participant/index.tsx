@@ -10,14 +10,10 @@ import styles from './styles.module.scss';
 type Props = {
   participant: ParticipantType;
   textLength?: number;
-  isCurrentParticipant: boolean;
+  isCurrentUser: boolean;
 };
 
-const Participant: FC<Props> = ({
-  participant,
-  textLength,
-  isCurrentParticipant,
-}) => {
+const Participant: FC<Props> = ({ participant, textLength, isCurrentUser }) => {
   const { isReady, nickname, photoUrl, position } = participant;
   return (
     <div className={styles.participant}>
@@ -28,12 +24,14 @@ const Participant: FC<Props> = ({
             styles.readyStatusIndicator,
           )}
         />
-        <UserLabel
-          userName={nickname}
-          avatarSrc={photoUrl}
-          avatarSize={AvatarSize.SMALL}
-        />
-        {isCurrentParticipant && <span>{' (you)'}</span>}
+        <div className={styles.label}>
+          <UserLabel
+            userName={nickname}
+            avatarSrc={photoUrl}
+            avatarSize={AvatarSize.SMALL}
+          />
+          {isCurrentUser && <span>(you)</span>}
+        </div>
       </div>
       <RBProgressBar
         animated

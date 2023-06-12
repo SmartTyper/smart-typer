@@ -1,6 +1,6 @@
 import { ReducerName, ShareUrlKey } from 'common/enums/enums';
 import { GameRoom, RoomDto, ShareRoomUrlDto } from 'common/types/types';
-import { createSlice, isAnyOf } from 'store/external/external';
+import { createSlice } from 'store/external/external';
 import { racing as racingActions } from './actions';
 
 type State = {
@@ -41,6 +41,7 @@ const { reducer } = createSlice({
       setSpentTime,
       increaseParticipantPosition,
       resetAll,
+      resetAllExceptPersonal,
       resetCurrentRoomToDefault,
       increaseCurrentParticipantPosition,
       toggleCurrentParticipantIsReady,
@@ -138,6 +139,10 @@ const { reducer } = createSlice({
           };
         }
       })
+      .addCase(resetAllExceptPersonal, (state) => {
+        const { personalRoom } = state;
+        Object.assign(state, { ...initialState, personalRoom });
+      })
       .addCase(resetAll, (state) => {
         Object.assign(state, initialState);
       })
@@ -146,47 +151,70 @@ const { reducer } = createSlice({
           state.currentRoom = action.payload;
         }
       })
-      .addMatcher(
-        isAnyOf(toggleParticipantIsReady, toggleCurrentParticipantIsReady),
-        (state, action) => {
-          if (state.currentRoom) {
-            const participantId = action.payload;
-            const { participants } = state.currentRoom;
-            const updatedParticipants = participants.map((participant) => {
-              if (participant.id === participantId) {
-                return { ...participant, isReady: !participant.isReady };
-              }
-              return participant;
-            });
-            state.currentRoom = {
-              ...state.currentRoom,
-              participants: updatedParticipants,
-            };
-          }
-        },
-      )
-      .addMatcher(
-        isAnyOf(
-          increaseParticipantPosition,
-          increaseCurrentParticipantPosition,
-        ),
-        (state, action) => {
-          if (state.currentRoom) {
-            const participantId = action.payload;
-            const { participants } = state.currentRoom;
-            const updatedParticipants = participants.map((participant) => {
-              if (participant.id === participantId) {
-                return { ...participant, position: participant.position + 1 };
-              }
-              return participant;
-            });
-            state.currentRoom = {
-              ...state.currentRoom,
-              participants: updatedParticipants,
-            };
-          }
-        },
-      );
+      .addCase(toggleCurrentParticipantIsReady, (state, action) => {
+        if (state.currentRoom) {
+          const { participantId } = action.payload;
+          const { participants } = state.currentRoom;
+          const updatedParticipants = participants.map((participant) => {
+            if (participant.id === participantId) {
+              return { ...participant, isReady: !participant.isReady };
+            }
+            return participant;
+          });
+          state.currentRoom = {
+            ...state.currentRoom,
+            participants: updatedParticipants,
+          };
+        }
+      })
+      .addCase(increaseCurrentParticipantPosition, (state, action) => {
+        if (state.currentRoom) {
+          const { participantId } = action.payload;
+          const { participants } = state.currentRoom;
+          const updatedParticipants = participants.map((participant) => {
+            if (participant.id === participantId) {
+              return { ...participant, position: participant.position + 1 };
+            }
+            return participant;
+          });
+          state.currentRoom = {
+            ...state.currentRoom,
+            participants: updatedParticipants,
+          };
+        }
+      })
+      .addCase(toggleParticipantIsReady, (state, action) => {
+        if (state.currentRoom) {
+          const participantId = action.payload;
+          const { participants } = state.currentRoom;
+          const updatedParticipants = participants.map((participant) => {
+            if (participant.id === participantId) {
+              return { ...participant, isReady: !participant.isReady };
+            }
+            return participant;
+          });
+          state.currentRoom = {
+            ...state.currentRoom,
+            participants: updatedParticipants,
+          };
+        }
+      })
+      .addCase(increaseParticipantPosition, (state, action) => {
+        if (state.currentRoom) {
+          const participantId = action.payload;
+          const { participants } = state.currentRoom;
+          const updatedParticipants = participants.map((participant) => {
+            if (participant.id === participantId) {
+              return { ...participant, position: participant.position + 1 };
+            }
+            return participant;
+          });
+          state.currentRoom = {
+            ...state.currentRoom,
+            participants: updatedParticipants,
+          };
+        }
+      });
   },
 });
 
