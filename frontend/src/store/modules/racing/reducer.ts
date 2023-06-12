@@ -29,7 +29,6 @@ const { reducer } = createSlice({
       loadCurrentRoom,
       loadAvailableRooms,
       addRoomToAvailableRooms,
-      removeRoomFromAvailableRooms,
       resetShareRoomUrl,
       loadCommentatorText,
       setCurrentRoom,
@@ -57,11 +56,6 @@ const { reducer } = createSlice({
       })
       .addCase(addRoomToAvailableRooms, (state, action) => {
         state.availableRooms = [...state.availableRooms, action.payload];
-      })
-      .addCase(removeRoomFromAvailableRooms, (state, action) => {
-        state.availableRooms = state.availableRooms.filter(
-          (room) => room.id !== action.payload,
-        );
       })
       .addCase(resetAvailableRooms, (state) => {
         state.availableRooms = [];

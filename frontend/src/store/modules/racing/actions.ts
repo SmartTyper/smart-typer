@@ -125,11 +125,6 @@ class Racing {
     (payload: RoomDto) => ({ payload }),
   );
 
-  public removeRoomFromAvailableRooms = createAction(
-    ActionType.REMOVE_ROOM_FROM_AVAILABLE_ROOMS,
-    ({ roomId }: RoomIdDto) => ({ payload: roomId }),
-  );
-
   public createRoom = createAsyncThunk(
     ActionType.CREATE_ROOM,
     async (
