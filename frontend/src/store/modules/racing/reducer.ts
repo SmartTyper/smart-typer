@@ -162,10 +162,6 @@ const { reducer } = createSlice({
               ...state.currentRoom,
               participants: updatedParticipants,
             };
-            console.log({
-              ...state.currentRoom,
-              participants: updatedParticipants,
-            });
           }
         },
       )

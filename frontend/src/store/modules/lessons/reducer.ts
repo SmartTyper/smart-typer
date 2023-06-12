@@ -37,6 +37,7 @@ const { reducer } = createSlice({
       addMisclick,
       addTimestamp,
       resetIsLoadCurrentLessonFailed,
+      delete: deleteLesson,
     } = lessonsActions;
     builder
       .addCase(addLesson, (state, action) => {
@@ -49,7 +50,7 @@ const { reducer } = createSlice({
           ...state.lessons.slice(newLessonIndex),
         ];
       })
-      .addCase(lessonsActions.delete.fulfilled, (state, action) => {
+      .addCase(deleteLesson.fulfilled, (state, action) => {
         state.lessons = state.lessons.filter(
           ({ id }) => id !== action.payload.lessonId,
         );
@@ -81,14 +82,19 @@ const { reducer } = createSlice({
         state.studyPlan = [];
       })
       .addCase(addMisclick, (state, action) => {
-        const index = action.payload - 1;
+        const index = action.payload;
         if (state.currentLesson) {
-          state.currentLesson.misclicks.splice(index, 0, true);
+          const misclicks = [...state.currentLesson.misclicks];
+          misclicks.splice(index, 1, true);
+          state.currentLesson.misclicks = misclicks;
         }
       })
       .addCase(addTimestamp, (state, action) => {
         if (state.currentLesson) {
-          state.currentLesson.timestamps.push(action.payload);
+          state.currentLesson.timestamps = [
+            ...state.currentLesson.timestamps,
+            action.payload,
+          ];
         }
       })
       .addMatcher(

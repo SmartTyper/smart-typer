@@ -3,7 +3,12 @@ import {
   DEFAULT_SETTINGS,
   VOID_ACTION,
 } from 'common/constants/constants';
-import { CommonKey, ParticipantKey, SettingsKey } from 'common/enums/enums';
+import {
+  CommonKey,
+  ParticipantKey,
+  SettingsKey,
+  SkillsStatisticKey,
+} from 'common/enums/enums';
 import {
   FC,
   MutableRefObject,
@@ -12,6 +17,7 @@ import {
   UserDto,
   KeyboardEvent,
   VoidAction,
+  SkillsStatisticsDto,
 } from 'common/types/types';
 import { Button } from 'components/common/common';
 import { useEffect, useRef, useSound, useState } from 'hooks/hooks';
@@ -30,18 +36,15 @@ type Typer = {
 type Props = {
   participants: Typer[];
   currentUserId: UserDto[CommonKey.ID];
+  isSoundTurnedOn: SettingsDto[SettingsKey.IS_SOUND_TURNED_ON];
   onResults: VoidAction;
   onIncreasePosition: VoidAction;
   onPreservePosition: VoidAction;
   onTypingStart: VoidAction;
-  isSoundTurnedOn: SettingsDto[SettingsKey.IS_SOUND_TURNED_ON];
-  onUserFinishedGame?: (
-    spentTime: number,
-    participantId: UserDto[CommonKey.ID],
-  ) => void;
-  onUserFinishedLesson?: () => void;
+  onUserFinishedTyping: (participantId: UserDto[CommonKey.ID]) => void;
   isGameMode?: boolean;
   lessonContent?: string;
+  misclicks?: SkillsStatisticsDto[SkillsStatisticKey.MISCLICKS];
   gameTime?: SettingsDto[SettingsKey.GAME_TIME];
   countdownBeforeGame?: SettingsDto[SettingsKey.GAME_TIME];
   onLoadCommentatorText?: (gameTimerValue?: number, quatre?: number) => void;
@@ -52,6 +55,7 @@ const TypingCanvas: FC<Props> = ({
   participants,
   currentUserId,
   lessonContent,
+  misclicks,
   gameTime,
   countdownBeforeGame,
   isSoundTurnedOn,
@@ -59,13 +63,11 @@ const TypingCanvas: FC<Props> = ({
   onIncreasePosition,
   onPreservePosition,
   onTypingStart,
-  onUserFinishedGame,
-  onUserFinishedLesson,
+  onUserFinishedTyping,
   onResults,
   onToggleIsReady = VOID_ACTION,
   isGameMode = false,
 }) => {
-  console.log(participants);
   const {
     gameTime: defaultGameTime,
     countdownBeforeGame: defaultCountdownBeforeGame,
@@ -84,7 +86,9 @@ const TypingCanvas: FC<Props> = ({
 
   const currentParticipant = participants.find(
     (participant) => participant.id === currentUserId,
-  )!;
+  );
+
+  const { position, spentTime, isReady } = currentParticipant ?? {};
 
   const [playError] = useSound('../../../../assets/sound/error.mp3', {
     volume: 0.25,
@@ -98,7 +102,6 @@ const TypingCanvas: FC<Props> = ({
   const pageRef = useRef() as MutableRefObject<HTMLDivElement>;
 
   const handleDecreaseTimerBeforeGameValue = (timerValue: number): void => {
-    console.log(timerBeforeTypingValue);
     if (timerBeforeTypingValue) {
       setTimerBeforeTypingValue(timerValue);
       if (isSoundTurnedOn) {
@@ -126,7 +129,7 @@ const TypingCanvas: FC<Props> = ({
       return;
     }
 
-    const nextSymbol = (lessonContent as string)[currentParticipant.position];
+    const nextSymbol = (lessonContent as string)[position!];
     const isRightSymbol = key === nextSymbol;
     if (isRightSymbol) {
       onIncreasePosition();
@@ -157,15 +160,7 @@ const TypingCanvas: FC<Props> = ({
         const participantTypedAllText = participant.position === length;
         const participantNotSetSpentTime = !participant.spentTime;
         if (participantTypedAllText && participantNotSetSpentTime) {
-          console.log('yes');
-          if (isGameMode) {
-            onUserFinishedGame!(
-              gameTimerInitialValue! - gameTimerValue!,
-              participant.id,
-            );
-          } else {
-            onUserFinishedLesson!();
-          }
+          onUserFinishedTyping(participant.id);
         }
       });
     }
@@ -184,7 +179,6 @@ const TypingCanvas: FC<Props> = ({
   };
 
   const handleStartedStateChange = (): void => {
-    const { spentTime } = currentParticipant;
     if (isStarted && !spentTime) {
       if (onLoadCommentatorText) {
         onLoadCommentatorText();
@@ -198,7 +192,6 @@ const TypingCanvas: FC<Props> = ({
       );
       return;
     }
-    console.log({ isStarted, spentTime });
     if (!isStarted && spentTime) {
       if (isSoundTurnedOn) {
         playClockRing();
@@ -209,7 +202,6 @@ const TypingCanvas: FC<Props> = ({
   };
 
   const handleTimerBeforeTypingChange = (): void => {
-    console.log(timerBeforeTypingValue, isStarted);
     if (!timerBeforeTypingValue && isStarted) {
       onTypingStart();
       if (isSoundTurnedOn) {
@@ -230,15 +222,7 @@ const TypingCanvas: FC<Props> = ({
       (participants as Participant[]).forEach((participant) => {
         const hadFinishGameBeforeDeadline = participant.spentTime;
         if (!hadFinishGameBeforeDeadline) {
-          console.log('yes1');
-          if (isGameMode) {
-            onUserFinishedGame!(
-              gameTimerInitialValue! - gameTimerValue!,
-              participant.id,
-            );
-          } else {
-            onUserFinishedLesson!();
-          }
+          onUserFinishedTyping(participant.id);
         }
       });
     }
@@ -249,10 +233,7 @@ const TypingCanvas: FC<Props> = ({
   };
 
   useEffect(handleParticipantsChange, [participants]);
-  useEffect(handleStartedStateChange, [
-    isStarted,
-    currentParticipant.spentTime,
-  ]);
+  useEffect(handleStartedStateChange, [isStarted, spentTime]);
   useEffect(handleTimerBeforeTypingChange, [timerBeforeTypingValue]);
   useEffect(handleGameTimerChange, [gameTimerValue]);
 
@@ -278,25 +259,27 @@ const TypingCanvas: FC<Props> = ({
               </p>
             )}
             <p>
-              <span className={styles.correctTyped}>
-                {(lessonContent as string).slice(
-                  0,
-                  currentParticipant.position,
-                )}
-              </span>
-              <span>
-                {(lessonContent as string).slice(currentParticipant.position)}
-              </span>
+              {[...lessonContent!].map((symbol, i) => (
+                <span
+                  key={i}
+                  className={clsx(
+                    position! > i && styles.typedSymbol,
+                    misclicks![i] ? styles.incorrectTyped : styles.correctTyped,
+                  )}
+                >
+                  {symbol}
+                </span>
+              ))}
             </p>
           </>
         )
       ) : (
         <Button
           onClick={onToggleIsReady}
-          label={currentParticipant.isReady ? 'Not ready' : 'Ready'}
+          label={isReady ? 'Not ready' : 'Ready'}
           className={clsx(
             styles.readyButton,
-            currentParticipant.isReady ? styles.ready : styles.notReady,
+            isReady ? styles.ready : styles.notReady,
           )}
         />
       )}

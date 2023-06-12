@@ -23,11 +23,16 @@
     display: flex;
     justify-content: center;
     top: 0;
-    left: 40%;
+    margin: 0 auto;
   }
 
-  .correctTyped {
-    background-color: $main-green;
+  .typedSymbol {
+    &.correctTyped {
+      background-color: rgba($main-green, 0.7);
+    }
+    &.incorrectTyped {
+      background-color: rgba($main-red, 0.7);
+    }
   }
 
   .readyButton {

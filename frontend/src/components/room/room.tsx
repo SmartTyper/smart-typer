@@ -39,7 +39,7 @@ const Room: FC = () => {
   const { commentatorText, gameTime, countdownBeforeGame, name, participants } =
     currentRoom ?? {};
 
-  const { content } = lesson ?? {};
+  const { content, timestamps, misclicks } = lesson ?? {};
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -71,22 +71,19 @@ const Room: FC = () => {
       }),
     );
 
-    lessonsActions.addTimestamp(Date.now());
+    dispatch(lessonsActions.addTimestamp(Date.now()));
   };
 
   const handlePreservePosition = (): void => {
-    lessonsActions.addMisclick(currentParticipant!.position);
+    dispatch(lessonsActions.addMisclick(currentParticipant!.position));
   };
 
-  const handleParticipantFinishedGame = (
-    spentTime: number,
-    participantId: number,
-  ): void => {
+  const handleParticipantFinishedGame = (participantId: number): void => {
     dispatch(racingActions.toggleParticipantIsReady({ participantId }));
     dispatch(
       racingActions.setSpentTime({
         id: participantId,
-        spentTime,
+        spentTime: [...timestamps!].pop()! - [...timestamps!].shift()!,
       }),
     );
   };
@@ -96,7 +93,6 @@ const Room: FC = () => {
       if (!content) {
         dispatch(racingActions.addLessonId({ roomId }));
       }
-      console.log(userId, roomId);
       dispatch(
         racingActions.toggleCurrentParticipantIsReady({
           participantId: userId,
@@ -107,7 +103,7 @@ const Room: FC = () => {
   };
 
   const handleTypingStart = (): void => {
-    lessonsActions.addTimestamp(Date.now());
+    dispatch(lessonsActions.addTimestamp(Date.now()));
   };
 
   const handleLoadCommentatorText = (
@@ -115,7 +111,7 @@ const Room: FC = () => {
     quatre?: number,
   ): void => {
     if (!gameTimerValue || !quatre) {
-      racingActions.loadCommentatorText(CommentatorEvent.GAME_START);
+      dispatch(racingActions.loadCommentatorText(CommentatorEvent.GAME_START));
       return;
     }
     if (gameTimerValue === quatre || gameTimerValue === 3 * quatre) {
@@ -128,7 +124,7 @@ const Room: FC = () => {
 
   const handleResults = (): void => {
     setIsResultsModalVisible(true);
-    lessonsActions.sendLessonResult();
+    dispatch(lessonsActions.sendLessonResult());
   };
 
   const handleCloseResultsModal = async (): Promise<void> => {
@@ -204,17 +200,18 @@ const Room: FC = () => {
             ))}
           </div>
           <TypingCanvas
-            participants={participants!}
+            participants={participants ?? []}
             currentUserId={userId}
             lessonContent={lesson?.content}
             gameTime={gameTime!}
             countdownBeforeGame={countdownBeforeGame!}
+            misclicks={misclicks}
             isSoundTurnedOn={isSoundTurnedOn}
             onTypingStart={handleTypingStart}
             onLoadCommentatorText={handleLoadCommentatorText}
             onIncreasePosition={handleIncreasePosition}
             onPreservePosition={handlePreservePosition}
-            onUserFinishedGame={handleParticipantFinishedGame}
+            onUserFinishedTyping={handleParticipantFinishedGame}
             onResults={handleResults}
             onToggleIsReady={handleToggleIsReady}
             isGameMode

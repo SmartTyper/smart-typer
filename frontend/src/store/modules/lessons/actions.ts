@@ -47,7 +47,10 @@ class Lessons {
 
   public delete = createAsyncThunk(
     ActionType.DELETE,
-    async (payload: LessonIdDto, { extra: { services } }): Promise<LessonIdDto> => {
+    async (
+      payload: LessonIdDto,
+      { extra: { services } },
+    ): Promise<LessonIdDto> => {
       const { lessonApi: lessonApiService } = services;
       await lessonApiService.delete(payload);
       return payload;
@@ -80,7 +83,7 @@ class Lessons {
         offset: DEFAULT_LESSONS_OFFSET,
         ...payload,
       });
-  
+
       return result;
     },
   );
@@ -135,7 +138,9 @@ class Lessons {
 
   public addTimestamp = createAction(
     ActionType.ADD_TIMESTAMP,
-    (timestamp: number) => ({ payload: timestamp }),
+    (timestamp: number) => {
+      return { payload: timestamp };
+    },
   );
 
   public sendLessonResult = createAsyncThunk(

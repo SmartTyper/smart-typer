@@ -80,6 +80,8 @@
 
   .cardHeader {
     display: flex;
+    align-items: center;
+    margin: 0 0 1rem;
 
     .removeButton {
       border-radius: 50%;
@@ -94,7 +96,7 @@
       flex: 1;
       display: flex;
       align-items: baseline;
-      margin: 0 0 1rem;
+      margin: 0;
 
       &.centered {
         display: flex;

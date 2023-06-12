@@ -3,11 +3,9 @@ import { MILLISECONDS_IN_SECOND } from 'common/constants/constants';
 
 const setTimer = (upperBound: number, action: VoidCallback<number>): void => {
   let counter = upperBound;
-  console.log({ upperBound });
   const timerIncreaser = (): void => {
     counter--;
     action(counter);
-    console.log({ counter });
     if (counter <= 0) {
       clearInterval(timer);
     }

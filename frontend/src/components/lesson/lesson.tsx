@@ -14,7 +14,6 @@ import { lessons as lessonsActions } from 'store/modules/actions';
 import { mapLessonStatisticsToResults } from './helpers/helpers';
 
 import styles from './styles.module.scss';
-import { useCallback } from 'react';
 
 const Lesson: FC = () => {
   const { user, isLoadCurrentRoomFailed, isSoundTurnedOn, currentLesson } =
@@ -26,7 +25,7 @@ const Lesson: FC = () => {
       currentLesson: lessons.currentLesson,
     }));
 
-  const { name, content, timestamps } = currentLesson ?? {};
+  const { name, content, timestamps, misclicks } = currentLesson ?? {};
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -41,25 +40,24 @@ const Lesson: FC = () => {
 
   const handleIncreasePosition = (): void => {
     setPosition(position + 1);
-    lessonsActions.addTimestamp(Date.now());
+    dispatch(lessonsActions.addTimestamp(Date.now()));
   };
 
   const handlePreservePosition = (): void => {
-    lessonsActions.addMisclick(position);
+    dispatch(lessonsActions.addMisclick(position));
   };
 
   const handleTypingStart = (): void => {
-    lessonsActions.addTimestamp(Date.now());
+    dispatch(lessonsActions.addTimestamp(Date.now()));
   };
 
-  const handleUserFinishedLesson = useCallback((): void => {
-    console.log(timestamps);
+  const handleUserFinishedTyping = (): void => {
     setSpentTime([...timestamps!].pop()! - [...timestamps!].shift()!);
-  }, [timestamps]);
+  };
 
   const handleResults = (): void => {
     setIsResultsModalVisible(true);
-    lessonsActions.sendLessonResult();
+    dispatch(lessonsActions.sendLessonResult());
   };
 
   const handleCloseResultsModal = async (): Promise<void> => {
@@ -80,7 +78,6 @@ const Lesson: FC = () => {
     }
   }, [isLoadCurrentRoomFailed]);
 
-  console.log(spentTime);
   return (
     <div className={styles.lesson}>
       {!currentLesson ? (
@@ -94,9 +91,10 @@ const Lesson: FC = () => {
             participants={[{ position, id: userId, spentTime }]}
             currentUserId={userId}
             lessonContent={content}
+            misclicks={misclicks}
             isSoundTurnedOn={isSoundTurnedOn}
             onTypingStart={handleTypingStart}
-            onUserFinishedLesson={handleUserFinishedLesson}
+            onUserFinishedTyping={handleUserFinishedTyping}
             onIncreasePosition={handleIncreasePosition}
             onPreservePosition={handlePreservePosition}
             onResults={handleResults}
