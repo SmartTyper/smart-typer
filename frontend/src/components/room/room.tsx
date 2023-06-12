@@ -1,7 +1,6 @@
 import { Button, TypingCanvas, Spinner } from 'components/common/common';
 import { VOICE_URI } from 'common/constants/constants';
 import { AppRoute, CommentatorEvent, SpinnerSize } from 'common/enums/enums';
-import { clsx } from 'helpers/helpers';
 import { FC, UserDto } from 'common/types/types';
 import {
   useParams,
@@ -40,13 +39,13 @@ const Room: FC = () => {
   const { commentatorText, gameTime, countdownBeforeGame, name, participants } =
     currentRoom ?? {};
 
-  const { content } = lesson ?? {};
+  const { content, timestamps, misclicks } = lesson ?? {};
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const params = useParams();
-  const roomId = Number(params.roomId);
+  const roomId = Number(params.id);
   const userId = (user as UserDto).id;
   const currentParticipant = participants?.find(
     (participant) => participant.id === userId,
@@ -72,22 +71,19 @@ const Room: FC = () => {
       }),
     );
 
-    lessonsActions.addTimestamp(Date.now());
+    dispatch(lessonsActions.addTimestamp(Date.now()));
   };
 
   const handlePreservePosition = (): void => {
-    lessonsActions.addMisclick(currentParticipant!.position);
+    dispatch(lessonsActions.addMisclick(currentParticipant!.position));
   };
 
-  const handleParticipantFinishedGame = (
-    spentTime: number,
-    participantId: number,
-  ): void => {
+  const handleParticipantFinishedGame = (participantId: number): void => {
     dispatch(racingActions.toggleParticipantIsReady({ participantId }));
     dispatch(
       racingActions.setSpentTime({
         id: participantId,
-        spentTime,
+        spentTime: [...timestamps!].pop()! - [...timestamps!].shift()!,
       }),
     );
   };
@@ -107,7 +103,7 @@ const Room: FC = () => {
   };
 
   const handleTypingStart = (): void => {
-    lessonsActions.addTimestamp(Date.now());
+    dispatch(lessonsActions.addTimestamp(Date.now()));
   };
 
   const handleLoadCommentatorText = (
@@ -115,7 +111,7 @@ const Room: FC = () => {
     quatre?: number,
   ): void => {
     if (!gameTimerValue || !quatre) {
-      racingActions.loadCommentatorText(CommentatorEvent.GAME_START);
+      dispatch(racingActions.loadCommentatorText(CommentatorEvent.GAME_START));
       return;
     }
     if (gameTimerValue === quatre || gameTimerValue === 3 * quatre) {
@@ -128,7 +124,7 @@ const Room: FC = () => {
 
   const handleResults = (): void => {
     setIsResultsModalVisible(true);
-    lessonsActions.sendLessonResult();
+    dispatch(lessonsActions.sendLessonResult());
   };
 
   const handleCloseResultsModal = async (): Promise<void> => {
@@ -147,14 +143,14 @@ const Room: FC = () => {
     speechSynthesis.cancel();
     if (isSoundTurnedOn) {
       const utterance = new SpeechSynthesisUtterance(commentatorText);
-      setImmediate(() => {
+      setTimeout(() => {
         utterance.voice = speechSynthesis
           .getVoices()
           .find(
             (voice) => voice.voiceURI === VOICE_URI,
           ) as SpeechSynthesisVoice;
         speechSynthesis.speak(utterance);
-      });
+      }, 0);
     }
   };
 
@@ -181,45 +177,46 @@ const Room: FC = () => {
   }, []);
 
   return (
-    <div className={styles.container}>
-      {!currentRoom ? (
+    <div className={styles.room}>
+      {!currentRoom || !currentParticipant ? (
         <Spinner size={SpinnerSize.LARGE} />
       ) : (
         <>
-          <div className={clsx('d-flex flex-column', styles.info)}>
+          <div className={styles.info}>
             <h1>{name}</h1>
             <Button
               onClick={handleLeaveRoom}
               isDisabled={allParticipantsAreReady}
-              className="w-50"
-              label="Back to home page"
+              className={styles.goBackButton}
+              label="Go back"
             />
             {participants!.map((participant) => (
               <Participant
                 participant={participant}
                 key={participant.id}
-                textLength={(content as string).length}
+                textLength={content?.length}
                 isCurrentParticipant={participant.id === currentParticipant?.id}
               />
             ))}
           </div>
           <TypingCanvas
-            participants={participants!}
+            participants={participants ?? []}
             currentUserId={userId}
             lessonContent={lesson?.content}
             gameTime={gameTime!}
             countdownBeforeGame={countdownBeforeGame!}
+            misclicks={misclicks}
             isSoundTurnedOn={isSoundTurnedOn}
             onTypingStart={handleTypingStart}
             onLoadCommentatorText={handleLoadCommentatorText}
             onIncreasePosition={handleIncreasePosition}
             onPreservePosition={handlePreservePosition}
-            onUserFinishedGame={handleParticipantFinishedGame}
+            onUserFinishedTyping={handleParticipantFinishedGame}
             onResults={handleResults}
             onToggleIsReady={handleToggleIsReady}
             isGameMode
           />
-          <div className={clsx('d-flex flex-column', styles.commentator)}>
+          <div className={styles.commentator}>
             <div className={styles.speechBubble}>
               {(commentatorText as string).split('\n').map((line) => {
                 return (
@@ -230,8 +227,8 @@ const Room: FC = () => {
                 );
               })}
             </div>
-            <div className="d-flex justify-content-end align-self-end">
-              <img src={commentatorImage} />
+            <div className={styles.commentatorImgContainer}>
+              <img src={commentatorImage} className={styles.commentatorImg} />
             </div>
           </div>
           <ResultsModal

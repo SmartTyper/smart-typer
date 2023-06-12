@@ -1,6 +1,5 @@
 import { TypingCanvas, Spinner } from 'components/common/common';
 import { AppRoute, SpinnerSize } from 'common/enums/enums';
-import { clsx } from 'helpers/helpers';
 import { FC, UserDto } from 'common/types/types';
 import {
   useParams,
@@ -12,8 +11,9 @@ import {
 } from 'hooks/hooks';
 import { ResultsModal } from './components/components';
 import { lessons as lessonsActions } from 'store/modules/actions';
-
 import { mapLessonStatisticsToResults } from './helpers/helpers';
+
+import styles from './styles.module.scss';
 
 const Lesson: FC = () => {
   const { user, isLoadCurrentRoomFailed, isSoundTurnedOn, currentLesson } =
@@ -25,13 +25,13 @@ const Lesson: FC = () => {
       currentLesson: lessons.currentLesson,
     }));
 
-  const { name, content } = currentLesson ?? {};
+  const { name, content, timestamps, misclicks } = currentLesson ?? {};
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const params = useParams();
-  const lessonId = Number(params.lessonId);
+  const lessonId = Number(params.id);
   const userId = (user as UserDto).id;
 
   const [isResultsModalVisible, setIsResultsModalVisible] = useState(false);
@@ -40,24 +40,24 @@ const Lesson: FC = () => {
 
   const handleIncreasePosition = (): void => {
     setPosition(position + 1);
-    lessonsActions.addTimestamp(Date.now());
+    dispatch(lessonsActions.addTimestamp(Date.now()));
   };
 
   const handlePreservePosition = (): void => {
-    lessonsActions.addMisclick(position);
+    dispatch(lessonsActions.addMisclick(position));
   };
 
   const handleTypingStart = (): void => {
-    lessonsActions.addTimestamp(Date.now());
+    dispatch(lessonsActions.addTimestamp(Date.now()));
   };
 
-  const handleUserFinishedGame = (spentTime: number): void => {
-    setSpentTime(spentTime);
+  const handleUserFinishedTyping = (): void => {
+    setSpentTime([...timestamps!].pop()! - [...timestamps!].shift()!);
   };
 
   const handleResults = (): void => {
     setIsResultsModalVisible(true);
-    lessonsActions.sendLessonResult();
+    dispatch(lessonsActions.sendLessonResult());
   };
 
   const handleCloseResultsModal = async (): Promise<void> => {
@@ -79,25 +79,25 @@ const Lesson: FC = () => {
   }, [isLoadCurrentRoomFailed]);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.lesson}>
       {!currentLesson ? (
         <Spinner size={SpinnerSize.LARGE} />
       ) : (
         <>
-          <div className={clsx('d-flex flex-column', styles.info)}>
+          <div className={styles.info}>
             <h1>{name}</h1>
           </div>
           <TypingCanvas
             participants={[{ position, id: userId, spentTime }]}
             currentUserId={userId}
             lessonContent={content}
+            misclicks={misclicks}
             isSoundTurnedOn={isSoundTurnedOn}
             onTypingStart={handleTypingStart}
-            onUserFinishedGame={handleUserFinishedGame}
+            onUserFinishedTyping={handleUserFinishedTyping}
             onIncreasePosition={handleIncreasePosition}
             onPreservePosition={handlePreservePosition}
             onResults={handleResults}
-            isGameMode
           />
           <ResultsModal
             lessonResult={mapLessonStatisticsToResults(currentLesson)}

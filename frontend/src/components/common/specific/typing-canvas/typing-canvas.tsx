@@ -3,7 +3,12 @@ import {
   DEFAULT_SETTINGS,
   VOID_ACTION,
 } from 'common/constants/constants';
-import { CommonKey, ParticipantKey, SettingsKey } from 'common/enums/enums';
+import {
+  CommonKey,
+  ParticipantKey,
+  SettingsKey,
+  SkillsStatisticKey,
+} from 'common/enums/enums';
 import {
   FC,
   MutableRefObject,
@@ -12,10 +17,11 @@ import {
   UserDto,
   KeyboardEvent,
   VoidAction,
+  SkillsStatisticsDto,
 } from 'common/types/types';
 import { Button } from 'components/common/common';
-import { clsx } from 'helpers/helpers';
 import { useEffect, useRef, useSound, useState } from 'hooks/hooks';
+import { clsx } from 'helpers/helpers';
 import { setTimer } from './helpers/helpers';
 
 import styles from './styles.module.scss';
@@ -30,17 +36,15 @@ type Typer = {
 type Props = {
   participants: Typer[];
   currentUserId: UserDto[CommonKey.ID];
+  isSoundTurnedOn: SettingsDto[SettingsKey.IS_SOUND_TURNED_ON];
   onResults: VoidAction;
   onIncreasePosition: VoidAction;
   onPreservePosition: VoidAction;
   onTypingStart: VoidAction;
-  isSoundTurnedOn: SettingsDto[SettingsKey.IS_SOUND_TURNED_ON];
-  onUserFinishedGame: (
-    spentTime: number,
-    participantId: UserDto[CommonKey.ID],
-  ) => void;
+  onUserFinishedTyping: (participantId: UserDto[CommonKey.ID]) => void;
   isGameMode?: boolean;
   lessonContent?: string;
+  misclicks?: SkillsStatisticsDto[SkillsStatisticKey.MISCLICKS];
   gameTime?: SettingsDto[SettingsKey.GAME_TIME];
   countdownBeforeGame?: SettingsDto[SettingsKey.GAME_TIME];
   onLoadCommentatorText?: (gameTimerValue?: number, quatre?: number) => void;
@@ -51,6 +55,7 @@ const TypingCanvas: FC<Props> = ({
   participants,
   currentUserId,
   lessonContent,
+  misclicks,
   gameTime,
   countdownBeforeGame,
   isSoundTurnedOn,
@@ -58,7 +63,7 @@ const TypingCanvas: FC<Props> = ({
   onIncreasePosition,
   onPreservePosition,
   onTypingStart,
-  onUserFinishedGame,
+  onUserFinishedTyping,
   onResults,
   onToggleIsReady = VOID_ACTION,
   isGameMode = false,
@@ -81,7 +86,9 @@ const TypingCanvas: FC<Props> = ({
 
   const currentParticipant = participants.find(
     (participant) => participant.id === currentUserId,
-  )!;
+  );
+
+  const { position, spentTime, isReady } = currentParticipant ?? {};
 
   const [playError] = useSound('../../../../assets/sound/error.mp3', {
     volume: 0.25,
@@ -94,18 +101,18 @@ const TypingCanvas: FC<Props> = ({
   });
   const pageRef = useRef() as MutableRefObject<HTMLDivElement>;
 
-  const handleDecreaseTimerBeforeGameValue = (): void => {
+  const handleDecreaseTimerBeforeGameValue = (timerValue: number): void => {
     if (timerBeforeTypingValue) {
-      setGameTimerValue(timerBeforeTypingValue - 1);
+      setTimerBeforeTypingValue(timerValue);
       if (isSoundTurnedOn) {
         playClockTick();
       }
     }
   };
 
-  const handleDecreaseGameTimerValue = (): void => {
+  const handleDecreaseGameTimerValue = (timerValue: number): void => {
     if (gameTimerValue) {
-      setGameTimerValue(gameTimerValue - 1);
+      setGameTimerValue(timerValue);
       if (isSoundTurnedOn) {
         playClockTick();
       }
@@ -118,11 +125,11 @@ const TypingCanvas: FC<Props> = ({
   };
 
   const handleKeyDown = ({ key }: KeyboardEvent<HTMLDivElement>): void => {
-    if (!currentParticipant || !isStarted) {
+    if (!isStarted) {
       return;
     }
 
-    const nextSymbol = (lessonContent as string)[currentParticipant.position];
+    const nextSymbol = (lessonContent as string)[position!];
     const isRightSymbol = key === nextSymbol;
     if (isRightSymbol) {
       onIncreasePosition();
@@ -135,20 +142,16 @@ const TypingCanvas: FC<Props> = ({
   };
 
   const handleParticipantsChange = (): void => {
-    if (!participants.length || !isGameMode) {
+    if (!participants.length) {
       return;
     }
 
-    const allParticipantsAreReady = participants.every(
-      (participant) => participant.isReady,
-    );
     const allParticipantsEndedGame = participants.every(
       (participant) => participant.spentTime,
     );
-    const needToStartGame = !isStarted && allParticipantsAreReady;
     const needToFinishGame = isStarted && allParticipantsEndedGame;
-    if (needToStartGame || needToFinishGame) {
-      setIsStarted((prev) => !prev);
+    if (needToFinishGame) {
+      setIsStarted(false);
     }
 
     if (lessonContent?.length) {
@@ -157,17 +160,25 @@ const TypingCanvas: FC<Props> = ({
         const participantTypedAllText = participant.position === length;
         const participantNotSetSpentTime = !participant.spentTime;
         if (participantTypedAllText && participantNotSetSpentTime) {
-          onUserFinishedGame(
-            participant.id,
-            gameTimerInitialValue! - gameTimerValue!,
-          );
+          onUserFinishedTyping(participant.id);
         }
       });
+    }
+
+    if (!isGameMode) {
+      return;
+    }
+
+    const allParticipantsAreReady = participants.every(
+      (participant) => participant.isReady,
+    );
+    const needToStartGame = !isStarted && allParticipantsAreReady;
+    if (needToStartGame) {
+      setIsStarted(true);
     }
   };
 
   const handleStartedStateChange = (): void => {
-    const { spentTime } = currentParticipant;
     if (isStarted && !spentTime) {
       if (onLoadCommentatorText) {
         onLoadCommentatorText();
@@ -176,7 +187,7 @@ const TypingCanvas: FC<Props> = ({
         playClockTick();
       }
       setTimer(
-        countdownBeforeGame as number,
+        timerBeforeTypingValue as number,
         handleDecreaseTimerBeforeGameValue,
       );
       return;
@@ -200,19 +211,18 @@ const TypingCanvas: FC<Props> = ({
       if (isSoundTurnedOn) {
         playClockTick();
       }
-      setTimer(gameTime as number, handleDecreaseGameTimerValue);
+      if (isGameMode) {
+        setTimer(gameTimerValue as number, handleDecreaseGameTimerValue);
+      }
     }
   };
 
   const handleGameTimerChange = (): void => {
-    if (!gameTimerValue && isStarted) {
+    if (!gameTimerValue && isStarted && isGameMode) {
       (participants as Participant[]).forEach((participant) => {
         const hadFinishGameBeforeDeadline = participant.spentTime;
         if (!hadFinishGameBeforeDeadline) {
-          onUserFinishedGame(
-            participant.id,
-            gameTimerInitialValue! - gameTimerValue!,
-          );
+          onUserFinishedTyping(participant.id);
         }
       });
     }
@@ -223,10 +233,7 @@ const TypingCanvas: FC<Props> = ({
   };
 
   useEffect(handleParticipantsChange, [participants]);
-  useEffect(handleStartedStateChange, [
-    isStarted,
-    currentParticipant.spentTime,
-  ]);
+  useEffect(handleStartedStateChange, [isStarted, spentTime]);
   useEffect(handleTimerBeforeTypingChange, [timerBeforeTypingValue]);
   useEffect(handleGameTimerChange, [gameTimerValue]);
 
@@ -235,42 +242,45 @@ const TypingCanvas: FC<Props> = ({
       ref={pageRef}
       tabIndex={0}
       onKeyDown={handleKeyDown}
-      className={clsx(
-        'd-flex flex-column justify-content-center align-items-center shadow',
-        styles.field,
-      )}
+      className={styles.typingCanvas}
     >
-      {isStarted || !isGameMode ? (
+      {isStarted ? (
         timerBeforeTypingValue ? (
-          <span className="position-absolute top-50 start-51 fs-1">
+          <span className={styles.timerBeforeTyping}>
             {timerBeforeTypingValue}
           </span>
         ) : (
           <>
             {isGameMode && (
-              <p className="d-flex justify-content-center position-absolute top-0 start-40">
+              <p className={styles.gameTimer}>
                 {gameTimerValue === 1
                   ? `${gameTimerValue} second left`
                   : `${gameTimerValue} seconds left`}
               </p>
             )}
             <p>
-              <span className="bg-success">
-                {(lessonContent as string).slice(
-                  0,
-                  currentParticipant.position,
-                )}
-              </span>
-              <span>
-                {(lessonContent as string).slice(currentParticipant.position)}
-              </span>
+              {[...lessonContent!].map((symbol, i) => (
+                <span
+                  key={i}
+                  className={clsx(
+                    position! > i && styles.typedSymbol,
+                    misclicks![i] ? styles.incorrectTyped : styles.correctTyped,
+                  )}
+                >
+                  {symbol}
+                </span>
+              ))}
             </p>
           </>
         )
       ) : (
         <Button
           onClick={onToggleIsReady}
-          label={currentParticipant.isReady ? 'Not ready' : 'Ready'}
+          label={isReady ? 'Not ready' : 'Ready'}
+          className={clsx(
+            styles.readyButton,
+            isReady ? styles.ready : styles.notReady,
+          )}
         />
       )}
     </div>

@@ -10,7 +10,7 @@
     "lint:ts": "npx eslint \"src/**/*.ts\"",
     "lint": "npm run lint:ts",
     "build:ts": "tsc && tsc-alias -p tsconfig.json",
-    "build": "npm run build:ts && cp -r node_modules package.json package-lock.json build"
+    "build": "rm -rf build && npm run build:ts && cp -r node_modules package.json package-lock.json build"
   },
   "devDependencies": {
     "tsc-alias": "1.8.2",

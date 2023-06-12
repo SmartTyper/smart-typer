@@ -1,7 +1,56 @@
+@import 'src/assets/css/variables';
 
+.typingCanvas {
+  height: 100%;
+  background: #fff;
+  padding: 1.3rem;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: $typing-canvas-light-shadow;
 
-  .field {
-    height: 100%;
-    background: #fff;
-    padding: 1.3rem;
+  .timerBeforeTyping {
+    position: absolute;
+    top: 50%;
+    margin: 0 auto;
+    font-size: $extra-large-font-size;
   }
+
+  .gameTimer {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    top: 0;
+    margin: 0 auto;
+  }
+
+  .typedSymbol {
+    &.correctTyped {
+      background-color: rgba($main-green, 0.7);
+    }
+    &.incorrectTyped {
+      background-color: rgba($main-red, 0.7);
+    }
+  }
+
+  .readyButton {
+    height: 3.5rem;
+    width: 12rem;
+    font-size: $middle-font-size;
+    margin: 1rem 0;
+    color: $white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.ready {
+      background-color: $main-red;
+    }
+
+    &.notReady {
+      background-color: $main-green;
+    }
+  }
+}

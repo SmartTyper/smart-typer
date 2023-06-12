@@ -23,7 +23,7 @@ const LogInGoogle: FC = () => {
   }, []);
 
   const handleGoogle = async (code: string): Promise<void> => {
-    await dispatch(authActions.logInGoogle({ code }));
+    dispatch(authActions.logInGoogle({ code }));
     navigate(AppRoute.ROOT);
   };
 

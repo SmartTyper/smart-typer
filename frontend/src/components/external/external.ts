@@ -17,6 +17,7 @@ export {
   Form as RBForm,
   InputGroup as RBInputGroup,
   Modal as RBModal,
+  ProgressBar as RBProgressBar,
 } from 'react-bootstrap';
 
 export {
