@@ -3,28 +3,30 @@
 .lessonCard {
   height: 23vh;
   padding: 2rem 1.5rem 1.5rem 1.5rem;
+  
   .cardContentContainer {
     flex: 1;
 
     .cardContent {
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
       height: 100%;
 
       .content {
         overflow: hidden;
         display: -webkit-box;
-        -webkit-line-clamp: 4;
-        line-clamp: 4;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
         -webkit-box-orient: vertical;
         margin: 0 0 1rem;
-        flex: 1;
       }
 
       .cardFooter {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        height: 30px;
 
         .labels {
           display: flex;

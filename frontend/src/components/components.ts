@@ -13,4 +13,3 @@ export { Theory } from 'components/theory/theory';
 export { Rooms } from './rooms/rooms';
 export { Room } from './room/room';
 export { Lesson } from './lesson/lesson';
-export { ArCamera } from './ar-camera/ar-camera';

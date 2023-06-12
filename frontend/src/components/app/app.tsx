@@ -17,7 +17,6 @@ import {
   Theory,
   Room,
   Lesson,
-  ArCamera,
 } from 'components/components';
 import { RRDRoute, RRDRoutes } from 'components/external/external';
 import {
@@ -153,7 +152,6 @@ const App: FC = () => {
       <RRDRoute path={AppRoute.LOG_IN} element={<LogIn />} />
       <RRDRoute path={AppRoute.RESET_PASSWORD} element={<ResetPassword />} />
       <RRDRoute path={AppRoute.SET_PASSWORD} element={<SetPassword />} />
-      <RRDRoute path={AppRoute.AR_CAMERA} element={<ArCamera />} />
     </RRDRoutes>
   );
 };
