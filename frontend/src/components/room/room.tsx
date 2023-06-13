@@ -16,6 +16,7 @@ import {
   racing as racingActions,
   lessons as lessonsActions,
 } from 'store/modules/actions';
+import { clsx } from 'helpers/helpers';
 import { mapParticipantsToRating } from './helpers/helpers';
 
 import commentatorImage from 'assets/img/commentator.gif';
@@ -184,7 +185,10 @@ const Room: FC = () => {
             <Button
               onClick={handleLeaveRoom}
               isDisabled={allParticipantsAreReady}
-              className={styles.goBackButton}
+              className={clsx(
+                styles.goBackButton,
+                allParticipantsAreReady && styles.disabled,
+              )}
               label="Go back"
             />
             {participants!.map((participant) => (
