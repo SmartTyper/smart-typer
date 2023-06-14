@@ -37,37 +37,63 @@
       arjs="debugUIEnabled: false;"
     >
       <a-assets>
-        <a-asset-item id="bears" src="models/bears.gltf"></a-asset-item>
-        <a-asset-item id="tree" src="models/scene.gltf"></a-asset-item>
+        <a-asset-item
+          id="airplane"
+          src="models/airplane/scene.gltf"
+        ></a-asset-item>
+        <a-asset-item id="key" src="models/key/scene.gltf"></a-asset-item>
+        <a-asset-item
+          id="strawberry"
+          src="models/strawberry/scene.gltf"
+        ></a-asset-item>
+        <a-asset-item
+          id="butterfly"
+          src="models/butterfly/scene.gltf"
+        ></a-asset-item>
+        <a-asset-item id="cake" src="models/cake/scene.gltf"></a-asset-item>
       </a-assets>
-      <a-marker-camera type="pattern" url="markers/a.patt">
+
+      <!-- <a-marker-camera preset="hiro">
         <a-entity
-          position="-5 0 0"
-          rotation="270 0 0"
-          scale="0.7 0.7 0.7"
-          gltf-model="#bears"
+          position="-3.1 -1.5 0"
+          rotation="280 0 0"
+          scale="0.8 0.8 0.8"
+          gltf-model="#cake"
         >
         </a-entity>
-      </a-marker-camera>
-      <a-marker-camera type="pattern" url="markers/b.patt">
+      </a-marker-camera> -->
+
+      <!-- <a-marker-camera type="pattern" url="markers/a.patt">
         <a-entity
-          position="-5 0 0"
-          rotation="270 0 0"
-          scale="0.7 0.7 0.7"
-          gltf-model="#bears"
+          position="0 0 0"
+          rotation="250 0 0"
+          scale="0.25 0.25 0.25"
+          gltf-model="#airplane"
         >
         </a-entity>
-      </a-marker-camera>
-      <a-marker-camera type="pattern" url="markers/c.patt">
+      </a-marker-camera> -->
+
+      <!-- <a-marker-camera type="pattern" url="markers/b.patt">
         <a-entity
-          position="-5 0 0"
-          rotation="270 0 0"
-          scale="0.7 0.7 0.7"
-          gltf-model="#bears"
+          position="1 0 0"
+          rotation="20 -20 120"
+          scale="0.6 0.6 0.6"
+          gltf-model="#butterfly"
         >
         </a-entity>
-      </a-marker-camera>
-      <a-marker-camera type="pattern" url="markers/d.patt">
+      </a-marker-camera> -->
+
+      <!-- <a-marker-camera type="pattern" url="markers/c.patt">
+        <a-entity
+          position="-3.1 -1.5 0"
+          rotation="280 0 0"
+          scale="0.8 0.8 0.8"
+          gltf-model="#cake"
+        >
+        </a-entity>
+      </a-marker-camera> -->
+
+      <!-- <a-marker-camera type="pattern" url="markers/d.patt">
         <a-entity
           position="-5 0 0"
           rotation="270 0 0"
@@ -129,17 +155,19 @@
           gltf-model="#bears"
         >
         </a-entity>
-      </a-marker-camera>
-      <a-marker-camera type="pattern" url="markers/k.patt">
+       </a-marker-camera> -->
+
+      <!-- <a-marker-camera type="pattern" url="markers/k.patt">
         <a-entity
           position="0 0 0"
           rotation="270 0 0"
           scale="0.5 0.5 0.5"
-          gltf-model="#tree"
+          gltf-model="#key"
         >
         </a-entity>
-      </a-marker-camera>
-      <a-marker-camera type="pattern" url="markers/l.patt">
+      </a-marker-camera> -->
+
+      <!-- <a-marker-camera type="pattern" url="markers/l.patt">
         <a-entity
           position="-5 0 0"
           rotation="270 0 0"
@@ -201,17 +229,19 @@
           gltf-model="#bears"
         >
         </a-entity>
-      </a-marker-camera>
-      <a-marker-camera type="pattern" url="markers/s.patt">
+      </a-marker-camera> -->
+
+      <!-- <a-marker-camera type="pattern" url="markers/s.patt">
         <a-entity
-          position="-5 0 0"
+          position="0 0 0"
           rotation="270 0 0"
-          scale="0.7 0.7 0.7"
-          gltf-model="#bears"
+          scale="0.63 0.63 0.63"
+          gltf-model="#strawberry"
         >
         </a-entity>
-      </a-marker-camera>
-      <a-marker-camera type="pattern" url="markers/t.patt">
+      </a-marker-camera> -->
+
+      <!-- <a-marker-camera type="pattern" url="markers/t.patt">
         <a-entity
           position="-5 0 0"
           rotation="270 0 0"
@@ -273,7 +303,7 @@
           gltf-model="#bears"
         >
         </a-entity>
-      </a-marker-camera>
+      </a-marker-camera> -->
       <a-entity camera></a-entity>
     </a-scene>
   </body>
