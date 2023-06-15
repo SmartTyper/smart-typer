@@ -1,0 +1,3142 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 384,
+      "max": [
+        0.44090914726257324,
+        0.09229058027267456,
+        0.09229171276092529
+      ],
+      "min": [
+        -0.13075733184814453,
+        -0.09229053556919098,
+        -0.09228932857513428
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4608,
+      "componentType": 5126,
+      "count": 384,
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -0.9712139964103699,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 384,
+      "max": [
+        0.75,
+        0.7416269779205322
+      ],
+      "min": [
+        0.25,
+        0.2583729922771454
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 1938,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 9216,
+      "componentType": 5126,
+      "count": 3728,
+      "max": [
+        0.41481518745422363,
+        0.7371479272842407,
+        0.7689853310585022
+      ],
+      "min": [
+        -0.27621835470199585,
+        -0.7371476888656616,
+        -0.29922160506248474
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 53952,
+      "componentType": 5126,
+      "count": 3728,
+      "max": [
+        1.0,
+        0.999862015247345,
+        0.9998619556427002
+      ],
+      "min": [
+        -1.0,
+        -0.9998620748519897,
+        -0.999862015247345
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 3072,
+      "componentType": 5126,
+      "count": 3728,
+      "max": [
+        20.31380271911621,
+        530.57763671875
+      ],
+      "min": [
+        -65.22984313964844,
+        0.033493999391794205
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 7752,
+      "componentType": 5125,
+      "count": 17880,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 98688,
+      "componentType": 5126,
+      "count": 842,
+      "max": [
+        1.1984286308288574,
+        0.39917054772377014,
+        0.2693134546279907
+      ],
+      "min": [
+        -0.9958966970443726,
+        -0.39918839931488037,
+        -0.25117266178131104
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 108792,
+      "componentType": 5126,
+      "count": 842,
+      "max": [
+        0.9833669662475586,
+        0.9999983310699463,
+        0.9921371936798096
+      ],
+      "min": [
+        -0.9802783727645874,
+        -0.9999983310699463,
+        -0.9763665199279785
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 32896,
+      "componentType": 5126,
+      "count": 842,
+      "max": [
+        1.0,
+        1.0
+      ],
+      "min": [
+        -0.10420600324869156,
+        0.75
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 79272,
+      "componentType": 5125,
+      "count": 4932,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 118896,
+      "componentType": 5126,
+      "count": 28599,
+      "max": [
+        1.899461030960083,
+        0.3799998164176941,
+        1.1478201150894165
+      ],
+      "min": [
+        -0.5772258043289185,
+        -0.4435267150402069,
+        -0.4927985668182373
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 462084,
+      "componentType": 5126,
+      "count": 28599,
+      "max": [
+        0.9999949336051941,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -0.9999991655349731
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 39632,
+      "componentType": 5126,
+      "count": 28599,
+      "max": [
+        938.7735595703125,
+        182.536376953125
+      ],
+      "min": [
+        -1006.5308227539063,
+        -135.2376251220703
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 99000,
+      "componentType": 5125,
+      "count": 110748,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 805272,
+      "componentType": 5126,
+      "count": 816,
+      "max": [
+        0.06231534481048584,
+        0.007248724345117807,
+        0.030915260314941406
+      ],
+      "min": [
+        -0.031908273696899414,
+        -0.007248742040246725,
+        -0.049096107482910156
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 815064,
+      "componentType": 5126,
+      "count": 816,
+      "max": [
+        0.9999401569366455,
+        1.0,
+        0.9995805621147156
+      ],
+      "min": [
+        -0.9999393820762634,
+        -1.0,
+        -0.9995394349098206
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 268424,
+      "componentType": 5126,
+      "count": 816,
+      "max": [
+        57.88528823852539,
+        53.37175750732422
+      ],
+      "min": [
+        -38.079612731933594,
+        -23.758399963378906
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 541992,
+      "componentType": 5125,
+      "count": 4752,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 824856,
+      "componentType": 5126,
+      "count": 6713,
+      "max": [
+        1.6714468002319336,
+        2.8959591388702393,
+        1.122244954109192
+      ],
+      "min": [
+        -4.25533390045166,
+        -1.237194538116455,
+        -0.74155592918396
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 905412,
+      "componentType": 5126,
+      "count": 6713,
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 274952,
+      "componentType": 5126,
+      "count": 6713,
+      "max": [
+        127.43661499023438,
+        71.46145629882813
+      ],
+      "min": [
+        -481.6459045410156,
+        -67.12117004394531
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 561000,
+      "componentType": 5125,
+      "count": 33192,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 985968,
+      "componentType": 5126,
+      "count": 4420,
+      "max": [
+        0.316375732421875,
+        0.1286645084619522,
+        0.18150198459625244
+      ],
+      "min": [
+        -0.5681037902832031,
+        -0.22012872993946075,
+        -0.10455822944641113
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 1039008,
+      "componentType": 5126,
+      "count": 4420,
+      "max": [
+        0.9999756217002869,
+        0.9978394508361816,
+        0.9999424815177917
+      ],
+      "min": [
+        -0.9999997615814209,
+        -0.9998958706855774,
+        -0.9984253644943237
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 328656,
+      "componentType": 5126,
+      "count": 4420,
+      "max": [
+        1.0,
+        1.0
+      ],
+      "min": [
+        0.0,
+        0.0
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 693768,
+      "componentType": 5125,
+      "count": 24828,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 1092048,
+      "componentType": 5126,
+      "count": 360,
+      "max": [
+        4.0055646896362305,
+        0.3173988461494446,
+        0.644538164138794
+      ],
+      "min": [
+        -1.992281198501587,
+        -0.32809412479400635,
+        -0.5780901312828064
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 1096368,
+      "componentType": 5126,
+      "count": 360,
+      "max": [
+        0.9999979138374329,
+        0.9999878406524658,
+        0.9998825788497925
+      ],
+      "min": [
+        -1.0,
+        -0.9999498724937439,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 364016,
+      "componentType": 5126,
+      "count": 360,
+      "max": [
+        0.9370830059051514,
+        1.0
+      ],
+      "min": [
+        0.027072999626398087,
+        0.0
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 793080,
+      "componentType": 5125,
+      "count": 1572,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 1100688,
+      "componentType": 5126,
+      "count": 65532,
+      "max": [
+        4.443943977355957,
+        2.869133234024048,
+        1.751798152923584
+      ],
+      "min": [
+        -2.1698453426361084,
+        -2.872947931289673,
+        -0.330087810754776
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 1887072,
+      "componentType": 5126,
+      "count": 65532,
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 366896,
+      "componentType": 5126,
+      "count": 65532,
+      "max": [
+        157.82821655273438,
+        101.03335571289063
+      ],
+      "min": [
+        -232.18238830566406,
+        -85.25701904296875
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 799368,
+      "componentType": 5125,
+      "count": 355407,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 2673456,
+      "componentType": 5126,
+      "count": 4922,
+      "max": [
+        -0.5044270157814026,
+        0.8318140506744385,
+        -0.18839848041534424
+      ],
+      "min": [
+        -0.5478481650352478,
+        -0.8308822512626648,
+        -0.28295281529426575
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 2732520,
+      "componentType": 5126,
+      "count": 4922,
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 891152,
+      "componentType": 5126,
+      "count": 4922,
+      "max": [
+        11.804400444030762,
+        9.575599670410156
+      ],
+      "min": [
+        -0.24250000715255737,
+        -0.5131000280380249
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 2220996,
+      "componentType": 5125,
+      "count": 20895,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 2791584,
+      "componentType": 5126,
+      "count": 320,
+      "max": [
+        0.19950926303863525,
+        0.015379689633846283,
+        0.11137282848358154
+      ],
+      "min": [
+        -0.1995105743408203,
+        -0.0036526918411254883,
+        -0.11137306690216064
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 2795424,
+      "componentType": 5126,
+      "count": 320,
+      "max": [
+        1.0,
+        0.26345300674438477,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 930528,
+      "componentType": 5126,
+      "count": 320,
+      "max": [
+        50.0,
+        1.0
+      ],
+      "min": [
+        -49.0,
+        0.0
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 2304576,
+      "componentType": 5125,
+      "count": 672,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 2799264,
+      "componentType": 5126,
+      "count": 1212,
+      "max": [
+        0.2384805679321289,
+        0.34282565116882324,
+        0.024904608726501465
+      ],
+      "min": [
+        -0.23916053771972656,
+        -0.34282585978507996,
+        -0.03719747066497803
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 2813808,
+      "componentType": 5126,
+      "count": 1212,
+      "max": [
+        0.9923462271690369,
+        0.9952900409698486,
+        0.9986374974250793
+      ],
+      "min": [
+        -0.9798075556755066,
+        -0.995286226272583,
+        -0.9989563226699829
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 933088,
+      "componentType": 5126,
+      "count": 1212,
+      "max": [
+        0.3791869878768921,
+        0.7092549800872803
+      ],
+      "min": [
+        0.3791869878768921,
+        0.7092549800872803
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 2307264,
+      "componentType": 5125,
+      "count": 6912,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 2828352,
+      "componentType": 5126,
+      "count": 1586,
+      "max": [
+        0.9605443477630615,
+        0.3937569856643677,
+        0.8085055351257324
+      ],
+      "min": [
+        -1.5418269634246826,
+        -0.39375752210617065,
+        -0.36055129766464233
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 2847384,
+      "componentType": 5126,
+      "count": 1586,
+      "max": [
+        1.0,
+        0.9999343156814575,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -0.999934196472168,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 1586,
+      "max": [
+        0.9999991059303284,
+        1.0,
+        0.9999997615814209,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -0.9999961256980896,
+        -1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 942784,
+      "componentType": 5126,
+      "count": 1586,
+      "max": [
+        5.499486923217773,
+        5.5
+      ],
+      "min": [
+        -4.499372482299805,
+        -4.5
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 2334912,
+      "componentType": 5125,
+      "count": 8490,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 2866416,
+      "componentType": 5126,
+      "count": 71,
+      "max": [
+        0.12994706630706787,
+        0.3459395170211792,
+        0.1943446397781372
+      ],
+      "min": [
+        -0.252921462059021,
+        -0.34593942761421204,
+        -0.3601648807525635
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 2867268,
+      "componentType": 5126,
+      "count": 71,
+      "max": [
+        1.0,
+        1.0,
+        0.9565719962120056
+      ],
+      "min": [
+        -0.5624665021896362,
+        -1.0,
+        -5.580484139500186e-05
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 955472,
+      "componentType": 5126,
+      "count": 71,
+      "max": [
+        0.9884960055351257,
+        0.9852910041809082
+      ],
+      "min": [
+        0.008245999924838543,
+        0.19902299344539642
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 2368872,
+      "componentType": 5125,
+      "count": 240,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 2868120,
+      "componentType": 5126,
+      "count": 216,
+      "max": [
+        0.883573591709137,
+        0.3817811906337738,
+        0.1759546995162964
+      ],
+      "min": [
+        -0.9950882792472839,
+        -0.38364556431770325,
+        -0.43435609340667725
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 2870712,
+      "componentType": 5126,
+      "count": 216,
+      "max": [
+        0.9999998807907104,
+        1.0,
+        0.9999691247940063
+      ],
+      "min": [
+        -0.9999998807907104,
+        -1.0,
+        -0.9999692440032959
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 956040,
+      "componentType": 5126,
+      "count": 216,
+      "max": [
+        377.8145751953125,
+        815.8663940429688
+      ],
+      "min": [
+        -387.6216735839844,
+        -1045.962158203125
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 2369832,
+      "componentType": 5125,
+      "count": 972,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 2873304,
+      "componentType": 5126,
+      "count": 638,
+      "max": [
+        0.055788516998291016,
+        0.9944162368774414,
+        0.09470796585083008
+      ],
+      "min": [
+        -0.04780149459838867,
+        -0.994416356086731,
+        -0.09470605850219727
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 2880960,
+      "componentType": 5126,
+      "count": 638,
+      "max": [
+        1.0,
+        0.9996116757392883,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -0.9996119141578674,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 957768,
+      "componentType": 5126,
+      "count": 638,
+      "max": [
+        0.9916599988937378,
+        0.9768159985542297
+      ],
+      "min": [
+        0.004029999952763319,
+        0.11931599676609039
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 2373720,
+      "componentType": 5125,
+      "count": 3120,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 2888616,
+      "componentType": 5126,
+      "count": 54331,
+      "max": [
+        4.891539573669434,
+        5.080827236175537,
+        1.4331985712051392
+      ],
+      "min": [
+        -2.1247434616088867,
+        -5.100991725921631,
+        -1.4145125150680542
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 3540588,
+      "componentType": 5126,
+      "count": 54331,
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 962872,
+      "componentType": 5126,
+      "count": 54331,
+      "max": [
+        0.9953209757804871,
+        1.0139989852905273
+      ],
+      "min": [
+        0.0046790000051259995,
+        0.0034370000939816236
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 2386200,
+      "componentType": 5125,
+      "count": 304224,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4192560,
+      "componentType": 5126,
+      "count": 102,
+      "max": [
+        0.07101303339004517,
+        5.1159563064575195,
+        0.02725064754486084
+      ],
+      "min": [
+        -0.0663837194442749,
+        -5.115956783294678,
+        -0.02725088596343994
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4193784,
+      "componentType": 5126,
+      "count": 102,
+      "max": [
+        1.0,
+        0.9997511506080627,
+        0.9963898062705994
+      ],
+      "min": [
+        -1.0,
+        -0.9997514486312866,
+        -0.9963897466659546
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 1397520,
+      "componentType": 5126,
+      "count": 102,
+      "max": [
+        1.0,
+        1.0
+      ],
+      "min": [
+        0.0,
+        0.0
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 3603096,
+      "componentType": 5125,
+      "count": 360,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4195008,
+      "componentType": 5126,
+      "count": 372,
+      "max": [
+        0.05428147315979004,
+        0.989954948425293,
+        0.07405924797058105
+      ],
+      "min": [
+        -0.026249408721923828,
+        -0.9899548292160034,
+        -0.0740576982498169
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4199472,
+      "componentType": 5126,
+      "count": 372,
+      "max": [
+        0.9969338178634644,
+        0.9999971985816956,
+        0.9986723065376282
+      ],
+      "min": [
+        -0.996479868888855,
+        -0.9999971985816956,
+        -0.9986725449562073
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 1398336,
+      "componentType": 5126,
+      "count": 372,
+      "max": [
+        0.9330130219459534,
+        0.75
+      ],
+      "min": [
+        0.07033000141382217,
+        0.5804479718208313
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 3604536,
+      "componentType": 5125,
+      "count": 1884,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4203936,
+      "componentType": 5126,
+      "count": 1372,
+      "max": [
+        0.25513556599617004,
+        0.0967164933681488,
+        0.07682955265045166
+      ],
+      "min": [
+        -0.2571794390678406,
+        -0.07857319712638855,
+        -0.06826460361480713
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4220400,
+      "componentType": 5126,
+      "count": 1372,
+      "max": [
+        0.9999958872795105,
+        0.9958773255348206,
+        0.9992066621780396
+      ],
+      "min": [
+        -0.9999964833259583,
+        -0.9958512783050537,
+        -0.99658203125
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 1401312,
+      "componentType": 5126,
+      "count": 1372,
+      "max": [
+        557.8682250976563,
+        1.0
+      ],
+      "min": [
+        0.0,
+        -93.22332763671875
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 3612072,
+      "componentType": 5125,
+      "count": 6144,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4236864,
+      "componentType": 5126,
+      "count": 4032,
+      "max": [
+        0.19385653734207153,
+        0.07998186349868774,
+        0.19385571777820587
+      ],
+      "min": [
+        -0.19385451078414917,
+        -0.08000147342681885,
+        -0.19385509192943573
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4285248,
+      "componentType": 5126,
+      "count": 4032,
+      "max": [
+        1.0,
+        0.9995930194854736,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -0.9995930194854736,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 1412288,
+      "componentType": 5126,
+      "count": 4032,
+      "max": [
+        1.0,
+        1.0
+      ],
+      "min": [
+        0.0,
+        0.0
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 3636648,
+      "componentType": 5125,
+      "count": 23760,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4333632,
+      "componentType": 5126,
+      "count": 1584,
+      "max": [
+        0.07271027565002441,
+        0.8699485659599304,
+        0.07270877063274384
+      ],
+      "min": [
+        -0.07270848751068115,
+        -0.8699451684951782,
+        -0.07270879298448563
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4352640,
+      "componentType": 5126,
+      "count": 1584,
+      "max": [
+        0.9032393097877502,
+        1.0,
+        0.9032377600669861
+      ],
+      "min": [
+        -0.9032400250434875,
+        -1.0,
+        -0.9032385349273682
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 1444544,
+      "componentType": 5126,
+      "count": 1584,
+      "max": [
+        0.75,
+        0.75
+      ],
+      "min": [
+        0.25,
+        0.25
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 3731688,
+      "componentType": 5125,
+      "count": 9504,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4371648,
+      "componentType": 5126,
+      "count": 1949,
+      "max": [
+        3.7631988525390625,
+        0.8950904607772827,
+        1.088612675666809
+      ],
+      "min": [
+        -0.6069759130477905,
+        -0.7395716905593872,
+        -0.866011917591095
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4395036,
+      "componentType": 5126,
+      "count": 1949,
+      "max": [
+        1.0,
+        0.9961401224136353,
+        0.9995223879814148
+      ],
+      "min": [
+        -1.0,
+        -0.996137261390686,
+        -0.999995768070221
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 1457216,
+      "componentType": 5126,
+      "count": 1949,
+      "max": [
+        310.9197692871094,
+        264.6969299316406
+      ],
+      "min": [
+        -252.18392944335938,
+        -170.90390014648438
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 3769704,
+      "componentType": 5125,
+      "count": 10800,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4418424,
+      "componentType": 5126,
+      "count": 2100,
+      "max": [
+        3.7899844646453857,
+        0.8898243308067322,
+        0.9262993335723877
+      ],
+      "min": [
+        -1.2197452783584595,
+        -0.889823317527771,
+        -0.46282047033309937
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4443624,
+      "componentType": 5126,
+      "count": 2100,
+      "max": [
+        1.0,
+        1.0,
+        0.9999998807907104
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -0.9999998807907104
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 1472808,
+      "componentType": 5126,
+      "count": 2100,
+      "max": [
+        353.1747741699219,
+        229.45350646972656
+      ],
+      "min": [
+        -285.3761291503906,
+        -317.71697998046875
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 3812904,
+      "componentType": 5125,
+      "count": 10806,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4468824,
+      "componentType": 5126,
+      "count": 104,
+      "max": [
+        0.007907390594482422,
+        0.983341634273529,
+        0.06669151782989502
+      ],
+      "min": [
+        -0.007870197296142578,
+        -0.9833415150642395,
+        -0.06669116020202637
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4470072,
+      "componentType": 5126,
+      "count": 104,
+      "max": [
+        0.9980097413063049,
+        0.9995620250701904,
+        0.9986868500709534
+      ],
+      "min": [
+        -0.9997646808624268,
+        -0.9995665550231934,
+        -0.9986867904663086
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 1489608,
+      "componentType": 5126,
+      "count": 104,
+      "max": [
+        0.9330130219459534,
+        0.75
+      ],
+      "min": [
+        0.6060150265693665,
+        0.75
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 3856128,
+      "componentType": 5125,
+      "count": 492,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4471320,
+      "componentType": 5126,
+      "count": 17008,
+      "max": [
+        4.288176536560059,
+        5.045770168304443,
+        1.3032606840133667
+      ],
+      "min": [
+        -1.5847654342651367,
+        -5.191191673278809,
+        -1.0909887552261353
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4675416,
+      "componentType": 5126,
+      "count": 17008,
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 1490440,
+      "componentType": 5126,
+      "count": 17008,
+      "max": [
+        45.4611930847168,
+        1.0
+      ],
+      "min": [
+        -4.256682872772217,
+        -484.94622802734375
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 3858096,
+      "componentType": 5125,
+      "count": 72756,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4879512,
+      "componentType": 5126,
+      "count": 4032,
+      "max": [
+        0.19385677576065063,
+        0.07997381687164307,
+        0.19385579228401184
+      ],
+      "min": [
+        -0.1938542127609253,
+        -0.0800095796585083,
+        -0.19385501742362976
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4927896,
+      "componentType": 5126,
+      "count": 4032,
+      "max": [
+        1.0,
+        0.9995931386947632,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -0.9995930194854736,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 1626504,
+      "componentType": 5126,
+      "count": 4032,
+      "max": [
+        1.0,
+        1.0
+      ],
+      "min": [
+        0.0,
+        0.0
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 4149120,
+      "componentType": 5125,
+      "count": 23760,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4976280,
+      "componentType": 5126,
+      "count": 509,
+      "max": [
+        0.08698081970214844,
+        0.0313640721142292,
+        0.08698415756225586
+      ],
+      "min": [
+        -0.08698797225952148,
+        -0.03863510489463806,
+        -0.08698463439941406
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 4982388,
+      "componentType": 5126,
+      "count": 509,
+      "max": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 1658760,
+      "componentType": 5126,
+      "count": 509,
+      "max": [
+        1.0,
+        0.9539880156517029
+      ],
+      "min": [
+        0.0,
+        0.04601199924945831
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "byteOffset": 4244160,
+      "componentType": 5125,
+      "count": 2880,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "AGASTRO (https://sketchfab.com/AGASTRO)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/vintage-airplane-bf1b7815b339446e80724b9cfffbd25c",
+      "title": "Vintage Airplane"
+    },
+    "generator": "Sketchfab-14.35.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 4255680,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 1662832,
+      "byteOffset": 4255680,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 4988496,
+      "byteOffset": 5918512,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 25376,
+      "byteOffset": 10907008,
+      "byteStride": 16,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 10932384,
+      "uri": "scene.bin"
+    }
+  ],
+  "images": [
+    {
+      "uri": "textures/leather_brun.001_normal.png"
+    },
+    {
+      "uri": "textures/ecran.001_baseColor.jpeg"
+    },
+    {
+      "uri": "textures/propeller.001_baseColor.jpeg"
+    },
+    {
+      "uri": "textures/carpaint.002_baseColor.jpeg"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "silver.001",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "metallicFactor": 0.5531445429167022,
+        "roughnessFactor": 0.0
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "chrome.005",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.14430706441529761,
+          0.12986413478608028,
+          0.12986413478608028,
+          1.0
+        ],
+        "metallicFactor": 0.49828723287537635,
+        "roughnessFactor": 0.0
+      }
+    },
+    {
+      "alphaMode": "BLEND",
+      "doubleSided": true,
+      "name": "glass_clear.004",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.015876293507004053,
+          0.015876293507004053,
+          0.015876293507004053,
+          0.09600029257232022
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.0
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "plastic_rough.001",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.010839000499811046,
+          0.010839000499811046,
+          0.010839000499811046,
+          1.0
+        ],
+        "metallicFactor": 0.8152405797808145,
+        "roughnessFactor": 0.0
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "metal_rough.002",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.0831961,
+          0.0831961,
+          0.0831961,
+          1.0
+        ],
+        "metallicFactor": 0.48000146286160106,
+        "roughnessFactor": 0.0
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "metal_rough_plus.001",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "metallicFactor": 0.6201923663005449,
+        "roughnessFactor": 0.19694993356170232
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "metal_rought_wheels.001",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.15089463586936647,
+          0.15089463586936647,
+          0.15089463586936647,
+          1.0
+        ],
+        "roughnessFactor": 0.0
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "leather_brun.001",
+      "normalTexture": {
+        "index": 0
+      },
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.20208199999999998,
+          0.03919429999999998,
+          0.005909939999999994,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.7820945740025113
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "ecran.001",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 1
+        },
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.0
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "propeller.001",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 2
+        },
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.14209262352037655
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "carpaint.002",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 3
+        },
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.0
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "glass_red.004",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.7,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "metallicFactor": 0.0,
+        "roughnessFactor": 0.0
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "plastic_rough_black.002",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "metallicFactor": 0.6750496763418707,
+        "roughnessFactor": 0.0
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "tire.002",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.0232948,
+          0.0232948,
+          0.0232948,
+          1.0
+        ],
+        "metallicFactor": 0.30933427606636515,
+        "roughnessFactor": 0.2518072436030282
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Vintage_Airplane|silver_propeler|Dupli|_silver.001_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|metal_black_front_suspension|Dupli|1_chrome.005_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 5,
+            "POSITION": 4,
+            "TEXCOORD_0": 6
+          },
+          "indices": 7,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|glass_windows|Dupli|2_glass_clear.004_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 9,
+            "POSITION": 8,
+            "TEXCOORD_0": 10
+          },
+          "indices": 11,
+          "material": 2,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|chrome_brushed_exhoust|Dupli|3_chrome.005_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 13,
+            "POSITION": 12,
+            "TEXCOORD_0": 14
+          },
+          "indices": 15,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|orange_pipe_top|Dupli|4_chrome.005_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 17,
+            "POSITION": 16,
+            "TEXCOORD_0": 18
+          },
+          "indices": 19,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|metal_grey_hinges|Dupli|5_plastic_rough.001_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 21,
+            "POSITION": 20,
+            "TEXCOORD_0": 22
+          },
+          "indices": 23,
+          "material": 3,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|metal_grey_engine_bottom|Dupli|6_plastic_rough.001_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 25,
+            "POSITION": 24,
+            "TEXCOORD_0": 26
+          },
+          "indices": 27,
+          "material": 3,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|black_cap_holes|Dupli|7_metal_rough.002_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 29,
+            "POSITION": 28,
+            "TEXCOORD_0": 30
+          },
+          "indices": 31,
+          "material": 4,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|silver_engine_cover|Dupli|8_metal_rough_plus.001_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 33,
+            "POSITION": 32,
+            "TEXCOORD_0": 34
+          },
+          "indices": 35,
+          "material": 5,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|silver_engine_cover|Dupli|8_metal_rough_plus.001_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 37,
+            "POSITION": 36,
+            "TEXCOORD_0": 38
+          },
+          "indices": 39,
+          "material": 5,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|metal_grey_engine|Dupli|9_metal rought wheels.001_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 41,
+            "POSITION": 40,
+            "TEXCOORD_0": 42
+          },
+          "indices": 43,
+          "material": 6,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|metal_grey_hasps|Dupli|10_chrome.005_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 45,
+            "POSITION": 44,
+            "TEXCOORD_0": 46
+          },
+          "indices": 47,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|interior_main|Dupli|11_leather_brun.001_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 49,
+            "POSITION": 48,
+            "TANGENT": 50,
+            "TEXCOORD_0": 51
+          },
+          "indices": 52,
+          "material": 7,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|tex_dash_dashboard|Dupli|12_ecran.001_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 54,
+            "POSITION": 53,
+            "TEXCOORD_0": 55
+          },
+          "indices": 56,
+          "material": 8,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|metal_white_interior|Dupli|13_chrome.005_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 58,
+            "POSITION": 57,
+            "TEXCOORD_0": 59
+          },
+          "indices": 60,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|tex_prop_propeller|Dupli|14_propeller.001_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 62,
+            "POSITION": 61,
+            "TEXCOORD_0": 63
+          },
+          "indices": 64,
+          "material": 9,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|tex_body_front_fenders|Dupli|15_carpaint.002_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 66,
+            "POSITION": 65,
+            "TEXCOORD_0": 67
+          },
+          "indices": 68,
+          "material": 10,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|red_side_lights|Dupli|16_glass_red.004_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 70,
+            "POSITION": 69,
+            "TEXCOORD_0": 71
+          },
+          "indices": 72,
+          "material": 11,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|plastic_propeler|Dupli|17_plastic_rough_black.002_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 74,
+            "POSITION": 73,
+            "TEXCOORD_0": 75
+          },
+          "indices": 76,
+          "material": 12,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|metal_grey_exhoust|Dupli|18_metal_rough_plus.001_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 78,
+            "POSITION": 77,
+            "TEXCOORD_0": 79
+          },
+          "indices": 80,
+          "material": 5,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|tyres_front|Dupli|19_tire.002_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 82,
+            "POSITION": 81,
+            "TEXCOORD_0": 83
+          },
+          "indices": 84,
+          "material": 13,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|metal_black_rims|Dupli|20_plastic_rough_black.002_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 86,
+            "POSITION": 85,
+            "TEXCOORD_0": 87
+          },
+          "indices": 88,
+          "material": 12,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|plastic_brake_wires|Dupli|21_plastic_rough_black.002_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 90,
+            "POSITION": 89,
+            "TEXCOORD_0": 91
+          },
+          "indices": 92,
+          "material": 12,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|blue_metal_front_suspension|Dupli|22_plastic_rough.001_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 94,
+            "POSITION": 93,
+            "TEXCOORD_0": 95
+          },
+          "indices": 96,
+          "material": 3,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|chrome_front_suspension.001|Dupli|25_chrome.005_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 98,
+            "POSITION": 97,
+            "TEXCOORD_0": 99
+          },
+          "indices": 100,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|chrome_front_suspension.002|Dupli|26_chrome.005_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 102,
+            "POSITION": 101,
+            "TEXCOORD_0": 103
+          },
+          "indices": 104,
+          "material": 1,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|tyres_front.001|Dupli|27_tire.002_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 106,
+            "POSITION": 105,
+            "TEXCOORD_0": 107
+          },
+          "indices": 108,
+          "material": 13,
+          "mode": 4
+        }
+      ]
+    },
+    {
+      "name": "Vintage_Airplane|tyres_front.002|Dupli|28_tire.002_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 110,
+            "POSITION": 109,
+            "TEXCOORD_0": 111
+          },
+          "indices": 112,
+          "material": 13,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        -1.0,
+        0.0,
+        0.0,
+        1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "matrix": [
+        0.009999999776482582,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.009999999776482582,
+        0.0,
+        0.0,
+        -0.009999999776482582,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "f45903cfe2434a079d9f15d870d445da.fbx"
+    },
+    {
+      "children": [
+        3,
+        5,
+        7,
+        9,
+        11,
+        13,
+        15,
+        17,
+        19,
+        22,
+        24,
+        26,
+        28,
+        30,
+        32,
+        34,
+        36,
+        38,
+        40,
+        42,
+        44,
+        46,
+        48,
+        50,
+        52,
+        54,
+        56
+      ],
+      "name": "RootNode"
+    },
+    {
+      "children": [
+        4
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        -0.20369356870651245,
+        139.25228881835938,
+        267.6519775390625,
+        1.0
+      ],
+      "name": "Vintage_Airplane|silver_propeler|Dupli|"
+    },
+    {
+      "mesh": 0,
+      "name": "Vintage_Airplane|silver_propeler|Dupli|_silver.001_0"
+    },
+    {
+      "children": [
+        6
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        -7.259090489242226e-05,
+        52.003089904785156,
+        77.85118103027344,
+        1.0
+      ],
+      "name": "Vintage_Airplane|metal_black_front_suspension|Dupli|1"
+    },
+    {
+      "mesh": 1,
+      "name": "Vintage_Airplane|metal_black_front_suspension|Dupli|1_chrome.005_0"
+    },
+    {
+      "children": [
+        8
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        -0.0009627455146983266,
+        164.03712463378906,
+        67.81438446044922,
+        1.0
+      ],
+      "name": "Vintage_Airplane|glass_windows|Dupli|2"
+    },
+    {
+      "mesh": 2,
+      "name": "Vintage_Airplane|glass_windows|Dupli|2_glass_clear.004_0"
+    },
+    {
+      "children": [
+        10
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        -0.6971877217292786,
+        105.07024383544922,
+        187.35191345214844,
+        1.0
+      ],
+      "name": "Vintage_Airplane|chrome_brushed_exhoust|Dupli|3"
+    },
+    {
+      "mesh": 3,
+      "name": "Vintage_Airplane|chrome_brushed_exhoust|Dupli|3_chrome.005_0"
+    },
+    {
+      "children": [
+        12
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        -7.099366484908387e-05,
+        226.50384521484375,
+        66.79183197021484,
+        1.0
+      ],
+      "name": "Vintage_Airplane|orange_pipe_top|Dupli|4"
+    },
+    {
+      "mesh": 4,
+      "name": "Vintage_Airplane|orange_pipe_top|Dupli|4_chrome.005_0"
+    },
+    {
+      "children": [
+        14
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        -7.078304290771484,
+        165.80262756347656,
+        -268.4646301269531,
+        1.0
+      ],
+      "name": "Vintage_Airplane|metal_grey_hinges|Dupli|5"
+    },
+    {
+      "mesh": 5,
+      "name": "Vintage_Airplane|metal_grey_hinges|Dupli|5_plastic_rough.001_0"
+    },
+    {
+      "children": [
+        16
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        -22.042612075805664,
+        74.18392944335938,
+        147.2930908203125,
+        1.0
+      ],
+      "name": "Vintage_Airplane|metal_grey_engine_bottom|Dupli|6"
+    },
+    {
+      "mesh": 6,
+      "name": "Vintage_Airplane|metal_grey_engine_bottom|Dupli|6_plastic_rough.001_0"
+    },
+    {
+      "children": [
+        18
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        -8.242069244384766,
+        126.1056900024414,
+        58.790061950683594,
+        1.0
+      ],
+      "name": "Vintage_Airplane|black_cap_holes|Dupli|7"
+    },
+    {
+      "mesh": 7,
+      "name": "Vintage_Airplane|black_cap_holes|Dupli|7_metal_rough.002_0"
+    },
+    {
+      "children": [
+        20,
+        21
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        -0.19080862402915955,
+        42.31853485107422,
+        35.150489807128906,
+        1.0
+      ],
+      "name": "Vintage_Airplane|silver_engine_cover|Dupli|8"
+    },
+    {
+      "mesh": 8,
+      "name": "Vintage_Airplane|silver_engine_cover|Dupli|8_metal_rough_plus.001_0"
+    },
+    {
+      "mesh": 9,
+      "name": "Vintage_Airplane|silver_engine_cover|Dupli|8_metal_rough_plus.001_0"
+    },
+    {
+      "children": [
+        23
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        -10.580425262451172,
+        119.06646728515625,
+        203.7954864501953,
+        1.0
+      ],
+      "name": "Vintage_Airplane|metal_grey_engine|Dupli|9"
+    },
+    {
+      "mesh": 10,
+      "name": "Vintage_Airplane|metal_grey_engine|Dupli|9_metal rought wheels.001_0"
+    },
+    {
+      "children": [
+        25
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        -0.0001465727254981175,
+        90.0089340209961,
+        201.47244262695313,
+        1.0
+      ],
+      "name": "Vintage_Airplane|metal_grey_hasps|Dupli|10"
+    },
+    {
+      "mesh": 11,
+      "name": "Vintage_Airplane|metal_grey_hasps|Dupli|10_chrome.005_0"
+    },
+    {
+      "children": [
+        27
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        -3.3920834539458156e-05,
+        112.56549072265625,
+        14.42849349975586,
+        1.0
+      ],
+      "name": "Vintage_Airplane|interior_main|Dupli|11"
+    },
+    {
+      "mesh": 12,
+      "name": "Vintage_Airplane|interior_main|Dupli|11_leather_brun.001_0"
+    },
+    {
+      "children": [
+        29
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        -9.690646402304992e-05,
+        136.69264221191406,
+        104.62062072753906,
+        1.0
+      ],
+      "name": "Vintage_Airplane|tex_dash_dashboard|Dupli|12"
+    },
+    {
+      "mesh": 13,
+      "name": "Vintage_Airplane|tex_dash_dashboard|Dupli|12_ecran.001_0"
+    },
+    {
+      "children": [
+        31
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        0.17708706855773926,
+        175.9173583984375,
+        34.304996490478516,
+        1.0
+      ],
+      "name": "Vintage_Airplane|metal_white_interior|Dupli|13"
+    },
+    {
+      "mesh": 14,
+      "name": "Vintage_Airplane|metal_white_interior|Dupli|13_chrome.005_0"
+    },
+    {
+      "children": [
+        33
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        -0.20368872582912445,
+        139.2523193359375,
+        264.59246826171875,
+        1.0
+      ],
+      "name": "Vintage_Airplane|tex_prop_propeller|Dupli|14"
+    },
+    {
+      "mesh": 15,
+      "name": "Vintage_Airplane|tex_prop_propeller|Dupli|14_propeller.001_0"
+    },
+    {
+      "children": [
+        35
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        -1.0082688331604004,
+        155.15826416015625,
+        46.245094299316406,
+        1.0
+      ],
+      "name": "Vintage_Airplane|tex_body_front_fenders|Dupli|15"
+    },
+    {
+      "mesh": 16,
+      "name": "Vintage_Airplane|tex_body_front_fenders|Dupli|15_carpaint.002_0"
+    },
+    {
+      "children": [
+        37
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        -6.2994827203510795e-06,
+        192.69790649414063,
+        57.63414001464844,
+        1.0
+      ],
+      "name": "Vintage_Airplane|red_side_lights|Dupli|16"
+    },
+    {
+      "mesh": 17,
+      "name": "Vintage_Airplane|red_side_lights|Dupli|16_glass_red.004_0"
+    },
+    {
+      "children": [
+        39
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        -0.20368602871894836,
+        139.25233459472656,
+        266.6661071777344,
+        1.0
+      ],
+      "name": "Vintage_Airplane|plastic_propeler|Dupli|17"
+    },
+    {
+      "mesh": 18,
+      "name": "Vintage_Airplane|plastic_propeler|Dupli|17_plastic_rough_black.002_0"
+    },
+    {
+      "children": [
+        41
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        35.95681381225586,
+        66.41675567626953,
+        60.72384262084961,
+        1.0
+      ],
+      "name": "Vintage_Airplane|metal_grey_exhoust|Dupli|18"
+    },
+    {
+      "mesh": 19,
+      "name": "Vintage_Airplane|metal_grey_exhoust|Dupli|18_metal_rough_plus.001_0"
+    },
+    {
+      "children": [
+        43
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        91.78563690185547,
+        19.42314338684082,
+        95.71978759765625,
+        1.0
+      ],
+      "name": "Vintage_Airplane|tyres_front|Dupli|19"
+    },
+    {
+      "mesh": 20,
+      "name": "Vintage_Airplane|tyres_front|Dupli|19_tire.002_0"
+    },
+    {
+      "children": [
+        45
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        7.911919237812981e-05,
+        19.423175811767578,
+        95.7197036743164,
+        1.0
+      ],
+      "name": "Vintage_Airplane|metal_black_rims|Dupli|20"
+    },
+    {
+      "mesh": 21,
+      "name": "Vintage_Airplane|metal_black_rims|Dupli|20_plastic_rough_black.002_0"
+    },
+    {
+      "children": [
+        47
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        7.775853633880615,
+        109.64988708496094,
+        34.79522705078125,
+        1.0
+      ],
+      "name": "Vintage_Airplane|plastic_brake_wires|Dupli|21"
+    },
+    {
+      "mesh": 22,
+      "name": "Vintage_Airplane|plastic_brake_wires|Dupli|21_plastic_rough_black.002_0"
+    },
+    {
+      "children": [
+        49
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        -2.7035064704250544e-05,
+        63.687156677246094,
+        -9.560794830322266,
+        1.0
+      ],
+      "name": "Vintage_Airplane|blue_metal_front_suspension|Dupli|22"
+    },
+    {
+      "mesh": 23,
+      "name": "Vintage_Airplane|blue_metal_front_suspension|Dupli|22_plastic_rough.001_0"
+    },
+    {
+      "children": [
+        51
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        -0.2036835104227066,
+        139.2523956298828,
+        268.4342346191406,
+        1.0
+      ],
+      "name": "Vintage_Airplane|chrome_front_suspension.001|Dupli|25"
+    },
+    {
+      "mesh": 24,
+      "name": "Vintage_Airplane|chrome_front_suspension.001|Dupli|25_chrome.005_0"
+    },
+    {
+      "children": [
+        53
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        -7.271184921264648,
+        118.50873565673828,
+        61.37388229370117,
+        1.0
+      ],
+      "name": "Vintage_Airplane|chrome_front_suspension.002|Dupli|26"
+    },
+    {
+      "mesh": 25,
+      "name": "Vintage_Airplane|chrome_front_suspension.002|Dupli|26_chrome.005_0"
+    },
+    {
+      "children": [
+        55
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        -91.78856658935547,
+        19.423147201538086,
+        95.71968078613281,
+        1.0
+      ],
+      "name": "Vintage_Airplane|tyres_front.001|Dupli|27"
+    },
+    {
+      "mesh": 26,
+      "name": "Vintage_Airplane|tyres_front.001|Dupli|27_tire.002_0"
+    },
+    {
+      "children": [
+        57
+      ],
+      "matrix": [
+        7.549789959870878e-06,
+        -1.1102230246251565e-14,
+        -99.99999999999972,
+        0.0,
+        -99.99999999999962,
+        -4.371139006309477e-06,
+        -7.549789954319763e-06,
+        0.0,
+        -4.371139006309477e-06,
+        99.99999999999991,
+        -3.552713678800501e-13,
+        0.0,
+        -0.9694064259529114,
+        133.51971435546875,
+        -404.9150085449219,
+        1.0
+      ],
+      "name": "Vintage_Airplane|tyres_front.002|Dupli|28"
+    },
+    {
+      "mesh": 27,
+      "name": "Vintage_Airplane|tyres_front.002|Dupli|28_tire.002_0"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    },
+    {
+      "sampler": 0,
+      "source": 2
+    },
+    {
+      "sampler": 0,
+      "source": 3
+    }
+  ]
+}
