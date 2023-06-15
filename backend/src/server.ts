@@ -44,7 +44,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(apiRoutes);
 
 app.use(express.static(path.join(__dirname, '../public')));
-app.use('/ar-camera', (_req, res) => {
+app.get('/ar-camera', (_req, res) => {
   res.sendFile(path.join(__dirname, '../public/ar-camera.html'));
 });
 app.use('/*', (_req, res) => {

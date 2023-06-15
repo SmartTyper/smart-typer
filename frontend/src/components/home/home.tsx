@@ -1,7 +1,7 @@
 import { FC } from 'common/types/types';
 import { Button } from 'components/common/common';
 import { AppRoute } from 'common/enums/enums';
-import { useNavigate } from 'hooks/hooks';
+import { navigation as navigationService } from 'services/services';
 
 import laptopImg from 'assets/img/laptop.png';
 import arImg from 'assets/img/ar.png';
@@ -10,10 +10,8 @@ import typingImg from 'assets/img/typing.gif';
 import styles from './styles.module.scss';
 
 const Home: FC = () => {
-  const navigate = useNavigate();
-
   const handleArButtonClick = (): void => {
-    navigate(AppRoute.AR_CAMERA);
+    navigationService.setPath(AppRoute.AR_CAMERA);
   };
 
   return (
