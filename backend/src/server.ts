@@ -45,9 +45,11 @@ app.use(apiRoutes);
 
 app.use(express.static(path.join(__dirname, '../public')));
 app.get('/ar-camera', (_req, res) => {
+  console.log('yes');
   res.sendFile(path.join(__dirname, '../public/ar-camera.html'));
 });
 app.use('/*', (_req, res) => {
+  console.log('no');
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 

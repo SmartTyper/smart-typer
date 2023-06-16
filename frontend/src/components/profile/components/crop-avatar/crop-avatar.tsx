@@ -1,11 +1,12 @@
 import { ReactCrop } from 'components/external/external';
-import { useState } from 'hooks/hooks';
+import { useMemo, useState } from 'hooks/hooks';
 import { FC, VoidAction } from 'common/types/types';
 import { Modal } from 'components/common/common';
 import { canvasToBlob, canvasToDataUrl } from 'helpers/helpers';
 import { CROPPED_IMAGE_TYPE } from 'common/constants/constants';
 import { Crop, CropData } from '../../common/types/types';
-import { useMemo } from 'react';
+
+import styles from './styles.module.scss';
 
 type Props = {
   isVisible: boolean;
@@ -99,6 +100,7 @@ const CropAvatar: FC<Props> = ({
         onClick: onClose,
       }}
       title="Crop the avatar"
+      className={styles.cropModal}
     >
       <ReactCrop
         src={src}
