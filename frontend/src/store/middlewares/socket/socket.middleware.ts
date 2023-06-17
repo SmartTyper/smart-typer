@@ -3,6 +3,7 @@ import {
   RoomDto,
   UserDto,
   ParticipantIdDto,
+  RoomIdDto,
 } from 'common/types/types';
 import { SocketEvent, UserKey } from 'common/enums/enums';
 import { socket as socketService } from 'services/services';
@@ -38,6 +39,10 @@ const getSocketMiddleware = ({ socketService }: Options): Middleware => {
         }
       },
     );
+
+    socketService.on(SocketEvent.DELETE_ROOM, (payload: RoomIdDto) => {
+      dispatch(racingActions.removeRoomFromAvailableRooms(payload));
+    });
 
     socketService.on(
       SocketEvent.TOGGLE_PARTICIPANT_IS_READY,

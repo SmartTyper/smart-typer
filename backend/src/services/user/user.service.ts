@@ -18,6 +18,7 @@ import {
   UserToRoom,
   Skill,
   RoomDto,
+  Rating,
 } from 'common/types/types';
 import { user as userRepository } from 'data/repositories/repositories';
 import { HttpError } from 'exceptions/exceptions';
@@ -41,11 +42,12 @@ class User {
     this._s3Service = params.s3Service;
   }
 
-  private async _getSignedPhotoUrl(
+  public async getSignedPhotoUrl(
     photoUrl: UserDto[UserKey.PHOTO_URL],
   ): Promise<UserDto[UserKey.PHOTO_URL]> {
     const isGoogleUrl = photoUrl?.match(/google/i);
 
+    // prettier-ignore
     const signedPhotoUrl = !photoUrl
       ? null
       : isGoogleUrl
@@ -67,7 +69,7 @@ class User {
         message: HttpErrorMessage.NO_SUCH_EMAIL,
       });
     }
-    const photoUrl = await this._getSignedPhotoUrl(user.photoUrl);
+    const photoUrl = await this.getSignedPhotoUrl(user.photoUrl);
     const tokens = await this._tokenService.getTokens(user.id);
     return { ...user, ...tokens, photoUrl };
   }
@@ -84,7 +86,7 @@ class User {
         message: HttpErrorMessage.NO_USER_WITH_SUCH_ID,
       });
     }
-    const photoUrl = await this._getSignedPhotoUrl(user.photoUrl);
+    const photoUrl = await this.getSignedPhotoUrl(user.photoUrl);
     const tokens = await this._tokenService.getTokens(user.id);
     return { ...user, ...tokens, photoUrl };
   }
@@ -153,10 +155,15 @@ class User {
       });
     }
     const rating = await this._userRepository.getRating(currentUserId);
-    const photoUrl = await this._getSignedPhotoUrl(userWithStatistics.photoUrl);
+    const ratingWithPhoto = [] as Rating;
+    for (const participant of rating) {
+      const photoUrl = await this.getSignedPhotoUrl(participant.photoUrl);
+      ratingWithPhoto.push({ ...participant, photoUrl });
+    }
+    const photoUrl = await this.getSignedPhotoUrl(userWithStatistics.photoUrl);
     return {
       ...userWithStatistics,
-      rating,
+      rating: ratingWithPhoto,
       photoUrl,
     };
   }

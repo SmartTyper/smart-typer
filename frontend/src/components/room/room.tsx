@@ -60,8 +60,6 @@ const Room: FC = () => {
 
   const handleLeaveRoom = async (): Promise<void> => {
     navigate(-1);
-    dispatch(racingActions.leaveRoom({ roomId, participantId: userId }));
-    dispatch(racingActions.resetAllExceptPersonal());
   };
 
   const handleIncreasePosition = (): void => {
@@ -170,7 +168,8 @@ const Room: FC = () => {
   useEffect(() => {
     return (): void => {
       speechSynthesis.cancel();
-      handleLeaveRoom();
+      dispatch(racingActions.leaveRoom({ roomId, participantId: userId }));
+      dispatch(racingActions.resetAllExceptPersonal());
     };
   }, []);
 

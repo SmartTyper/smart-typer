@@ -20,8 +20,13 @@ const { reducer } = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    const { loadUser, resetAll, deleteAvatar, updatePersonalInfo, updateAvatar } =
-    profileActions;
+    const {
+      loadUser,
+      resetAll,
+      deleteAvatar,
+      updatePersonalInfo,
+      updateAvatar,
+    } = profileActions;
     builder
       .addCase(loadUser.fulfilled, (state, action) => {
         const { statistics, rating, ...user } = action.payload;
@@ -40,6 +45,14 @@ const { reducer } = createSlice({
       .addCase(updateAvatar.fulfilled, (state, action) => {
         if (state.user) {
           state.user.photoUrl = action.payload;
+          if (state.rating) {
+            state.rating = state.rating.map((user) => {
+              if (user.id === state.user?.id) {
+                return { ...user, photoUrl: action.payload };
+              }
+              return user;
+            });
+          }
         }
       })
       .addCase(updatePersonalInfo.fulfilled, (state, action) => {

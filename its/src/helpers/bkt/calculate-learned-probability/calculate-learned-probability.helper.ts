@@ -22,6 +22,7 @@ const calculateLearnedProbability = ({
     const c = n - m;
     const pGuess = skillsPGuess.get(skillId)!;
     const pSlip = skillsPSlip.get(skillId)!;
+    // prettier-ignore
     const pLearnedPreviousCorrect = c
       ? calculateSkillConditionalPreviousLearnedProbability({
         pGuess,
@@ -30,6 +31,7 @@ const calculateLearnedProbability = ({
         isCorrect: true,
       })
       : 0;
+    // prettier-ignore
     const pLearnedPreviousIncorrect = m
       ? calculateSkillConditionalPreviousLearnedProbability({
         pGuess,
@@ -40,7 +42,7 @@ const calculateLearnedProbability = ({
       : 0;
     const pLearnedPrevious =
       (pLearnedPreviousCorrect * c + pLearnedPreviousIncorrect * m) / n;
-    const pLearned = pLearnedPrevious + (1-pLearnedPrevious)*pWillLearn;
+    const pLearned = pLearnedPrevious + (1 - pLearnedPrevious) * pWillLearn;
     return { skillId, pLearned };
   });
 };

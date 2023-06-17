@@ -8,6 +8,7 @@ import {
   HttpCode,
   HttpErrorMessage,
   SocketEvent,
+  UserKey,
 } from 'common/enums/enums';
 import {
   CreateRoomRequestDto,
@@ -73,11 +74,31 @@ class Room {
         message: HttpErrorMessage.NO_ROOM_WITH_SUCH_ID,
       });
     }
-    return room;
+
+    const participants = [] as Omit<UserDto, UserKey.EMAIL>[];
+    for (const participant of room.participants) {
+      const photoUrl = await this._userService.getSignedPhotoUrl(
+        participant.photoUrl,
+      );
+      participants.push({ ...participant, photoUrl });
+    }
+    return { ...room, participants };
   }
 
   public async getAllAvailable(): Promise<RoomDto[]> {
-    return this._roomRepository.getAllAvailable();
+    const availableRooms = await this._roomRepository.getAllAvailable();
+    const availableRoomsWithParticipantsPhoto = [] as RoomDto[];
+    for (const room of availableRooms) {
+      const participants = [] as Omit<UserDto, UserKey.EMAIL>[];
+      for (const participant of room.participants) {
+        const photoUrl = await this._userService.getSignedPhotoUrl(
+          participant.photoUrl,
+        );
+        participants.push({ ...participant, photoUrl });
+      }
+      availableRoomsWithParticipantsPhoto.push({ ...room, participants });
+    }
+    return availableRoomsWithParticipantsPhoto;
   }
 
   public async create(payload: CreateRoomRequestDto): Promise<RoomDto> {
