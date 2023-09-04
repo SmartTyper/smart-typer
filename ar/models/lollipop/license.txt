@@ -1,0 +1,11 @@
+Model Information:
+* title:	Spiral Lollipop
+* source:	https://sketchfab.com/3d-models/spiral-lollipop-4130b2aa4c0a483798d23e05ced9ec6f
+* author:	JasmineLee (https://sketchfab.com/JasmineLee)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Spiral Lollipop" (https://sketchfab.com/3d-models/spiral-lollipop-4130b2aa4c0a483798d23e05ced9ec6f) by JasmineLee (https://sketchfab.com/JasmineLee) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

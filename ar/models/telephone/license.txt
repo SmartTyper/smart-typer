@@ -1,0 +1,11 @@
+Model Information:
+* title:	Vintage Telephone
+* source:	https://sketchfab.com/3d-models/vintage-telephone-5b5d2f1ece3745279f2129fff13933d5
+* author:	Maxim Mavrichev (https://sketchfab.com/mvrc.art)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Vintage Telephone" (https://sketchfab.com/3d-models/vintage-telephone-5b5d2f1ece3745279f2129fff13933d5) by Maxim Mavrichev (https://sketchfab.com/mvrc.art) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
