@@ -163,7 +163,7 @@ class User {
     const photoUrl = await this.getSignedPhotoUrl(userWithStatistics.photoUrl);
     return {
       ...userWithStatistics,
-      rating: ratingWithPhoto,
+      rating: ratingWithPhoto.sort((a, b) => b.averageSpeed - a.averageSpeed),
       photoUrl,
     };
   }

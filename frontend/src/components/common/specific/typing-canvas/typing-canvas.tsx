@@ -107,8 +107,8 @@ const TypingCanvas: FC<Props> = ({
   );
   const pageRef = useRef() as MutableRefObject<HTMLDivElement>;
 
-  const handleDecreaseTimerBeforeGameValue = (timerValue: number): void => {
-    if (timerBeforeTypingValue) {
+  const handleDecreaseTimerBeforeTypingValue = (timerValue: number): void => {
+    if (timerValue >= 0) {
       setTimerBeforeTypingValue(timerValue);
       if (isSoundTurnedOn) {
         playClockTick();
@@ -117,7 +117,7 @@ const TypingCanvas: FC<Props> = ({
   };
 
   const handleDecreaseGameTimerValue = (timerValue: number): void => {
-    if (gameTimerValue) {
+    if (timerValue >= 0) {
       setGameTimerValue(timerValue);
       if (isSoundTurnedOn) {
         playClockTick();
@@ -151,7 +151,6 @@ const TypingCanvas: FC<Props> = ({
     if (!participants.length) {
       return;
     }
-
     const allParticipantsEndedGame = participants.every(
       (participant) => participant.spentTime,
     );
@@ -159,7 +158,6 @@ const TypingCanvas: FC<Props> = ({
     if (needToFinishGame) {
       setIsStarted(false);
     }
-
     if (lessonContent?.length) {
       const { length } = lessonContent;
       participants.forEach((participant) => {
@@ -194,7 +192,7 @@ const TypingCanvas: FC<Props> = ({
       }
       setTimer(
         timerBeforeTypingValue as number,
-        handleDecreaseTimerBeforeGameValue,
+        handleDecreaseTimerBeforeTypingValue,
       );
       return;
     }
@@ -210,14 +208,14 @@ const TypingCanvas: FC<Props> = ({
   const handleTimerBeforeTypingChange = (): void => {
     if (!timerBeforeTypingValue && isStarted) {
       onTypingStart();
+      pageRef.current.focus();
       if (isSoundTurnedOn) {
         playClockRing();
       }
-      pageRef.current.focus();
-      if (isSoundTurnedOn) {
-        playClockTick();
-      }
       if (isGameMode) {
+        if (isSoundTurnedOn) {
+          playClockTick();
+        }
         setTimer(gameTimerValue as number, handleDecreaseGameTimerValue);
       }
     }
@@ -280,14 +278,16 @@ const TypingCanvas: FC<Props> = ({
           </>
         )
       ) : (
-        <Button
-          onClick={onToggleIsReady}
-          label={isReady ? 'Not ready' : 'Ready'}
-          className={clsx(
-            styles.readyButton,
-            isReady ? styles.ready : styles.notReady,
-          )}
-        />
+        isGameMode && (
+          <Button
+            onClick={onToggleIsReady}
+            label={isReady ? 'Not ready' : 'Ready'}
+            className={clsx(
+              styles.readyButton,
+              isReady ? styles.ready : styles.notReady,
+            )}
+          />
+        )
       )}
     </div>
   );

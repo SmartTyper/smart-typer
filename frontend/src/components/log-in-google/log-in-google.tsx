@@ -1,6 +1,12 @@
 import { AppRoute, SpinnerSize } from 'common/enums/enums';
 import { FC } from 'common/types/types';
-import { useDispatch, useEffect, useNavigate } from 'hooks/hooks';
+import {
+  useDispatch,
+  useEffect,
+  useNavigate,
+  useSelector,
+  useState,
+} from 'hooks/hooks';
 import { auth as authActions } from 'store/modules/actions';
 import { navigation as navigationService } from 'services/services';
 
@@ -13,6 +19,8 @@ const LogInGoogle: FC = () => {
   const url = navigationService.getUrl();
   const { searchParams } = new URL(url);
   const code = searchParams.get('code');
+  const [isInitialState, setIsInitialState] = useState(true);
+  const { authLogInGoogle: isGoogleRequestLoading } = useSelector((state) => state.requests);
 
   useEffect(() => {
     if (code) {
@@ -22,9 +30,15 @@ const LogInGoogle: FC = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (!isGoogleRequestLoading && !isInitialState) {
+      navigate(AppRoute.ROOT);
+    }
+  }, [isGoogleRequestLoading]);
+
   const handleGoogle = async (code: string): Promise<void> => {
     dispatch(authActions.logInGoogle({ code }));
-    navigate(AppRoute.ROOT);
+    setIsInitialState(false);
   };
 
   return (

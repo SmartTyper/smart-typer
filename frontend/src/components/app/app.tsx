@@ -32,10 +32,12 @@ import { auth as authActions } from 'store/modules/actions';
 const App: FC = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
-  const { user, isUserRequestLoading } = useSelector(({ auth, requests }) => ({
-    user: auth.user,
-    isUserRequestLoading: requests.authLoadCurrentUser,
-  }));
+  const { user, isUserRequestLoading } = useSelector(
+    ({ auth, requests }) => ({
+      user: auth.user,
+      isUserRequestLoading: requests.authLoadCurrentUser,
+    }),
+  );
 
   const token = localStorageService.getItem(StorageKey.ACCESS_TOKEN);
 

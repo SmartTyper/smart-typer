@@ -23,7 +23,7 @@ const ResultsModal: FC<Props> = ({ lessonResult, isVisible, onClose }) => {
     <Modal
       isVisible={isVisible}
       onHide={onClose}
-      title="Game results"
+      title="Lesson results"
       className={styles.resultsModal}
     >
       <div className={styles.modalBody}>

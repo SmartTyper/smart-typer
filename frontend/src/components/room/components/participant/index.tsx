@@ -30,7 +30,7 @@ const Participant: FC<Props> = ({ participant, textLength, isCurrentUser }) => {
             avatarSrc={photoUrl}
             avatarSize={AvatarSize.SMALL}
           />
-          {isCurrentUser && <span>(you)</span>}
+          {isCurrentUser && <span style={{ marginLeft: '1rem' }}>(you)</span>}
         </div>
       </div>
       <RBProgressBar

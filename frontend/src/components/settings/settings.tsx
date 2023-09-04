@@ -79,7 +79,7 @@ const Settings: FC = () => {
             <FormField
               label={FormFieldLabel.COUNTDOWN_BEFORE_GAME}
               type={FormFieldType.NUMBER}
-              register={register(SettingsKey.GAME_TIME)}
+              register={register(SettingsKey.COUNTDOWN_BEFORE_GAME)}
               error={errors.countdownBeforeGame}
               inputClassName={styles.racingField}
               note={<span>* only for the single player mode</span>}

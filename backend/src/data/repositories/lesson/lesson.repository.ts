@@ -297,6 +297,10 @@ class Lesson {
         `${LessonRelationMappings.STUDY_PLAN}.${UserToStudyPlanLessonKey.PRIORITY}`,
         RecordsSortOrder.ASC,
       )
+      .orderBy(
+        `${LessonRelationMappings.STUDY_PLAN}.${UserToStudyPlanLessonKey.LESSON_ID}`,
+        RecordsSortOrder.ASC,
+      )
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .castTo<any[]>();
 
