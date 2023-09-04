@@ -7,7 +7,7 @@ async function up(knex: Knex): Promise<void> {
       .integer('lesson_id')
       .references('id')
       .inTable('lessons')
-      .notNullable();
+      .onDelete('CASCADE');
     table.string('name').notNullable();
     table.boolean('is_private').notNullable();
     table.dateTime('created_at').notNullable().defaultTo(knex.fn.now());

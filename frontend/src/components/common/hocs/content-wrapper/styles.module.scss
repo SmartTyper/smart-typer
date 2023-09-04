@@ -1,0 +1,28 @@
+@import 'src/assets/css/variables';
+
+.contentWrapper {
+  background-color: $light-green;
+  margin: 3rem auto;
+  padding: 3rem;
+  border-radius: 2px;
+
+  &.light {
+    box-shadow: $content-wrapper-light-shadow;
+  }
+
+  &.strong {
+    box-shadow: $content-wrapper-strong-shadow;
+  }
+
+  &.small {
+    width: 40%;
+  }
+
+  &.medium {
+    width: 60%;
+  }
+
+  &.large {
+    width: 80%;
+  }
+}

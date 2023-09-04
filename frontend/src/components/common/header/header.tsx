@@ -1,14 +1,25 @@
-import { FC } from 'common/types/types';
+import { DropdownButton, DropdownLink, FC, UserDto } from 'common/types/types';
 import { RBNavbar } from 'components/external/external';
 import { AppRoute } from 'common/enums/enums';
 import { NavItem, ProfileDropdown } from './components/components';
+import { useDispatch, useSelector } from 'hooks/hooks';
+import { auth as authActions } from 'store/modules/actions';
+import { replaceRouteIdParam } from 'helpers/helpers';
 
 import styles from './styles.module.scss';
 
 const Header: FC = () => {
-  const profileDropdownLinks = [
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user as UserDto);
+  const userId = user.id;
+
+  const handleLogout = (): void => {
+    dispatch(authActions.logOut());
+  };
+
+  const profileDropdownLinks: DropdownLink[] = [
     {
-      link: AppRoute.PROFILE,
+      link: replaceRouteIdParam(AppRoute.USERS_$ID_PROFILE, userId),
       label: 'Profile',
       iconName: 'bi bi-person',
     },
@@ -19,10 +30,10 @@ const Header: FC = () => {
     },
   ];
 
-  const profileDropdownButtons = [
+  const profileDropdownButtons: DropdownButton[] = [
     {
       label: 'Sign out',
-      onClick: (): void => console.log(),
+      onClick: handleLogout,
       iconName: 'bi bi-box-arrow-right',
     },
   ];
@@ -58,8 +69,8 @@ const Header: FC = () => {
           <ProfileDropdown
             links={profileDropdownLinks}
             buttons={profileDropdownButtons}
-            userName="User Name"
-            avatarSrc=""
+            userName={user.nickname}
+            avatarSrc={user.photoUrl}
           />
           <NavItem iconName="bi bi-house-fill" label="" route={AppRoute.ROOT} />
         </RBNavbar>

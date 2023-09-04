@@ -1,12 +1,23 @@
 {
   "extends": "../tsconfig.json",
-  "include": ["src"],
+  "include": ["./src/**/*", "knexfile.ts"],
   "exclude": ["node_modules"],
   "compilerOptions": {
-    "baseUrl": "src",
+    "baseUrl": "./",
     "outDir": "build",
+    "paths": {
+      "api/*": ["./src/api/*"],
+      "common/*": ["./src/common/*"],
+      "data/*": ["./src/data/*"],
+      "dependencies/*": ["./src/dependencies/*"],
+      "exceptions/*": ["./src/exceptions/*"],
+      "helpers/*": ["./src/helpers/*"],
+      "services/*": ["./src/services/*"],
+      "validation-schemas/*": ["./src/validation-schemas/*"]
+    },
     "module": "CommonJS",
     "moduleResolution": "node",
-    "pretty": true
+    "pretty": true,
+    "typeRoots": ["./node_modules/@types", "./src/common/types/libs/express"]
   }
 }

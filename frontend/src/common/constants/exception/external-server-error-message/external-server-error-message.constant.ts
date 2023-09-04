@@ -1,0 +1,3 @@
+const EXTERNAL_SERVER_ERROR_MESSAGE = 'External Server Error';
+
+export { EXTERNAL_SERVER_ERROR_MESSAGE };

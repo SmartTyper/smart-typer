@@ -1,0 +1,68 @@
+@import 'src/assets/css/variables';
+
+.home {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .imgContainer {
+    margin-top: 4rem;
+
+    display: flex;
+    justify-content: center;
+
+    .laptopImg {
+      height: 60vh;
+      z-index: 0;
+    }
+
+    .typingImg {
+      position: absolute;
+      z-index: 1;
+      top: 30vh;
+      height: 10vh;
+    }
+
+    @media only screen and (max-width: $width-tablet) {
+      display: none;
+    }
+  }
+
+  .arButton {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 2;
+
+    .arImg {
+      height: 30vh;
+    }
+
+    &:hover {
+      box-shadow: none;
+    }
+
+    @media only screen and (max-width: $width-tablet) {
+      position: relative;
+      left: unset;
+      bottom: unset;
+    }
+  }
+
+  .label {
+    font-size: 6rem;
+    line-height: 6rem;
+    font-weight: 600;
+    color: $dark-blue;
+    text-align: center;
+
+    @media only screen and (max-width: $width-tablet) {
+      display: none;
+    }
+  }
+
+  @media only screen and (max-width: $width-tablet) {
+    height: 100vh;
+  }
+}

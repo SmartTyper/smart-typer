@@ -1,0 +1,29 @@
+@import 'src/assets/css/variables';
+
+.rooms {
+  height: 100%;
+  width: 100%;
+  padding: 3rem;
+
+  .titleContainer {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .roomCards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12.5vw, 1fr));
+    gap: 0.75rem 3rem;
+  }
+
+  .createRoomButton {
+    height: 3.5rem;
+    width: 12rem;
+    font-size: $middle-font-size;
+    background-color: $main-green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $white;
+  }
+}

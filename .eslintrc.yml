@@ -3,8 +3,6 @@ env:
 
 root: true
 
-parser: '@typescript-eslint/parser'
-
 parserOptions:
   sourceType: module
   project: ./tsconfig.json
@@ -35,6 +33,11 @@ rules:
     - error
     - 2
     - SwitchCase: 1
+      ignoredNodes:
+        - PropertyDefinition[decorators]
+        - TSUnionType
+        - TSTypeParameterInstantiation
+        - TSIntersectionType
   '@typescript-eslint/semi':
     - error
     - always
@@ -52,3 +55,7 @@ rules:
     - allowSingleExtends: true
   '@typescript-eslint/no-explicit-any':
     - error
+  '@typescript-eslint/no-non-null-assertion':
+    - off
+  '@typescript-eslint/no-unnecessary-type-constraint':
+    - off

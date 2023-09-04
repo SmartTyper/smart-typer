@@ -1,0 +1,61 @@
+import { config } from 'dotenv';
+
+config();
+
+const {
+  NODE_ENV,
+  PORT,
+  API_PREFIX,
+  DB_URL,
+  DB_POOL_MIN,
+  DB_POOL_MAX,
+  DB_CLIENT,
+  DB_SSL,
+  SECRET_KEY,
+  AWS_ACCESS_KEY,
+  AWS_SECRET_KEY,
+  AWS_BUCKET_NAME,
+  AWS_REGION,
+  MAILER_SERVICE,
+  MAILER_AUTH_USER,
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  GOOGLE_REDIRECT_URL,
+  GOOGLE_REFRESH_TOKEN,
+  APP_URL,
+} = process.env;
+
+const ENV = {
+  APP: {
+    NODE_ENV,
+    SERVER_PORT: Number(PORT),
+    API_PREFIX: API_PREFIX ?? '',
+    SECRET_KEY: SECRET_KEY ?? '',
+    URL: APP_URL ?? '',
+  },
+  DB: {
+    URL: DB_URL,
+    POOL_MIN: Number(DB_POOL_MIN),
+    POOL_MAX: Number(DB_POOL_MAX),
+    CLIENT: DB_CLIENT,
+    SSL: DB_SSL ?? '',
+  },
+  S3: {
+    ACCESS_KEY_ID: AWS_ACCESS_KEY ?? '',
+    SECRET_ACCESS_KEY: AWS_SECRET_KEY ?? '',
+    BUCKET_NAME: AWS_BUCKET_NAME ?? '',
+    REGION: AWS_REGION ?? '',
+  },
+  MAILER: {
+    SERVICE: MAILER_SERVICE,
+    USER: MAILER_AUTH_USER ?? '',
+  },
+  GOOGLE: {
+    CLIENT_ID: GOOGLE_CLIENT_ID ?? '',
+    CLIENT_SECRET: GOOGLE_CLIENT_SECRET ?? '',
+    REDIRECT_URL: GOOGLE_REDIRECT_URL ?? '',
+    REFRESH_TOKEN: GOOGLE_REFRESH_TOKEN ?? '',
+  },
+};
+
+export { ENV };

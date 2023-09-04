@@ -1,0 +1,3 @@
+const MAX_NICKNAME_LENGTH = 30;
+
+export { MAX_NICKNAME_LENGTH };

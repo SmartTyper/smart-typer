@@ -1,42 +1,64 @@
-import Fastify from 'fastify';
-import fastifyStatic from '@fastify/static';
-import Knex from 'knex';
-import * as path from 'node:path';
+import express, { Express } from 'express';
+import { createServer } from 'http';
 import { Model } from 'objection';
+import { Server } from 'socket.io';
+import pino from 'pino';
+import cors from 'cors';
+import Knex from 'knex';
+import path from 'path';
 
-import { initApi } from 'api/api';
-import { Environment, ENV } from 'common/enums/enums';
+import { router as apiRoutes } from 'api/api';
+import { ENV } from 'common/constants/constants';
+import { Environment } from 'common/enums/enums';
+import { SocketEvent } from 'common/enums/socket/socket';
+import { socket as socketService } from 'services/services';
+import { logger as loggerService } from 'services/services';
 import knexConfig from '../knexfile';
 
-const app = Fastify({
-  logger: {
-    transport: {
-      target: 'pino-pretty',
-    },
-  },
+const app: Express = express();
+const httpServer = createServer(app);
+
+const knex = Knex(knexConfig[ENV.APP.NODE_ENV as Environment]);
+Model.knex(knex);
+
+const logger = pino({
+  prettyPrint: true,
 });
 
-Model.knex(Knex(knexConfig[ENV.APP.NODE_ENV as Environment]));
+const io = new Server(httpServer);
 
-app.register(initApi, {
-  prefix: ENV.APP.API_PREFIX,
+socketService.initIo(io);
+io.on(SocketEvent.CONNECTION, socketService.initHandlers);
+
+loggerService.initLogger(logger);
+
+app.use(
+  cors({
+    origin: ENV.APP.URL,
+  }),
+);
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(apiRoutes);
+
+app.use(express.static(path.join(__dirname, '../public')));
+app.get('/ar-camera', (_req, res) => {
+  res.sendFile(path.join(__dirname, '../public/ar-camera.html'));
+});
+app.use('/*', (_req, res) => {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-const staticPath = path.join(__dirname, '../public');
-
-app.register(fastifyStatic, {
-  root: staticPath,
-  prefix: '/',
+httpServer.listen(ENV.APP.SERVER_PORT, async () => {
+  logger.info(
+    `Server is running at ${ENV.APP.SERVER_PORT}. Environment: ${ENV.APP.NODE_ENV}.`,
+  );
 });
 
-app.setNotFoundHandler((_req, res) => {
-  res.sendFile('index.html', staticPath);
+app.on('close', async () => {
+  await knex.destroy();
 });
 
-app.listen({ port: ENV.APP.SERVER_PORT }, (err, address) => {
-  if (err) {
-    app.log.error(err);
-  }
-
-  app.log.info(`Listening on: ${address}; Environment: ${ENV.APP.NODE_ENV}`);
-});
+export default app;

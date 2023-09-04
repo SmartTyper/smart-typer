@@ -11,20 +11,24 @@ import {
   UserToFinishedLessonKey,
   UserToRoomKey,
   UserToSkillKey,
+  UserRelationMappings,
 } from 'common/enums/enums';
 import { IUserRecord } from 'common/interfaces/interfaces';
+import {
+  RefreshToken,
+  Settings,
+  Statistics,
+  Skill,
+  UserToRoom,
+  UserToSkill,
+  Lesson,
+  UserToStudyPlanLesson,
+} from 'data/models/models';
 
 import { Base } from '../base/base.model';
-import { RefreshToken } from '../refresh-token/refresh-token.model';
-import { Settings } from '../settings/settings.model';
-import { Statistics } from '../statistics/statistics.model';
-import { UserToStudyPlanLesson } from '../user-to-study-plan-lesson/user-to-study-plan-lesson.model';
-import { UserToFinishedLesson } from '../user-to-finished-lesson/user-to-finished-lesson.model';
-import { Room } from '../room/room.model';
-import { Skill } from '../skill/skill.model';
 
 class User extends Base implements IUserRecord {
-  public [UserKey.NICK_NAME]!: IUserRecord[UserKey.NICK_NAME];
+  public [UserKey.NICKNAME]!: IUserRecord[UserKey.NICKNAME];
 
   public [UserKey.EMAIL]!: IUserRecord[UserKey.EMAIL];
 
@@ -34,7 +38,7 @@ class User extends Base implements IUserRecord {
 
   public static override get relationMappings(): RelationMappings {
     return {
-      refreshToken: {
+      [UserRelationMappings.REFRESH_TOKEN]: {
         relation: Model.HasOneRelation,
         modelClass: RefreshToken,
         join: {
@@ -42,7 +46,7 @@ class User extends Base implements IUserRecord {
           to: `${TableName.REFRESH_TOKENS}.${RefreshTokenKey.USER_ID}`,
         },
       },
-      settings: {
+      [UserRelationMappings.SETTINGS]: {
         relation: Model.HasOneRelation,
         modelClass: Settings,
         join: {
@@ -50,7 +54,7 @@ class User extends Base implements IUserRecord {
           to: `${TableName.SETTINGS}.${SettingsKey.USER_ID}`,
         },
       },
-      statistics: {
+      [UserRelationMappings.STATISTICS]: {
         relation: Model.HasOneRelation,
         modelClass: Statistics,
         join: {
@@ -58,9 +62,9 @@ class User extends Base implements IUserRecord {
           to: `${TableName.STATISTICS}.${StatisticsKey.USER_ID}`,
         },
       },
-      userToStudyPlanLessons: {
+      [UserRelationMappings.USER_TO_STUDY_PLAN_lESSONS]: {
         relation: Model.ManyToManyRelation,
-        modelClass: UserToStudyPlanLesson,
+        modelClass: Lesson,
         join: {
           from: `${TableName.USERS}.${CommonKey.ID}`,
           through: {
@@ -70,9 +74,17 @@ class User extends Base implements IUserRecord {
           to: `${TableName.LESSONS}.${CommonKey.ID}`,
         },
       },
-      userToFinishedLessons: {
+      [UserRelationMappings.USER_TO_STUDY_PLAN]: {
+        relation: Model.HasManyRelation,
+        modelClass: UserToStudyPlanLesson,
+        join: {
+          from: `${TableName.USERS}.${CommonKey.ID}`,
+          to: `${TableName.USERS_TO_STUDY_PLAN_LESSONS}.${UserToStudyPlanLessonKey.USER_ID}`,
+        },
+      },
+      [UserRelationMappings.USER_TO_FINISHED_LESSONS]: {
         relation: Model.ManyToManyRelation,
-        modelClass: UserToFinishedLesson,
+        modelClass: Lesson,
         join: {
           from: `${TableName.USERS}.${CommonKey.ID}`,
           through: {
@@ -82,19 +94,15 @@ class User extends Base implements IUserRecord {
           to: `${TableName.LESSONS}.${CommonKey.ID}`,
         },
       },
-      room: {
-        relation: Model.BelongsToOneRelation,
-        modelClass: Room,
+      [UserRelationMappings.USER_TO_ROOMS]: {
+        relation: Model.HasOneRelation,
+        modelClass: UserToRoom,
         join: {
           from: `${TableName.USERS}.${CommonKey.ID}`,
-          through: {
-            from: `${TableName.USERS_TO_ROOMS}.${UserToRoomKey.USER_ID}`,
-            to: `${TableName.USERS_TO_ROOMS}.${UserToRoomKey.ROOM_ID}`,
-          },
-          to: `${TableName.ROOMS}.${CommonKey.ID}`,
+          to: `${TableName.USERS_TO_ROOMS}.${UserToRoomKey.USER_ID}`,
         },
       },
-      skills: {
+      [UserRelationMappings.SKILLS]: {
         relation: Model.ManyToManyRelation,
         modelClass: Skill,
         join: {
@@ -104,6 +112,14 @@ class User extends Base implements IUserRecord {
             to: `${TableName.USERS_TO_SKILLS}.${UserToSkillKey.SKILL_ID}`,
           },
           to: `${TableName.SKILLS}.${CommonKey.ID}`,
+        },
+      },
+      [UserRelationMappings.USER_TO_SKILLS]: {
+        relation: Model.HasManyRelation,
+        modelClass: UserToSkill,
+        join: {
+          from: `${TableName.USERS}.${CommonKey.ID}`,
+          to: `${TableName.USERS_TO_SKILLS}.${UserToSkillKey.USER_ID}`,
         },
       },
     };

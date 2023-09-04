@@ -1,0 +1,3 @@
+const TEST_LESSON_PRIORITY = 0;
+
+export { TEST_LESSON_PRIORITY };

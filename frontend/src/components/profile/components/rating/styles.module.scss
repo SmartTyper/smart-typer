@@ -1,0 +1,46 @@
+@import 'src/assets/css/variables';
+
+.rating {
+  width: 100%;
+  font-size: $middle-font-size;
+  font-weight: normal !important;
+  overflow-y: auto;
+  max-height: 90vh;
+  border: $main-border;
+  background-color: $white;
+
+  .record {
+    width: calc(100% - 0.5rem);
+    padding: 0.5rem;
+    display: grid;
+    grid-template-areas: 'position userInfo space averageSpeed';
+    grid-template-columns: 2vw 16vw auto 6vw;
+    align-items: center;
+    gap: 0 4rem;
+    margin: 0.5rem 0.25rem;
+
+    &:first-child {
+      padding: 0 1rem;
+      background: rgba($green-accent, 0.2);
+      border-bottom: $main-border;
+      width: 100%;
+      margin: 0;
+    }
+
+    .position {
+      grid-area: position;
+      text-align: center;
+    }
+
+    .averageSpeed {
+      grid-area: averageSpeed;
+      text-align: center;
+    }
+
+    .userInfo {
+      max-width: 12vw;
+      grid-area: userInfo;
+      text-align: center;
+    }
+  }
+}

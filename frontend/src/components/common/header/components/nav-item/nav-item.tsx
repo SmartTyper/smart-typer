@@ -18,7 +18,7 @@ const NavItem: FC<Props> = ({ route, iconName, label }) => {
         <div
           className={clsx(styles.contentContainer, isActive && styles.active)}
         >
-          <i className={iconName}></i>
+          <i className={clsx(iconName, styles.icon)} />
           <span className={styles.label}>{label}</span>
         </div>
       )}

@@ -1,7 +1,7 @@
 import { FC } from 'common/types/types';
 import { AppRoute } from 'common/enums/enums';
 import { clsx } from 'helpers/helpers';
-import { Link } from 'components/common/link/link';
+import { Link } from 'components/common/common';
 
 type Props = {
   to: AppRoute;
@@ -23,7 +23,7 @@ const IconLink: FC<Props> = ({
 }) => (
   <Link className={className} to={to} {...props}>
     <>
-      {iconName && <i className={clsx(iconName, iconClassName)}></i>}
+      {iconName && <i className={clsx(iconName, iconClassName)} />}
       {label && <span className={labelClassName}>{label}</span>}
     </>
   </Link>

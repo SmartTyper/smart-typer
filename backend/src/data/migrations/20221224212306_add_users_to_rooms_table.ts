@@ -8,15 +8,27 @@ async function up(knex: Knex): Promise<void> {
       .references('id')
       .inTable('users')
       .unique()
-      .notNullable();
-    table.integer('room_id').references('id').inTable('rooms').notNullable();
+      .notNullable()
+      .onDelete('CASCADE');
+    table
+      .integer('current_room_id')
+      .references('id')
+      .inTable('rooms')
+      .onDelete('CASCADE');
+    table
+      .integer('personal_room_id')
+      .references('id')
+      .inTable('rooms')
+      .unique()
+      .notNullable()
+      .onDelete('CASCADE');
     table.dateTime('created_at').notNullable().defaultTo(knex.fn.now());
     table.dateTime('updated_at').notNullable().defaultTo(knex.fn.now());
   });
 }
 
 async function down(knex: Knex): Promise<void> {
-  return knex.schema.dropTableIfExists('rooms_to_users');
+  return knex.schema.dropTableIfExists('users_to_rooms');
 }
 
 export { down, up };

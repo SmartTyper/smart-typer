@@ -1,0 +1,19 @@
+@import 'src/assets/css/variables';
+
+.modeCard {
+  width: 20vw;
+  border: $main-border;
+  transition: $button-transition;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+
+  &:hover {
+    box-shadow: $button-shadow;
+  }
+
+  .image {
+    height: 35vh;
+  }
+}

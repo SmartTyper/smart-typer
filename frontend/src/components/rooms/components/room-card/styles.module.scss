@@ -1,0 +1,21 @@
+@import 'src/assets/css/variables';
+
+.roomCard {
+  height: 20vh;
+  padding: 3rem;
+
+  .avatarsContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+
+    .avatar:not(:first-child) {
+      margin-left: -1rem;
+    }
+  }
+
+  &:hover {
+    box-shadow: $button-shadow;
+  }
+}

@@ -1,0 +1,25 @@
+@import 'src/assets/css/variables';
+
+.button {
+  font-size: inherit;
+  font-weight: inherit;
+  outline: none;
+  display: flex;
+  align-items: center;
+  font-style: inherit;
+  color: inherit;
+  background-color: inherit;
+  transition: $button-transition;
+  border: none;
+
+  &.hasShadowOnHover:hover {
+    box-shadow: $button-shadow;
+  }
+
+  i {
+    font-size: inherit;
+    :not(:last-child) {
+      margin-right: 0.5rem;
+    }
+  }
+}

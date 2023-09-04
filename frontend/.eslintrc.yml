@@ -19,3 +19,5 @@ rules:
     - off
   react/require-default-props:
     - off
+  react/no-unescaped-entities:
+    - off

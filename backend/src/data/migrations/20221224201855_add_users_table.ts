@@ -5,7 +5,7 @@ async function up(knex: Knex): Promise<void> {
     table.increments('id').primary();
     table.string('nickname').notNullable();
     table.string('email').unique().notNullable();
-    table.string('password').notNullable();
+    table.string('password');
     table.string('photo_url');
     table.dateTime('created_at').notNullable().defaultTo(knex.fn.now());
     table.dateTime('updated_at').notNullable().defaultTo(knex.fn.now());

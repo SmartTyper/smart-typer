@@ -8,7 +8,8 @@ async function up(knex: Knex): Promise<void> {
       .references('id')
       .inTable('users')
       .unique()
-      .notNullable();
+      .notNullable()
+      .onDelete('CASCADE');
     table.integer('total_time').notNullable().defaultTo(0);
     table.integer('today_time').notNullable().defaultTo(0);
     table.integer('total_lessons').notNullable().defaultTo(0);

@@ -1,0 +1,15 @@
+@import 'src/assets/css/variables';
+
+.logInGoogle {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $light-grey;
+  color: $dark-blue;
+
+  .inscription {
+    font-size: $middle-font-size;
+    margin-left: 1rem;
+  }
+}

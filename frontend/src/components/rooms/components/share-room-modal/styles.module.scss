@@ -1,0 +1,34 @@
+@import 'src/assets/css/variables';
+
+.shareRoomModal {
+  width: 25vw !important;
+
+  .email {
+    font-size: $middle-font-size !important;
+    color: $dark-blue !important;
+    background-color: $light-grey !important;
+  }
+
+  .emailsInput {
+    border: $main-border;
+    border-radius: 0;
+
+    &.focused {
+      color: $dark-blue !important;
+      border-color: $main-green !important;
+      box-shadow: $input-shadow;
+    }
+  }
+
+  .sendButton {
+    font-size: $middle-font-size;
+    height: 3.5rem;
+    width: 7rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $main-green;
+    color: $white;
+    margin: 0 auto;
+  }
+}

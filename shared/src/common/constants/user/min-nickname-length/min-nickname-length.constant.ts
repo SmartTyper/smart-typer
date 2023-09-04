@@ -1,0 +1,3 @@
+const MIN_NICKNAME_LENGTH = 5;
+
+export { MIN_NICKNAME_LENGTH };

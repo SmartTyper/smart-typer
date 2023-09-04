@@ -1,22 +1,24 @@
 import { FC } from 'common/types/types';
 import { RBSpinner } from 'components/external/external';
 import { SpinnerSize } from 'common/enums/enums';
-import { sizeToRem } from './maps/maps';
+import { SizeToRem } from './maps/maps';
+import { clsx } from 'helpers/helpers';
 
 import styles from './styles.module.scss';
 
 type Props = {
   size: SpinnerSize;
+  isCentered?: boolean;
 };
 
-const Spinner: FC<Props> = ({ size }) => {
-  const sizeInRem = sizeToRem[size];
+const Spinner: FC<Props> = ({ size, isCentered = true }) => {
+  const sizeInRem = SizeToRem[size];
 
   return (
-    <div className={styles.spinner}>
+    <div className={clsx(styles.spinner, isCentered && styles.centered)}>
       <RBSpinner
         animation="border"
-        variant="secondary"
+        variant="dark"
         role="status"
         style={{ width: sizeInRem, height: sizeInRem }}
       />

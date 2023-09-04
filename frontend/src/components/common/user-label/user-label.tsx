@@ -1,32 +1,43 @@
 import { FC } from 'common/types/types';
 import { AvatarSize, UserLabelColor } from 'common/enums/enums';
 import { clsx } from 'helpers/helpers';
-import { Avatar } from 'components/common/avatar/avatar';
+import { Avatar } from 'components/common/common';
 
 import styles from './styles.module.scss';
 
 type Props = {
-  username: string;
+  userName: string;
   avatarSize: AvatarSize;
   textColor?: UserLabelColor;
-  avatarSrc?: string;
+  avatarSrc: string | null;
+  bolderUserName?: boolean;
+  className?: string;
 };
 
 const UserLabel: FC<Props> = ({
-  username,
+  userName,
   avatarSrc,
   textColor = UserLabelColor.BLACK,
   avatarSize,
+  bolderUserName = false,
+  className,
 }) => (
   <div className={styles.avatarContainer}>
     <Avatar
       size={avatarSize}
-      name={username}
+      name={userName}
       src={avatarSrc}
-      round
-      className={styles.avatar}
+      className={clsx(styles.avatar, className)}
     />
-    <span className={clsx(styles.username, styles[textColor])}>{username}</span>
+    <span
+      className={clsx(
+        styles.username,
+        styles[textColor],
+        bolderUserName && styles.bolder,
+      )}
+    >
+      {userName}
+    </span>
   </div>
 );
 

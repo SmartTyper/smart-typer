@@ -1,0 +1,22 @@
+@import 'src/assets/css/variables';
+
+.hiddenInput {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  width: 100%;
+
+  .hideValueButton {
+    background-color: $white;
+    border: $main-border;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 3.5rem;
+    width: 3.5rem;
+
+    .hideValueIcon {
+      font-size: $middle-icon-font-size;
+    }
+  }
+}

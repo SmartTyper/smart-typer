@@ -1,17 +1,13 @@
 import { FC } from 'common/types/types';
-import { Dropdown } from 'components/common/dropdown/dropdown';
+import { Dropdown, UserLabel } from 'components/common/common';
 import { AvatarSize, UserLabelColor } from 'common/enums/enums';
-import {
-  IButton,
-  ILink,
-} from 'components/common/dropdown/common/interfaces/interfaces';
-import { UserLabel } from 'components/common/user-label/user-label';
+import { DropdownButton, DropdownLink } from 'common/types/types';
 
 type Props = {
   userName: string;
-  avatarSrc?: string;
-  links: ILink[];
-  buttons: IButton[];
+  avatarSrc: string | null;
+  links: DropdownLink[];
+  buttons: DropdownButton[];
 };
 
 const ProfileDropdown: FC<Props> = ({
@@ -23,10 +19,11 @@ const ProfileDropdown: FC<Props> = ({
   return (
     <Dropdown links={links} buttons={buttons}>
       <UserLabel
-        username={userName}
-        avatarSize={AvatarSize.SMALL}
+        userName={userName}
+        avatarSize={AvatarSize.MIDDLE}
         textColor={UserLabelColor.WHITE}
         avatarSrc={avatarSrc}
+        bolderUserName
       />
     </Dropdown>
   );

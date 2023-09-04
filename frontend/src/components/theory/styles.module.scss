@@ -1,0 +1,30 @@
+.theory {
+  .intro {
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .keyboardImage {
+    width: 70%;
+    margin: 0 auto;
+  }
+}
+
+.suggestions {
+  list-style: none;
+  counter-reset: list;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 0;
+
+  .suggestionCard:last-child {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .suggestionText {
+    margin: 0;
+    line-height: 1.6;
+  }
+}

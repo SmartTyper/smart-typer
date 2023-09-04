@@ -1,0 +1,3 @@
+const MAX_ROOM_NAME_LENGTH = 15;
+
+export { MAX_ROOM_NAME_LENGTH };

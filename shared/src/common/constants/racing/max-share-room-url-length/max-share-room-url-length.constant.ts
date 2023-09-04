@@ -1,0 +1,3 @@
+const MAX_SHARE_ROOM_URL_LENGTH = 45;
+
+export { MAX_SHARE_ROOM_URL_LENGTH };

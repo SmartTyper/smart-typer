@@ -1,0 +1,75 @@
+@import 'src/assets/css/variables';
+
+.lessonCard {
+  height: 23vh;
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+
+  .cardContentContainer {
+    flex: 1;
+
+    .cardContent {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+
+      .content {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+        margin: 0 0 1rem;
+      }
+
+      .cardFooter {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 30px;
+
+        .labels {
+          display: flex;
+
+          .label:not(:last-child) {
+            margin-right: 0.5rem;
+          }
+        }
+      }
+
+      .bestSkillMarkers {
+        display: flex;
+
+        .arMarkerButton {
+          padding: 0;
+
+          &:first-child {
+            margin-right: 8px;
+          }
+
+          .arMarker {
+            height: 30px;
+          }
+        }
+      }
+    }
+  }
+
+  &:hover {
+    box-shadow: $button-shadow;
+  }
+
+  &.disabled {
+    background-color: $light-grey;
+    &:hover {
+      box-shadow: none;
+    }
+  }
+
+  .generating {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+  }
+}

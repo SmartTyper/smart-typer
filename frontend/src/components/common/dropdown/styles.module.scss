@@ -13,7 +13,7 @@
   }
 
   div.dropdownMenu {
-    font-size: 1.5rem;
+    font-size: $middle-font-size;
     width: 100%;
     margin-top: 1rem;
 
@@ -29,8 +29,12 @@
       }
     }
 
-    i::before {
-      font-size: 2rem;
+    i {
+      line-height: $middle-icon-font-size;
+
+      &::before {
+        font-size: $middle-icon-font-size;
+      }
     }
   }
 }

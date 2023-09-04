@@ -1,14 +1,16 @@
 import { FC } from 'common/types/types';
 import { RBDropdown, RBNavItem, RBNavLink } from 'components/external/external';
-import { ILink, IButton } from './common/interfaces/interfaces';
-import { IconButton } from 'components/common/icon-button/icon-button';
-import { IconLink } from 'components/common/icon-link/icon-link';
+import { DropdownLink, DropdownButton } from 'common/types/types';
+import {
+  Button as ButtonItem,
+  IconLink as LinkItem,
+} from 'components/common/common';
 
 import styles from './styles.module.scss';
 
 type Props = {
-  links: ILink[];
-  buttons: IButton[];
+  links?: DropdownLink[];
+  buttons?: DropdownButton[];
 };
 
 const Dropdown: FC<Props> = ({ children, links, buttons }) => {
@@ -18,11 +20,11 @@ const Dropdown: FC<Props> = ({ children, links, buttons }) => {
         {children}
       </RBDropdown.Toggle>
       <RBDropdown.Menu className={styles.dropdownMenu}>
-        {links.map(({ link, label, iconName }) => {
+        {links?.map(({ link, label, iconName }) => {
           return (
             <RBDropdown.Item
               to={link}
-              as={IconLink}
+              as={LinkItem}
               key={label}
               className={styles.dropdownItem}
               iconName={iconName}
@@ -31,15 +33,16 @@ const Dropdown: FC<Props> = ({ children, links, buttons }) => {
           );
         })}
         <RBDropdown.Divider />
-        {buttons.map(({ label, iconName, onClick }) => {
+        {buttons?.map(({ label, iconName, onClick }) => {
           return (
             <RBDropdown.Item
-              as={IconButton}
+              as={ButtonItem}
               onClick={onClick}
               key={label}
               label={label}
               iconName={iconName}
               className={styles.dropdownItem}
+              hasShadowOnHover={false}
             />
           );
         })}

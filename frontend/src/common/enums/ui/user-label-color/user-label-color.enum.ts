@@ -1,4 +1,6 @@
-export enum UserLabelColor {
+enum UserLabelColor {
   WHITE = 'white',
   BLACK = 'black',
 }
+
+export { UserLabelColor };

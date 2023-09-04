@@ -1,1 +1,1 @@
-export type { ValidationSchema } from './validation-schema.type';
+export type { AnySchema, AnyObjectSchema } from 'yup';

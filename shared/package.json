@@ -10,13 +10,13 @@
     "lint:ts": "npx eslint \"src/**/*.ts\"",
     "lint": "npm run lint:ts",
     "build:ts": "tsc && tsc-alias -p tsconfig.json",
-    "build": "npm run build:ts && cp package.json package-lock.json build"
+    "build": "npm run build:ts && cp -r node_modules package.json package-lock.json build"
   },
   "devDependencies": {
     "tsc-alias": "1.8.2",
     "typescript": "4.3.5"
   },
   "dependencies": {
-    "joi": "17.7.0"
+    "yup": "0.32.11"
   }
 }

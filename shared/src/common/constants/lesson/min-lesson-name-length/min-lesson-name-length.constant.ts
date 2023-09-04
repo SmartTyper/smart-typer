@@ -1,0 +1,3 @@
+const MIN_LESSON_NAME_LENGTH = 3;
+
+export { MIN_LESSON_NAME_LENGTH };

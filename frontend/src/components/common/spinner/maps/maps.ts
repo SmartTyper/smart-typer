@@ -1,1 +1,1 @@
-export { sizeToRem } from './size-to-rem/size-to-rem.map';
+export * from './size-to-rem/size-to-rem.map';

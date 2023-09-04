@@ -9,7 +9,8 @@ async function up(knex: Knex): Promise<void> {
       .references('id')
       .inTable('users')
       .unique()
-      .notNullable();
+      .notNullable()
+      .onDelete('CASCADE');
     table.dateTime('created_at').notNullable().defaultTo(knex.fn.now());
     table.dateTime('updated_at').notNullable().defaultTo(knex.fn.now());
   });
